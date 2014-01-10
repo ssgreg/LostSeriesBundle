@@ -1,0 +1,45 @@
+package LS;
+
+
+message Message
+{
+  // requests
+  optional SeriesRequest seriesRequest = 1000;
+  optional ArtworkRequest artworkRequest = 1001;
+
+  // responses
+  optional SeriesResponse seriesResponse = 2000;
+  optional ArtworkResponse artworkResponse = 2001;
+}
+
+
+message SeriesRequest
+{
+}
+
+
+message SeriesResponse
+{
+  message TVShow
+  {
+    required string title = 1;
+    required string originalTitle = 2;
+    required int32 seasonNumber = 3;
+    required string snapshot = 4;
+  }
+
+  repeated TVShow shows = 1;
+}
+
+message ArtworkRequest
+{
+  required string snapshot = 1;
+  required string originalTitle = 2;
+}
+
+message ArtworkResponse
+{
+  required string snapshot = 1;
+  required string originalTitle = 2;
+  required bytes artwork = 3;
+}

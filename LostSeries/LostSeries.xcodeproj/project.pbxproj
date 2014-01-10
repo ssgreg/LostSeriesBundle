@@ -1,0 +1,510 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EEB11802187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
+		EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11803187F17D500337023 /* CoreGraphics.framework */; };
+		EEB11806187F17D500337023 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11805187F17D500337023 /* UIKit.framework */; };
+		EEB1180C187F17D500337023 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EEB1180A187F17D500337023 /* InfoPlist.strings */; };
+		EEB1180E187F17D500337023 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1180D187F17D500337023 /* main.m */; };
+		EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB11811187F17D500337023 /* LSAppDelegate.m */; };
+		EEB11815187F17D500337023 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EEB11813187F17D500337023 /* Main.storyboard */; };
+		EEB11818187F17D500337023 /* LSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB11817187F17D500337023 /* LSViewController.m */; };
+		EEB1181A187F17D500337023 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEB11819187F17D500337023 /* Images.xcassets */; };
+		EEB11821187F17D500337023 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11820187F17D500337023 /* XCTest.framework */; };
+		EEB11822187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
+		EEB11823187F17D500337023 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11805187F17D500337023 /* UIKit.framework */; };
+		EEB1182B187F17D500337023 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EEB11829187F17D500337023 /* InfoPlist.strings */; };
+		EEB1182D187F17D500337023 /* LostSeriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1182C187F17D500337023 /* LostSeriesTests.m */; };
+		EEB11837187F183700337023 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11836187F183700337023 /* libzmq.a */; };
+		EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11838187F1ABC00337023 /* libprotobuf.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EEB11824187F17D500337023 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EEB117F6187F17D500337023 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EEB117FD187F17D500337023;
+			remoteInfo = LostSeries;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EEB117FE187F17D500337023 /* LostSeries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostSeries.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEB11801187F17D500337023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EEB11803187F17D500337023 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EEB11805187F17D500337023 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		EEB11809187F17D500337023 /* LostSeries-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LostSeries-Info.plist"; sourceTree = "<group>"; };
+		EEB1180B187F17D500337023 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EEB1180D187F17D500337023 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EEB1180F187F17D500337023 /* LostSeries-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LostSeries-Prefix.pch"; sourceTree = "<group>"; };
+		EEB11810187F17D500337023 /* LSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSAppDelegate.h; sourceTree = "<group>"; };
+		EEB11811187F17D500337023 /* LSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSAppDelegate.m; sourceTree = "<group>"; };
+		EEB11814187F17D500337023 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EEB11816187F17D500337023 /* LSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSViewController.h; sourceTree = "<group>"; };
+		EEB11817187F17D500337023 /* LSViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = LSViewController.m; sourceTree = "<group>"; };
+		EEB11819187F17D500337023 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		EEB1181F187F17D500337023 /* LostSeriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LostSeriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEB11820187F17D500337023 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		EEB11828187F17D500337023 /* LostSeriesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LostSeriesTests-Info.plist"; sourceTree = "<group>"; };
+		EEB1182A187F17D500337023 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EEB1182C187F17D500337023 /* LostSeriesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LostSeriesTests.m; sourceTree = "<group>"; };
+		EEB11836187F183700337023 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../Frameworks/zeromq-4.0.3/build/lib/libzmq.a"; sourceTree = "<group>"; };
+		EEB11838187F1ABC00337023 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = "../../Frameworks/protobuf-2.5.0/protobuf/lib/libprotobuf.a"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EEB117FB187F17D500337023 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */,
+				EEB11837187F183700337023 /* libzmq.a in Frameworks */,
+				EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */,
+				EEB11806187F17D500337023 /* UIKit.framework in Frameworks */,
+				EEB11802187F17D500337023 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEB1181C187F17D500337023 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EEB11821187F17D500337023 /* XCTest.framework in Frameworks */,
+				EEB11823187F17D500337023 /* UIKit.framework in Frameworks */,
+				EEB11822187F17D500337023 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EEB117F5187F17D500337023 = {
+			isa = PBXGroup;
+			children = (
+				EEB11807187F17D500337023 /* LostSeries */,
+				EEB11826187F17D500337023 /* LostSeriesTests */,
+				EEB11800187F17D500337023 /* Frameworks */,
+				EEB117FF187F17D500337023 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EEB117FF187F17D500337023 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EEB117FE187F17D500337023 /* LostSeries.app */,
+				EEB1181F187F17D500337023 /* LostSeriesTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EEB11800187F17D500337023 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EEB11838187F1ABC00337023 /* libprotobuf.a */,
+				EEB11836187F183700337023 /* libzmq.a */,
+				EEB11801187F17D500337023 /* Foundation.framework */,
+				EEB11803187F17D500337023 /* CoreGraphics.framework */,
+				EEB11805187F17D500337023 /* UIKit.framework */,
+				EEB11820187F17D500337023 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EEB11807187F17D500337023 /* LostSeries */ = {
+			isa = PBXGroup;
+			children = (
+				EEB11810187F17D500337023 /* LSAppDelegate.h */,
+				EEB11811187F17D500337023 /* LSAppDelegate.m */,
+				EEB11813187F17D500337023 /* Main.storyboard */,
+				EEB11816187F17D500337023 /* LSViewController.h */,
+				EEB11817187F17D500337023 /* LSViewController.m */,
+				EEB11819187F17D500337023 /* Images.xcassets */,
+				EEB11808187F17D500337023 /* Supporting Files */,
+			);
+			path = LostSeries;
+			sourceTree = "<group>";
+		};
+		EEB11808187F17D500337023 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EEB11809187F17D500337023 /* LostSeries-Info.plist */,
+				EEB1180A187F17D500337023 /* InfoPlist.strings */,
+				EEB1180D187F17D500337023 /* main.m */,
+				EEB1180F187F17D500337023 /* LostSeries-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EEB11826187F17D500337023 /* LostSeriesTests */ = {
+			isa = PBXGroup;
+			children = (
+				EEB1182C187F17D500337023 /* LostSeriesTests.m */,
+				EEB11827187F17D500337023 /* Supporting Files */,
+			);
+			path = LostSeriesTests;
+			sourceTree = "<group>";
+		};
+		EEB11827187F17D500337023 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EEB11828187F17D500337023 /* LostSeriesTests-Info.plist */,
+				EEB11829187F17D500337023 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EEB117FD187F17D500337023 /* LostSeries */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EEB11830187F17D500337023 /* Build configuration list for PBXNativeTarget "LostSeries" */;
+			buildPhases = (
+				EEB117FA187F17D500337023 /* Sources */,
+				EEB117FB187F17D500337023 /* Frameworks */,
+				EEB117FC187F17D500337023 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LostSeries;
+			productName = LostSeries;
+			productReference = EEB117FE187F17D500337023 /* LostSeries.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EEB1181E187F17D500337023 /* LostSeriesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EEB11833187F17D500337023 /* Build configuration list for PBXNativeTarget "LostSeriesTests" */;
+			buildPhases = (
+				EEB1181B187F17D500337023 /* Sources */,
+				EEB1181C187F17D500337023 /* Frameworks */,
+				EEB1181D187F17D500337023 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EEB11825187F17D500337023 /* PBXTargetDependency */,
+			);
+			name = LostSeriesTests;
+			productName = LostSeriesTests;
+			productReference = EEB1181F187F17D500337023 /* LostSeriesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EEB117F6187F17D500337023 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = LS;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Grigory Zubankov";
+				TargetAttributes = {
+					EEB1181E187F17D500337023 = {
+						TestTargetID = EEB117FD187F17D500337023;
+					};
+				};
+			};
+			buildConfigurationList = EEB117F9187F17D500337023 /* Build configuration list for PBXProject "LostSeries" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EEB117F5187F17D500337023;
+			productRefGroup = EEB117FF187F17D500337023 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EEB117FD187F17D500337023 /* LostSeries */,
+				EEB1181E187F17D500337023 /* LostSeriesTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EEB117FC187F17D500337023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EEB1181A187F17D500337023 /* Images.xcassets in Resources */,
+				EEB1180C187F17D500337023 /* InfoPlist.strings in Resources */,
+				EEB11815187F17D500337023 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEB1181D187F17D500337023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EEB1182B187F17D500337023 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EEB117FA187F17D500337023 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EEB1180E187F17D500337023 /* main.m in Sources */,
+				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
+				EEB11818187F17D500337023 /* LSViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEB1181B187F17D500337023 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EEB1182D187F17D500337023 /* LostSeriesTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EEB11825187F17D500337023 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EEB117FD187F17D500337023 /* LostSeries */;
+			targetProxy = EEB11824187F17D500337023 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EEB1180A187F17D500337023 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EEB1180B187F17D500337023 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EEB11813187F17D500337023 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EEB11814187F17D500337023 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EEB11829187F17D500337023 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EEB1182A187F17D500337023 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EEB1182E187F17D500337023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		EEB1182F187F17D500337023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EEB11831187F17D500337023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LostSeries/LostSeries-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/include",
+					/Users/igreg/Documents/Sandbox/Home/Frameworks/cppzmq,
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
+				);
+				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/lib",
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/lib",
+				);
+				OTHER_LDFLAGS = "-lstdc++";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		EEB11832187F17D500337023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LostSeries/LostSeries-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/include",
+					/Users/igreg/Documents/Sandbox/Home/Frameworks/cppzmq,
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
+				);
+				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/lib",
+					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/lib",
+				);
+				OTHER_LDFLAGS = "-lstdc++";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		EEB11834187F17D500337023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LostSeries.app/LostSeries";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LostSeries/LostSeries-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "LostSeriesTests/LostSeriesTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		EEB11835187F17D500337023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LostSeries.app/LostSeries";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LostSeries/LostSeries-Prefix.pch";
+				INFOPLIST_FILE = "LostSeriesTests/LostSeriesTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EEB117F9187F17D500337023 /* Build configuration list for PBXProject "LostSeries" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EEB1182E187F17D500337023 /* Debug */,
+				EEB1182F187F17D500337023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EEB11830187F17D500337023 /* Build configuration list for PBXNativeTarget "LostSeries" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EEB11831187F17D500337023 /* Debug */,
+				EEB11832187F17D500337023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		EEB11833187F17D500337023 /* Build configuration list for PBXNativeTarget "LostSeriesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EEB11834187F17D500337023 /* Debug */,
+				EEB11835187F17D500337023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EEB117F6187F17D500337023 /* Project object */;
+}
