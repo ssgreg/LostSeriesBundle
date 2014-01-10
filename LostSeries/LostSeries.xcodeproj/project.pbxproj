@@ -23,6 +23,7 @@
 		EEB1182D187F17D500337023 /* LostSeriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1182C187F17D500337023 /* LostSeriesTests.m */; };
 		EEB11837187F183700337023 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11836187F183700337023 /* libzmq.a */; };
 		EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11838187F1ABC00337023 /* libprotobuf.a */; };
+		EEB1183D188064A100337023 /* LostSeriesProtocol.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = EEB1183B188064A100337023 /* LostSeriesProtocol.pb.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		EEB1182C187F17D500337023 /* LostSeriesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LostSeriesTests.m; sourceTree = "<group>"; };
 		EEB11836187F183700337023 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../Frameworks/zeromq-4.0.3/build/lib/libzmq.a"; sourceTree = "<group>"; };
 		EEB11838187F1ABC00337023 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = "../../Frameworks/protobuf-2.5.0/protobuf/lib/libprotobuf.a"; sourceTree = "<group>"; };
+		EEB1183B188064A100337023 /* LostSeriesProtocol.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LostSeriesProtocol.pb.cc; sourceTree = "<group>"; };
+		EEB1183C188064A100337023 /* LostSeriesProtocol.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LostSeriesProtocol.pb.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,7 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
+				EEB1183A188064A100337023 /* Protocols */,
 				EEB11810187F17D500337023 /* LSAppDelegate.h */,
 				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EEB11813187F17D500337023 /* Main.storyboard */,
@@ -158,6 +162,15 @@
 				EEB11829187F17D500337023 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EEB1183A188064A100337023 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				EEB1183B188064A100337023 /* LostSeriesProtocol.pb.cc */,
+				EEB1183C188064A100337023 /* LostSeriesProtocol.pb.h */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -261,6 +274,7 @@
 				EEB1180E187F17D500337023 /* main.m in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EEB11818187F17D500337023 /* LSViewController.m in Sources */,
+				EEB1183D188064A100337023 /* LostSeriesProtocol.pb.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +509,7 @@
 				EEB11832187F17D500337023 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EEB11833187F17D500337023 /* Build configuration list for PBXNativeTarget "LostSeriesTests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +518,7 @@
 				EEB11835187F17D500337023 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
