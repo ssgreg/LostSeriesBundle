@@ -10,80 +10,18 @@
 //
 #include <zmq.hpp>
 #include <memory>
+#include <deque>
 #include "LostSeriesProtocol.pb.h"
 
 
-namespace LS
-{
-  
-  //
-  // ServerRoutine
-  //
-  class ServerRoutine
-  {
-  public:
-    ServerRoutine(std::shared_ptr<zmq::socket_t> socket, std::shared_ptr<zmq::context_t> context);
-    //
-    Message AskServer(Message question);
-    
-    ~ServerRoutine()
-    {
-    }
-    
-  private:
-    // strict order! The Context have to be destoyed after the Socket.
-    std::shared_ptr<zmq::context_t> TheContext;
-    std::shared_ptr<zmq::socket_t> TheSocket;
-    //
-    dispatch_queue_t theQueue;
-  };
-  
-  
-  //
-  // ServerRoutine
-  //
-  
-  ServerRoutine::ServerRoutine(std::shared_ptr<zmq::socket_t> socket, std::shared_ptr<zmq::context_t> context)
-  : TheSocket(socket), TheContext(context)
-  {
-    theQueue = dispatch_queue_create("server_routine.locking.queue", NULL);
-  }
-  
-  Message ServerRoutine::AskServer(Message question)
-  {
-    __block Message answer;
-    dispatch_sync(theQueue,
-                  ^{
-                    // send question
-                    zmq::message_t zmqRequest(question.ByteSize());
-                    question.SerializeToArray(zmqRequest.data(), (int)zmqRequest.size());
-                    TheSocket->send(zmqRequest, 0);
-                    // recieve answer
-                    zmq::message_t zmqResponse;
-                    TheSocket->recv(&zmqResponse);
-                    answer.ParseFromArray(zmqResponse.data(), (int)zmqResponse.size());
-                    [NSThread sleepForTimeInterval: 1];
-                  });
-    return answer;
-  }
-  
-  
-  //
-  // ServerRoutine factory
-  //
-  
-  std::shared_ptr<ServerRoutine> MakeServerRoutine()
-  {
-    std::shared_ptr<zmq::context_t> context(new zmq::context_t);
-    std::shared_ptr<zmq::socket_t> socket(new zmq::socket_t(*context, ZMQ_REQ));
-    socket->connect("tcp://10.0.1.10:8500");
-    //
-    return std::shared_ptr<ServerRoutine>(new ServerRoutine(socket, context));
-  }
-  
-  
-} // namespace LS
+typedef std::shared_ptr<zmq::context_t> ZmqContextPtr;
+typedef std::shared_ptr<zmq::socket_t> ZmqSocketPtr;
+typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
 
+
+//
+// LSShowInfo
+//
 
 @interface LSShowInfo : NSObject
 
@@ -146,31 +84,100 @@ namespace LS
 @end
 
 
+//
+// LSServerChannel
+//
 
-@interface LSServerRoutine : NSObject
+@interface LSServerChannel : NSObject
 
-// init
-- (id) init;
++ (LSServerChannel*) serverChannelWithAskHandler:(void (^)(LS::Message const&, id))handler;
 
-// factory methods
-+ (LSServerRoutine*) serverRoutine;
+- (id) initWithAskHandler:(void (^)(LS::Message const&, id))handler;
 
-// requests
-- (NSArray*) askShowInfoArray;
-- (NSData*) askArtworkByOriginalTitle:(NSString*)originalTitle snapshot:(NSString*)snapshot;
+// interface
+- (void) askServer:(LS::Message const&)question callback:(void (^)(LS::Message const& answer))callback;
 
 @end
 
+@interface LSServerChannel ()
+{
+@private
+  void (^theAskHandler)(LS::Message const&, id);
+}
+
+@end
+
+@implementation LSServerChannel
+
++ (LSServerChannel*) serverChannelWithAskHandler:(void (^)(LS::Message const&, id))handler
+{
+  return [[LSServerChannel alloc] initWithAskHandler:handler];
+}
+
+- (id) initWithAskHandler:(void (^)(LS::Message const&, id))handler
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  theAskHandler = handler;
+  return self;
+}
+
+- (void) askServer:(LS::Message const&)question callback:(void (^)(LS::Message const& answer))callback
+{
+  theAskHandler(question, callback);
+}
+
+@end
+
+
+//
+// LSServerRoutine
+//
+
+@interface LSServerRoutine : NSObject
+
++ (LSServerRoutine*) serverRoutine;
+
+- (id) init;
+- (LSServerChannel*) createPriorityServerChannel;
+- (LSServerChannel*) createBackgroundServerChannel;
+
+@end
 
 @interface LSServerRoutine ()
 {
 @private
-  std::shared_ptr<LS::ServerRoutine> theServerRoutine;
+  NSMutableDictionary* theHandlers;
+  //
+  dispatch_queue_t thePollQueue;
+  int64_t theMessageID;
+  //
+  ZmqContextPtr theContext;
+  // priority sockets
+  ZmqSocketPtr thePriorityBackend;
+  ZmqSocketPtr thePriorityFrontend;
+  ZmqSocketPtr thePriorityChannel;
+  // background sockets
+  ZmqSocketPtr theBackgroundBackend;
+  ZmqSocketPtr theBackgroundFrontend;
+  ZmqSocketPtr theBackgroundChannel;
 }
+
+- (void) startPollQueue;
+- (LSServerChannel*) createServerChannel:(ZmqSocketPtr)socket;
+- (void) askServer:(ZmqSocketPtr)socket question:(LS::Message)question callback:(id)block;
+- (std::deque<ZmqMessagePtr>) recieveMultipartMessage:(ZmqSocketPtr)socket;
+
 @end
 
-
 @implementation LSServerRoutine
+
++ (LSServerRoutine*) serverRoutine
+{
+  return [[LSServerRoutine alloc] init];
+}
 
 - (id) init
 {
@@ -178,32 +185,227 @@ namespace LS
   {
     return nil;
   }
-  theServerRoutine = LS::MakeServerRoutine();
+  //
+  static char const* backendAddres = "tcp://localhost:8500";
+  static char const* frontendPriorityAddres = "inproc://server_routine.priority_request_puller";
+  static char const* frontendBackgroundAddres = "inproc://server_routine.background_request_puller";
+  //
+  theHandlers = [NSMutableDictionary dictionary];
+  thePollQueue = dispatch_queue_create("server_dispatcher.proxy.queue", NULL);
+  theMessageID = 0;
+  //
+  theContext = ZmqContextPtr(new zmq::context_t);
+  //
+  thePriorityBackend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_DEALER));
+  thePriorityBackend->connect(backendAddres);
+  thePriorityFrontend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PULL));
+  thePriorityFrontend->bind(frontendPriorityAddres);
+  thePriorityChannel = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PUSH));
+  thePriorityChannel->connect(frontendPriorityAddres);
+  //
+  theBackgroundBackend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_DEALER));
+  theBackgroundBackend->connect(backendAddres);
+  theBackgroundFrontend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PULL));
+  theBackgroundFrontend->bind(frontendBackgroundAddres);
+  theBackgroundChannel = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PUSH));
+  theBackgroundChannel->connect(frontendBackgroundAddres);
+  //
+  [self startPollQueue];
   return self;
 }
 
-+ (LSServerRoutine*) serverRoutine
+- (LSServerChannel*) createPriorityServerChannel
 {
-  return [[LSServerRoutine alloc] init];
+  return [self createServerChannel:thePriorityChannel];
 }
 
-- (NSArray*) askShowInfoArray
+- (LSServerChannel*) createBackgroundServerChannel
+{
+  return [self createServerChannel:theBackgroundChannel];
+}
+
+- (void) startPollQueue
+{
+  dispatch_async(thePollQueue,
+  ^{
+    while (TRUE)
+    {
+      zmq_pollitem_t items [] =
+      {
+        { *thePriorityBackend, 0, ZMQ_POLLIN, 0 },
+        { *thePriorityFrontend, 0, ZMQ_POLLIN, 0 }
+      };
+      zmq::poll(items,  2);
+      if (items[0].revents & ZMQ_POLLIN)
+      {
+        std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:thePriorityBackend];
+        if (messages.front()->size() == 0)
+        {
+          messages.pop_front();
+          if (messages.size() == 1)
+          {
+            LS::Message answer;
+            answer.ParseFromArray(messages.front()->data(), (int)messages.front()->size());
+            //
+            NSNumber* key = [NSNumber numberWithLongLong: answer.messageid()];
+            id callback = [theHandlers objectForKey: key];
+            [theHandlers removeObjectForKey:key];
+            if (callback)
+            {
+              ((void (^)(LS::Message const&))(callback))(answer);
+            }
+          }
+        }
+      }
+      else if (items[1].revents & ZMQ_POLLIN)
+      {
+        std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:thePriorityFrontend];
+        if (messages.size() == 1)
+        {
+          thePriorityBackend->send(0, 0, ZMQ_SNDMORE);
+          thePriorityBackend->send(*messages.front(), 0);
+        }
+      }
+    }
+  });
+}
+
+- (LSServerChannel*) createServerChannel:(ZmqSocketPtr)socket
+{
+  __weak typeof(self) weakSelf = self;
+  void (^askHandler)(LS::Message const&, id) = ^(LS::Message const& message, id callback)
+  {
+    [weakSelf askServer:socket question:message callback:callback];
+  };
+  return [LSServerChannel serverChannelWithAskHandler: askHandler];
+}
+
+- (void) askServer:(ZmqSocketPtr)socket question:(LS::Message)question callback:(id)block
+{
+  ++theMessageID;
+  [theHandlers setObject:block forKey: [NSNumber numberWithLongLong: theMessageID ]];
+  question.set_messageid(theMessageID);
+  //  send question
+  zmq::message_t zmqRequest(question.ByteSize());
+  question.SerializeToArray(zmqRequest.data(), (int)zmqRequest.size());
+  //
+  socket->send(zmqRequest, 0);
+}
+
+- (std::deque<ZmqMessagePtr>) recieveMultipartMessage:(ZmqSocketPtr)socket
+{
+  std::deque<ZmqMessagePtr> result;
+  while (true)
+  {
+    ZmqMessagePtr frame(new zmq::message_t());
+    socket->recv(&*frame);
+    result.push_back(frame);
+    if (!frame->more())
+      break;
+  }
+  return result;
+}
+
+@end
+
+
+// LSServerProtocol
+@interface LSServerProtocol : NSObject
+
++ (LSServerProtocol*) serverProtocolWithChannel:(LSServerChannel*)channel;
+
+- (id) initWithChannel:(LSServerChannel*)channel;
+
+// requests
+- (void) askServer:(LS::Message const&)question callback:(id)callback;
+- (void) askShowInfoArray:(void (^)(NSArray*))callback;
+- (void) askArtwork:(LSShowInfo*)showInfo callback:(void (^)(NSData*))callback;
+
+@end
+
+
+@interface LSServerProtocol ()
+{
+@private
+  LSServerChannel* theChannel;
+}
+
+// dispatch
+- (void) dispatchMessage:(LS::Message const&)message callback:(id)callback;
+- (void) handleSeriesResponse:(LS::SeriesResponse const&)response callback:(void (^)(NSArray*))callback;
+- (void) handleArtworkResponse:(LS::ArtworkResponse const&)response callback:(void (^)(NSData*))callback;
+
+@end
+
+@implementation LSServerProtocol
+
+
++ (LSServerProtocol*) serverProtocolWithChannel:(LSServerChannel*)channel;
+{
+  return [[LSServerProtocol alloc] initWithChannel:channel];
+}
+
+- (id) initWithChannel:(LSServerChannel*)channel
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  theChannel = channel;
+  return self;
+}
+
+- (void) askServer:(LS::Message const&)question callback:(id)callback
+{
+  __weak typeof(self) weakSelf = self;
+  void (^dispatchHandler)(LS::Message const&) = ^(LS::Message const& message)
+  {
+    [weakSelf dispatchMessage:message callback:callback];
+  };
+  [theChannel askServer:question callback:dispatchHandler];
+}
+
+- (void) askShowInfoArray:(void (^)(NSArray*))callback
 {
   LS::SeriesRequest seriesRequest;
   //
   LS::Message question;
   *question.mutable_seriesrequest() = seriesRequest;
-  LS::Message answer = theServerRoutine->AskServer(question);
   //
-  if (!answer.has_seriesresponse())
+  [self askServer:question callback:callback];
+}
+
+- (void) askArtwork:(LSShowInfo*)showInfo callback:(void (^)(NSData*))callback
+{
+  LS::ArtworkRequest artworkRequest;
+  artworkRequest.set_originaltitle([showInfo.originalTitle UTF8String]);
+  artworkRequest.set_snapshot([showInfo.snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
+  //
+  LS::Message question;
+  *question.mutable_artworkrequest() = artworkRequest;
+  //
+  [self askServer:question callback:callback];
+}
+
+- (void) dispatchMessage:(LS::Message const&)message callback:(id)callback
+{
+  if (message.has_seriesresponse())
   {
-    return nil;
+    [self handleSeriesResponse:message.seriesresponse() callback:callback];
   }
+  else if (message.has_artworkresponse())
+  {
+    [self handleArtworkResponse:message.artworkresponse() callback:callback];
+  }
+}
+
+- (void) handleSeriesResponse:(LS::SeriesResponse const&)answer callback:(void (^)(NSArray*))callback
+{
   NSMutableArray* shows = [NSMutableArray array];
-  int showsSize = answer.seriesresponse().shows_size();
+  int showsSize = answer.shows_size();
   for (int i = 0; i < showsSize; ++i)
   {
-    LS::SeriesResponse_TVShow show = answer.seriesresponse().shows(i);
+    LS::SeriesResponse_TVShow show = answer.shows(i);
     LSShowInfo* showInfo = [LSShowInfo showInfo];
     showInfo.title = [NSString stringWithUTF8String: show.title().c_str()];
     showInfo.originalTitle = [NSString stringWithUTF8String: show.originaltitle().c_str()];
@@ -212,32 +414,19 @@ namespace LS
     //
     [shows addObject:showInfo];
   }
-  return shows;
+  callback(shows);
 }
 
-- (NSData*) askArtworkByOriginalTitle:(NSString*)originalTitle snapshot:(NSString*)snapshot
+- (void) handleArtworkResponse:(LS::ArtworkResponse const&)answer callback:(void (^)(NSData*))callback
 {
-  LS::ArtworkRequest artworkRequest;
-  artworkRequest.set_originaltitle([originalTitle UTF8String]);
-  artworkRequest.set_snapshot([snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
-  //
-  LS::Message question;
-  *question.mutable_artworkrequest() = artworkRequest;
-  LS::Message answer = theServerRoutine->AskServer(question);
-  if (!answer.has_artworkresponse())
+  std::string const& artwork = answer.artwork();
+  if (!artwork.empty())
   {
-    return nil;
+    callback([NSData dataWithBytes:artwork.c_str() length:artwork.size()]);
   }
-  std::string const& artwork = answer.artworkresponse().artwork();
-  if (artwork.empty())
-  {
-    return nil;
-  }
-  return [NSData dataWithBytes:artwork.c_str() length:artwork.size()];
 }
 
 @end
-
 
 
 @interface LSShowAlbumCellModel : NSObject
@@ -295,6 +484,8 @@ namespace LS
 {
   NSMutableArray* theItems;
   LSServerRoutine* theServerRoutine;
+  LSServerProtocol* theServerProtocol;
+  IBOutlet UICollectionView* theCollectionView;
 }
 @end
 
@@ -311,21 +502,26 @@ namespace LS
 {
   [super viewDidLoad];
   //
-  
-  
   theServerRoutine = [LSServerRoutine serverRoutine];
-  NSArray* shows = [theServerRoutine askShowInfoArray];
-  
-  theItems = [NSMutableArray array];
-  for (int i = 1; i < 40; ++i)
+  theServerProtocol = [LSServerProtocol serverProtocolWithChannel:[theServerRoutine createPriorityServerChannel]];
+  //
+  [theServerProtocol askShowInfoArray: ^(NSArray* shows)
   {
-    for (id show in shows)
-    {
-      LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
-      cellModel.showInfo = show;
-      [theItems addObject: cellModel];
-    }
-  }
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      theItems = [NSMutableArray array];
+      for (int i = 1; i < 40; ++i)
+      {
+        for (id show in shows)
+        {
+          LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
+          cellModel.showInfo = show;
+          [theItems addObject: cellModel];
+        }
+      }
+      [theCollectionView reloadData];
+    });
+  }];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -344,88 +540,21 @@ namespace LS
   
   if (!cellModel.artwork)
   {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                   ^{
-                     NSData* artworkData = [theServerRoutine askArtworkByOriginalTitle:cellModel.showInfo.originalTitle snapshot:cellModel.showInfo.snapshot];
-                     cellModel.artwork = [UIImage imageWithData:artworkData];
-                     NSLog(@"req=%ld", indexPath.row);
-                     dispatch_async(dispatch_get_main_queue(),
-                                    ^{
-                                      LSShowAlbumCell* blockCell = (LSShowAlbumCell*)[collectionView cellForItemAtIndexPath: indexPath];
-                                      blockCell.image.image = cellModel.artwork;
-                                      [blockCell setNeedsLayout];
-                                    });
-                   });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+//                   ^{
+//                     NSData* artworkData = [theServerRoutine askArtworkByOriginalTitle:cellModel.showInfo.originalTitle snapshot:cellModel.showInfo.snapshot];
+//                     cellModel.artwork = [UIImage imageWithData:artworkData];
+//                     NSLog(@"req=%ld", indexPath.row);
+//                     dispatch_async(dispatch_get_main_queue(),
+//                                    ^{
+//                                      LSShowAlbumCell* blockCell = (LSShowAlbumCell*)[collectionView cellForItemAtIndexPath: indexPath];
+//                                      blockCell.image.image = cellModel.artwork;
+//                                      [blockCell setNeedsLayout];
+//                                    });
+//                   });
   }
   return cell;
 }
-
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-////  static NSString *cellIdentifier = @"venue";
-////  UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-////
-////  if (!cell) {
-////    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-////  }
-//
-//  Venue *venue = ((Venue * )self.venues[indexPath.row]);
-//  if (venue.userImage) {
-//    cell.imageView.image = venue.image;
-//  } else {
-//    // set default user image while image is being downloaded
-//    cell.imageView.image = [UIImage imageNamed:@"batman.png"];
-//
-//    // download the image asynchronously
-//    [self downloadImageWithURL:venue.url completionBlock:^(BOOL succeeded, UIImage *image) {
-//      if (succeeded) {
-//        // change the image in the cell
-//        cell.imageView.image = image;
-//
-//        // cache the image for use later (when scrolling up)
-//        venue.image = image;
-//      }
-//    }];
-//  }
-//}
-//
-//- (void)downloadImageWithURL:(NSURL *)url completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock
-//{
-//  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//  [NSURLConnection sendAsynchronousRequest:request
-//                                     queue:[NSOperationQueue mainQueue]
-//                         completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                           if ( !error )
-//                           {
-//                             UIImage *image = [[UIImage alloc] initWithData:data];
-//                             completionBlock(YES,image);
-//                           } else{
-//                             completionBlock(NO,nil);
-//                           }
-//                         }];
-//}
-
-//- (PSTCollectionViewCell *)collectionView:(PSTCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//  NSURL *url = [NSURL URLWithString:[allImage objectAtIndex:indexPath]];
-//
-//  [self downloadImageWithURL:url completionBlock:^(BOOL succeeded, NSData *data) {
-//    if (succeeded) {
-//      cell.grid_image.image = [[UIImage alloc] initWithData:data];
-//    }
-//  }];
-//}
-//
-//- (void)downloadImageWithURL:(NSURL *)url completionBlock:(void (^)(BOOL succeeded, NSData *data))completionBlock
-//{
-//  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//  [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//    if (!error) {
-//      completionBlock(YES, data);
-//    } else {
-//      completionBlock(NO, nil);
-//    }
-//  }];
 
 
 @end

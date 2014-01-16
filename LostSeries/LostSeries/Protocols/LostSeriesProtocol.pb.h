@@ -96,6 +96,13 @@ class Message : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
+  // required int64 messageID = 1;
+  inline bool has_messageid() const;
+  inline void clear_messageid();
+  static const int kMessageIDFieldNumber = 1;
+  inline ::google_public::protobuf::int64 messageid() const;
+  inline void set_messageid(::google_public::protobuf::int64 value);
+
   // optional .LS.SeriesRequest seriesRequest = 1000;
   inline bool has_seriesrequest() const;
   inline void clear_seriesrequest();
@@ -134,6 +141,8 @@ class Message : public ::google_public::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:LS.Message)
  private:
+  inline void set_has_messageid();
+  inline void clear_has_messageid();
   inline void set_has_seriesrequest();
   inline void clear_has_seriesrequest();
   inline void set_has_artworkrequest();
@@ -145,13 +154,14 @@ class Message : public ::google_public::protobuf::Message {
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
+  ::google_public::protobuf::int64 messageid_;
   ::LS::SeriesRequest* seriesrequest_;
   ::LS::ArtworkRequest* artworkrequest_;
   ::LS::SeriesResponse* seriesresponse_;
   ::LS::ArtworkResponse* artworkresponse_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(5 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -672,15 +682,37 @@ class ArtworkResponse : public ::google_public::protobuf::Message {
 
 // Message
 
-// optional .LS.SeriesRequest seriesRequest = 1000;
-inline bool Message::has_seriesrequest() const {
+// required int64 messageID = 1;
+inline bool Message::has_messageid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Message::set_has_seriesrequest() {
+inline void Message::set_has_messageid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void Message::clear_has_seriesrequest() {
+inline void Message::clear_has_messageid() {
   _has_bits_[0] &= ~0x00000001u;
+}
+inline void Message::clear_messageid() {
+  messageid_ = GOOGLE_LONGLONG(0);
+  clear_has_messageid();
+}
+inline ::google_public::protobuf::int64 Message::messageid() const {
+  return messageid_;
+}
+inline void Message::set_messageid(::google_public::protobuf::int64 value) {
+  set_has_messageid();
+  messageid_ = value;
+}
+
+// optional .LS.SeriesRequest seriesRequest = 1000;
+inline bool Message::has_seriesrequest() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Message::set_has_seriesrequest() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Message::clear_has_seriesrequest() {
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void Message::clear_seriesrequest() {
   if (seriesrequest_ != NULL) seriesrequest_->::LS::SeriesRequest::Clear();
@@ -712,13 +744,13 @@ inline void Message::set_allocated_seriesrequest(::LS::SeriesRequest* seriesrequ
 
 // optional .LS.ArtworkRequest artworkRequest = 1001;
 inline bool Message::has_artworkrequest() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void Message::set_has_artworkrequest() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void Message::clear_has_artworkrequest() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void Message::clear_artworkrequest() {
   if (artworkrequest_ != NULL) artworkrequest_->::LS::ArtworkRequest::Clear();
@@ -750,13 +782,13 @@ inline void Message::set_allocated_artworkrequest(::LS::ArtworkRequest* artworkr
 
 // optional .LS.SeriesResponse seriesResponse = 2000;
 inline bool Message::has_seriesresponse() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void Message::set_has_seriesresponse() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void Message::clear_has_seriesresponse() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Message::clear_seriesresponse() {
   if (seriesresponse_ != NULL) seriesresponse_->::LS::SeriesResponse::Clear();
@@ -788,13 +820,13 @@ inline void Message::set_allocated_seriesresponse(::LS::SeriesResponse* seriesre
 
 // optional .LS.ArtworkResponse artworkResponse = 2001;
 inline bool Message::has_artworkresponse() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void Message::set_has_artworkresponse() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void Message::clear_has_artworkresponse() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Message::clear_artworkresponse() {
   if (artworkresponse_ != NULL) artworkresponse_->::LS::ArtworkResponse::Clear();

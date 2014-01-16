@@ -49,7 +49,8 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       "LostSeriesProtocol.proto");
   GOOGLE_CHECK(file != NULL);
   Message_descriptor_ = file->message_type(0);
-  static const int Message_offsets_[4] = {
+  static const int Message_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, messageid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, artworkrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesresponse_),
@@ -196,20 +197,20 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google_public::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\030LostSeriesProtocol.proto\022\002LS\"\275\001\n\007Messa"
-    "ge\022)\n\rseriesRequest\030\350\007 \001(\0132\021.LS.SeriesRe"
-    "quest\022+\n\016artworkRequest\030\351\007 \001(\0132\022.LS.Artw"
-    "orkRequest\022+\n\016seriesResponse\030\320\017 \001(\0132\022.LS"
-    ".SeriesResponse\022-\n\017artworkResponse\030\321\017 \001("
-    "\0132\023.LS.ArtworkResponse\"\017\n\rSeriesRequest\""
-    "\222\001\n\016SeriesResponse\022(\n\005shows\030\001 \003(\0132\031.LS.S"
-    "eriesResponse.TVShow\032V\n\006TVShow\022\r\n\005title\030"
-    "\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\022\024\n\014seasonNu"
-    "mber\030\003 \002(\005\022\020\n\010snapshot\030\004 \002(\t\"9\n\016ArtworkR"
-    "equest\022\020\n\010snapshot\030\001 \002(\t\022\025\n\roriginalTitl"
-    "e\030\002 \002(\t\"K\n\017ArtworkResponse\022\020\n\010snapshot\030\001"
-    " \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\022\017\n\007artwork\030\003"
-    " \002(\014", 524);
+    "\n\030LostSeriesProtocol.proto\022\002LS\"\320\001\n\007Messa"
+    "ge\022\021\n\tmessageID\030\001 \002(\003\022)\n\rseriesRequest\030\350"
+    "\007 \001(\0132\021.LS.SeriesRequest\022+\n\016artworkReque"
+    "st\030\351\007 \001(\0132\022.LS.ArtworkRequest\022+\n\016seriesR"
+    "esponse\030\320\017 \001(\0132\022.LS.SeriesResponse\022-\n\017ar"
+    "tworkResponse\030\321\017 \001(\0132\023.LS.ArtworkRespons"
+    "e\"\017\n\rSeriesRequest\"\222\001\n\016SeriesResponse\022(\n"
+    "\005shows\030\001 \003(\0132\031.LS.SeriesResponse.TVShow\032"
+    "V\n\006TVShow\022\r\n\005title\030\001 \002(\t\022\025\n\roriginalTitl"
+    "e\030\002 \002(\t\022\024\n\014seasonNumber\030\003 \002(\005\022\020\n\010snapsho"
+    "t\030\004 \002(\t\"9\n\016ArtworkRequest\022\020\n\010snapshot\030\001 "
+    "\002(\t\022\025\n\roriginalTitle\030\002 \002(\t\"K\n\017ArtworkRes"
+    "ponse\022\020\n\010snapshot\030\001 \002(\t\022\025\n\roriginalTitle"
+    "\030\002 \002(\t\022\017\n\007artwork\030\003 \002(\014", 543);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
   Message::default_instance_ = new Message();
@@ -237,6 +238,7 @@ struct StaticDescriptorInitializer_LostSeriesProtocol_2eproto {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int Message::kMessageIDFieldNumber;
 const int Message::kSeriesRequestFieldNumber;
 const int Message::kArtworkRequestFieldNumber;
 const int Message::kSeriesResponseFieldNumber;
@@ -263,6 +265,7 @@ Message::Message(const Message& from)
 
 void Message::SharedCtor() {
   _cached_size_ = 0;
+  messageid_ = GOOGLE_LONGLONG(0);
   seriesrequest_ = NULL;
   artworkrequest_ = NULL;
   seriesresponse_ = NULL;
@@ -306,6 +309,7 @@ Message* Message::New() const {
 
 void Message::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    messageid_ = GOOGLE_LONGLONG(0);
     if (has_seriesrequest()) {
       if (seriesrequest_ != NULL) seriesrequest_->::LS::SeriesRequest::Clear();
     }
@@ -329,10 +333,26 @@ bool Message::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int64 messageID = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google_public::protobuf::int64, ::google_public::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &messageid_)));
+          set_has_messageid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(8002)) goto parse_seriesRequest;
+        break;
+      }
+
       // optional .LS.SeriesRequest seriesRequest = 1000;
       case 1000: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_seriesRequest:
           DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_seriesrequest()));
         } else {
@@ -402,6 +422,11 @@ bool Message::MergePartialFromCodedStream(
 
 void Message::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required int64 messageID = 1;
+  if (has_messageid()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteInt64(1, this->messageid(), output);
+  }
+
   // optional .LS.SeriesRequest seriesRequest = 1000;
   if (has_seriesrequest()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -434,6 +459,11 @@ void Message::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* Message::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
+  // required int64 messageID = 1;
+  if (has_messageid()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->messageid(), target);
+  }
+
   // optional .LS.SeriesRequest seriesRequest = 1000;
   if (has_seriesrequest()) {
     target = ::google_public::protobuf::internal::WireFormatLite::
@@ -473,6 +503,13 @@ int Message::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int64 messageID = 1;
+    if (has_messageid()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::Int64Size(
+          this->messageid());
+    }
+
     // optional .LS.SeriesRequest seriesRequest = 1000;
     if (has_seriesrequest()) {
       total_size += 2 +
@@ -528,6 +565,9 @@ void Message::MergeFrom(const ::google_public::protobuf::Message& from) {
 void Message::MergeFrom(const Message& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_messageid()) {
+      set_messageid(from.messageid());
+    }
     if (from.has_seriesrequest()) {
       mutable_seriesrequest()->::LS::SeriesRequest::MergeFrom(from.seriesrequest());
     }
@@ -557,6 +597,7 @@ void Message::CopyFrom(const Message& from) {
 }
 
 bool Message::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   if (has_artworkrequest()) {
     if (!this->artworkrequest().IsInitialized()) return false;
@@ -572,6 +613,7 @@ bool Message::IsInitialized() const {
 
 void Message::Swap(Message* other) {
   if (other != this) {
+    std::swap(messageid_, other->messageid_);
     std::swap(seriesrequest_, other->seriesrequest_);
     std::swap(artworkrequest_, other->artworkrequest_);
     std::swap(seriesresponse_, other->seriesresponse_);
