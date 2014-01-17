@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE1AA59B1888E99F004B6E7D /* libProtobuf.Generated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA5951887AD60004B6E7D /* libProtobuf.Generated.a */; };
 		EEB11802187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
 		EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11803187F17D500337023 /* CoreGraphics.framework */; };
 		EEB11806187F17D500337023 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11805187F17D500337023 /* UIKit.framework */; };
@@ -23,10 +24,23 @@
 		EEB1182D187F17D500337023 /* LostSeriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1182C187F17D500337023 /* LostSeriesTests.m */; };
 		EEB11837187F183700337023 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11836187F183700337023 /* libzmq.a */; };
 		EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11838187F1ABC00337023 /* libprotobuf.a */; };
-		EEB1183D188064A100337023 /* LostSeriesProtocol.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = EEB1183B188064A100337023 /* LostSeriesProtocol.pb.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		EE1AA5941887AD60004B6E7D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE1AA5661887AD5F004B6E7D;
+			remoteInfo = Protobuf.Generated;
+		};
+		EE1AA5961887AD60004B6E7D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE1AA5761887AD5F004B6E7D;
+			remoteInfo = Protobuf.GeneratedTests;
+		};
 		EEB11824187F17D500337023 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EEB117F6187F17D500337023 /* Project object */;
@@ -37,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Protobuf.Generated.xcodeproj; path = Protobuf.Generated/Protobuf.Generated.xcodeproj; sourceTree = "<group>"; };
 		EEB117FE187F17D500337023 /* LostSeries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostSeries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB11801187F17D500337023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EEB11803187F17D500337023 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -58,8 +73,6 @@
 		EEB1182C187F17D500337023 /* LostSeriesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LostSeriesTests.m; sourceTree = "<group>"; };
 		EEB11836187F183700337023 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../Frameworks/zeromq-4.0.3/build/lib/libzmq.a"; sourceTree = "<group>"; };
 		EEB11838187F1ABC00337023 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = "../../Frameworks/protobuf-2.5.0/protobuf/lib/libprotobuf.a"; sourceTree = "<group>"; };
-		EEB1183B188064A100337023 /* LostSeriesProtocol.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LostSeriesProtocol.pb.cc; sourceTree = "<group>"; };
-		EEB1183C188064A100337023 /* LostSeriesProtocol.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LostSeriesProtocol.pb.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE1AA59B1888E99F004B6E7D /* libProtobuf.Generated.a in Frameworks */,
 				EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */,
 				EEB11837187F183700337023 /* libzmq.a in Frameworks */,
 				EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */,
@@ -88,9 +102,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE1AA5901887AD5F004B6E7D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE1AA5951887AD60004B6E7D /* libProtobuf.Generated.a */,
+				EE1AA5971887AD60004B6E7D /* Protobuf.GeneratedTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		EEB117F5187F17D500337023 = {
 			isa = PBXGroup;
 			children = (
+				EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */,
 				EEB11807187F17D500337023 /* LostSeries */,
 				EEB11826187F17D500337023 /* LostSeriesTests */,
 				EEB11800187F17D500337023 /* Frameworks */,
@@ -123,7 +147,6 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
-				EEB1183A188064A100337023 /* Protocols */,
 				EEB11810187F17D500337023 /* LSAppDelegate.h */,
 				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EEB11813187F17D500337023 /* Main.storyboard */,
@@ -162,15 +185,6 @@
 				EEB11829187F17D500337023 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		EEB1183A188064A100337023 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				EEB1183B188064A100337023 /* LostSeriesProtocol.pb.cc */,
-				EEB1183C188064A100337023 /* LostSeriesProtocol.pb.h */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +251,12 @@
 			mainGroup = EEB117F5187F17D500337023;
 			productRefGroup = EEB117FF187F17D500337023 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EE1AA5901887AD5F004B6E7D /* Products */;
+					ProjectRef = EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				EEB117FD187F17D500337023 /* LostSeries */,
@@ -244,6 +264,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		EE1AA5951887AD60004B6E7D /* libProtobuf.Generated.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProtobuf.Generated.a;
+			remoteRef = EE1AA5941887AD60004B6E7D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE1AA5971887AD60004B6E7D /* Protobuf.GeneratedTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Protobuf.GeneratedTests.xctest;
+			remoteRef = EE1AA5961887AD60004B6E7D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EEB117FC187F17D500337023 /* Resources */ = {
@@ -274,7 +311,6 @@
 				EEB1180E187F17D500337023 /* main.m in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EEB11818187F17D500337023 /* LSViewController.m in Sources */,
-				EEB1183D188064A100337023 /* LostSeriesProtocol.pb.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,13 +439,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LostSeries/LostSeries-Prefix.pch";
-				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
+				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/include",
 					/Users/igreg/Documents/Sandbox/Home/Frameworks/cppzmq,
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
+					"$(SRCROOT)/Protobuf.Generated",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -437,6 +474,7 @@
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/include",
 					/Users/igreg/Documents/Sandbox/Home/Frameworks/cppzmq,
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
+					"$(SRCROOT)/Protobuf.Generated",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

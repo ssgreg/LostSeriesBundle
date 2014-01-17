@@ -11,7 +11,8 @@
 #include <zmq.hpp>
 #include <memory>
 #include <deque>
-#include "LostSeriesProtocol.pb.h"
+
+#include <Protobuf.Generated/LostSeriesProtocol.h>
 
 
 typedef std::shared_ptr<zmq::context_t> ZmqContextPtr;
@@ -168,6 +169,8 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
 - (void) startPollQueue;
 - (LSServerChannel*) createServerChannel:(ZmqSocketPtr)socket;
 - (void) askServer:(ZmqSocketPtr)socket question:(LS::Message)question callback:(id)block;
+- (void) dispatchMessageFrom:(ZmqSocketPtr)socket;
+- (void) forwardMessageFrom:(ZmqSocketPtr)socketFrom to:(ZmqSocketPtr)socketTo;
 - (std::deque<ZmqMessagePtr>) recieveMultipartMessage:(ZmqSocketPtr)socket;
 
 @end
@@ -233,38 +236,29 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
       zmq_pollitem_t items [] =
       {
         { *thePriorityBackend, 0, ZMQ_POLLIN, 0 },
-        { *thePriorityFrontend, 0, ZMQ_POLLIN, 0 }
+        { *thePriorityFrontend, 0, ZMQ_POLLIN, 0 },
+        { *theBackgroundBackend, 0, ZMQ_POLLIN, 0 },
+        { *theBackgroundFrontend, 0, ZMQ_POLLIN, 0 },
       };
-      zmq::poll(items,  2);
+      if (zmq::poll(items, sizeof(items) / sizeof(zmq_pollitem_t)) <= 0)
+      {
+        continue;
+      }
       if (items[0].revents & ZMQ_POLLIN)
       {
-        std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:thePriorityBackend];
-        if (messages.front()->size() == 0)
-        {
-          messages.pop_front();
-          if (messages.size() == 1)
-          {
-            LS::Message answer;
-            answer.ParseFromArray(messages.front()->data(), (int)messages.front()->size());
-            //
-            NSNumber* key = [NSNumber numberWithLongLong: answer.messageid()];
-            id callback = [theHandlers objectForKey: key];
-            [theHandlers removeObjectForKey:key];
-            if (callback)
-            {
-              ((void (^)(LS::Message const&))(callback))(answer);
-            }
-          }
-        }
+        [self dispatchMessageFrom:thePriorityBackend];
       }
       else if (items[1].revents & ZMQ_POLLIN)
       {
-        std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:thePriorityFrontend];
-        if (messages.size() == 1)
-        {
-          thePriorityBackend->send(0, 0, ZMQ_SNDMORE);
-          thePriorityBackend->send(*messages.front(), 0);
-        }
+        [self forwardMessageFrom:thePriorityFrontend to:thePriorityBackend];
+      }
+      if (items[2].revents & ZMQ_POLLIN)
+      {
+        [self dispatchMessageFrom:theBackgroundBackend];
+      }
+      else if (items[3].revents & ZMQ_POLLIN)
+      {
+        [self forwardMessageFrom:theBackgroundFrontend to:theBackgroundBackend];
       }
     }
   });
@@ -290,6 +284,38 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
   question.SerializeToArray(zmqRequest.data(), (int)zmqRequest.size());
   //
   socket->send(zmqRequest, 0);
+}
+
+- (void) dispatchMessageFrom:(ZmqSocketPtr)socket
+{
+  std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:socket];
+  if (messages.front()->size() == 0)
+  {
+    messages.pop_front();
+    if (messages.size() == 1)
+    {
+      LS::Message answer;
+      answer.ParseFromArray(messages.front()->data(), (int)messages.front()->size());
+      //
+      NSNumber* key = [NSNumber numberWithLongLong: answer.messageid()];
+      id callback = [theHandlers objectForKey: key];
+      [theHandlers removeObjectForKey:key];
+      if (callback)
+      {
+        ((void (^)(LS::Message const&))(callback))(answer);
+      }
+    }
+  }
+}
+
+- (void) forwardMessageFrom:(ZmqSocketPtr)socketFrom to:(ZmqSocketPtr)socketTo
+{
+  std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:socketFrom];
+  if (messages.size() == 1)
+  {
+    socketTo->send(0, 0, ZMQ_SNDMORE);
+    socketTo->send(*messages.front(), 0);
+  }
 }
 
 - (std::deque<ZmqMessagePtr>) recieveMultipartMessage:(ZmqSocketPtr)socket
