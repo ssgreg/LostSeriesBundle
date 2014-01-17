@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		EE1AA59B1888E99F004B6E7D /* libProtobuf.Generated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA5951887AD60004B6E7D /* libProtobuf.Generated.a */; };
+		EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA59F1888F28E004B6E7D /* LSConnection.mm */; };
+		EE1AA5A31888F2D1004B6E7D /* LSChannel.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5A21888F2D1004B6E7D /* LSChannel.mm */; };
+		EE1AA5A61888F2ED004B6E7D /* LSProtocol.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5A51888F2ED004B6E7D /* LSProtocol.mm */; };
 		EEB11802187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
 		EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11803187F17D500337023 /* CoreGraphics.framework */; };
 		EEB11806187F17D500337023 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11805187F17D500337023 /* UIKit.framework */; };
@@ -52,6 +55,12 @@
 
 /* Begin PBXFileReference section */
 		EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Protobuf.Generated.xcodeproj; path = Protobuf.Generated/Protobuf.Generated.xcodeproj; sourceTree = "<group>"; };
+		EE1AA59E1888F28E004B6E7D /* LSConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSConnection.h; path = Remote/LSConnection.h; sourceTree = "<group>"; };
+		EE1AA59F1888F28E004B6E7D /* LSConnection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSConnection.mm; path = Remote/LSConnection.mm; sourceTree = "<group>"; };
+		EE1AA5A11888F2D1004B6E7D /* LSChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSChannel.h; path = Remote/LSChannel.h; sourceTree = "<group>"; };
+		EE1AA5A21888F2D1004B6E7D /* LSChannel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSChannel.mm; path = Remote/LSChannel.mm; sourceTree = "<group>"; };
+		EE1AA5A41888F2ED004B6E7D /* LSProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSProtocol.h; path = Remote/LSProtocol.h; sourceTree = "<group>"; };
+		EE1AA5A51888F2ED004B6E7D /* LSProtocol.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSProtocol.mm; path = Remote/LSProtocol.mm; sourceTree = "<group>"; };
 		EEB117FE187F17D500337023 /* LostSeries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostSeries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB11801187F17D500337023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EEB11803187F17D500337023 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,6 +120,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EE1AA59D1888F223004B6E7D /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+				EE1AA59E1888F28E004B6E7D /* LSConnection.h */,
+				EE1AA59F1888F28E004B6E7D /* LSConnection.mm */,
+				EE1AA5A11888F2D1004B6E7D /* LSChannel.h */,
+				EE1AA5A21888F2D1004B6E7D /* LSChannel.mm */,
+				EE1AA5A41888F2ED004B6E7D /* LSProtocol.h */,
+				EE1AA5A51888F2ED004B6E7D /* LSProtocol.mm */,
+			);
+			name = Remote;
+			sourceTree = "<group>";
+		};
 		EEB117F5187F17D500337023 = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +169,7 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
+				EE1AA59D1888F223004B6E7D /* Remote */,
 				EEB11810187F17D500337023 /* LSAppDelegate.h */,
 				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EEB11813187F17D500337023 /* Main.storyboard */,
@@ -308,9 +331,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
 				EEB1180E187F17D500337023 /* main.m in Sources */,
+				EE1AA5A61888F2ED004B6E7D /* LSProtocol.mm in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EEB11818187F17D500337023 /* LSViewController.m in Sources */,
+				EE1AA5A31888F2D1004B6E7D /* LSChannel.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
