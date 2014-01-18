@@ -68,44 +68,60 @@
 {
   NSMutableArray* theItems;
   LSConnection* theConnection;
-  LSProtocol* theProtocol;
+  LSProtocol* thePriorityProtocol;
+  LSProtocol* theBackgroundProtocol;
   IBOutlet UICollectionView* theCollectionView;
 }
+
+- (void) updateItems;
+
 @end
 
 @implementation LSViewController
-
-//- (void)image:(UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo {
-//  NSLog(@"SAVE IMAGE COMPLETE");
-//  if(error != nil) {
-//    NSLog(@"ERROR SAVING:%@",[error localizedDescription]);
-//  }
-//}
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   //
   theConnection = [LSConnection connection];
-  theProtocol = [LSProtocol protocolWithChannel:[theConnection createPriorityChannel]];
+  thePriorityProtocol = [LSProtocol protocolWithChannel:[theConnection createPriorityChannel]];
+  theBackgroundProtocol = [LSProtocol protocolWithChannel:[theConnection createBackgroundChannel]];
   //
-  [theProtocol getShowInfoArray: ^(NSArray* shows)
+  [thePriorityProtocol getShowInfoArray: ^(NSArray* shows)
   {
-    dispatch_async(dispatch_get_main_queue(),
-    ^{
-      theItems = [NSMutableArray array];
-      for (int i = 1; i < 40; ++i)
+    theItems = [NSMutableArray array];
+    for (int i = 1; i < 40; ++i)
+    {
+      for (id show in shows)
       {
-        for (id show in shows)
-        {
-          LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
-          cellModel.showInfo = show;
-          [theItems addObject: cellModel];
-        }
+        LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
+        cellModel.showInfo = show;
+        [theItems addObject: cellModel];
       }
-      [theCollectionView reloadData];
-    });
+    }
+    [theCollectionView reloadData];
+    [self updateItems];
   }];
+}
+
+- (void) updateItems
+{
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+  ^{
+    NSInteger row = 0;
+    for (LSShowAlbumCellModel* item in theItems)
+    {
+      [theBackgroundProtocol getArtwork:item.showInfo completionHandler: ^(NSData* artworkData)
+      {
+        item.artwork = [UIImage imageWithData:artworkData];
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+        LSShowAlbumCell* blockCell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath: indexPath];
+        blockCell.image.image = item.artwork;
+        [blockCell setNeedsLayout];
+      }];
+      ++row;
+    }
+  });
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -120,8 +136,8 @@
   LSShowAlbumCellModel* cellModel = [theItems objectAtIndex: indexPath.row];
   cell.detail.text = cellModel.showInfo.title;
   cell.image.image = cellModel.artwork;
-  NSLog(@"settttt=%ld", indexPath.row);
   
+//
   if (!cellModel.artwork)
   {
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),

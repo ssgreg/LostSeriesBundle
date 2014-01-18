@@ -107,7 +107,10 @@
     //
     [shows addObject:showInfo];
   }
-  handler(shows);
+  dispatch_async(dispatch_get_main_queue(),
+  ^{
+    handler(shows);
+  });
 }
 
 - (void) handleArtworkReply:(LS::ArtworkResponse const&)reply completionHandler:(void (^)(NSData*))handler
@@ -115,7 +118,11 @@
   std::string const& artwork = reply.artwork();
   if (!artwork.empty())
   {
-    handler([NSData dataWithBytes:artwork.c_str() length:artwork.size()]);
+    NSData* data = [NSData dataWithBytes:artwork.c_str() length:artwork.size()];
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      handler(data);
+    });
   }
 }
 

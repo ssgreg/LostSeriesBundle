@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LSViewController : UIViewController
+@interface LSViewController : UIViewController<UICollectionViewDataSource>
 
 @end
