@@ -11,6 +11,7 @@
 #import "Remote/LSProtocol.h"
 #import "Remote/LSChannel.h"
 #import "Remote/LSConnection.h"
+#import "Remote/LSBatchArtworkGetter.h"
 
 
 @interface LSShowAlbumCellModel : NSObject
@@ -59,7 +60,6 @@
 @end
 
 
-
 //
 // LSViewController
 //
@@ -71,9 +71,11 @@
   LSProtocol* thePriorityProtocol;
   LSProtocol* theBackgroundProtocol;
   IBOutlet UICollectionView* theCollectionView;
+  LSBatchArtworkGetter* theArtworkGetter;
+  NSArray* theArtworkGetterPriorities;
 }
 
-- (void) updateItems;
+- (void) updatePriorities;
 
 @end
 
@@ -87,42 +89,53 @@
   thePriorityProtocol = [LSProtocol protocolWithChannel:[theConnection createPriorityChannel]];
   theBackgroundProtocol = [LSProtocol protocolWithChannel:[theConnection createBackgroundChannel]];
   //
-  [thePriorityProtocol getShowInfoArray: ^(NSArray* shows)
+  [thePriorityProtocol getShowInfoArray:^(NSArray* shows)
   {
-    theItems = [NSMutableArray array];
-    for (int i = 1; i < 40; ++i)
+    NSMutableArray* newShows = [NSMutableArray array];
+    for (int i = 0; i < 40; ++i)
     {
-      for (id show in shows)
-      {
-        LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
-        cellModel.showInfo = show;
-        [theItems addObject: cellModel];
-      }
+      [newShows addObject:shows[0]];
     }
+    
+    theItems = [NSMutableArray array];
+    for (id show in newShows)
+    {
+      LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
+      cellModel.showInfo = show;
+      [theItems addObject: cellModel];
+    }
+    
     [theCollectionView reloadData];
-    [self updateItems];
+    theArtworkGetter = [LSBatchArtworkGetter artworkGetterWithDelegate:self];
   }];
 }
 
-- (void) updateItems
+- (void) updatePriorities
 {
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-  ^{
-    NSInteger row = 0;
-    for (LSShowAlbumCellModel* item in theItems)
+  NSMutableArray* indexes = [NSMutableArray array];
+  NSArray* cells = [theCollectionView visibleCells];
+  for (LSShowAlbumCell* cell in cells)
+  {
+    NSNumber* index = [NSNumber numberWithInteger:[theCollectionView indexPathForCell:cell].row];
+    [indexes addObject:index];
+  }
+  theArtworkGetterPriorities = [indexes sortedArrayUsingComparator:^(id obj1, id obj2)
+  {
+    if ([obj1 integerValue] > [obj2 integerValue])
     {
-      [theBackgroundProtocol getArtwork:item.showInfo completionHandler: ^(NSData* artworkData)
-      {
-        item.artwork = [UIImage imageWithData:artworkData];
-        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-        LSShowAlbumCell* blockCell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath: indexPath];
-        blockCell.image.image = item.artwork;
-        [blockCell setNeedsLayout];
-      }];
-      ++row;
+      return (NSComparisonResult)NSOrderedDescending;
     }
-  });
+    if ([obj1 integerValue] < [obj2 integerValue])
+    {
+      return (NSComparisonResult)NSOrderedAscending;
+    }
+    return (NSComparisonResult)NSOrderedSame;
+  }];
 }
+
+
+#pragma mark - UICollectionViewDataSource implementation
+
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -131,29 +144,48 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  LSShowAlbumCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"theCell" forIndexPath:indexPath];
   //
-  LSShowAlbumCellModel* cellModel = [theItems objectAtIndex: indexPath.row];
+  [self updatePriorities];
+  //
+  LSShowAlbumCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"theCell" forIndexPath:indexPath];
+  LSShowAlbumCellModel* cellModel = [theItems objectAtIndex:indexPath.row];
   cell.detail.text = cellModel.showInfo.title;
   cell.image.image = cellModel.artwork;
-  
-//
-  if (!cellModel.artwork)
-  {
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-//                   ^{
-//                     NSData* artworkData = [theServerRoutine askArtworkByOriginalTitle:cellModel.showInfo.originalTitle snapshot:cellModel.showInfo.snapshot];
-//                     cellModel.artwork = [UIImage imageWithData:artworkData];
-//                     NSLog(@"req=%ld", indexPath.row);
-//                     dispatch_async(dispatch_get_main_queue(),
-//                                    ^{
-//                                      LSShowAlbumCell* blockCell = (LSShowAlbumCell*)[collectionView cellForItemAtIndexPath: indexPath];
-//                                      blockCell.image.image = cellModel.artwork;
-//                                      [blockCell setNeedsLayout];
-//                                    });
-//                   });
-  }
   return cell;
+}
+
+
+#pragma mark - LSBatchArtworkGetterDelegate implementation
+
+
+- (NSInteger) getNumberOfItems
+{
+  return [theItems count];
+}
+
+- (NSArray*) getPriorityWindow
+{
+  return theArtworkGetterPriorities;
+}
+
+- (void) getArtworkAsyncForIndex:(NSInteger)index completionHandler:(void (^)(NSData*))handler
+{
+  LSShowAlbumCellModel* cellModel = [theItems objectAtIndex:index];
+  [thePriorityProtocol getArtwork:cellModel.showInfo completionHandler:handler];
+}
+
+- (void) didGetArtwork:(NSData*)data forIndex:(NSInteger)index
+{
+  // update cache
+  LSShowAlbumCellModel* cellModel = [theItems objectAtIndex:index];
+  cellModel.artwork = [UIImage imageWithData:data];
+  // update view
+  NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+  if (LSShowAlbumCell* cell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath:indexPath])
+  {
+    cell.image.image = cellModel.artwork;
+    [cell setNeedsLayout];
+  }
 }
 
 

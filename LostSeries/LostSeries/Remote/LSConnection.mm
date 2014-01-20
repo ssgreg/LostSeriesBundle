@@ -66,7 +66,7 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
     return nil;
   }
   //
-  static char const* backendAddres = "tcp://10.0.1.10:8500";
+  static char const* backendAddres = "tcp://10.250.148.81:8500";
   static char const* frontendPriorityAddres = "inproc://server_routine.priority_request_puller";
   static char const* frontendBackgroundAddres = "inproc://server_routine.background_request_puller";
   //
