@@ -16,6 +16,6 @@
 // LSViewController
 //
 
-@interface LSViewController : UIViewController<UICollectionViewDataSource, LSBatchArtworkGetterDelegate>
+@interface LSViewController : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate, LSBatchArtworkGetterDelegate>
 
 @end

@@ -155,6 +155,20 @@
 }
 
 
+#pragma mark - UICollectionViewDelegate implementation
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+//  NSLog(@"Decelerating");
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+//  NSLog(@"Dragging, %ld", decelerate);
+}
+
+
 #pragma mark - LSBatchArtworkGetterDelegate implementation
 
 

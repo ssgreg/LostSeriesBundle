@@ -32,7 +32,7 @@
 
 @implementation LSBatchArtworkGetter
 
-static NSInteger const numberOfItemsGettingSimultaniously = 5;
+static NSInteger const numberOfItemsGettingSimultaniously = 4;
 static NSString* const keyShowInfo = @"showInfo";
 static NSString* const keyIsRequested = @"isRequested";
 
