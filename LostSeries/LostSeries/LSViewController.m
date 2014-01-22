@@ -12,6 +12,7 @@
 #import "Remote/LSChannel.h"
 #import "Remote/LSConnection.h"
 #import "Remote/LSBatchArtworkGetter.h"
+#import "CachingServer/LSCachingServer.h"
 
 
 @interface LSShowAlbumCellModel : NSObject
@@ -66,6 +67,8 @@
 
 @interface LSViewController ()
 {
+  LSCachingServer* theCachingServer;
+  
   NSMutableArray* theItems;
   LSConnection* theConnection;
   LSProtocol* thePriorityProtocol;
@@ -85,6 +88,7 @@
 {
   [super viewDidLoad];
   //
+  theCachingServer = [[LSCachingServer alloc] init];
   theConnection = [LSConnection connection];
   thePriorityProtocol = [LSProtocol protocolWithChannel:[theConnection createPriorityChannel]];
   theBackgroundProtocol = [LSProtocol protocolWithChannel:[theConnection createBackgroundChannel]];

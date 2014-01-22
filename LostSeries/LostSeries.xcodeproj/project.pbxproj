@@ -12,6 +12,9 @@
 		EE1AA5A31888F2D1004B6E7D /* LSChannel.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5A21888F2D1004B6E7D /* LSChannel.mm */; };
 		EE1AA5A61888F2ED004B6E7D /* LSProtocol.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5A51888F2ED004B6E7D /* LSProtocol.mm */; };
 		EE1AA5A9188BEFCF004B6E7D /* LSBatchArtworkGetter.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5A8188BEFCF004B6E7D /* LSBatchArtworkGetter.mm */; };
+		EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79B3188E3E29004A0D4B /* LSCachingServer.mm */; };
+		EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79B7188E65E9004A0D4B /* ZeroMQ.cpp */; };
+		EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */; };
 		EEB11802187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
 		EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11803187F17D500337023 /* CoreGraphics.framework */; };
 		EEB11806187F17D500337023 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11805187F17D500337023 /* UIKit.framework */; };
@@ -64,6 +67,12 @@
 		EE1AA5A51888F2ED004B6E7D /* LSProtocol.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSProtocol.mm; path = Remote/LSProtocol.mm; sourceTree = "<group>"; };
 		EE1AA5A7188BEFCF004B6E7D /* LSBatchArtworkGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSBatchArtworkGetter.h; path = Remote/LSBatchArtworkGetter.h; sourceTree = "<group>"; };
 		EE1AA5A8188BEFCF004B6E7D /* LSBatchArtworkGetter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSBatchArtworkGetter.mm; path = Remote/LSBatchArtworkGetter.mm; sourceTree = "<group>"; };
+		EE6D79B2188E3E29004A0D4B /* LSCachingServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSCachingServer.h; path = CachingServer/LSCachingServer.h; sourceTree = "<group>"; };
+		EE6D79B3188E3E29004A0D4B /* LSCachingServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSCachingServer.mm; path = CachingServer/LSCachingServer.mm; sourceTree = "<group>"; };
+		EE6D79B6188E4830004A0D4B /* ZeroMQ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZeroMQ.h; path = ZeroMQ/ZeroMQ.h; sourceTree = "<group>"; };
+		EE6D79B7188E65E9004A0D4B /* ZeroMQ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ZeroMQ.cpp; path = ZeroMQ/ZeroMQ.cpp; sourceTree = "<group>"; };
+		EE6D79B9188EBAB8004A0D4B /* LSLocalCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSLocalCache.h; path = CachingServer/LSLocalCache.h; sourceTree = "<group>"; };
+		EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSLocalCache.mm; path = CachingServer/LSLocalCache.mm; sourceTree = "<group>"; };
 		EEB117FE187F17D500337023 /* LostSeries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostSeries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB11801187F17D500337023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EEB11803187F17D500337023 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -138,6 +147,26 @@
 			name = Remote;
 			sourceTree = "<group>";
 		};
+		EE6D79AF188E3DB7004A0D4B /* CachingServer */ = {
+			isa = PBXGroup;
+			children = (
+				EE6D79B2188E3E29004A0D4B /* LSCachingServer.h */,
+				EE6D79B3188E3E29004A0D4B /* LSCachingServer.mm */,
+				EE6D79B9188EBAB8004A0D4B /* LSLocalCache.h */,
+				EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */,
+			);
+			name = CachingServer;
+			sourceTree = "<group>";
+		};
+		EE6D79B5188E47DD004A0D4B /* ZeroMQ */ = {
+			isa = PBXGroup;
+			children = (
+				EE6D79B6188E4830004A0D4B /* ZeroMQ.h */,
+				EE6D79B7188E65E9004A0D4B /* ZeroMQ.cpp */,
+			);
+			name = ZeroMQ;
+			sourceTree = "<group>";
+		};
 		EEB117F5187F17D500337023 = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +203,8 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
+				EE6D79B5188E47DD004A0D4B /* ZeroMQ */,
+				EE6D79AF188E3DB7004A0D4B /* CachingServer */,
 				EE1AA59D1888F223004B6E7D /* Remote */,
 				EEB11810187F17D500337023 /* LSAppDelegate.h */,
 				EEB11811187F17D500337023 /* LSAppDelegate.m */,
@@ -336,11 +367,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */,
+				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
 				EEB1180E187F17D500337023 /* main.m in Sources */,
 				EE1AA5A61888F2ED004B6E7D /* LSProtocol.mm in Sources */,
 				EE1AA5A9188BEFCF004B6E7D /* LSBatchArtworkGetter.mm in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
+				EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */,
 				EEB11818187F17D500337023 /* LSViewController.m in Sources */,
 				EE1AA5A31888F2D1004B6E7D /* LSChannel.mm in Sources */,
 			);
@@ -479,6 +513,7 @@
 					/Users/igreg/Documents/Sandbox/Home/Frameworks/cppzmq,
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
 					"$(SRCROOT)/Protobuf.Generated",
+					"$(SRCROOT)/LostSeries",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -507,6 +542,7 @@
 					/Users/igreg/Documents/Sandbox/Home/Frameworks/cppzmq,
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
 					"$(SRCROOT)/Protobuf.Generated",
+					"$(SRCROOT)/LostSeries",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

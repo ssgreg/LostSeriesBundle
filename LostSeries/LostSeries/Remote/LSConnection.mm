@@ -8,16 +8,8 @@
 
 // LS
 #import "LSConnection.h"
-// zeromq
-#include <zmq.hpp>
-// std
-#include <memory>
-#include <deque>
-
-
-typedef std::shared_ptr<zmq::context_t> ZmqContextPtr;
-typedef std::shared_ptr<zmq::socket_t> ZmqSocketPtr;
-typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
+// ZeroMQ
+#include <ZeroMQ/ZeroMQ.h>
 
 
 //
@@ -31,8 +23,6 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
   //
   dispatch_queue_t thePollQueue;
   int64_t theMessageID;
-  //
-  ZmqContextPtr theContext;
   // priority sockets
   ZmqSocketPtr thePriorityBackend;
   ZmqSocketPtr thePriorityFrontend;
@@ -48,7 +38,6 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
 - (void) send:(ZmqSocketPtr)socket request:(LS::Message)question complitionHandler:(id)handler;
 - (void) dispatchMessageFrom:(ZmqSocketPtr)socket;
 - (void) forwardMessageFrom:(ZmqSocketPtr)socketFrom to:(ZmqSocketPtr)socketTo;
-- (std::deque<ZmqMessagePtr>) recieveMultipartMessage:(ZmqSocketPtr)socket;
 
 @end
 
@@ -66,7 +55,7 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
     return nil;
   }
   //
-  static char const* backendAddres = "tcp://10.250.148.81:8500";
+  static char const* backendAddres = "inproc://caching_server.frontend";
   static char const* frontendPriorityAddres = "inproc://server_routine.priority_request_puller";
   static char const* frontendBackgroundAddres = "inproc://server_routine.background_request_puller";
   //
@@ -74,20 +63,18 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
   thePollQueue = dispatch_queue_create("server_dispatcher.proxy.queue", NULL);
   theMessageID = 0;
   //
-  theContext = ZmqContextPtr(new zmq::context_t);
-  //
-  thePriorityBackend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_DEALER));
+  thePriorityBackend = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
   thePriorityBackend->connect(backendAddres);
-  thePriorityFrontend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PULL));
+  thePriorityFrontend = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PULL));
   thePriorityFrontend->bind(frontendPriorityAddres);
-  thePriorityChannel = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PUSH));
+  thePriorityChannel = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PUSH));
   thePriorityChannel->connect(frontendPriorityAddres);
   //
-  theBackgroundBackend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_DEALER));
+  theBackgroundBackend = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
   theBackgroundBackend->connect(backendAddres);
-  theBackgroundFrontend = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PULL));
+  theBackgroundFrontend = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PULL));
   theBackgroundFrontend->bind(frontendBackgroundAddres);
-  theBackgroundChannel = ZmqSocketPtr(new zmq::socket_t(*theContext, ZMQ_PUSH));
+  theBackgroundChannel = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PUSH));
   theBackgroundChannel->connect(frontendBackgroundAddres);
   //
   [self startPollQueue];
@@ -165,7 +152,7 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
 
 - (void) dispatchMessageFrom:(ZmqSocketPtr)socket
 {
-  std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:socket];
+  std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(socket);
   if (messages.front()->size() == 0)
   {
     messages.pop_front();
@@ -187,26 +174,12 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
 
 - (void) forwardMessageFrom:(ZmqSocketPtr)socketFrom to:(ZmqSocketPtr)socketTo
 {
-  std::deque<ZmqMessagePtr> messages = [self recieveMultipartMessage:socketFrom];
+  std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(socketFrom);
   if (messages.size() == 1)
   {
     socketTo->send(0, 0, ZMQ_SNDMORE);
     socketTo->send(*messages.front(), 0);
   }
-}
-
-- (std::deque<ZmqMessagePtr>) recieveMultipartMessage:(ZmqSocketPtr)socket
-{
-  std::deque<ZmqMessagePtr> result;
-  while (true)
-  {
-    ZmqMessagePtr frame(new zmq::message_t());
-    socket->recv(&*frame);
-    result.push_back(frame);
-    if (!frame->more())
-      break;
-  }
-  return result;
 }
 
 @end
