@@ -1,10 +1,12 @@
 package LS;
 
+message Header
+{
+  required int64 messageID = 1;
+}
 
 message Message
 {
-  required int64 messageID = 1;
-
   // requests
   optional SeriesRequest seriesRequest = 1000;
   optional ArtworkRequest artworkRequest = 1001;

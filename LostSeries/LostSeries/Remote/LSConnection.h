@@ -26,6 +26,5 @@
 
 // interface
 - (LSChannel*) createPriorityChannel;
-- (LSChannel*) createBackgroundChannel;
 
 @end

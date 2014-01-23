@@ -20,6 +20,9 @@ namespace LS {
 
 namespace {
 
+const ::google_public::protobuf::Descriptor* Header_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  Header_reflection_ = NULL;
 const ::google_public::protobuf::Descriptor* Message_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   Message_reflection_ = NULL;
@@ -48,9 +51,23 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
     ::google_public::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "LostSeriesProtocol.proto");
   GOOGLE_CHECK(file != NULL);
-  Message_descriptor_ = file->message_type(0);
-  static const int Message_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, messageid_),
+  Header_descriptor_ = file->message_type(0);
+  static const int Header_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Header, messageid_),
+  };
+  Header_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      Header_descriptor_,
+      Header::default_instance_,
+      Header_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Header, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Header, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(Header));
+  Message_descriptor_ = file->message_type(1);
+  static const int Message_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, artworkrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesresponse_),
@@ -67,7 +84,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(Message));
-  SeriesRequest_descriptor_ = file->message_type(1);
+  SeriesRequest_descriptor_ = file->message_type(2);
   static const int SeriesRequest_offsets_[1] = {
   };
   SeriesRequest_reflection_ =
@@ -81,7 +98,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesRequest));
-  SeriesResponse_descriptor_ = file->message_type(2);
+  SeriesResponse_descriptor_ = file->message_type(3);
   static const int SeriesResponse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse, shows_),
   };
@@ -114,7 +131,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesResponse_TVShow));
-  ArtworkRequest_descriptor_ = file->message_type(3);
+  ArtworkRequest_descriptor_ = file->message_type(4);
   static const int ArtworkRequest_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, snapshot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, originaltitle_),
@@ -130,7 +147,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(ArtworkRequest));
-  ArtworkResponse_descriptor_ = file->message_type(4);
+  ArtworkResponse_descriptor_ = file->message_type(5);
   static const int ArtworkResponse_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, snapshot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, originaltitle_),
@@ -160,6 +177,8 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Header_descriptor_, &Header::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Message_descriptor_, &Message::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SeriesRequest_descriptor_, &SeriesRequest::default_instance());
@@ -176,6 +195,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_LostSeriesProtocol_2eproto() {
+  delete Header::default_instance_;
+  delete Header_reflection_;
   delete Message::default_instance_;
   delete Message_reflection_;
   delete SeriesRequest::default_instance_;
@@ -197,28 +218,30 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google_public::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\030LostSeriesProtocol.proto\022\002LS\"\320\001\n\007Messa"
-    "ge\022\021\n\tmessageID\030\001 \002(\003\022)\n\rseriesRequest\030\350"
-    "\007 \001(\0132\021.LS.SeriesRequest\022+\n\016artworkReque"
-    "st\030\351\007 \001(\0132\022.LS.ArtworkRequest\022+\n\016seriesR"
-    "esponse\030\320\017 \001(\0132\022.LS.SeriesResponse\022-\n\017ar"
-    "tworkResponse\030\321\017 \001(\0132\023.LS.ArtworkRespons"
-    "e\"\017\n\rSeriesRequest\"\222\001\n\016SeriesResponse\022(\n"
-    "\005shows\030\001 \003(\0132\031.LS.SeriesResponse.TVShow\032"
-    "V\n\006TVShow\022\r\n\005title\030\001 \002(\t\022\025\n\roriginalTitl"
-    "e\030\002 \002(\t\022\024\n\014seasonNumber\030\003 \002(\005\022\020\n\010snapsho"
-    "t\030\004 \002(\t\"9\n\016ArtworkRequest\022\020\n\010snapshot\030\001 "
-    "\002(\t\022\025\n\roriginalTitle\030\002 \002(\t\"K\n\017ArtworkRes"
-    "ponse\022\020\n\010snapshot\030\001 \002(\t\022\025\n\roriginalTitle"
-    "\030\002 \002(\t\022\017\n\007artwork\030\003 \002(\014", 543);
+    "\n\030LostSeriesProtocol.proto\022\002LS\"\033\n\006Header"
+    "\022\021\n\tmessageID\030\001 \002(\003\"\275\001\n\007Message\022)\n\rserie"
+    "sRequest\030\350\007 \001(\0132\021.LS.SeriesRequest\022+\n\016ar"
+    "tworkRequest\030\351\007 \001(\0132\022.LS.ArtworkRequest\022"
+    "+\n\016seriesResponse\030\320\017 \001(\0132\022.LS.SeriesResp"
+    "onse\022-\n\017artworkResponse\030\321\017 \001(\0132\023.LS.Artw"
+    "orkResponse\"\017\n\rSeriesRequest\"\222\001\n\016SeriesR"
+    "esponse\022(\n\005shows\030\001 \003(\0132\031.LS.SeriesRespon"
+    "se.TVShow\032V\n\006TVShow\022\r\n\005title\030\001 \002(\t\022\025\n\ror"
+    "iginalTitle\030\002 \002(\t\022\024\n\014seasonNumber\030\003 \002(\005\022"
+    "\020\n\010snapshot\030\004 \002(\t\"9\n\016ArtworkRequest\022\020\n\010s"
+    "napshot\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\"K\n\017"
+    "ArtworkResponse\022\020\n\010snapshot\030\001 \002(\t\022\025\n\rori"
+    "ginalTitle\030\002 \002(\t\022\017\n\007artwork\030\003 \002(\014", 553);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
+  Header::default_instance_ = new Header();
   Message::default_instance_ = new Message();
   SeriesRequest::default_instance_ = new SeriesRequest();
   SeriesResponse::default_instance_ = new SeriesResponse();
   SeriesResponse_TVShow::default_instance_ = new SeriesResponse_TVShow();
   ArtworkRequest::default_instance_ = new ArtworkRequest();
   ArtworkResponse::default_instance_ = new ArtworkResponse();
+  Header::default_instance_->InitAsDefaultInstance();
   Message::default_instance_->InitAsDefaultInstance();
   SeriesRequest::default_instance_->InitAsDefaultInstance();
   SeriesResponse::default_instance_->InitAsDefaultInstance();
@@ -238,7 +261,215 @@ struct StaticDescriptorInitializer_LostSeriesProtocol_2eproto {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int Message::kMessageIDFieldNumber;
+const int Header::kMessageIDFieldNumber;
+#endif  // !_MSC_VER
+
+Header::Header()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void Header::InitAsDefaultInstance() {
+}
+
+Header::Header(const Header& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Header::SharedCtor() {
+  _cached_size_ = 0;
+  messageid_ = GOOGLE_LONGLONG(0);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Header::~Header() {
+  SharedDtor();
+}
+
+void Header::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Header::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* Header::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Header_descriptor_;
+}
+
+const Header& Header::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+Header* Header::default_instance_ = NULL;
+
+Header* Header::New() const {
+  return new Header;
+}
+
+void Header::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    messageid_ = GOOGLE_LONGLONG(0);
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Header::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int64 messageID = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google_public::protobuf::int64, ::google_public::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &messageid_)));
+          set_has_messageid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Header::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required int64 messageID = 1;
+  if (has_messageid()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteInt64(1, this->messageid(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* Header::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required int64 messageID = 1;
+  if (has_messageid()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->messageid(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Header::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int64 messageID = 1;
+    if (has_messageid()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::Int64Size(
+          this->messageid());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Header::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Header* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const Header*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Header::MergeFrom(const Header& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_messageid()) {
+      set_messageid(from.messageid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Header::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Header::CopyFrom(const Header& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Header::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  return true;
+}
+
+void Header::Swap(Header* other) {
+  if (other != this) {
+    std::swap(messageid_, other->messageid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata Header::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = Header_descriptor_;
+  metadata.reflection = Header_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int Message::kSeriesRequestFieldNumber;
 const int Message::kArtworkRequestFieldNumber;
 const int Message::kSeriesResponseFieldNumber;
@@ -265,7 +496,6 @@ Message::Message(const Message& from)
 
 void Message::SharedCtor() {
   _cached_size_ = 0;
-  messageid_ = GOOGLE_LONGLONG(0);
   seriesrequest_ = NULL;
   artworkrequest_ = NULL;
   seriesresponse_ = NULL;
@@ -309,7 +539,6 @@ Message* Message::New() const {
 
 void Message::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    messageid_ = GOOGLE_LONGLONG(0);
     if (has_seriesrequest()) {
       if (seriesrequest_ != NULL) seriesrequest_->::LS::SeriesRequest::Clear();
     }
@@ -333,26 +562,10 @@ bool Message::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int64 messageID = 1;
-      case 1: {
-        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google_public::protobuf::int64, ::google_public::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &messageid_)));
-          set_has_messageid();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(8002)) goto parse_seriesRequest;
-        break;
-      }
-
       // optional .LS.SeriesRequest seriesRequest = 1000;
       case 1000: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_seriesRequest:
           DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_seriesrequest()));
         } else {
@@ -422,11 +635,6 @@ bool Message::MergePartialFromCodedStream(
 
 void Message::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
-  // required int64 messageID = 1;
-  if (has_messageid()) {
-    ::google_public::protobuf::internal::WireFormatLite::WriteInt64(1, this->messageid(), output);
-  }
-
   // optional .LS.SeriesRequest seriesRequest = 1000;
   if (has_seriesrequest()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -459,11 +667,6 @@ void Message::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* Message::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
-  // required int64 messageID = 1;
-  if (has_messageid()) {
-    target = ::google_public::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->messageid(), target);
-  }
-
   // optional .LS.SeriesRequest seriesRequest = 1000;
   if (has_seriesrequest()) {
     target = ::google_public::protobuf::internal::WireFormatLite::
@@ -503,13 +706,6 @@ int Message::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required int64 messageID = 1;
-    if (has_messageid()) {
-      total_size += 1 +
-        ::google_public::protobuf::internal::WireFormatLite::Int64Size(
-          this->messageid());
-    }
-
     // optional .LS.SeriesRequest seriesRequest = 1000;
     if (has_seriesrequest()) {
       total_size += 2 +
@@ -565,9 +761,6 @@ void Message::MergeFrom(const ::google_public::protobuf::Message& from) {
 void Message::MergeFrom(const Message& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_messageid()) {
-      set_messageid(from.messageid());
-    }
     if (from.has_seriesrequest()) {
       mutable_seriesrequest()->::LS::SeriesRequest::MergeFrom(from.seriesrequest());
     }
@@ -597,7 +790,6 @@ void Message::CopyFrom(const Message& from) {
 }
 
 bool Message::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   if (has_artworkrequest()) {
     if (!this->artworkrequest().IsInitialized()) return false;
@@ -613,7 +805,6 @@ bool Message::IsInitialized() const {
 
 void Message::Swap(Message* other) {
   if (other != this) {
-    std::swap(messageid_, other->messageid_);
     std::swap(seriesrequest_, other->seriesrequest_);
     std::swap(artworkrequest_, other->artworkrequest_);
     std::swap(seriesresponse_, other->seriesresponse_);

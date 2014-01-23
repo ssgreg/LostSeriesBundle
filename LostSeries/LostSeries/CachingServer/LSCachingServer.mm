@@ -84,25 +84,25 @@
       {
         std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(theFrontendSocket);
         messages.push_front(ZmqMessagePtr(new zmq::message_t));
-        //
-        // copy last request for later usage
-        lastRequest = ZmqMessagePtr(new zmq::message_t);
-        lastRequest->copy(&*messages.back());
-        //
-        if (ZmqMessagePtr reply = [theLocalCache cachedReplyForRequest:lastRequest])
-        {
-          theFrontendSocket->send(*reply);
-        }
-        else
-        {
+//        //
+//        // copy last request for later usage
+//        lastRequest = ZmqMessagePtr(new zmq::message_t);
+//        lastRequest->copy(&*messages.back());
+//        //
+//        if (ZmqMessagePtr reply = [theLocalCache cachedReplyForRequest:lastRequest])
+//        {
+//          theFrontendSocket->send(*reply);
+//        }
+//        else
+//        {
           ZmqSendMultipartMessage(theBackendSocket, messages);
-        }
+//        }
       }
       else if (items[1].revents & ZMQ_POLLIN)
       {
         std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(theBackendSocket);
         messages.pop_front();
-        [theLocalCache cacheReply:messages.front() forRequest:lastRequest];
+//        [theLocalCache cacheReply:messages.front() forRequest:lastRequest];
         ZmqSendMultipartMessage(theFrontendSocket, messages);
       }
     }

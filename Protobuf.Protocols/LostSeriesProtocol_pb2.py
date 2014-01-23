@@ -13,9 +13,37 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='LostSeriesProtocol.proto',
   package='LS',
-  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\xd0\x01\n\x07Message\x12\x11\n\tmessageID\x18\x01 \x02(\x03\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\"\x0f\n\rSeriesRequest\"\x92\x01\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aV\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x10\n\x08snapshot\x18\x04 \x02(\t\"9\n\x0e\x41rtworkRequest\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\"K\n\x0f\x41rtworkResponse\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x0f\n\x07\x61rtwork\x18\x03 \x02(\x0c')
+  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xbd\x01\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\"\x0f\n\rSeriesRequest\"\x92\x01\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aV\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x10\n\x08snapshot\x18\x04 \x02(\t\"9\n\x0e\x41rtworkRequest\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\"K\n\x0f\x41rtworkResponse\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x0f\n\x07\x61rtwork\x18\x03 \x02(\x0c')
 
 
+
+
+_HEADER = _descriptor.Descriptor(
+  name='Header',
+  full_name='LS.Header',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='messageID', full_name='LS.Header.messageID', index=0,
+      number=1, type=3, cpp_type=2, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=32,
+  serialized_end=59,
+)
 
 
 _MESSAGE = _descriptor.Descriptor(
@@ -26,35 +54,28 @@ _MESSAGE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='messageID', full_name='LS.Message.messageID', index=0,
-      number=1, type=3, cpp_type=2, label=2,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='seriesRequest', full_name='LS.Message.seriesRequest', index=1,
+      name='seriesRequest', full_name='LS.Message.seriesRequest', index=0,
       number=1000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='artworkRequest', full_name='LS.Message.artworkRequest', index=2,
+      name='artworkRequest', full_name='LS.Message.artworkRequest', index=1,
       number=1001, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='seriesResponse', full_name='LS.Message.seriesResponse', index=3,
+      name='seriesResponse', full_name='LS.Message.seriesResponse', index=2,
       number=2000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='artworkResponse', full_name='LS.Message.artworkResponse', index=4,
+      name='artworkResponse', full_name='LS.Message.artworkResponse', index=3,
       number=2001, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -69,8 +90,8 @@ _MESSAGE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=33,
-  serialized_end=241,
+  serialized_start=62,
+  serialized_end=251,
 )
 
 
@@ -90,8 +111,8 @@ _SERIESREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=243,
-  serialized_end=258,
+  serialized_start=253,
+  serialized_end=268,
 )
 
 
@@ -139,8 +160,8 @@ _SERIESRESPONSE_TVSHOW = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=321,
-  serialized_end=407,
+  serialized_start=331,
+  serialized_end=417,
 )
 
 _SERIESRESPONSE = _descriptor.Descriptor(
@@ -166,8 +187,8 @@ _SERIESRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=261,
-  serialized_end=407,
+  serialized_start=271,
+  serialized_end=417,
 )
 
 
@@ -201,8 +222,8 @@ _ARTWORKREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=409,
-  serialized_end=466,
+  serialized_start=419,
+  serialized_end=476,
 )
 
 
@@ -243,8 +264,8 @@ _ARTWORKRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=468,
-  serialized_end=543,
+  serialized_start=478,
+  serialized_end=553,
 )
 
 _MESSAGE.fields_by_name['seriesRequest'].message_type = _SERIESREQUEST
@@ -253,11 +274,18 @@ _MESSAGE.fields_by_name['seriesResponse'].message_type = _SERIESRESPONSE
 _MESSAGE.fields_by_name['artworkResponse'].message_type = _ARTWORKRESPONSE
 _SERIESRESPONSE_TVSHOW.containing_type = _SERIESRESPONSE;
 _SERIESRESPONSE.fields_by_name['shows'].message_type = _SERIESRESPONSE_TVSHOW
+DESCRIPTOR.message_types_by_name['Header'] = _HEADER
 DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
 DESCRIPTOR.message_types_by_name['SeriesRequest'] = _SERIESREQUEST
 DESCRIPTOR.message_types_by_name['SeriesResponse'] = _SERIESRESPONSE
 DESCRIPTOR.message_types_by_name['ArtworkRequest'] = _ARTWORKREQUEST
 DESCRIPTOR.message_types_by_name['ArtworkResponse'] = _ARTWORKRESPONSE
+
+class Header(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _HEADER
+
+  # @@protoc_insertion_point(class_scope:LS.Header)
 
 class Message(_message.Message):
   __metaclass__ = _reflection.GeneratedProtocolMessageType

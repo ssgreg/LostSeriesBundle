@@ -72,7 +72,6 @@
   NSMutableArray* theItems;
   LSConnection* theConnection;
   LSProtocol* thePriorityProtocol;
-  LSProtocol* theBackgroundProtocol;
   IBOutlet UICollectionView* theCollectionView;
   LSBatchArtworkGetter* theArtworkGetter;
   NSArray* theArtworkGetterPriorities;
@@ -91,7 +90,6 @@
   theCachingServer = [[LSCachingServer alloc] init];
   theConnection = [LSConnection connection];
   thePriorityProtocol = [LSProtocol protocolWithChannel:[theConnection createPriorityChannel]];
-  theBackgroundProtocol = [LSProtocol protocolWithChannel:[theConnection createBackgroundChannel]];
   //
   [thePriorityProtocol getShowInfoArray:^(NSArray* shows)
   {

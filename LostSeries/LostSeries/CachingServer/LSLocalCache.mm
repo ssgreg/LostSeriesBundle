@@ -18,7 +18,6 @@
 
 @interface LSLocalCache ()
 
-- (NSInteger) messageIDFromRequest:(ZmqMessagePtr)request;
 - (NSString*) fileNameFromRequest:(ZmqMessagePtr)request;
 - (NSString*) fileNameFromSeriesRequest:(LS::SeriesRequest const&)request;
 - (NSString*) fileNameFromArtworkRequest:(LS::ArtworkRequest const&)request;
@@ -55,7 +54,6 @@
     {
       LS::Message answer;
       answer.ParseFromArray([replyData bytes], (int)[replyData length]);
-      answer.set_messageid([self messageIDFromRequest:request]);
       ZmqMessagePtr reply(new zmq::message_t(answer.ByteSize()));
       answer.SerializeToArray(reply->data(), (int)reply->size());
       return reply;
@@ -96,13 +94,6 @@
   }
 
   return @"Unknown";
-}
-
-- (NSInteger) messageIDFromRequest:(ZmqMessagePtr)request
-{
-  LS::Message message;
-  message.ParseFromArray(request->data(), (int)request->size());
-  return message.messageid();
 }
 
 - (NSString*) fileNameFromSeriesRequest:(LS::SeriesRequest const&)request
