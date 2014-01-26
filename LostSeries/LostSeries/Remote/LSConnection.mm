@@ -37,12 +37,12 @@
 
 @implementation LSAsyncRequestReplyConnection
 
-+ (LSAsyncRequestReplyConnection*) connectionWithAddress:(NSString*)address RecvHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler
++ (LSAsyncRequestReplyConnection*) connectionWithAddress:(NSString*)address replyHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler
 {
-  return [[LSAsyncRequestReplyConnection alloc] initWithAddress:address RecvHandler:handler];
+  return [[LSAsyncRequestReplyConnection alloc] initWithAddress:address replyHandler:handler];
 }
 
-- (id) initWithAddress:(NSString*)address RecvHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler
+- (id) initWithAddress:(NSString*)address replyHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler
 {
   if (!(self = [super init]))
   {
@@ -202,7 +202,7 @@
   }
   //
   __weak typeof(self) weakSelf = self;
-  theConnection = [LSAsyncRequestReplyConnection connectionWithAddress:address RecvHandler:
+  theConnection = [LSAsyncRequestReplyConnection connectionWithAddress:address replyHandler:
     ^(NSInteger replyID, LSMessagePtr reply, NSData* data)
     {
       [weakSelf dispatchReplyWithID:replyID reply:reply data:data];

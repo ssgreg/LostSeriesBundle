@@ -15,3 +15,8 @@
 #include "LostSeriesProtocol.pb.h"
 //
 #pragma clang diagnostic pop
+
+#include <memory>
+//
+typedef std::shared_ptr<LS::Message> LSMessagePtr;
+typedef std::shared_ptr<LS::Header> LSHeaderPtr;

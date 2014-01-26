@@ -12,9 +12,6 @@
 #include <Protobuf.Generated/LostSeriesProtocol.h>
 
 
-typedef std::shared_ptr<LS::Message> LSMessagePtr;
-
-
 //
 // LSAsyncRequestReplyConnection
 //
@@ -22,10 +19,10 @@ typedef std::shared_ptr<LS::Message> LSMessagePtr;
 @interface LSAsyncRequestReplyConnection : NSObject
 
 #pragma mark - Factory Methods
-+ (LSAsyncRequestReplyConnection*) connectionWithAddress:(NSString*)address RecvHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler;
++ (LSAsyncRequestReplyConnection*) connectionWithAddress:(NSString*)address replyHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler;
 
 #pragma mark - Init Methods
-- (id) initWithAddress:(NSString*)address RecvHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler;
+- (id) initWithAddress:(NSString*)address replyHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler;
 
 #pragma mark - Interface
 // Not thread-safe
