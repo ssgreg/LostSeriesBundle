@@ -148,10 +148,9 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(ArtworkRequest));
   ArtworkResponse_descriptor_ = file->message_type(5);
-  static const int ArtworkResponse_offsets_[3] = {
+  static const int ArtworkResponse_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, snapshot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, originaltitle_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, artwork_),
   };
   ArtworkResponse_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -229,9 +228,9 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
     "se.TVShow\032V\n\006TVShow\022\r\n\005title\030\001 \002(\t\022\025\n\ror"
     "iginalTitle\030\002 \002(\t\022\024\n\014seasonNumber\030\003 \002(\005\022"
     "\020\n\010snapshot\030\004 \002(\t\"9\n\016ArtworkRequest\022\020\n\010s"
-    "napshot\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\"K\n\017"
+    "napshot\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\":\n\017"
     "ArtworkResponse\022\020\n\010snapshot\030\001 \002(\t\022\025\n\rori"
-    "ginalTitle\030\002 \002(\t\022\017\n\007artwork\030\003 \002(\014", 553);
+    "ginalTitle\030\002 \002(\t", 536);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
   Header::default_instance_ = new Header();
@@ -1854,7 +1853,6 @@ void ArtworkRequest::Swap(ArtworkRequest* other) {
 #ifndef _MSC_VER
 const int ArtworkResponse::kSnapshotFieldNumber;
 const int ArtworkResponse::kOriginalTitleFieldNumber;
-const int ArtworkResponse::kArtworkFieldNumber;
 #endif  // !_MSC_VER
 
 ArtworkResponse::ArtworkResponse()
@@ -1875,7 +1873,6 @@ void ArtworkResponse::SharedCtor() {
   _cached_size_ = 0;
   snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  artwork_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1889,9 +1886,6 @@ void ArtworkResponse::SharedDtor() {
   }
   if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
     delete originaltitle_;
-  }
-  if (artwork_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete artwork_;
   }
   if (this != default_instance_) {
   }
@@ -1928,11 +1922,6 @@ void ArtworkResponse::Clear() {
     if (has_originaltitle()) {
       if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
         originaltitle_->clear();
-      }
-    }
-    if (has_artwork()) {
-      if (artwork_ != &::google_public::protobuf::internal::kEmptyString) {
-        artwork_->clear();
       }
     }
   }
@@ -1972,20 +1961,6 @@ bool ArtworkResponse::MergePartialFromCodedStream(
           ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
             this->originaltitle().data(), this->originaltitle().length(),
             ::google_public::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(26)) goto parse_artwork;
-        break;
-      }
-
-      // required bytes artwork = 3;
-      case 3: {
-        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_artwork:
-          DO_(::google_public::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_artwork()));
         } else {
           goto handle_uninterpreted;
         }
@@ -2029,12 +2004,6 @@ void ArtworkResponse::SerializeWithCachedSizes(
       2, this->originaltitle(), output);
   }
 
-  // required bytes artwork = 3;
-  if (has_artwork()) {
-    ::google_public::protobuf::internal::WireFormatLite::WriteBytes(
-      3, this->artwork(), output);
-  }
-
   if (!unknown_fields().empty()) {
     ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2063,13 +2032,6 @@ void ArtworkResponse::SerializeWithCachedSizes(
         2, this->originaltitle(), target);
   }
 
-  // required bytes artwork = 3;
-  if (has_artwork()) {
-    target =
-      ::google_public::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        3, this->artwork(), target);
-  }
-
   if (!unknown_fields().empty()) {
     target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2093,13 +2055,6 @@ int ArtworkResponse::ByteSize() const {
       total_size += 1 +
         ::google_public::protobuf::internal::WireFormatLite::StringSize(
           this->originaltitle());
-    }
-
-    // required bytes artwork = 3;
-    if (has_artwork()) {
-      total_size += 1 +
-        ::google_public::protobuf::internal::WireFormatLite::BytesSize(
-          this->artwork());
     }
 
   }
@@ -2135,9 +2090,6 @@ void ArtworkResponse::MergeFrom(const ArtworkResponse& from) {
     if (from.has_originaltitle()) {
       set_originaltitle(from.originaltitle());
     }
-    if (from.has_artwork()) {
-      set_artwork(from.artwork());
-    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2155,7 +2107,7 @@ void ArtworkResponse::CopyFrom(const ArtworkResponse& from) {
 }
 
 bool ArtworkResponse::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
 
   return true;
 }
@@ -2164,7 +2116,6 @@ void ArtworkResponse::Swap(ArtworkResponse* other) {
   if (other != this) {
     std::swap(snapshot_, other->snapshot_);
     std::swap(originaltitle_, other->originaltitle_);
-    std::swap(artwork_, other->artwork_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

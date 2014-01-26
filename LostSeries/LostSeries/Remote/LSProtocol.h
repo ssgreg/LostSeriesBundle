@@ -39,22 +39,9 @@
 
 @interface LSShowInfo : NSObject
 
-// factory methods
-+ (LSShowInfo*) showInfo;
-+ (LSShowInfo*) showInfoWithTitle:(NSString*)title
-                    originalTitle:(NSString*)originalTitle
-                     seasonNumber:(NSInteger)seasonNumber
-                         snapshot:(NSString*)snapshot;
-
 @property NSString* title;
 @property NSString* originalTitle;
 @property NSInteger seasonNumber;
 @property NSString* snapshot;
-
-- (id) initWithTitle:(NSString*)title
-       originalTitle:(NSString*)originalTitle
-        seasonNumber:(NSInteger)seasonNumber
-            snapshot:(NSString*)snapshot;
-
 
 @end

@@ -711,35 +711,20 @@ class ArtworkResponse : public ::google_public::protobuf::Message {
   inline ::std::string* release_originaltitle();
   inline void set_allocated_originaltitle(::std::string* originaltitle);
 
-  // required bytes artwork = 3;
-  inline bool has_artwork() const;
-  inline void clear_artwork();
-  static const int kArtworkFieldNumber = 3;
-  inline const ::std::string& artwork() const;
-  inline void set_artwork(const ::std::string& value);
-  inline void set_artwork(const char* value);
-  inline void set_artwork(const void* value, size_t size);
-  inline ::std::string* mutable_artwork();
-  inline ::std::string* release_artwork();
-  inline void set_allocated_artwork(::std::string* artwork);
-
   // @@protoc_insertion_point(class_scope:LS.ArtworkResponse)
  private:
   inline void set_has_snapshot();
   inline void clear_has_snapshot();
   inline void set_has_originaltitle();
   inline void clear_has_originaltitle();
-  inline void set_has_artwork();
-  inline void clear_has_artwork();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* snapshot_;
   ::std::string* originaltitle_;
-  ::std::string* artwork_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -1487,76 +1472,6 @@ inline void ArtworkResponse::set_allocated_originaltitle(::std::string* original
   } else {
     clear_has_originaltitle();
     originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  }
-}
-
-// required bytes artwork = 3;
-inline bool ArtworkResponse::has_artwork() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void ArtworkResponse::set_has_artwork() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void ArtworkResponse::clear_has_artwork() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void ArtworkResponse::clear_artwork() {
-  if (artwork_ != &::google_public::protobuf::internal::kEmptyString) {
-    artwork_->clear();
-  }
-  clear_has_artwork();
-}
-inline const ::std::string& ArtworkResponse::artwork() const {
-  return *artwork_;
-}
-inline void ArtworkResponse::set_artwork(const ::std::string& value) {
-  set_has_artwork();
-  if (artwork_ == &::google_public::protobuf::internal::kEmptyString) {
-    artwork_ = new ::std::string;
-  }
-  artwork_->assign(value);
-}
-inline void ArtworkResponse::set_artwork(const char* value) {
-  set_has_artwork();
-  if (artwork_ == &::google_public::protobuf::internal::kEmptyString) {
-    artwork_ = new ::std::string;
-  }
-  artwork_->assign(value);
-}
-inline void ArtworkResponse::set_artwork(const void* value, size_t size) {
-  set_has_artwork();
-  if (artwork_ == &::google_public::protobuf::internal::kEmptyString) {
-    artwork_ = new ::std::string;
-  }
-  artwork_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ArtworkResponse::mutable_artwork() {
-  set_has_artwork();
-  if (artwork_ == &::google_public::protobuf::internal::kEmptyString) {
-    artwork_ = new ::std::string;
-  }
-  return artwork_;
-}
-inline ::std::string* ArtworkResponse::release_artwork() {
-  clear_has_artwork();
-  if (artwork_ == &::google_public::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = artwork_;
-    artwork_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void ArtworkResponse::set_allocated_artwork(::std::string* artwork) {
-  if (artwork_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete artwork_;
-  }
-  if (artwork) {
-    set_has_artwork();
-    artwork_ = artwork;
-  } else {
-    clear_has_artwork();
-    artwork_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
 }
 

@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='LostSeriesProtocol.proto',
   package='LS',
-  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xbd\x01\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\"\x0f\n\rSeriesRequest\"\x92\x01\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aV\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x10\n\x08snapshot\x18\x04 \x02(\t\"9\n\x0e\x41rtworkRequest\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\"K\n\x0f\x41rtworkResponse\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x0f\n\x07\x61rtwork\x18\x03 \x02(\x0c')
+  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xbd\x01\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\"\x0f\n\rSeriesRequest\"\x92\x01\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aV\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x10\n\x08snapshot\x18\x04 \x02(\t\"9\n\x0e\x41rtworkRequest\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\":\n\x0f\x41rtworkResponse\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t')
 
 
 
@@ -248,13 +248,6 @@ _ARTWORKRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
-    _descriptor.FieldDescriptor(
-      name='artwork', full_name='LS.ArtworkResponse.artwork', index=2,
-      number=3, type=12, cpp_type=9, label=2,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
   ],
   extensions=[
   ],
@@ -265,7 +258,7 @@ _ARTWORKRESPONSE = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=478,
-  serialized_end=553,
+  serialized_end=536,
 )
 
 _MESSAGE.fields_by_name['seriesRequest'].message_type = _SERIESREQUEST

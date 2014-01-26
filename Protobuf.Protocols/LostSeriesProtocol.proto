@@ -1,9 +1,11 @@
 package LS;
 
+
 message Header
 {
   required int64 messageID = 1;
 }
+
 
 message Message
 {
@@ -35,15 +37,17 @@ message SeriesResponse
   repeated TVShow shows = 1;
 }
 
+
 message ArtworkRequest
 {
   required string snapshot = 1;
   required string originalTitle = 2;
 }
 
+
+// with following banaries
 message ArtworkResponse
 {
   required string snapshot = 1;
   required string originalTitle = 2;
-  required bytes artwork = 3;
 }
