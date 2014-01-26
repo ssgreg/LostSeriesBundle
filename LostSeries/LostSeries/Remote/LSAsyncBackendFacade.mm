@@ -7,7 +7,7 @@
 //
 
 // LS
-#import "LSProtocol.h"
+#import "LSAsyncBackendFacade.h"
 #import "LSConnection.h"
 
 

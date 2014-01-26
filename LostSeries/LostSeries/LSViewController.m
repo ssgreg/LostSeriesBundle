@@ -8,8 +8,7 @@
 
 // LS
 #import "LSViewController.h"
-#import "Remote/LSProtocol.h"
-#import "Remote/LSConnection.h"
+#import "Remote/LSAsyncBackendFacade.h"
 #import "Remote/LSBatchArtworkGetter.h"
 #import "CachingServer/LSCachingServer.h"
 

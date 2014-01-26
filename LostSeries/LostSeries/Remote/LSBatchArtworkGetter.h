@@ -9,7 +9,7 @@
 // Foundation
 #import <Foundation/Foundation.h>
 // LS
-#import "LSProtocol.h"
+#import "LSAsyncBackendFacade.h"
 
 
 //
