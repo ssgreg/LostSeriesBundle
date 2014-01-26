@@ -8,122 +8,98 @@
 
 // LS
 #import "LSProtocol.h"
+#import "LSConnection.h"
 
 
 //
-// LSProtocol
+// LSAsyncBackendFacade
 //
 
-@interface LSProtocol ()
+@interface LSAsyncBackendFacade ()
 {
 @private
-  LSChannel* theChannel;
+  LSAsyncRequestReplyHandlerBasedConnection* theConnection;
 }
-
-// send
-- (void) send:(LS::Message const&)request completionHandler:(id)handler;
-
-// dispatch
-- (void) dispatchReply:(LS::Message const&)reply completionHandler:(id)handler;
-- (void) handleSeriesReply:(LS::SeriesResponse const&)reply completionHandler:(void (^)(NSArray*))handler;
-- (void) handleArtworkReply:(LS::ArtworkResponse const&)reply completionHandler:(void (^)(NSData*))handler;
 
 @end
 
-@implementation LSProtocol
+@implementation LSAsyncBackendFacade
 
 
-+ (LSProtocol*) protocolWithChannel:(LSChannel*)channel;
++ (LSAsyncBackendFacade*) backendFacade
 {
-  return [[LSProtocol alloc] initWithChannel:channel];
+  return [[LSAsyncBackendFacade alloc] init];
 }
 
-- (id) initWithChannel:(LSChannel*)channel
+- (id) init
 {
   if (!(self = [super init]))
   {
     return nil;
   }
-  theChannel = channel;
+  //
+  NSString* backendAddress = @"inproc://caching_server.frontend";
+  theConnection = [LSAsyncRequestReplyHandlerBasedConnection connectionWithAddress:backendAddress];
+  //
   return self;
-}
-
-- (void) send:(LS::Message const&)request completionHandler:(id)handler
-{
-  __weak typeof(self) weakSelf = self;
-  void (^dispatchHandler)(LS::Message const&) = ^(LS::Message const& reply)
-  {
-    [weakSelf dispatchReply:reply completionHandler:handler];
-  };
-  [theChannel send:request completionHandler:dispatchHandler];
 }
 
 - (void) getShowInfoArray:(void (^)(NSArray*))handler
 {
   LS::SeriesRequest seriesRequest;
   //
-  LS::Message request;
-  *request.mutable_seriesrequest() = seriesRequest;
+  LSMessagePtr request(new LS::Message);
+  *request->mutable_seriesrequest() = seriesRequest;
   //
-  [self send:request completionHandler:handler];
+  [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
+  {
+    NSAssert(reply->has_seriesresponse(), @"Bad response!");
+    LS::SeriesResponse const& message = reply->seriesresponse();
+    //
+    NSMutableArray* shows = [NSMutableArray array];
+    int showsSize = message.shows_size();
+    for (int i = 0; i < showsSize; ++i)
+    {
+      LS::SeriesResponse_TVShow show = message.shows(i);
+      LSShowInfo* showInfo = [LSShowInfo showInfo];
+      showInfo.title = [NSString stringWithUTF8String: show.title().c_str()];
+      showInfo.originalTitle = [NSString stringWithUTF8String: show.originaltitle().c_str()];
+      showInfo.seasonNumber = show.seasonnumber();
+      showInfo.snapshot = [NSString stringWithCString: show.snapshot().c_str() encoding:NSASCIIStringEncoding];
+      //
+      [shows addObject:showInfo];
+    }
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      handler(shows);
+    });
+  }];
 }
 
-- (void) getArtwork:(LSShowInfo*)showInfo completionHandler:(void (^)(NSData*))handler
+- (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler
 {
   LS::ArtworkRequest artworkRequest;
   artworkRequest.set_originaltitle([showInfo.originalTitle UTF8String]);
   artworkRequest.set_snapshot([showInfo.snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
   //
-  LS::Message request;
-  *request.mutable_artworkrequest() = artworkRequest;
+  LSMessagePtr request(new LS::Message);
+  *request->mutable_artworkrequest() = artworkRequest;
   //
-  [self send:request completionHandler:handler];
-}
-
-- (void) dispatchReply:(LS::Message const&)reply completionHandler:(id)handler
-{
-  if (reply.has_seriesresponse())
+  [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
   {
-    [self handleSeriesReply:reply.seriesresponse() completionHandler:handler];
-  }
-  else if (reply.has_artworkresponse())
-  {
-    [self handleArtworkReply:reply.artworkresponse() completionHandler:handler];
-  }
-}
-
-- (void) handleSeriesReply:(LS::SeriesResponse const&)reply completionHandler:(void (^)(NSArray*))handler
-{
-  NSMutableArray* shows = [NSMutableArray array];
-  int showsSize = reply.shows_size();
-  for (int i = 0; i < showsSize; ++i)
-  {
-    LS::SeriesResponse_TVShow show = reply.shows(i);
-    LSShowInfo* showInfo = [LSShowInfo showInfo];
-    showInfo.title = [NSString stringWithUTF8String: show.title().c_str()];
-    showInfo.originalTitle = [NSString stringWithUTF8String: show.originaltitle().c_str()];
-    showInfo.seasonNumber = show.seasonnumber();
-    showInfo.snapshot = [NSString stringWithCString: show.snapshot().c_str() encoding:NSASCIIStringEncoding];
+    NSAssert(reply->has_artworkresponse(), @"Bad response!");
+    LS::ArtworkResponse const& message = reply->artworkresponse();
     //
-    [shows addObject:showInfo];
-  }
-  dispatch_async(dispatch_get_main_queue(),
-  ^{
-    handler(shows);
-  });
-}
-
-- (void) handleArtworkReply:(LS::ArtworkResponse const&)reply completionHandler:(void (^)(NSData*))handler
-{
-  std::string const& artwork = reply.artwork();
-  if (!artwork.empty())
-  {
-    NSData* data = [NSData dataWithBytes:artwork.c_str() length:artwork.size()];
-    dispatch_async(dispatch_get_main_queue(),
-    ^{
-      handler(data);
-    });
-  }
+    std::string const& artwork = message.artwork();
+    if (!artwork.empty())
+    {
+      NSData* data = [NSData dataWithBytes:artwork.c_str() length:artwork.size()];
+      dispatch_async(dispatch_get_main_queue(),
+      ^{
+        handler(data);
+      });
+    }
+  }];
 }
 
 @end

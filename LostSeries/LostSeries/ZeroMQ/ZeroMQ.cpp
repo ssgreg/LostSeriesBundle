@@ -35,6 +35,11 @@ void ZmqSendMultipartMessage(ZmqSocketPtr socket, std::deque<ZmqMessagePtr> mess
   }
 }
 
+ZmqMessagePtr ZmqZeroFrame()
+{
+  return ZmqMessagePtr(new zmq::message_t);
+}
+
 zmq::context_t& ZmqGlobalContext()
 {
   static zmq::context_t theOnlyOneContext;

@@ -8,8 +8,6 @@
 
 // Foundation
 #import <Foundation/Foundation.h>
-// LS
-#import "LSChannel.h"
 
 
 // forwards
@@ -17,20 +15,20 @@
 
 
 //
-// LSProtocol
+// LSAsyncBackendFacade
 //
 
-@interface LSProtocol : NSObject
+@interface LSAsyncBackendFacade : NSObject
 
-// factory methods
-+ (LSProtocol*) protocolWithChannel:(LSChannel*)channel;
+#pragma mark - Factory Methods
++ (LSAsyncBackendFacade*) backendFacade;
 
-// init methods
-- (id) initWithChannel:(LSChannel*)channel;
+#pragma mark - Init Methods
+- (id) init;
 
-// interface
+#pragma mark - Interface
 - (void) getShowInfoArray:(void (^)(NSArray*))handler;
-- (void) getArtwork:(LSShowInfo*)showInfo completionHandler:(void (^)(NSData*))handler;
+- (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler;
 
 @end
 

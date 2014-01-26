@@ -12,97 +12,52 @@
 #include <ZeroMQ/ZeroMQ.h>
 
 
-@interface LSAsyncConnection : NSObject
+//
+// LSAsyncRequestReplyConnection
+//
 
-#pragma mark - Factory Methods
-+ (LSAsyncConnection*) asyncSocket;
-
-#pragma mark - Init Methods
-- (id) init;
-
-#pragma mark - Interface
-
-@end
-
-@interface LSAsyncConnection ()
+@interface LSAsyncRequestReplyConnection ()
 {
 @private
+  void (^theRecvHandler)(NSInteger, LSMessagePtr, NSData*);
+  NSInteger theMessageID;
+  dispatch_queue_t thePollQueue;
   ZmqSocketPtr theFrontend;
 }
 
-@end
-
-//
-// LSConnection
-//
-
-@interface LSConnection ()
-{
-@private
-  NSMutableDictionary* theHandlers;
-  NSMutableDictionary* theRequests;
-  int64_t theMessageID;
-  //
-  dispatch_queue_t thePollQueue;
-  dispatch_queue_t theDataProtectionQueue;
-  // priority sockets
-  ZmqSocketPtr thePriorityBackend;
-  ZmqSocketPtr thePriorityFrontend;
-  ZmqSocketPtr thePriorityChannel;
-}
-
 - (void) startPollQueue;
-- (LSChannel*) createChannel:(ZmqSocketPtr)socket;
-- (void) send:(ZmqSocketPtr)socket request:(LS::Message)question complitionHandler:(id)handler;
-- (void) dispatchMessageFrom:(ZmqSocketPtr)socket;
-- (void) forwardMessageFrom:(ZmqSocketPtr)socketFrom to:(ZmqSocketPtr)socketTo;
-- (NSString*) makeKey:(zmq::message_t const&)message;
-
-- (ZmqMessagePtr) makeHeaderFrame:(NSInteger)messageID;
-- (NSInteger) requestKeyFromHeaderFrame:(zmq::message_t&)headerFrame;
-
-- (void) saveRequest:(zmq::message_t&)request forKey:(NSInteger)key;
-- (ZmqMessagePtr) loadRequestForKey:(NSInteger)key;
+- (void) dispatchReply:(std::deque<ZmqMessagePtr>)multipartReply;
+- (ZmqMessagePtr) makeRequestFrame:(LSMessagePtr)request;
+- (ZmqMessagePtr) makeHeaderFrameWithMessageID:(NSInteger)messageID;
+- (NSInteger) messageIDFromHeaderFrame:(ZmqMessagePtr)headerFrame;
+- (LSMessagePtr) makeReplyWithReplyFrame:(ZmqMessagePtr)replyFrame;
+- (NSData*) makeDataWithDataFrame:(ZmqMessagePtr)dataFrame;
 
 @end
 
-@implementation LSConnection
+@implementation LSAsyncRequestReplyConnection
 
-+ (LSConnection*) connection
++ (LSAsyncRequestReplyConnection*) connectionWithAddress:(NSString*)address RecvHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler
 {
-  return [[LSConnection alloc] init];
+  return [[LSAsyncRequestReplyConnection alloc] initWithAddress:address RecvHandler:handler];
 }
 
-- (id) init
+- (id) initWithAddress:(NSString*)address RecvHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler
 {
   if (!(self = [super init]))
   {
     return nil;
   }
   //
-  static char const* backendAddres = "inproc://caching_server.frontend";
-  static char const* frontendPriorityAddres = "inproc://server_routine.priority_request_puller";
-  //
-  theHandlers = [NSMutableDictionary dictionary];
-  theRequests = [NSMutableDictionary dictionary];
+  theRecvHandler = handler;
   theMessageID = 0;
-  thePollQueue = dispatch_queue_create("connection.poll.queue", NULL);
-  theDataProtectionQueue = dispatch_queue_create("connection.data_protection.queue", NULL);
+  thePollQueue = dispatch_queue_create("async_connection.poll.queue", NULL);
   //
-  thePriorityBackend = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
-  thePriorityBackend->connect(backendAddres);
-  thePriorityFrontend = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PULL));
-  thePriorityFrontend->bind(frontendPriorityAddres);
-  thePriorityChannel = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PUSH));
-  thePriorityChannel->connect(frontendPriorityAddres);
-  //
+  theFrontend = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
+  theFrontend->connect([address UTF8String]);
   [self startPollQueue];
+  //
   return self;
-}
-
-- (LSChannel*) createPriorityChannel
-{
-  return [self createChannel:thePriorityChannel];
 }
 
 - (void) startPollQueue
@@ -113,8 +68,7 @@
     {
       zmq_pollitem_t items [] =
       {
-        { *thePriorityBackend, 0, ZMQ_POLLIN, 0 },
-        { *thePriorityFrontend, 0, ZMQ_POLLIN, 0 },
+        { *theFrontend, 0, ZMQ_POLLIN, 0 },
       };
       if (zmq::poll(items, sizeof(items) / sizeof(zmq_pollitem_t)) <= 0)
       {
@@ -122,108 +76,69 @@
       }
       if (items[0].revents & ZMQ_POLLIN)
       {
-        dispatch_sync(theDataProtectionQueue,
-        ^{
-          [self dispatchMessageFrom:thePriorityBackend];
-        });
-      }
-      else if (items[1].revents & ZMQ_POLLIN)
-      {
-        [self forwardMessageFrom:thePriorityFrontend to:thePriorityBackend];
+        std::deque<ZmqMessagePtr> multipartReply = ZmqRecieveMultipartMessage(theFrontend);
+        [self dispatchReply:multipartReply];
       }
     }
   });
 }
 
-- (LSChannel*) createChannel:(ZmqSocketPtr)socket
+- (void) dispatchReply:(std::deque<ZmqMessagePtr>)multipartReply
 {
-  __weak typeof(self) weakSelf = self;
-  void (^sendHandler)(LS::Message const&, id) = ^(LS::Message const& message, id handler)
+  // check for zero frame
+  if (multipartReply.front()->size() != 0)
   {
-    __block LS::Message messageCopy = message;
-    dispatch_async(theDataProtectionQueue,
-    ^{
-      [weakSelf send:socket request:messageCopy complitionHandler:handler];
-    });
-  };
-  return [LSChannel serverChannelWithSendHandler: sendHandler];
-}
-
-- (void) send:(ZmqSocketPtr)socket request:(LS::Message)message complitionHandler:(id)handler
-{
-  NSLog(@"send begin = %@", [NSThread currentThread]);
-  ++theMessageID;
-  //
-  ZmqMessagePtr requestBody = ZmqMessagePtr(new zmq::message_t(message.ByteSize()));
-  message.SerializeToArray(requestBody->data(), (int)requestBody->size());
-  //
-  [self saveRequest:*requestBody forKey:theMessageID];
-  //
-  NSString* key = [self makeKey:*requestBody];
-  if (NSMutableArray* handlers = [theHandlers objectForKey:key])
-  {
-    [handlers addObject:handler];
+    return;
   }
-  else
+  multipartReply.pop_front();
+  // check for header frame
+  if (multipartReply.size() == 0)
   {
-    handlers = [NSMutableArray array];
-    [handlers addObject:handler];
-    [theHandlers setObject:handlers forKey:key];
-    //
-    std::deque<ZmqMessagePtr> multipartRequest;
-    multipartRequest.push_back([self makeHeaderFrame:theMessageID]);
-    multipartRequest.push_back(requestBody);
-    ZmqSendMultipartMessage(socket, multipartRequest);
+    return;
   }
-  NSLog(@"send end = %@", [NSThread currentThread]);
-}
-
-- (void) dispatchMessageFrom:(ZmqSocketPtr)socket
-{
-  NSLog(@"dispatch = %@", [NSThread currentThread]);
-  std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(socket);
-  if (messages.front()->size() == 0)
+  NSInteger replyID = [self messageIDFromHeaderFrame:multipartReply.front()];
+  multipartReply.pop_front();
+  // check for reply frame
+  if (multipartReply.size() == 0)
   {
-    messages.pop_front();
-    ZmqMessagePtr requestBody;
-    if (messages.size() == 2)
-    {
-      requestBody = [self loadRequestForKey:[self requestKeyFromHeaderFrame:*messages.front()]];
-    }
-    messages.pop_front();
-    if (messages.size() == 1)
-    {
-      LS::Message answer;
-      answer.ParseFromArray(messages.front()->data(), (int)messages.front()->size());
-      //
-      NSString* key = [self makeKey:*requestBody];
-      NSArray* handlers = [theHandlers objectForKey:key];
-      [theHandlers removeObjectForKey:key];
-      NSLog(@"dispatch handlers = %@", [NSThread currentThread]);
-      for (id handler in handlers)
-      {
-        ((void (^)(LS::Message const&))(handler))(answer);
-      }
-    }
+    return;
   }
-  NSLog(@"dispatch end = %@", [NSThread currentThread]);
+  LSMessagePtr reply = [self makeReplyWithReplyFrame:multipartReply.front()];
+  multipartReply.pop_front();
+  // check for optional data frame
+  NSData* data = nil;
+  if (multipartReply.size() > 0)
+  {
+    data = [self makeDataWithDataFrame:multipartReply.front()];
+    multipartReply.pop_front();
+  }
+  // check for the end
+  if (multipartReply.size() != 0)
+  {
+    return;
+  }
+  theRecvHandler(replyID, reply, data);
 }
 
-- (void) forwardMessageFrom:(ZmqSocketPtr)socketFrom to:(ZmqSocketPtr)socketTo
+- (NSInteger) sendRequest:(LSMessagePtr)request
 {
-  std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(socketFrom);
-  NSAssert(messages.size() == 2, @"Something wrong with messages");
-  messages.push_front(ZmqMessagePtr(new zmq::message_t()));
-  ZmqSendMultipartMessage(socketTo, messages);
+  std::deque<ZmqMessagePtr> multipartRequest;
+  multipartRequest.push_back(ZmqZeroFrame());
+  multipartRequest.push_back([self makeHeaderFrameWithMessageID:theMessageID]);
+  multipartRequest.push_back([self makeRequestFrame:request]);
+  ZmqSendMultipartMessage(theFrontend, multipartRequest);
+  //
+  return theMessageID++;
 }
 
-- (NSString*) makeKey:(zmq::message_t const&)message
+- (ZmqMessagePtr) makeRequestFrame:(LSMessagePtr)request
 {
-  NSData* data = [NSData dataWithBytes:message.data() length:message.size()];
-  return [data base64EncodedStringWithOptions:0];
+  ZmqMessagePtr requestBody = ZmqMessagePtr(new zmq::message_t(request->ByteSize()));
+  request->SerializeToArray(requestBody->data(), (int)requestBody->size());
+  return requestBody;
 }
 
-- (ZmqMessagePtr) makeHeaderFrame:(NSInteger)messageID
+- (ZmqMessagePtr) makeHeaderFrameWithMessageID:(NSInteger)messageID
 {
   LS::Header header;
   header.set_messageid(messageID);
@@ -233,28 +148,110 @@
   return zmqHeader;
 }
 
-- (NSInteger) requestKeyFromHeaderFrame:(zmq::message_t&)headerFrame
+- (NSInteger) messageIDFromHeaderFrame:(ZmqMessagePtr)headerFrame
 {
   LS::Header header;
-  header.ParseFromArray(headerFrame.data(), (int)headerFrame.size());
+  header.ParseFromArray(headerFrame->data(), (int)headerFrame->size());
   return header.messageid();
 }
 
-- (void) saveRequest:(zmq::message_t&)request forKey:(NSInteger)key
+- (LSMessagePtr) makeReplyWithReplyFrame:(ZmqMessagePtr)replyFrame
 {
-  NSData* data = [NSData dataWithBytes:request.data() length:request.size()];
-  [theRequests setObject:data forKey:[NSNumber numberWithLongLong:key]];
+  LSMessagePtr reply(new LS::Message);
+  reply->ParseFromArray(replyFrame->data(), (int)replyFrame->size());
+  return reply;
 }
 
-- (ZmqMessagePtr) loadRequestForKey:(NSInteger)key
+- (NSData*) makeDataWithDataFrame:(ZmqMessagePtr)dataFrame
 {
-  ZmqMessagePtr request;
-  if (NSData* data = [theRequests objectForKey:[NSNumber numberWithLongLong:key]])
+  return [NSData dataWithBytes:dataFrame->data() length:dataFrame->size()];
+}
+
+@end
+
+
+//
+// LSAsyncRequestReplyHandlerBasedConnection
+//
+
+@interface LSAsyncRequestReplyHandlerBasedConnection ()
+{
+@private
+  LSAsyncRequestReplyConnection* theConnection;
+  NSMutableDictionary* theHandlersDict;
+  NSMutableDictionary* theRequestsDict;
+  dispatch_queue_t theDataProtectionQueue;
+}
+
+- (void) dispatchReplyWithID:(NSInteger)replyID reply:(LSMessagePtr)reply data:(NSData*)data;
+
+@end
+
+@implementation LSAsyncRequestReplyHandlerBasedConnection
+
++ (LSAsyncRequestReplyHandlerBasedConnection*) connectionWithAddress:(NSString*)address
+{
+  return [[LSAsyncRequestReplyHandlerBasedConnection alloc] initWithAddress:address];
+}
+
+- (id) initWithAddress:(NSString*)address;
+{
+  if (!(self = [super init]))
   {
-    request = ZmqMessagePtr(new zmq::message_t(data.length));
-    memcpy(request->data(), [data bytes], request->size());
+    return nil;
   }
-  return request;
+  //
+  __weak typeof(self) weakSelf = self;
+  theConnection = [LSAsyncRequestReplyConnection connectionWithAddress:address RecvHandler:
+    ^(NSInteger replyID, LSMessagePtr reply, NSData* data)
+    {
+      [weakSelf dispatchReplyWithID:replyID reply:reply data:data];
+    }];
+  theHandlersDict = [NSMutableDictionary dictionary];
+  theRequestsDict = [NSMutableDictionary dictionary];
+  theDataProtectionQueue = dispatch_queue_create("connection_helper.data_protection.queue", NULL);
+  //
+  return self;
+}
+
+- (void) sendRequest:(LSMessagePtr)request replyHandler:(void (^)(LSMessagePtr, NSData*))handler
+{
+  dispatch_async(theDataProtectionQueue,
+  ^{
+    NSMutableData* requestData = [NSMutableData dataWithLength:request->ByteSize()];
+    request->SerializeToArray([requestData mutableBytes], (int)[requestData length]);
+    NSString* encodedRequest = [requestData base64EncodedStringWithOptions:0];
+    //
+    if (NSMutableArray* handlers = [theHandlersDict objectForKey:encodedRequest])
+    {
+      [handlers addObject:handler];
+    }
+    else
+    {
+      NSInteger requestID = [theConnection sendRequest:request];
+      //
+      handlers = [NSMutableArray array];
+      [handlers addObject:handler];
+      [theHandlersDict setObject:handlers forKey:encodedRequest];
+      [theRequestsDict setObject:encodedRequest forKey:[NSNumber numberWithLongLong:requestID]];
+    }
+  });
+}
+
+- (void) dispatchReplyWithID:(NSInteger)replyID reply:(LSMessagePtr)reply data:(NSData*)data
+{
+  dispatch_async(theDataProtectionQueue,
+  ^{
+    if (NSString* encodedRequest = [theRequestsDict objectForKey:[NSNumber numberWithLongLong:replyID]])
+    {
+      NSArray* handlers = [theHandlersDict objectForKey:encodedRequest];
+      [theHandlersDict removeObjectForKey:encodedRequest];
+      for (id handler in handlers)
+      {
+        ((void (^)(LSMessagePtr, NSData*))(handler))(reply, data);
+      }
+    }
+  });
 }
 
 @end

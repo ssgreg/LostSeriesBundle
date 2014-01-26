@@ -23,6 +23,6 @@ typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
 
 std::deque<ZmqMessagePtr> ZmqRecieveMultipartMessage(ZmqSocketPtr socket);
 void ZmqSendMultipartMessage(ZmqSocketPtr socket, std::deque<ZmqMessagePtr> messages);
-
+ZmqMessagePtr ZmqZeroFrame();
 
 zmq::context_t& ZmqGlobalContext();

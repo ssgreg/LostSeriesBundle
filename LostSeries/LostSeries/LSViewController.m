@@ -9,7 +9,6 @@
 // LS
 #import "LSViewController.h"
 #import "Remote/LSProtocol.h"
-#import "Remote/LSChannel.h"
 #import "Remote/LSConnection.h"
 #import "Remote/LSBatchArtworkGetter.h"
 #import "CachingServer/LSCachingServer.h"
@@ -68,10 +67,9 @@
 @interface LSViewController ()
 {
   LSCachingServer* theCachingServer;
+  LSAsyncBackendFacade* theBackendFacade;
   
   NSMutableArray* theItems;
-  LSConnection* theConnection;
-  LSProtocol* thePriorityProtocol;
   IBOutlet UICollectionView* theCollectionView;
   LSBatchArtworkGetter* theArtworkGetter;
   NSArray* theArtworkGetterPriorities;
@@ -88,10 +86,9 @@
   [super viewDidLoad];
   //
   theCachingServer = [[LSCachingServer alloc] init];
-  theConnection = [LSConnection connection];
-  thePriorityProtocol = [LSProtocol protocolWithChannel:[theConnection createPriorityChannel]];
+  theBackendFacade = [LSAsyncBackendFacade backendFacade];
   //
-  [thePriorityProtocol getShowInfoArray:^(NSArray* shows)
+  [theBackendFacade getShowInfoArray:^(NSArray* shows)
   {
     NSMutableArray* newShows = [NSMutableArray array];
     for (int i = 0; i < 40; ++i)
@@ -187,7 +184,7 @@
 - (void) getArtworkAsyncForIndex:(NSInteger)index completionHandler:(void (^)(NSData*))handler
 {
   LSShowAlbumCellModel* cellModel = [theItems objectAtIndex:index];
-  [thePriorityProtocol getArtwork:cellModel.showInfo completionHandler:handler];
+  [theBackendFacade getArtworkByShowInfo:cellModel.showInfo replyHandler:handler];
 }
 
 - (void) didGetArtwork:(NSData*)data forIndex:(NSInteger)index
