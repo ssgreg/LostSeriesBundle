@@ -242,10 +242,12 @@
 {
   dispatch_async(theDataProtectionQueue,
   ^{
-    if (NSString* encodedRequest = [theRequestsDict objectForKey:[NSNumber numberWithLongLong:replyID]])
+    NSNumber* requestKey = [NSNumber numberWithLongLong:replyID];
+    if (NSString* encodedRequest = [theRequestsDict objectForKey:requestKey])
     {
       NSArray* handlers = [theHandlersDict objectForKey:encodedRequest];
       [theHandlersDict removeObjectForKey:encodedRequest];
+      [theRequestsDict removeObjectForKey:requestKey];
       for (id handler in handlers)
       {
         ((void (^)(LSMessagePtr, NSData*))(handler))(reply, data);
