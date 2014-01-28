@@ -40,43 +40,43 @@
   return self;
 }
 
-- (ZmqMessagePtr) cachedReplyForRequest:(ZmqMessagePtr)request
+- (std::deque<ZmqMessagePtr>) cachedReplyForRequest:(ZmqMessagePtr)request
 {
-  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString* docs = [paths objectAtIndex:0];
-  NSString* path = [docs stringByAppendingFormat:@"/%@", [self fileNameFromRequest:request]];
-  
-  NSFileManager* fileManager = [NSFileManager defaultManager];
-  if ([fileManager fileExistsAtPath:path])
-  {
-    NSData* replyData  = [NSData dataWithContentsOfFile:path];
-    if (replyData && [replyData length] != 0)
-    {
-      LS::Message answer;
-      answer.ParseFromArray([replyData bytes], (int)[replyData length]);
-      ZmqMessagePtr reply(new zmq::message_t(answer.ByteSize()));
-      answer.SerializeToArray(reply->data(), (int)reply->size());
-      return reply;
-    }
-  }
-  return ZmqMessagePtr();
+//  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//  NSString* docs = [paths objectAtIndex:0];
+//  NSString* path = [docs stringByAppendingFormat:@"/%@", [self fileNameFromRequest:request]];
+//  
+//  NSFileManager* fileManager = [NSFileManager defaultManager];
+//  if ([fileManager fileExistsAtPath:path])
+//  {
+//    NSData* replyData  = [NSData dataWithContentsOfFile:path];
+//    if (replyData && [replyData length] != 0)
+//    {
+//      LS::Message answer;
+//      answer.ParseFromArray([replyData bytes], (int)[replyData length]);
+//      ZmqMessagePtr reply(new zmq::message_t(answer.ByteSize()));
+//      answer.SerializeToArray(reply->data(), (int)reply->size());
+//      return reply;
+//    }
+//  }
+  return std::deque<ZmqMessagePtr>();
 }
 
-- (void) cacheReply:(ZmqMessagePtr)reply forRequest:(ZmqMessagePtr)request
+- (void) cacheReply:(std::deque<ZmqMessagePtr>)reply forRequest:(ZmqMessagePtr)request
 {
-  NSLog(@"request=%ld, reply=%ld", request->size(), reply->size());
-  
-  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString* docs = [paths objectAtIndex:0];
-  NSString* path = [docs stringByAppendingFormat:@"/%@", [self fileNameFromRequest:request]];
-  
-  NSData* imageData = [NSData dataWithBytes:reply->data() length:reply->size()];
-  NSError* writeError = nil;
-  [imageData writeToFile:path options:NSDataWritingAtomic error:&writeError];
-
-  if(writeError!=nil) {
-    NSLog(@"%@: Error saving image: %@", [self class], [writeError localizedDescription]);
-  }
+  NSLog(@"request=%ld", reply.size());
+//  
+//  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//  NSString* docs = [paths objectAtIndex:0];
+//  NSString* path = [docs stringByAppendingFormat:@"/%@", [self fileNameFromRequest:request]];
+//  
+//  NSData* imageData = [NSData dataWithBytes:reply->data() length:reply->size()];
+//  NSError* writeError = nil;
+//  [imageData writeToFile:path options:NSDataWritingAtomic error:&writeError];
+//
+//  if(writeError!=nil) {
+//    NSLog(@"%@: Error saving image: %@", [self class], [writeError localizedDescription]);
+//  }
 }
 
 - (NSString*) fileNameFromRequest:(ZmqMessagePtr)request

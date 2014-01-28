@@ -11,6 +11,7 @@
 // ZeroMQ
 #include <ZeroMQ/ZeroMQ.h>
 
+
 //
 // LSLocalCache
 //
@@ -24,7 +25,7 @@
 - (id) init;
 
 #pragma mark - Interface
-- (ZmqMessagePtr) cachedReplyForRequest:(ZmqMessagePtr)request;
-- (void) cacheReply:(ZmqMessagePtr)reply forRequest:(ZmqMessagePtr)request;
+- (std::deque<ZmqMessagePtr>) cachedReplyForRequest:(ZmqMessagePtr)request;
+- (void) cacheReply:(std::deque<ZmqMessagePtr>)reply forRequest:(ZmqMessagePtr)request;
 
 @end

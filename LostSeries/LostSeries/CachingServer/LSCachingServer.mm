@@ -9,8 +9,12 @@
 // LS
 #import "LSCachingServer.h"
 #import "LSLocalCache.h"
+// Protobuf
+#include <Protobuf.Generated/LostSeriesProtocol.h>
 // ZeroMQ
 #include <ZeroMQ/ZeroMQ.h>
+// std
+#include <map>
 
 
 //
@@ -29,6 +33,11 @@
 }
 
 - (void) startPollQueue;
+- (int64_t) headerFrameID:(ZmqMessagePtr)headerFrame;
+- (ZmqMessagePtr) copyRequest:(ZmqMessagePtr)request;
+
+//- (ZmqMessagePtr) cachedReplyForRequest:(ZmqMessagePtr)request;
+//- (void) cacheReply:(std::deque<ZmqMessagePtr>)reply forRequest:(ZmqMessagePtr)request;
 
 @end
 
@@ -68,7 +77,7 @@
 {
   dispatch_async(thePollQueue,
   ^{
-    ZmqMessagePtr lastRequest;
+    std::map<int64_t, ZmqMessagePtr> idToRequestMap;
     while (TRUE)
     {
       zmq_pollitem_t items [] =
@@ -82,31 +91,69 @@
       }
       if (items[0].revents & ZMQ_POLLIN)
       {
-        std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(theFrontendSocket);
-        messages.push_front(ZmqMessagePtr(new zmq::message_t));
-//        //
-//        // copy last request for later usage
-//        lastRequest = ZmqMessagePtr(new zmq::message_t);
-//        lastRequest->copy(&*messages.back());
-//        //
-//        if (ZmqMessagePtr reply = [theLocalCache cachedReplyForRequest:lastRequest])
-//        {
-//          theFrontendSocket->send(*reply);
-//        }
-//        else
-//        {
-          ZmqSendMultipartMessage(theBackendSocket, messages);
-//        }
+        std::deque<ZmqMessagePtr> multipartRequest = ZmqRecieveMultipartMessage(theFrontendSocket);
+        if (multipartRequest.size() != 2)
+        {
+          // TODO - warning!
+          continue;
+        }
+        //
+        std::deque<ZmqMessagePtr> cachedReply = [theLocalCache cachedReplyForRequest:multipartRequest.back()];
+        if (cachedReply.empty())
+        {
+          idToRequestMap[[self headerFrameID:multipartRequest.front()]] = [self copyRequest:multipartRequest.back()];
+          //
+          multipartRequest.push_front(ZmqZeroFrame());
+          ZmqSendMultipartMessage(theBackendSocket, multipartRequest);
+        }
+        else
+        {
+          // add request header to the cached reply
+          cachedReply.push_back(multipartRequest.front());
+          //
+          ZmqSendMultipartMessage(theFrontendSocket, cachedReply);
+        }
       }
       else if (items[1].revents & ZMQ_POLLIN)
       {
-        std::deque<ZmqMessagePtr> messages = ZmqRecieveMultipartMessage(theBackendSocket);
-        messages.pop_front();
-//        [theLocalCache cacheReply:messages.front() forRequest:lastRequest];
-        ZmqSendMultipartMessage(theFrontendSocket, messages);
+        std::deque<ZmqMessagePtr> multipartReply = ZmqRecieveMultipartMessage(theBackendSocket);
+        multipartReply.pop_front();
+        if (multipartReply.size() < 2)
+        {
+          // TODO - warning!
+          continue;
+        }
+        ZmqMessagePtr header = multipartReply.front();
+        multipartReply.pop_front();
+        auto requestByID = idToRequestMap.find([self headerFrameID:header]);
+        if (requestByID == idToRequestMap.end())
+        {
+          // TODO - warning!
+          continue;
+        }
+        //
+        [theLocalCache cacheReply:multipartReply forRequest:requestByID->second];
+        idToRequestMap.erase(requestByID);
+        //
+        multipartReply.push_front(header);
+        ZmqSendMultipartMessage(theFrontendSocket, multipartReply);
       }
     }
   });
+}
+
+- (int64_t) headerFrameID:(ZmqMessagePtr)headerFrame
+{
+  LS::Header header;
+  header.ParseFromArray(headerFrame->data(), (int)headerFrame->size());
+  return header.messageid();
+}
+
+- (ZmqMessagePtr) copyRequest:(ZmqMessagePtr)request
+{
+  ZmqMessagePtr result(new zmq::message_t);
+  result->copy(&*request);
+  return result;
 }
 
 @end
