@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE1A250B189A8D8000DBA78B /* LSShowInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */; };
 		EE1AA59B1888E99F004B6E7D /* libProtobuf.Generated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA5951887AD60004B6E7D /* libProtobuf.Generated.a */; };
 		EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA59F1888F28E004B6E7D /* LSConnection.mm */; };
 		EE1AA5A61888F2ED004B6E7D /* LSAsyncBackendFacade.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5A51888F2ED004B6E7D /* LSAsyncBackendFacade.mm */; };
@@ -21,7 +22,6 @@
 		EEB1180E187F17D500337023 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1180D187F17D500337023 /* main.m */; };
 		EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB11811187F17D500337023 /* LSAppDelegate.m */; };
 		EEB11815187F17D500337023 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EEB11813187F17D500337023 /* Main.storyboard */; };
-		EEB11818187F17D500337023 /* LSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB11817187F17D500337023 /* LSViewController.m */; };
 		EEB1181A187F17D500337023 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEB11819187F17D500337023 /* Images.xcassets */; };
 		EEB11821187F17D500337023 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11820187F17D500337023 /* XCTest.framework */; };
 		EEB11822187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
@@ -57,6 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSShowInfoCollectionViewController.h; sourceTree = "<group>"; };
+		EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = LSShowInfoCollectionViewController.m; sourceTree = "<group>"; };
 		EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Protobuf.Generated.xcodeproj; path = Protobuf.Generated/Protobuf.Generated.xcodeproj; sourceTree = "<group>"; };
 		EE1AA59E1888F28E004B6E7D /* LSConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSConnection.h; path = Remote/LSConnection.h; sourceTree = "<group>"; };
 		EE1AA59F1888F28E004B6E7D /* LSConnection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSConnection.mm; path = Remote/LSConnection.mm; sourceTree = "<group>"; };
@@ -81,8 +83,6 @@
 		EEB11810187F17D500337023 /* LSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSAppDelegate.h; sourceTree = "<group>"; };
 		EEB11811187F17D500337023 /* LSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSAppDelegate.m; sourceTree = "<group>"; };
 		EEB11814187F17D500337023 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		EEB11816187F17D500337023 /* LSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSViewController.h; sourceTree = "<group>"; };
-		EEB11817187F17D500337023 /* LSViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = LSViewController.m; sourceTree = "<group>"; };
 		EEB11819187F17D500337023 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EEB1181F187F17D500337023 /* LostSeriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LostSeriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB11820187F17D500337023 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -204,8 +204,8 @@
 				EEB11810187F17D500337023 /* LSAppDelegate.h */,
 				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EEB11813187F17D500337023 /* Main.storyboard */,
-				EEB11816187F17D500337023 /* LSViewController.h */,
-				EEB11817187F17D500337023 /* LSViewController.m */,
+				EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */,
+				EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */,
 				EEB11819187F17D500337023 /* Images.xcassets */,
 				EEB11808187F17D500337023 /* Supporting Files */,
 			);
@@ -362,6 +362,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE1A250B189A8D8000DBA78B /* LSShowInfoCollectionViewController.m in Sources */,
 				EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */,
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
@@ -370,7 +371,6 @@
 				EE1AA5A9188BEFCF004B6E7D /* LSBatchArtworkGetter.mm in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */,
-				EEB11818187F17D500337023 /* LSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

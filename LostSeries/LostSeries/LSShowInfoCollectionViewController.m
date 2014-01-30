@@ -1,13 +1,13 @@
 //
-//  LSViewController.m
+//  LSShowInfoCollectionViewController.m
 //  LostSeries
 //
-//  Created by Grigory Zubankov on 09/01/14.
+//  Created by Grigory Zubankov on 30/01/14.
 //  Copyright (c) 2014 Grigory Zubankov. All rights reserved.
 //
 
 // LS
-#import "LSViewController.h"
+#import "LSShowInfoCollectionViewController.h"
 #import "Remote/LSAsyncBackendFacade.h"
 #import "Remote/LSBatchArtworkGetter.h"
 #import "CachingServer/LSCachingServer.h"
@@ -34,7 +34,6 @@
 @end
 
 
-
 @interface LSShowAlbumCell : UICollectionViewCell
 
 @property IBOutlet UIImageView* image;
@@ -59,11 +58,8 @@
 @end
 
 
-//
-// LSViewController
-//
 
-@interface LSViewController ()
+@interface LSShowInfoCollectionViewController ()
 {
   LSCachingServer* theCachingServer;
   LSAsyncBackendFacade* theBackendFacade;
@@ -78,7 +74,7 @@
 
 @end
 
-@implementation LSViewController
+@implementation LSShowInfoCollectionViewController
 
 - (void)viewDidLoad
 {
@@ -88,28 +84,28 @@
   theBackendFacade = [LSAsyncBackendFacade backendFacade];
   //
   [theBackendFacade getShowInfoArray:^(NSArray* shows)
-  {
-    NSMutableArray* newShows = [NSMutableArray array];
-//    for (int i = 0; i < 40; ++i)
-//    {
-//      [newShows addObject:shows[0]];
-//    }
-    for (id show in shows)
-    {
-      [newShows addObject:show];
-    }
-    
-    theItems = [NSMutableArray array];
-    for (id show in newShows)
-    {
-      LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
-      cellModel.showInfo = show;
-      [theItems addObject: cellModel];
-    }
-    
-    [theCollectionView reloadData];
-    theArtworkGetter = [LSBatchArtworkGetter artworkGetterWithDelegate:self];
-  }];
+   {
+     NSMutableArray* newShows = [NSMutableArray array];
+     //    for (int i = 0; i < 40; ++i)
+     //    {
+     //      [newShows addObject:shows[0]];
+     //    }
+     for (id show in shows)
+     {
+       [newShows addObject:show];
+     }
+     
+     theItems = [NSMutableArray array];
+     for (id show in newShows)
+     {
+       LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
+       cellModel.showInfo = show;
+       [theItems addObject: cellModel];
+     }
+     
+     [theCollectionView reloadData];
+     theArtworkGetter = [LSBatchArtworkGetter artworkGetterWithDelegate:self];
+   }];
 }
 
 - (void) updatePriorities
@@ -122,17 +118,17 @@
     [indexes addObject:index];
   }
   theArtworkGetterPriorities = [indexes sortedArrayUsingComparator:^(id obj1, id obj2)
-  {
-    if ([obj1 integerValue] > [obj2 integerValue])
-    {
-      return (NSComparisonResult)NSOrderedDescending;
-    }
-    if ([obj1 integerValue] < [obj2 integerValue])
-    {
-      return (NSComparisonResult)NSOrderedAscending;
-    }
-    return (NSComparisonResult)NSOrderedSame;
-  }];
+                                {
+                                  if ([obj1 integerValue] > [obj2 integerValue])
+                                  {
+                                    return (NSComparisonResult)NSOrderedDescending;
+                                  }
+                                  if ([obj1 integerValue] < [obj2 integerValue])
+                                  {
+                                    return (NSComparisonResult)NSOrderedAscending;
+                                  }
+                                  return (NSComparisonResult)NSOrderedSame;
+                                }];
 }
 
 
@@ -162,12 +158,12 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-//  NSLog(@"Decelerating");
+  //  NSLog(@"Decelerating");
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-//  NSLog(@"Dragging, %ld", decelerate);
+  //  NSLog(@"Dragging, %ld", decelerate);
 }
 
 
@@ -197,12 +193,12 @@
   cellModel.artwork = [UIImage imageWithData:data];
   // update view
   NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-  if (LSShowAlbumCell* cell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath:indexPath])
+  LSShowAlbumCell* cell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath:indexPath];
+  if (cell)
   {
     cell.image.image = cellModel.artwork;
     [cell setNeedsLayout];
   }
 }
-
 
 @end
