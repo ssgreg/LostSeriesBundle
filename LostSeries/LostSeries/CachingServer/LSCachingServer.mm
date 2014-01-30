@@ -109,7 +109,7 @@
         else
         {
           // add request header to the cached reply
-          cachedReply.push_back(multipartRequest.front());
+          cachedReply.push_front(multipartRequest.front());
           //
           ZmqSendMultipartMessage(theFrontendSocket, cachedReply);
         }

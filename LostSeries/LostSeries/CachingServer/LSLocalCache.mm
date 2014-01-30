@@ -18,7 +18,7 @@
 
 @interface LSLocalCache ()
 
-- (NSString*) fileNameFromRequest:(ZmqMessagePtr)request;
+- (NSString*) fileForRequest:(ZmqMessagePtr)request;
 - (NSString*) fileNameFromSeriesRequest:(LS::SeriesRequest const&)request;
 - (NSString*) fileNameFromArtworkRequest:(LS::ArtworkRequest const&)request;
 
@@ -42,58 +42,85 @@
 
 - (std::deque<ZmqMessagePtr>) cachedReplyForRequest:(ZmqMessagePtr)request
 {
-//  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//  NSString* docs = [paths objectAtIndex:0];
-//  NSString* path = [docs stringByAppendingFormat:@"/%@", [self fileNameFromRequest:request]];
-//  
+  std::deque<ZmqMessagePtr> result;
+  //
+//  NSString* fileNameWithReplyMessage = [self fileForRequest:request];
+//  NSString* fileNameWithReplyData = [fileNameWithReplyMessage stringByAppendingString:@"-data"];
+//  //
 //  NSFileManager* fileManager = [NSFileManager defaultManager];
-//  if ([fileManager fileExistsAtPath:path])
+//  if ([fileManager fileExistsAtPath:fileNameWithReplyMessage])
 //  {
-//    NSData* replyData  = [NSData dataWithContentsOfFile:path];
-//    if (replyData && [replyData length] != 0)
+//    NSData* replyMessageData = [NSData dataWithContentsOfFile:fileNameWithReplyMessage];
+//    if (replyMessageData && [replyMessageData length] != 0)
 //    {
-//      LS::Message answer;
-//      answer.ParseFromArray([replyData bytes], (int)[replyData length]);
-//      ZmqMessagePtr reply(new zmq::message_t(answer.ByteSize()));
-//      answer.SerializeToArray(reply->data(), (int)reply->size());
-//      return reply;
+//      ZmqMessagePtr replyMessage(new zmq::message_t([replyMessageData length]));
+//      memcpy(replyMessage->data(), [replyMessageData bytes], replyMessage->size());
+//      result.push_back(replyMessage);
+//    }
+//    if (!result.empty())
+//    {
+//      NSData* replyData = [NSData dataWithContentsOfFile:fileNameWithReplyData];
+//      if (replyData && [replyData length] != 0)
+//      {
+//        ZmqMessagePtr replyBinary(new zmq::message_t([replyData length]));
+//        memcpy(replyBinary->data(), [replyData bytes], replyBinary->size());
+//        result.push_back(replyBinary);
+//      }
 //    }
 //  }
-  return std::deque<ZmqMessagePtr>();
+  return result;
 }
 
 - (void) cacheReply:(std::deque<ZmqMessagePtr>)reply forRequest:(ZmqMessagePtr)request
 {
-  NSLog(@"request=%ld", reply.size());
-//  
-//  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//  NSString* docs = [paths objectAtIndex:0];
-//  NSString* path = [docs stringByAppendingFormat:@"/%@", [self fileNameFromRequest:request]];
-//  
-//  NSData* imageData = [NSData dataWithBytes:reply->data() length:reply->size()];
-//  NSError* writeError = nil;
-//  [imageData writeToFile:path options:NSDataWritingAtomic error:&writeError];
-//
-//  if(writeError!=nil) {
-//    NSLog(@"%@: Error saving image: %@", [self class], [writeError localizedDescription]);
-//  }
+  NSString* fileNameWithReplyMessage = [self fileForRequest:request];
+  NSString* fileNameWithReplyData = [fileNameWithReplyMessage stringByAppendingString:@"-data"];
+  // save reply message
+  if (reply.empty())
+  {
+    return;
+  }
+  NSData* replyMessageData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
+  NSError* writeError = nil;
+  [replyMessageData writeToFile:fileNameWithReplyMessage options:NSDataWritingAtomic error:&writeError];
+  if (writeError)
+  {
+    return;
+  }
+  reply.pop_front();
+  // save reply data
+  if (reply.empty())
+  {
+    return;
+  }
+  NSData* replyData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
+  [replyData writeToFile:fileNameWithReplyData options:NSDataWritingAtomic error:&writeError];
+  if (writeError)
+  {
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:fileNameWithReplyData error:&writeError];
+    return;
+  }
 }
 
-- (NSString*) fileNameFromRequest:(ZmqMessagePtr)request
+- (NSString*) fileForRequest:(ZmqMessagePtr)request
 {
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  NSString* pathToDocuments = [paths objectAtIndex:0];
+  NSString* fileName = nil;
+  //
   LS::Message message;
   message.ParseFromArray(request->data(), (int)request->size());
-
   if (message.has_seriesrequest())
   {
-    return [self fileNameFromSeriesRequest:message.seriesrequest()];
+    fileName = [self fileNameFromSeriesRequest:message.seriesrequest()];
   }
   else if (message.has_artworkrequest())
   {
-    return [self fileNameFromArtworkRequest:message.artworkrequest()];
+    fileName = [self fileNameFromArtworkRequest:message.artworkrequest()];
   }
-
-  return @"Unknown";
+  //
+  return [pathToDocuments stringByAppendingFormat:@"/%@", fileName];
 }
 
 - (NSString*) fileNameFromSeriesRequest:(LS::SeriesRequest const&)request

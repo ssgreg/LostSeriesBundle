@@ -26,6 +26,9 @@ const ::google_public::protobuf::internal::GeneratedMessageReflection*
 const ::google_public::protobuf::Descriptor* Message_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   Message_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* SubscriptionRecord_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  SubscriptionRecord_reflection_ = NULL;
 const ::google_public::protobuf::Descriptor* SeriesRequest_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   SeriesRequest_reflection_ = NULL;
@@ -41,6 +44,18 @@ const ::google_public::protobuf::internal::GeneratedMessageReflection*
 const ::google_public::protobuf::Descriptor* ArtworkResponse_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   ArtworkResponse_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* SetSubscriptionRequest_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  SetSubscriptionRequest_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* SetSubscriptionResponse_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  SetSubscriptionResponse_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* GetSubscriptionRequest_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  GetSubscriptionRequest_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* GetSubscriptionResponse_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  GetSubscriptionResponse_reflection_ = NULL;
 
 }  // namespace
 
@@ -67,11 +82,15 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(Header));
   Message_descriptor_ = file->message_type(1);
-  static const int Message_offsets_[4] = {
+  static const int Message_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, artworkrequest_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, setsubscriptionrequest_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, getsubscriptionrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesresponse_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, artworkresponse_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, setsubscriptionresponse_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, getsubscriptionresponse_),
   };
   Message_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -84,7 +103,22 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(Message));
-  SeriesRequest_descriptor_ = file->message_type(2);
+  SubscriptionRecord_descriptor_ = file->message_type(2);
+  static const int SubscriptionRecord_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscriptionRecord, originaltitle_),
+  };
+  SubscriptionRecord_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      SubscriptionRecord_descriptor_,
+      SubscriptionRecord::default_instance_,
+      SubscriptionRecord_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscriptionRecord, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscriptionRecord, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(SubscriptionRecord));
+  SeriesRequest_descriptor_ = file->message_type(3);
   static const int SeriesRequest_offsets_[1] = {
   };
   SeriesRequest_reflection_ =
@@ -98,7 +132,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesRequest));
-  SeriesResponse_descriptor_ = file->message_type(3);
+  SeriesResponse_descriptor_ = file->message_type(4);
   static const int SeriesResponse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse, shows_),
   };
@@ -131,7 +165,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesResponse_TVShow));
-  ArtworkRequest_descriptor_ = file->message_type(4);
+  ArtworkRequest_descriptor_ = file->message_type(5);
   static const int ArtworkRequest_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, snapshot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, originaltitle_),
@@ -147,7 +181,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(ArtworkRequest));
-  ArtworkResponse_descriptor_ = file->message_type(5);
+  ArtworkResponse_descriptor_ = file->message_type(6);
   static const int ArtworkResponse_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, snapshot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, originaltitle_),
@@ -163,6 +197,67 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(ArtworkResponse));
+  SetSubscriptionRequest_descriptor_ = file->message_type(7);
+  static const int SetSubscriptionRequest_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, token_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, subscriptions_),
+  };
+  SetSubscriptionRequest_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      SetSubscriptionRequest_descriptor_,
+      SetSubscriptionRequest::default_instance_,
+      SetSubscriptionRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(SetSubscriptionRequest));
+  SetSubscriptionResponse_descriptor_ = file->message_type(8);
+  static const int SetSubscriptionResponse_offsets_[1] = {
+  };
+  SetSubscriptionResponse_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      SetSubscriptionResponse_descriptor_,
+      SetSubscriptionResponse::default_instance_,
+      SetSubscriptionResponse_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionResponse, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionResponse, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(SetSubscriptionResponse));
+  GetSubscriptionRequest_descriptor_ = file->message_type(9);
+  static const int GetSubscriptionRequest_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionRequest, token_),
+  };
+  GetSubscriptionRequest_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      GetSubscriptionRequest_descriptor_,
+      GetSubscriptionRequest::default_instance_,
+      GetSubscriptionRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionRequest, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(GetSubscriptionRequest));
+  GetSubscriptionResponse_descriptor_ = file->message_type(10);
+  static const int GetSubscriptionResponse_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionResponse, token_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionResponse, subscriptions_),
+  };
+  GetSubscriptionResponse_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      GetSubscriptionResponse_descriptor_,
+      GetSubscriptionResponse::default_instance_,
+      GetSubscriptionResponse_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionResponse, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionResponse, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(GetSubscriptionResponse));
 }
 
 namespace {
@@ -180,6 +275,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Message_descriptor_, &Message::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SubscriptionRecord_descriptor_, &SubscriptionRecord::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SeriesRequest_descriptor_, &SeriesRequest::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SeriesResponse_descriptor_, &SeriesResponse::default_instance());
@@ -189,6 +286,14 @@ void protobuf_RegisterTypes(const ::std::string&) {
     ArtworkRequest_descriptor_, &ArtworkRequest::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ArtworkResponse_descriptor_, &ArtworkResponse::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SetSubscriptionRequest_descriptor_, &SetSubscriptionRequest::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SetSubscriptionResponse_descriptor_, &SetSubscriptionResponse::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    GetSubscriptionRequest_descriptor_, &GetSubscriptionRequest::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    GetSubscriptionResponse_descriptor_, &GetSubscriptionResponse::default_instance());
 }
 
 }  // namespace
@@ -198,6 +303,8 @@ void protobuf_ShutdownFile_LostSeriesProtocol_2eproto() {
   delete Header_reflection_;
   delete Message::default_instance_;
   delete Message_reflection_;
+  delete SubscriptionRecord::default_instance_;
+  delete SubscriptionRecord_reflection_;
   delete SeriesRequest::default_instance_;
   delete SeriesRequest_reflection_;
   delete SeriesResponse::default_instance_;
@@ -208,6 +315,14 @@ void protobuf_ShutdownFile_LostSeriesProtocol_2eproto() {
   delete ArtworkRequest_reflection_;
   delete ArtworkResponse::default_instance_;
   delete ArtworkResponse_reflection_;
+  delete SetSubscriptionRequest::default_instance_;
+  delete SetSubscriptionRequest_reflection_;
+  delete SetSubscriptionResponse::default_instance_;
+  delete SetSubscriptionResponse_reflection_;
+  delete GetSubscriptionRequest::default_instance_;
+  delete GetSubscriptionRequest_reflection_;
+  delete GetSubscriptionResponse::default_instance_;
+  delete GetSubscriptionResponse_reflection_;
 }
 
 void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
@@ -218,35 +333,58 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
 
   ::google_public::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\030LostSeriesProtocol.proto\022\002LS\"\033\n\006Header"
-    "\022\021\n\tmessageID\030\001 \002(\003\"\275\001\n\007Message\022)\n\rserie"
+    "\022\021\n\tmessageID\030\001 \002(\003\"\265\003\n\007Message\022)\n\rserie"
     "sRequest\030\350\007 \001(\0132\021.LS.SeriesRequest\022+\n\016ar"
     "tworkRequest\030\351\007 \001(\0132\022.LS.ArtworkRequest\022"
-    "+\n\016seriesResponse\030\320\017 \001(\0132\022.LS.SeriesResp"
-    "onse\022-\n\017artworkResponse\030\321\017 \001(\0132\023.LS.Artw"
-    "orkResponse\"\017\n\rSeriesRequest\"\222\001\n\016SeriesR"
-    "esponse\022(\n\005shows\030\001 \003(\0132\031.LS.SeriesRespon"
-    "se.TVShow\032V\n\006TVShow\022\r\n\005title\030\001 \002(\t\022\025\n\ror"
-    "iginalTitle\030\002 \002(\t\022\024\n\014seasonNumber\030\003 \002(\005\022"
-    "\020\n\010snapshot\030\004 \002(\t\"9\n\016ArtworkRequest\022\020\n\010s"
-    "napshot\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\":\n\017"
-    "ArtworkResponse\022\020\n\010snapshot\030\001 \002(\t\022\025\n\rori"
-    "ginalTitle\030\002 \002(\t", 536);
+    ";\n\026setSubscriptionRequest\030\352\007 \001(\0132\032.LS.Se"
+    "tSubscriptionRequest\022;\n\026getSubscriptionR"
+    "equest\030\353\007 \001(\0132\032.LS.GetSubscriptionReques"
+    "t\022+\n\016seriesResponse\030\320\017 \001(\0132\022.LS.SeriesRe"
+    "sponse\022-\n\017artworkResponse\030\321\017 \001(\0132\023.LS.Ar"
+    "tworkResponse\022=\n\027setSubscriptionResponse"
+    "\030\322\017 \001(\0132\033.LS.SetSubscriptionResponse\022=\n\027"
+    "getSubscriptionResponse\030\323\017 \001(\0132\033.LS.GetS"
+    "ubscriptionResponse\"+\n\022SubscriptionRecor"
+    "d\022\025\n\roriginalTitle\030\001 \002(\t\"\017\n\rSeriesReques"
+    "t\"\222\001\n\016SeriesResponse\022(\n\005shows\030\001 \003(\0132\031.LS"
+    ".SeriesResponse.TVShow\032V\n\006TVShow\022\r\n\005titl"
+    "e\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\022\024\n\014season"
+    "Number\030\003 \002(\005\022\020\n\010snapshot\030\004 \002(\t\"9\n\016Artwor"
+    "kRequest\022\020\n\010snapshot\030\001 \002(\t\022\025\n\roriginalTi"
+    "tle\030\002 \002(\t\":\n\017ArtworkResponse\022\020\n\010snapshot"
+    "\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\"V\n\026SetSubs"
+    "criptionRequest\022\r\n\005token\030\001 \002(\t\022-\n\rsubscr"
+    "iptions\030\002 \003(\0132\026.LS.SubscriptionRecord\"\031\n"
+    "\027SetSubscriptionResponse\"\'\n\026GetSubscript"
+    "ionRequest\022\r\n\005token\030\001 \002(\t\"W\n\027GetSubscrip"
+    "tionResponse\022\r\n\005token\030\001 \002(\t\022-\n\rsubscript"
+    "ions\030\002 \003(\0132\026.LS.SubscriptionRecord", 1074);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
   Header::default_instance_ = new Header();
   Message::default_instance_ = new Message();
+  SubscriptionRecord::default_instance_ = new SubscriptionRecord();
   SeriesRequest::default_instance_ = new SeriesRequest();
   SeriesResponse::default_instance_ = new SeriesResponse();
   SeriesResponse_TVShow::default_instance_ = new SeriesResponse_TVShow();
   ArtworkRequest::default_instance_ = new ArtworkRequest();
   ArtworkResponse::default_instance_ = new ArtworkResponse();
+  SetSubscriptionRequest::default_instance_ = new SetSubscriptionRequest();
+  SetSubscriptionResponse::default_instance_ = new SetSubscriptionResponse();
+  GetSubscriptionRequest::default_instance_ = new GetSubscriptionRequest();
+  GetSubscriptionResponse::default_instance_ = new GetSubscriptionResponse();
   Header::default_instance_->InitAsDefaultInstance();
   Message::default_instance_->InitAsDefaultInstance();
+  SubscriptionRecord::default_instance_->InitAsDefaultInstance();
   SeriesRequest::default_instance_->InitAsDefaultInstance();
   SeriesResponse::default_instance_->InitAsDefaultInstance();
   SeriesResponse_TVShow::default_instance_->InitAsDefaultInstance();
   ArtworkRequest::default_instance_->InitAsDefaultInstance();
   ArtworkResponse::default_instance_->InitAsDefaultInstance();
+  SetSubscriptionRequest::default_instance_->InitAsDefaultInstance();
+  SetSubscriptionResponse::default_instance_->InitAsDefaultInstance();
+  GetSubscriptionRequest::default_instance_->InitAsDefaultInstance();
+  GetSubscriptionResponse::default_instance_->InitAsDefaultInstance();
   ::google_public::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_LostSeriesProtocol_2eproto);
 }
 
@@ -471,8 +609,12 @@ void Header::Swap(Header* other) {
 #ifndef _MSC_VER
 const int Message::kSeriesRequestFieldNumber;
 const int Message::kArtworkRequestFieldNumber;
+const int Message::kSetSubscriptionRequestFieldNumber;
+const int Message::kGetSubscriptionRequestFieldNumber;
 const int Message::kSeriesResponseFieldNumber;
 const int Message::kArtworkResponseFieldNumber;
+const int Message::kSetSubscriptionResponseFieldNumber;
+const int Message::kGetSubscriptionResponseFieldNumber;
 #endif  // !_MSC_VER
 
 Message::Message()
@@ -483,8 +625,12 @@ Message::Message()
 void Message::InitAsDefaultInstance() {
   seriesrequest_ = const_cast< ::LS::SeriesRequest*>(&::LS::SeriesRequest::default_instance());
   artworkrequest_ = const_cast< ::LS::ArtworkRequest*>(&::LS::ArtworkRequest::default_instance());
+  setsubscriptionrequest_ = const_cast< ::LS::SetSubscriptionRequest*>(&::LS::SetSubscriptionRequest::default_instance());
+  getsubscriptionrequest_ = const_cast< ::LS::GetSubscriptionRequest*>(&::LS::GetSubscriptionRequest::default_instance());
   seriesresponse_ = const_cast< ::LS::SeriesResponse*>(&::LS::SeriesResponse::default_instance());
   artworkresponse_ = const_cast< ::LS::ArtworkResponse*>(&::LS::ArtworkResponse::default_instance());
+  setsubscriptionresponse_ = const_cast< ::LS::SetSubscriptionResponse*>(&::LS::SetSubscriptionResponse::default_instance());
+  getsubscriptionresponse_ = const_cast< ::LS::GetSubscriptionResponse*>(&::LS::GetSubscriptionResponse::default_instance());
 }
 
 Message::Message(const Message& from)
@@ -497,8 +643,12 @@ void Message::SharedCtor() {
   _cached_size_ = 0;
   seriesrequest_ = NULL;
   artworkrequest_ = NULL;
+  setsubscriptionrequest_ = NULL;
+  getsubscriptionrequest_ = NULL;
   seriesresponse_ = NULL;
   artworkresponse_ = NULL;
+  setsubscriptionresponse_ = NULL;
+  getsubscriptionresponse_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -510,8 +660,12 @@ void Message::SharedDtor() {
   if (this != default_instance_) {
     delete seriesrequest_;
     delete artworkrequest_;
+    delete setsubscriptionrequest_;
+    delete getsubscriptionrequest_;
     delete seriesresponse_;
     delete artworkresponse_;
+    delete setsubscriptionresponse_;
+    delete getsubscriptionresponse_;
   }
 }
 
@@ -544,11 +698,23 @@ void Message::Clear() {
     if (has_artworkrequest()) {
       if (artworkrequest_ != NULL) artworkrequest_->::LS::ArtworkRequest::Clear();
     }
+    if (has_setsubscriptionrequest()) {
+      if (setsubscriptionrequest_ != NULL) setsubscriptionrequest_->::LS::SetSubscriptionRequest::Clear();
+    }
+    if (has_getsubscriptionrequest()) {
+      if (getsubscriptionrequest_ != NULL) getsubscriptionrequest_->::LS::GetSubscriptionRequest::Clear();
+    }
     if (has_seriesresponse()) {
       if (seriesresponse_ != NULL) seriesresponse_->::LS::SeriesResponse::Clear();
     }
     if (has_artworkresponse()) {
       if (artworkresponse_ != NULL) artworkresponse_->::LS::ArtworkResponse::Clear();
+    }
+    if (has_setsubscriptionresponse()) {
+      if (setsubscriptionresponse_ != NULL) setsubscriptionresponse_->::LS::SetSubscriptionResponse::Clear();
+    }
+    if (has_getsubscriptionresponse()) {
+      if (getsubscriptionresponse_ != NULL) getsubscriptionresponse_->::LS::GetSubscriptionResponse::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -584,6 +750,34 @@ bool Message::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(8018)) goto parse_setSubscriptionRequest;
+        break;
+      }
+
+      // optional .LS.SetSubscriptionRequest setSubscriptionRequest = 1002;
+      case 1002: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_setSubscriptionRequest:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_setsubscriptionrequest()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(8026)) goto parse_getSubscriptionRequest;
+        break;
+      }
+
+      // optional .LS.GetSubscriptionRequest getSubscriptionRequest = 1003;
+      case 1003: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_getSubscriptionRequest:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_getsubscriptionrequest()));
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectTag(16002)) goto parse_seriesResponse;
         break;
       }
@@ -609,6 +803,34 @@ bool Message::MergePartialFromCodedStream(
          parse_artworkResponse:
           DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_artworkresponse()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16018)) goto parse_setSubscriptionResponse;
+        break;
+      }
+
+      // optional .LS.SetSubscriptionResponse setSubscriptionResponse = 2002;
+      case 2002: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_setSubscriptionResponse:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_setsubscriptionresponse()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16026)) goto parse_getSubscriptionResponse;
+        break;
+      }
+
+      // optional .LS.GetSubscriptionResponse getSubscriptionResponse = 2003;
+      case 2003: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_getSubscriptionResponse:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_getsubscriptionresponse()));
         } else {
           goto handle_uninterpreted;
         }
@@ -646,6 +868,18 @@ void Message::SerializeWithCachedSizes(
       1001, this->artworkrequest(), output);
   }
 
+  // optional .LS.SetSubscriptionRequest setSubscriptionRequest = 1002;
+  if (has_setsubscriptionrequest()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1002, this->setsubscriptionrequest(), output);
+  }
+
+  // optional .LS.GetSubscriptionRequest getSubscriptionRequest = 1003;
+  if (has_getsubscriptionrequest()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1003, this->getsubscriptionrequest(), output);
+  }
+
   // optional .LS.SeriesResponse seriesResponse = 2000;
   if (has_seriesresponse()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -656,6 +890,18 @@ void Message::SerializeWithCachedSizes(
   if (has_artworkresponse()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2001, this->artworkresponse(), output);
+  }
+
+  // optional .LS.SetSubscriptionResponse setSubscriptionResponse = 2002;
+  if (has_setsubscriptionresponse()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2002, this->setsubscriptionresponse(), output);
+  }
+
+  // optional .LS.GetSubscriptionResponse getSubscriptionResponse = 2003;
+  if (has_getsubscriptionresponse()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2003, this->getsubscriptionresponse(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -680,6 +926,20 @@ void Message::SerializeWithCachedSizes(
         1001, this->artworkrequest(), target);
   }
 
+  // optional .LS.SetSubscriptionRequest setSubscriptionRequest = 1002;
+  if (has_setsubscriptionrequest()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1002, this->setsubscriptionrequest(), target);
+  }
+
+  // optional .LS.GetSubscriptionRequest getSubscriptionRequest = 1003;
+  if (has_getsubscriptionrequest()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1003, this->getsubscriptionrequest(), target);
+  }
+
   // optional .LS.SeriesResponse seriesResponse = 2000;
   if (has_seriesresponse()) {
     target = ::google_public::protobuf::internal::WireFormatLite::
@@ -692,6 +952,20 @@ void Message::SerializeWithCachedSizes(
     target = ::google_public::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         2001, this->artworkresponse(), target);
+  }
+
+  // optional .LS.SetSubscriptionResponse setSubscriptionResponse = 2002;
+  if (has_setsubscriptionresponse()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2002, this->setsubscriptionresponse(), target);
+  }
+
+  // optional .LS.GetSubscriptionResponse getSubscriptionResponse = 2003;
+  if (has_getsubscriptionresponse()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2003, this->getsubscriptionresponse(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -719,6 +993,20 @@ int Message::ByteSize() const {
           this->artworkrequest());
     }
 
+    // optional .LS.SetSubscriptionRequest setSubscriptionRequest = 1002;
+    if (has_setsubscriptionrequest()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->setsubscriptionrequest());
+    }
+
+    // optional .LS.GetSubscriptionRequest getSubscriptionRequest = 1003;
+    if (has_getsubscriptionrequest()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->getsubscriptionrequest());
+    }
+
     // optional .LS.SeriesResponse seriesResponse = 2000;
     if (has_seriesresponse()) {
       total_size += 2 +
@@ -731,6 +1019,20 @@ int Message::ByteSize() const {
       total_size += 2 +
         ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->artworkresponse());
+    }
+
+    // optional .LS.SetSubscriptionResponse setSubscriptionResponse = 2002;
+    if (has_setsubscriptionresponse()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->setsubscriptionresponse());
+    }
+
+    // optional .LS.GetSubscriptionResponse getSubscriptionResponse = 2003;
+    if (has_getsubscriptionresponse()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->getsubscriptionresponse());
     }
 
   }
@@ -766,11 +1068,23 @@ void Message::MergeFrom(const Message& from) {
     if (from.has_artworkrequest()) {
       mutable_artworkrequest()->::LS::ArtworkRequest::MergeFrom(from.artworkrequest());
     }
+    if (from.has_setsubscriptionrequest()) {
+      mutable_setsubscriptionrequest()->::LS::SetSubscriptionRequest::MergeFrom(from.setsubscriptionrequest());
+    }
+    if (from.has_getsubscriptionrequest()) {
+      mutable_getsubscriptionrequest()->::LS::GetSubscriptionRequest::MergeFrom(from.getsubscriptionrequest());
+    }
     if (from.has_seriesresponse()) {
       mutable_seriesresponse()->::LS::SeriesResponse::MergeFrom(from.seriesresponse());
     }
     if (from.has_artworkresponse()) {
       mutable_artworkresponse()->::LS::ArtworkResponse::MergeFrom(from.artworkresponse());
+    }
+    if (from.has_setsubscriptionresponse()) {
+      mutable_setsubscriptionresponse()->::LS::SetSubscriptionResponse::MergeFrom(from.setsubscriptionresponse());
+    }
+    if (from.has_getsubscriptionresponse()) {
+      mutable_getsubscriptionresponse()->::LS::GetSubscriptionResponse::MergeFrom(from.getsubscriptionresponse());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -793,11 +1107,20 @@ bool Message::IsInitialized() const {
   if (has_artworkrequest()) {
     if (!this->artworkrequest().IsInitialized()) return false;
   }
+  if (has_setsubscriptionrequest()) {
+    if (!this->setsubscriptionrequest().IsInitialized()) return false;
+  }
+  if (has_getsubscriptionrequest()) {
+    if (!this->getsubscriptionrequest().IsInitialized()) return false;
+  }
   if (has_seriesresponse()) {
     if (!this->seriesresponse().IsInitialized()) return false;
   }
   if (has_artworkresponse()) {
     if (!this->artworkresponse().IsInitialized()) return false;
+  }
+  if (has_getsubscriptionresponse()) {
+    if (!this->getsubscriptionresponse().IsInitialized()) return false;
   }
   return true;
 }
@@ -806,8 +1129,12 @@ void Message::Swap(Message* other) {
   if (other != this) {
     std::swap(seriesrequest_, other->seriesrequest_);
     std::swap(artworkrequest_, other->artworkrequest_);
+    std::swap(setsubscriptionrequest_, other->setsubscriptionrequest_);
+    std::swap(getsubscriptionrequest_, other->getsubscriptionrequest_);
     std::swap(seriesresponse_, other->seriesresponse_);
     std::swap(artworkresponse_, other->artworkresponse_);
+    std::swap(setsubscriptionresponse_, other->setsubscriptionresponse_);
+    std::swap(getsubscriptionresponse_, other->getsubscriptionresponse_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -819,6 +1146,232 @@ void Message::Swap(Message* other) {
   ::google_public::protobuf::Metadata metadata;
   metadata.descriptor = Message_descriptor_;
   metadata.reflection = Message_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int SubscriptionRecord::kOriginalTitleFieldNumber;
+#endif  // !_MSC_VER
+
+SubscriptionRecord::SubscriptionRecord()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void SubscriptionRecord::InitAsDefaultInstance() {
+}
+
+SubscriptionRecord::SubscriptionRecord(const SubscriptionRecord& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SubscriptionRecord::SharedCtor() {
+  _cached_size_ = 0;
+  originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SubscriptionRecord::~SubscriptionRecord() {
+  SharedDtor();
+}
+
+void SubscriptionRecord::SharedDtor() {
+  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete originaltitle_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void SubscriptionRecord::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* SubscriptionRecord::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SubscriptionRecord_descriptor_;
+}
+
+const SubscriptionRecord& SubscriptionRecord::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+SubscriptionRecord* SubscriptionRecord::default_instance_ = NULL;
+
+SubscriptionRecord* SubscriptionRecord::New() const {
+  return new SubscriptionRecord;
+}
+
+void SubscriptionRecord::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_originaltitle()) {
+      if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
+        originaltitle_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SubscriptionRecord::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string originalTitle = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_originaltitle()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->originaltitle().data(), this->originaltitle().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void SubscriptionRecord::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string originalTitle = 1;
+  if (has_originaltitle()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->originaltitle().data(), this->originaltitle().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->originaltitle(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* SubscriptionRecord::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required string originalTitle = 1;
+  if (has_originaltitle()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->originaltitle().data(), this->originaltitle().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->originaltitle(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int SubscriptionRecord::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string originalTitle = 1;
+    if (has_originaltitle()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->originaltitle());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SubscriptionRecord::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SubscriptionRecord* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const SubscriptionRecord*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SubscriptionRecord::MergeFrom(const SubscriptionRecord& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_originaltitle()) {
+      set_originaltitle(from.originaltitle());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SubscriptionRecord::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SubscriptionRecord::CopyFrom(const SubscriptionRecord& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SubscriptionRecord::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  return true;
+}
+
+void SubscriptionRecord::Swap(SubscriptionRecord* other) {
+  if (other != this) {
+    std::swap(originaltitle_, other->originaltitle_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata SubscriptionRecord::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = SubscriptionRecord_descriptor_;
+  metadata.reflection = SubscriptionRecord_reflection_;
   return metadata;
 }
 
@@ -2127,6 +2680,926 @@ void ArtworkResponse::Swap(ArtworkResponse* other) {
   ::google_public::protobuf::Metadata metadata;
   metadata.descriptor = ArtworkResponse_descriptor_;
   metadata.reflection = ArtworkResponse_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int SetSubscriptionRequest::kTokenFieldNumber;
+const int SetSubscriptionRequest::kSubscriptionsFieldNumber;
+#endif  // !_MSC_VER
+
+SetSubscriptionRequest::SetSubscriptionRequest()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void SetSubscriptionRequest::InitAsDefaultInstance() {
+}
+
+SetSubscriptionRequest::SetSubscriptionRequest(const SetSubscriptionRequest& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SetSubscriptionRequest::SharedCtor() {
+  _cached_size_ = 0;
+  token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SetSubscriptionRequest::~SetSubscriptionRequest() {
+  SharedDtor();
+}
+
+void SetSubscriptionRequest::SharedDtor() {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void SetSubscriptionRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* SetSubscriptionRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SetSubscriptionRequest_descriptor_;
+}
+
+const SetSubscriptionRequest& SetSubscriptionRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+SetSubscriptionRequest* SetSubscriptionRequest::default_instance_ = NULL;
+
+SetSubscriptionRequest* SetSubscriptionRequest::New() const {
+  return new SetSubscriptionRequest;
+}
+
+void SetSubscriptionRequest::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_token()) {
+      if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+        token_->clear();
+      }
+    }
+  }
+  subscriptions_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SetSubscriptionRequest::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string token = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_token()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->token().data(), this->token().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_subscriptions;
+        break;
+      }
+
+      // repeated .LS.SubscriptionRecord subscriptions = 2;
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_subscriptions:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_subscriptions()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_subscriptions;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void SetSubscriptionRequest::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string token = 1;
+  if (has_token()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->token().data(), this->token().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->token(), output);
+  }
+
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  for (int i = 0; i < this->subscriptions_size(); i++) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->subscriptions(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* SetSubscriptionRequest::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required string token = 1;
+  if (has_token()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->token().data(), this->token().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->token(), target);
+  }
+
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  for (int i = 0; i < this->subscriptions_size(); i++) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->subscriptions(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int SetSubscriptionRequest::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string token = 1;
+    if (has_token()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->token());
+    }
+
+  }
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  total_size += 1 * this->subscriptions_size();
+  for (int i = 0; i < this->subscriptions_size(); i++) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->subscriptions(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SetSubscriptionRequest::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SetSubscriptionRequest* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const SetSubscriptionRequest*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SetSubscriptionRequest::MergeFrom(const SetSubscriptionRequest& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  subscriptions_.MergeFrom(from.subscriptions_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_token()) {
+      set_token(from.token());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SetSubscriptionRequest::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SetSubscriptionRequest::CopyFrom(const SetSubscriptionRequest& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetSubscriptionRequest::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  for (int i = 0; i < subscriptions_size(); i++) {
+    if (!this->subscriptions(i).IsInitialized()) return false;
+  }
+  return true;
+}
+
+void SetSubscriptionRequest::Swap(SetSubscriptionRequest* other) {
+  if (other != this) {
+    std::swap(token_, other->token_);
+    subscriptions_.Swap(&other->subscriptions_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata SetSubscriptionRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = SetSubscriptionRequest_descriptor_;
+  metadata.reflection = SetSubscriptionRequest_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+SetSubscriptionResponse::SetSubscriptionResponse()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void SetSubscriptionResponse::InitAsDefaultInstance() {
+}
+
+SetSubscriptionResponse::SetSubscriptionResponse(const SetSubscriptionResponse& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SetSubscriptionResponse::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SetSubscriptionResponse::~SetSubscriptionResponse() {
+  SharedDtor();
+}
+
+void SetSubscriptionResponse::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void SetSubscriptionResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* SetSubscriptionResponse::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SetSubscriptionResponse_descriptor_;
+}
+
+const SetSubscriptionResponse& SetSubscriptionResponse::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+SetSubscriptionResponse* SetSubscriptionResponse::default_instance_ = NULL;
+
+SetSubscriptionResponse* SetSubscriptionResponse::New() const {
+  return new SetSubscriptionResponse;
+}
+
+void SetSubscriptionResponse::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SetSubscriptionResponse::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void SetSubscriptionResponse::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* SetSubscriptionResponse::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int SetSubscriptionResponse::ByteSize() const {
+  int total_size = 0;
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SetSubscriptionResponse::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SetSubscriptionResponse* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const SetSubscriptionResponse*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SetSubscriptionResponse::MergeFrom(const SetSubscriptionResponse& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SetSubscriptionResponse::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SetSubscriptionResponse::CopyFrom(const SetSubscriptionResponse& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SetSubscriptionResponse::IsInitialized() const {
+
+  return true;
+}
+
+void SetSubscriptionResponse::Swap(SetSubscriptionResponse* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata SetSubscriptionResponse::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = SetSubscriptionResponse_descriptor_;
+  metadata.reflection = SetSubscriptionResponse_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int GetSubscriptionRequest::kTokenFieldNumber;
+#endif  // !_MSC_VER
+
+GetSubscriptionRequest::GetSubscriptionRequest()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void GetSubscriptionRequest::InitAsDefaultInstance() {
+}
+
+GetSubscriptionRequest::GetSubscriptionRequest(const GetSubscriptionRequest& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void GetSubscriptionRequest::SharedCtor() {
+  _cached_size_ = 0;
+  token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+GetSubscriptionRequest::~GetSubscriptionRequest() {
+  SharedDtor();
+}
+
+void GetSubscriptionRequest::SharedDtor() {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void GetSubscriptionRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* GetSubscriptionRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return GetSubscriptionRequest_descriptor_;
+}
+
+const GetSubscriptionRequest& GetSubscriptionRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+GetSubscriptionRequest* GetSubscriptionRequest::default_instance_ = NULL;
+
+GetSubscriptionRequest* GetSubscriptionRequest::New() const {
+  return new GetSubscriptionRequest;
+}
+
+void GetSubscriptionRequest::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_token()) {
+      if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+        token_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool GetSubscriptionRequest::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string token = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_token()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->token().data(), this->token().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void GetSubscriptionRequest::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string token = 1;
+  if (has_token()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->token().data(), this->token().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->token(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* GetSubscriptionRequest::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required string token = 1;
+  if (has_token()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->token().data(), this->token().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->token(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int GetSubscriptionRequest::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string token = 1;
+    if (has_token()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->token());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void GetSubscriptionRequest::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const GetSubscriptionRequest* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const GetSubscriptionRequest*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void GetSubscriptionRequest::MergeFrom(const GetSubscriptionRequest& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_token()) {
+      set_token(from.token());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void GetSubscriptionRequest::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetSubscriptionRequest::CopyFrom(const GetSubscriptionRequest& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetSubscriptionRequest::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  return true;
+}
+
+void GetSubscriptionRequest::Swap(GetSubscriptionRequest* other) {
+  if (other != this) {
+    std::swap(token_, other->token_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata GetSubscriptionRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = GetSubscriptionRequest_descriptor_;
+  metadata.reflection = GetSubscriptionRequest_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int GetSubscriptionResponse::kTokenFieldNumber;
+const int GetSubscriptionResponse::kSubscriptionsFieldNumber;
+#endif  // !_MSC_VER
+
+GetSubscriptionResponse::GetSubscriptionResponse()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void GetSubscriptionResponse::InitAsDefaultInstance() {
+}
+
+GetSubscriptionResponse::GetSubscriptionResponse(const GetSubscriptionResponse& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void GetSubscriptionResponse::SharedCtor() {
+  _cached_size_ = 0;
+  token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+GetSubscriptionResponse::~GetSubscriptionResponse() {
+  SharedDtor();
+}
+
+void GetSubscriptionResponse::SharedDtor() {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void GetSubscriptionResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* GetSubscriptionResponse::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return GetSubscriptionResponse_descriptor_;
+}
+
+const GetSubscriptionResponse& GetSubscriptionResponse::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+GetSubscriptionResponse* GetSubscriptionResponse::default_instance_ = NULL;
+
+GetSubscriptionResponse* GetSubscriptionResponse::New() const {
+  return new GetSubscriptionResponse;
+}
+
+void GetSubscriptionResponse::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_token()) {
+      if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+        token_->clear();
+      }
+    }
+  }
+  subscriptions_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool GetSubscriptionResponse::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string token = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_token()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->token().data(), this->token().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_subscriptions;
+        break;
+      }
+
+      // repeated .LS.SubscriptionRecord subscriptions = 2;
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_subscriptions:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_subscriptions()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_subscriptions;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void GetSubscriptionResponse::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string token = 1;
+  if (has_token()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->token().data(), this->token().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->token(), output);
+  }
+
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  for (int i = 0; i < this->subscriptions_size(); i++) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->subscriptions(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* GetSubscriptionResponse::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required string token = 1;
+  if (has_token()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->token().data(), this->token().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->token(), target);
+  }
+
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  for (int i = 0; i < this->subscriptions_size(); i++) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->subscriptions(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int GetSubscriptionResponse::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string token = 1;
+    if (has_token()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->token());
+    }
+
+  }
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  total_size += 1 * this->subscriptions_size();
+  for (int i = 0; i < this->subscriptions_size(); i++) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->subscriptions(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void GetSubscriptionResponse::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const GetSubscriptionResponse* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const GetSubscriptionResponse*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void GetSubscriptionResponse::MergeFrom(const GetSubscriptionResponse& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  subscriptions_.MergeFrom(from.subscriptions_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_token()) {
+      set_token(from.token());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void GetSubscriptionResponse::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetSubscriptionResponse::CopyFrom(const GetSubscriptionResponse& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetSubscriptionResponse::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  for (int i = 0; i < subscriptions_size(); i++) {
+    if (!this->subscriptions(i).IsInitialized()) return false;
+  }
+  return true;
+}
+
+void GetSubscriptionResponse::Swap(GetSubscriptionResponse* other) {
+  if (other != this) {
+    std::swap(token_, other->token_);
+    subscriptions_.Swap(&other->subscriptions_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata GetSubscriptionResponse::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = GetSubscriptionResponse_descriptor_;
+  metadata.reflection = GetSubscriptionResponse_reflection_;
   return metadata;
 }
 

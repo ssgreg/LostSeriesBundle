@@ -90,9 +90,13 @@
   [theBackendFacade getShowInfoArray:^(NSArray* shows)
   {
     NSMutableArray* newShows = [NSMutableArray array];
-    for (int i = 0; i < 40; ++i)
+//    for (int i = 0; i < 40; ++i)
+//    {
+//      [newShows addObject:shows[0]];
+//    }
+    for (id show in shows)
     {
-      [newShows addObject:shows[0]];
+      [newShows addObject:show];
     }
     
     theItems = [NSMutableArray array];

@@ -35,11 +35,16 @@ void protobuf_ShutdownFile_LostSeriesProtocol_2eproto();
 
 class Header;
 class Message;
+class SubscriptionRecord;
 class SeriesRequest;
 class SeriesResponse;
 class SeriesResponse_TVShow;
 class ArtworkRequest;
 class ArtworkResponse;
+class SetSubscriptionRequest;
+class SetSubscriptionResponse;
+class GetSubscriptionRequest;
+class GetSubscriptionResponse;
 
 // ===================================================================
 
@@ -197,6 +202,24 @@ class Message : public ::google_public::protobuf::Message {
   inline ::LS::ArtworkRequest* release_artworkrequest();
   inline void set_allocated_artworkrequest(::LS::ArtworkRequest* artworkrequest);
 
+  // optional .LS.SetSubscriptionRequest setSubscriptionRequest = 1002;
+  inline bool has_setsubscriptionrequest() const;
+  inline void clear_setsubscriptionrequest();
+  static const int kSetSubscriptionRequestFieldNumber = 1002;
+  inline const ::LS::SetSubscriptionRequest& setsubscriptionrequest() const;
+  inline ::LS::SetSubscriptionRequest* mutable_setsubscriptionrequest();
+  inline ::LS::SetSubscriptionRequest* release_setsubscriptionrequest();
+  inline void set_allocated_setsubscriptionrequest(::LS::SetSubscriptionRequest* setsubscriptionrequest);
+
+  // optional .LS.GetSubscriptionRequest getSubscriptionRequest = 1003;
+  inline bool has_getsubscriptionrequest() const;
+  inline void clear_getsubscriptionrequest();
+  static const int kGetSubscriptionRequestFieldNumber = 1003;
+  inline const ::LS::GetSubscriptionRequest& getsubscriptionrequest() const;
+  inline ::LS::GetSubscriptionRequest* mutable_getsubscriptionrequest();
+  inline ::LS::GetSubscriptionRequest* release_getsubscriptionrequest();
+  inline void set_allocated_getsubscriptionrequest(::LS::GetSubscriptionRequest* getsubscriptionrequest);
+
   // optional .LS.SeriesResponse seriesResponse = 2000;
   inline bool has_seriesresponse() const;
   inline void clear_seriesresponse();
@@ -215,26 +238,56 @@ class Message : public ::google_public::protobuf::Message {
   inline ::LS::ArtworkResponse* release_artworkresponse();
   inline void set_allocated_artworkresponse(::LS::ArtworkResponse* artworkresponse);
 
+  // optional .LS.SetSubscriptionResponse setSubscriptionResponse = 2002;
+  inline bool has_setsubscriptionresponse() const;
+  inline void clear_setsubscriptionresponse();
+  static const int kSetSubscriptionResponseFieldNumber = 2002;
+  inline const ::LS::SetSubscriptionResponse& setsubscriptionresponse() const;
+  inline ::LS::SetSubscriptionResponse* mutable_setsubscriptionresponse();
+  inline ::LS::SetSubscriptionResponse* release_setsubscriptionresponse();
+  inline void set_allocated_setsubscriptionresponse(::LS::SetSubscriptionResponse* setsubscriptionresponse);
+
+  // optional .LS.GetSubscriptionResponse getSubscriptionResponse = 2003;
+  inline bool has_getsubscriptionresponse() const;
+  inline void clear_getsubscriptionresponse();
+  static const int kGetSubscriptionResponseFieldNumber = 2003;
+  inline const ::LS::GetSubscriptionResponse& getsubscriptionresponse() const;
+  inline ::LS::GetSubscriptionResponse* mutable_getsubscriptionresponse();
+  inline ::LS::GetSubscriptionResponse* release_getsubscriptionresponse();
+  inline void set_allocated_getsubscriptionresponse(::LS::GetSubscriptionResponse* getsubscriptionresponse);
+
   // @@protoc_insertion_point(class_scope:LS.Message)
  private:
   inline void set_has_seriesrequest();
   inline void clear_has_seriesrequest();
   inline void set_has_artworkrequest();
   inline void clear_has_artworkrequest();
+  inline void set_has_setsubscriptionrequest();
+  inline void clear_has_setsubscriptionrequest();
+  inline void set_has_getsubscriptionrequest();
+  inline void clear_has_getsubscriptionrequest();
   inline void set_has_seriesresponse();
   inline void clear_has_seriesresponse();
   inline void set_has_artworkresponse();
   inline void clear_has_artworkresponse();
+  inline void set_has_setsubscriptionresponse();
+  inline void clear_has_setsubscriptionresponse();
+  inline void set_has_getsubscriptionresponse();
+  inline void clear_has_getsubscriptionresponse();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::LS::SeriesRequest* seriesrequest_;
   ::LS::ArtworkRequest* artworkrequest_;
+  ::LS::SetSubscriptionRequest* setsubscriptionrequest_;
+  ::LS::GetSubscriptionRequest* getsubscriptionrequest_;
   ::LS::SeriesResponse* seriesresponse_;
   ::LS::ArtworkResponse* artworkresponse_;
+  ::LS::SetSubscriptionResponse* setsubscriptionresponse_;
+  ::LS::GetSubscriptionResponse* getsubscriptionresponse_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(8 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -242,6 +295,93 @@ class Message : public ::google_public::protobuf::Message {
 
   void InitAsDefaultInstance();
   static Message* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SubscriptionRecord : public ::google_public::protobuf::Message {
+ public:
+  SubscriptionRecord();
+  virtual ~SubscriptionRecord();
+
+  SubscriptionRecord(const SubscriptionRecord& from);
+
+  inline SubscriptionRecord& operator=(const SubscriptionRecord& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const SubscriptionRecord& default_instance();
+
+  void Swap(SubscriptionRecord* other);
+
+  // implements Message ----------------------------------------------
+
+  SubscriptionRecord* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const SubscriptionRecord& from);
+  void MergeFrom(const SubscriptionRecord& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string originalTitle = 1;
+  inline bool has_originaltitle() const;
+  inline void clear_originaltitle();
+  static const int kOriginalTitleFieldNumber = 1;
+  inline const ::std::string& originaltitle() const;
+  inline void set_originaltitle(const ::std::string& value);
+  inline void set_originaltitle(const char* value);
+  inline void set_originaltitle(const char* value, size_t size);
+  inline ::std::string* mutable_originaltitle();
+  inline ::std::string* release_originaltitle();
+  inline void set_allocated_originaltitle(::std::string* originaltitle);
+
+  // @@protoc_insertion_point(class_scope:LS.SubscriptionRecord)
+ private:
+  inline void set_has_originaltitle();
+  inline void clear_has_originaltitle();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* originaltitle_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_ShutdownFile_LostSeriesProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static SubscriptionRecord* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -733,6 +873,365 @@ class ArtworkResponse : public ::google_public::protobuf::Message {
   void InitAsDefaultInstance();
   static ArtworkResponse* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class SetSubscriptionRequest : public ::google_public::protobuf::Message {
+ public:
+  SetSubscriptionRequest();
+  virtual ~SetSubscriptionRequest();
+
+  SetSubscriptionRequest(const SetSubscriptionRequest& from);
+
+  inline SetSubscriptionRequest& operator=(const SetSubscriptionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const SetSubscriptionRequest& default_instance();
+
+  void Swap(SetSubscriptionRequest* other);
+
+  // implements Message ----------------------------------------------
+
+  SetSubscriptionRequest* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const SetSubscriptionRequest& from);
+  void MergeFrom(const SetSubscriptionRequest& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string token = 1;
+  inline bool has_token() const;
+  inline void clear_token();
+  static const int kTokenFieldNumber = 1;
+  inline const ::std::string& token() const;
+  inline void set_token(const ::std::string& value);
+  inline void set_token(const char* value);
+  inline void set_token(const char* value, size_t size);
+  inline ::std::string* mutable_token();
+  inline ::std::string* release_token();
+  inline void set_allocated_token(::std::string* token);
+
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  inline int subscriptions_size() const;
+  inline void clear_subscriptions();
+  static const int kSubscriptionsFieldNumber = 2;
+  inline const ::LS::SubscriptionRecord& subscriptions(int index) const;
+  inline ::LS::SubscriptionRecord* mutable_subscriptions(int index);
+  inline ::LS::SubscriptionRecord* add_subscriptions();
+  inline const ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >&
+      subscriptions() const;
+  inline ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >*
+      mutable_subscriptions();
+
+  // @@protoc_insertion_point(class_scope:LS.SetSubscriptionRequest)
+ private:
+  inline void set_has_token();
+  inline void clear_has_token();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* token_;
+  ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord > subscriptions_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+
+  friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_ShutdownFile_LostSeriesProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static SetSubscriptionRequest* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SetSubscriptionResponse : public ::google_public::protobuf::Message {
+ public:
+  SetSubscriptionResponse();
+  virtual ~SetSubscriptionResponse();
+
+  SetSubscriptionResponse(const SetSubscriptionResponse& from);
+
+  inline SetSubscriptionResponse& operator=(const SetSubscriptionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const SetSubscriptionResponse& default_instance();
+
+  void Swap(SetSubscriptionResponse* other);
+
+  // implements Message ----------------------------------------------
+
+  SetSubscriptionResponse* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const SetSubscriptionResponse& from);
+  void MergeFrom(const SetSubscriptionResponse& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:LS.SetSubscriptionResponse)
+ private:
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[1];
+
+  friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_ShutdownFile_LostSeriesProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static SetSubscriptionResponse* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class GetSubscriptionRequest : public ::google_public::protobuf::Message {
+ public:
+  GetSubscriptionRequest();
+  virtual ~GetSubscriptionRequest();
+
+  GetSubscriptionRequest(const GetSubscriptionRequest& from);
+
+  inline GetSubscriptionRequest& operator=(const GetSubscriptionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const GetSubscriptionRequest& default_instance();
+
+  void Swap(GetSubscriptionRequest* other);
+
+  // implements Message ----------------------------------------------
+
+  GetSubscriptionRequest* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const GetSubscriptionRequest& from);
+  void MergeFrom(const GetSubscriptionRequest& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string token = 1;
+  inline bool has_token() const;
+  inline void clear_token();
+  static const int kTokenFieldNumber = 1;
+  inline const ::std::string& token() const;
+  inline void set_token(const ::std::string& value);
+  inline void set_token(const char* value);
+  inline void set_token(const char* value, size_t size);
+  inline ::std::string* mutable_token();
+  inline ::std::string* release_token();
+  inline void set_allocated_token(::std::string* token);
+
+  // @@protoc_insertion_point(class_scope:LS.GetSubscriptionRequest)
+ private:
+  inline void set_has_token();
+  inline void clear_has_token();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* token_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_ShutdownFile_LostSeriesProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static GetSubscriptionRequest* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class GetSubscriptionResponse : public ::google_public::protobuf::Message {
+ public:
+  GetSubscriptionResponse();
+  virtual ~GetSubscriptionResponse();
+
+  GetSubscriptionResponse(const GetSubscriptionResponse& from);
+
+  inline GetSubscriptionResponse& operator=(const GetSubscriptionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const GetSubscriptionResponse& default_instance();
+
+  void Swap(GetSubscriptionResponse* other);
+
+  // implements Message ----------------------------------------------
+
+  GetSubscriptionResponse* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const GetSubscriptionResponse& from);
+  void MergeFrom(const GetSubscriptionResponse& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string token = 1;
+  inline bool has_token() const;
+  inline void clear_token();
+  static const int kTokenFieldNumber = 1;
+  inline const ::std::string& token() const;
+  inline void set_token(const ::std::string& value);
+  inline void set_token(const char* value);
+  inline void set_token(const char* value, size_t size);
+  inline ::std::string* mutable_token();
+  inline ::std::string* release_token();
+  inline void set_allocated_token(::std::string* token);
+
+  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  inline int subscriptions_size() const;
+  inline void clear_subscriptions();
+  static const int kSubscriptionsFieldNumber = 2;
+  inline const ::LS::SubscriptionRecord& subscriptions(int index) const;
+  inline ::LS::SubscriptionRecord* mutable_subscriptions(int index);
+  inline ::LS::SubscriptionRecord* add_subscriptions();
+  inline const ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >&
+      subscriptions() const;
+  inline ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >*
+      mutable_subscriptions();
+
+  // @@protoc_insertion_point(class_scope:LS.GetSubscriptionResponse)
+ private:
+  inline void set_has_token();
+  inline void clear_has_token();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* token_;
+  ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord > subscriptions_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+
+  friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_ShutdownFile_LostSeriesProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static GetSubscriptionResponse* default_instance_;
+};
 // ===================================================================
 
 
@@ -842,15 +1341,91 @@ inline void Message::set_allocated_artworkrequest(::LS::ArtworkRequest* artworkr
   }
 }
 
-// optional .LS.SeriesResponse seriesResponse = 2000;
-inline bool Message::has_seriesresponse() const {
+// optional .LS.SetSubscriptionRequest setSubscriptionRequest = 1002;
+inline bool Message::has_setsubscriptionrequest() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Message::set_has_seriesresponse() {
+inline void Message::set_has_setsubscriptionrequest() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Message::clear_has_seriesresponse() {
+inline void Message::clear_has_setsubscriptionrequest() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void Message::clear_setsubscriptionrequest() {
+  if (setsubscriptionrequest_ != NULL) setsubscriptionrequest_->::LS::SetSubscriptionRequest::Clear();
+  clear_has_setsubscriptionrequest();
+}
+inline const ::LS::SetSubscriptionRequest& Message::setsubscriptionrequest() const {
+  return setsubscriptionrequest_ != NULL ? *setsubscriptionrequest_ : *default_instance_->setsubscriptionrequest_;
+}
+inline ::LS::SetSubscriptionRequest* Message::mutable_setsubscriptionrequest() {
+  set_has_setsubscriptionrequest();
+  if (setsubscriptionrequest_ == NULL) setsubscriptionrequest_ = new ::LS::SetSubscriptionRequest;
+  return setsubscriptionrequest_;
+}
+inline ::LS::SetSubscriptionRequest* Message::release_setsubscriptionrequest() {
+  clear_has_setsubscriptionrequest();
+  ::LS::SetSubscriptionRequest* temp = setsubscriptionrequest_;
+  setsubscriptionrequest_ = NULL;
+  return temp;
+}
+inline void Message::set_allocated_setsubscriptionrequest(::LS::SetSubscriptionRequest* setsubscriptionrequest) {
+  delete setsubscriptionrequest_;
+  setsubscriptionrequest_ = setsubscriptionrequest;
+  if (setsubscriptionrequest) {
+    set_has_setsubscriptionrequest();
+  } else {
+    clear_has_setsubscriptionrequest();
+  }
+}
+
+// optional .LS.GetSubscriptionRequest getSubscriptionRequest = 1003;
+inline bool Message::has_getsubscriptionrequest() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Message::set_has_getsubscriptionrequest() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Message::clear_has_getsubscriptionrequest() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Message::clear_getsubscriptionrequest() {
+  if (getsubscriptionrequest_ != NULL) getsubscriptionrequest_->::LS::GetSubscriptionRequest::Clear();
+  clear_has_getsubscriptionrequest();
+}
+inline const ::LS::GetSubscriptionRequest& Message::getsubscriptionrequest() const {
+  return getsubscriptionrequest_ != NULL ? *getsubscriptionrequest_ : *default_instance_->getsubscriptionrequest_;
+}
+inline ::LS::GetSubscriptionRequest* Message::mutable_getsubscriptionrequest() {
+  set_has_getsubscriptionrequest();
+  if (getsubscriptionrequest_ == NULL) getsubscriptionrequest_ = new ::LS::GetSubscriptionRequest;
+  return getsubscriptionrequest_;
+}
+inline ::LS::GetSubscriptionRequest* Message::release_getsubscriptionrequest() {
+  clear_has_getsubscriptionrequest();
+  ::LS::GetSubscriptionRequest* temp = getsubscriptionrequest_;
+  getsubscriptionrequest_ = NULL;
+  return temp;
+}
+inline void Message::set_allocated_getsubscriptionrequest(::LS::GetSubscriptionRequest* getsubscriptionrequest) {
+  delete getsubscriptionrequest_;
+  getsubscriptionrequest_ = getsubscriptionrequest;
+  if (getsubscriptionrequest) {
+    set_has_getsubscriptionrequest();
+  } else {
+    clear_has_getsubscriptionrequest();
+  }
+}
+
+// optional .LS.SeriesResponse seriesResponse = 2000;
+inline bool Message::has_seriesresponse() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Message::set_has_seriesresponse() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Message::clear_has_seriesresponse() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Message::clear_seriesresponse() {
   if (seriesresponse_ != NULL) seriesresponse_->::LS::SeriesResponse::Clear();
@@ -882,13 +1457,13 @@ inline void Message::set_allocated_seriesresponse(::LS::SeriesResponse* seriesre
 
 // optional .LS.ArtworkResponse artworkResponse = 2001;
 inline bool Message::has_artworkresponse() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void Message::set_has_artworkresponse() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void Message::clear_has_artworkresponse() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void Message::clear_artworkresponse() {
   if (artworkresponse_ != NULL) artworkresponse_->::LS::ArtworkResponse::Clear();
@@ -915,6 +1490,156 @@ inline void Message::set_allocated_artworkresponse(::LS::ArtworkResponse* artwor
     set_has_artworkresponse();
   } else {
     clear_has_artworkresponse();
+  }
+}
+
+// optional .LS.SetSubscriptionResponse setSubscriptionResponse = 2002;
+inline bool Message::has_setsubscriptionresponse() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Message::set_has_setsubscriptionresponse() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Message::clear_has_setsubscriptionresponse() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Message::clear_setsubscriptionresponse() {
+  if (setsubscriptionresponse_ != NULL) setsubscriptionresponse_->::LS::SetSubscriptionResponse::Clear();
+  clear_has_setsubscriptionresponse();
+}
+inline const ::LS::SetSubscriptionResponse& Message::setsubscriptionresponse() const {
+  return setsubscriptionresponse_ != NULL ? *setsubscriptionresponse_ : *default_instance_->setsubscriptionresponse_;
+}
+inline ::LS::SetSubscriptionResponse* Message::mutable_setsubscriptionresponse() {
+  set_has_setsubscriptionresponse();
+  if (setsubscriptionresponse_ == NULL) setsubscriptionresponse_ = new ::LS::SetSubscriptionResponse;
+  return setsubscriptionresponse_;
+}
+inline ::LS::SetSubscriptionResponse* Message::release_setsubscriptionresponse() {
+  clear_has_setsubscriptionresponse();
+  ::LS::SetSubscriptionResponse* temp = setsubscriptionresponse_;
+  setsubscriptionresponse_ = NULL;
+  return temp;
+}
+inline void Message::set_allocated_setsubscriptionresponse(::LS::SetSubscriptionResponse* setsubscriptionresponse) {
+  delete setsubscriptionresponse_;
+  setsubscriptionresponse_ = setsubscriptionresponse;
+  if (setsubscriptionresponse) {
+    set_has_setsubscriptionresponse();
+  } else {
+    clear_has_setsubscriptionresponse();
+  }
+}
+
+// optional .LS.GetSubscriptionResponse getSubscriptionResponse = 2003;
+inline bool Message::has_getsubscriptionresponse() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Message::set_has_getsubscriptionresponse() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Message::clear_has_getsubscriptionresponse() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Message::clear_getsubscriptionresponse() {
+  if (getsubscriptionresponse_ != NULL) getsubscriptionresponse_->::LS::GetSubscriptionResponse::Clear();
+  clear_has_getsubscriptionresponse();
+}
+inline const ::LS::GetSubscriptionResponse& Message::getsubscriptionresponse() const {
+  return getsubscriptionresponse_ != NULL ? *getsubscriptionresponse_ : *default_instance_->getsubscriptionresponse_;
+}
+inline ::LS::GetSubscriptionResponse* Message::mutable_getsubscriptionresponse() {
+  set_has_getsubscriptionresponse();
+  if (getsubscriptionresponse_ == NULL) getsubscriptionresponse_ = new ::LS::GetSubscriptionResponse;
+  return getsubscriptionresponse_;
+}
+inline ::LS::GetSubscriptionResponse* Message::release_getsubscriptionresponse() {
+  clear_has_getsubscriptionresponse();
+  ::LS::GetSubscriptionResponse* temp = getsubscriptionresponse_;
+  getsubscriptionresponse_ = NULL;
+  return temp;
+}
+inline void Message::set_allocated_getsubscriptionresponse(::LS::GetSubscriptionResponse* getsubscriptionresponse) {
+  delete getsubscriptionresponse_;
+  getsubscriptionresponse_ = getsubscriptionresponse;
+  if (getsubscriptionresponse) {
+    set_has_getsubscriptionresponse();
+  } else {
+    clear_has_getsubscriptionresponse();
+  }
+}
+
+// -------------------------------------------------------------------
+
+// SubscriptionRecord
+
+// required string originalTitle = 1;
+inline bool SubscriptionRecord::has_originaltitle() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SubscriptionRecord::set_has_originaltitle() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SubscriptionRecord::clear_has_originaltitle() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SubscriptionRecord::clear_originaltitle() {
+  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
+    originaltitle_->clear();
+  }
+  clear_has_originaltitle();
+}
+inline const ::std::string& SubscriptionRecord::originaltitle() const {
+  return *originaltitle_;
+}
+inline void SubscriptionRecord::set_originaltitle(const ::std::string& value) {
+  set_has_originaltitle();
+  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
+    originaltitle_ = new ::std::string;
+  }
+  originaltitle_->assign(value);
+}
+inline void SubscriptionRecord::set_originaltitle(const char* value) {
+  set_has_originaltitle();
+  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
+    originaltitle_ = new ::std::string;
+  }
+  originaltitle_->assign(value);
+}
+inline void SubscriptionRecord::set_originaltitle(const char* value, size_t size) {
+  set_has_originaltitle();
+  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
+    originaltitle_ = new ::std::string;
+  }
+  originaltitle_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SubscriptionRecord::mutable_originaltitle() {
+  set_has_originaltitle();
+  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
+    originaltitle_ = new ::std::string;
+  }
+  return originaltitle_;
+}
+inline ::std::string* SubscriptionRecord::release_originaltitle() {
+  clear_has_originaltitle();
+  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = originaltitle_;
+    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SubscriptionRecord::set_allocated_originaltitle(::std::string* originaltitle) {
+  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete originaltitle_;
+  }
+  if (originaltitle) {
+    set_has_originaltitle();
+    originaltitle_ = originaltitle;
+  } else {
+    clear_has_originaltitle();
+    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
 }
 
@@ -1473,6 +2198,282 @@ inline void ArtworkResponse::set_allocated_originaltitle(::std::string* original
     clear_has_originaltitle();
     originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
+}
+
+// -------------------------------------------------------------------
+
+// SetSubscriptionRequest
+
+// required string token = 1;
+inline bool SetSubscriptionRequest::has_token() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SetSubscriptionRequest::set_has_token() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SetSubscriptionRequest::clear_has_token() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SetSubscriptionRequest::clear_token() {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    token_->clear();
+  }
+  clear_has_token();
+}
+inline const ::std::string& SetSubscriptionRequest::token() const {
+  return *token_;
+}
+inline void SetSubscriptionRequest::set_token(const ::std::string& value) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void SetSubscriptionRequest::set_token(const char* value) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void SetSubscriptionRequest::set_token(const char* value, size_t size) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SetSubscriptionRequest::mutable_token() {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  return token_;
+}
+inline ::std::string* SetSubscriptionRequest::release_token() {
+  clear_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = token_;
+    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SetSubscriptionRequest::set_allocated_token(::std::string* token) {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (token) {
+    set_has_token();
+    token_ = token;
+  } else {
+    clear_has_token();
+    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// repeated .LS.SubscriptionRecord subscriptions = 2;
+inline int SetSubscriptionRequest::subscriptions_size() const {
+  return subscriptions_.size();
+}
+inline void SetSubscriptionRequest::clear_subscriptions() {
+  subscriptions_.Clear();
+}
+inline const ::LS::SubscriptionRecord& SetSubscriptionRequest::subscriptions(int index) const {
+  return subscriptions_.Get(index);
+}
+inline ::LS::SubscriptionRecord* SetSubscriptionRequest::mutable_subscriptions(int index) {
+  return subscriptions_.Mutable(index);
+}
+inline ::LS::SubscriptionRecord* SetSubscriptionRequest::add_subscriptions() {
+  return subscriptions_.Add();
+}
+inline const ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >&
+SetSubscriptionRequest::subscriptions() const {
+  return subscriptions_;
+}
+inline ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >*
+SetSubscriptionRequest::mutable_subscriptions() {
+  return &subscriptions_;
+}
+
+// -------------------------------------------------------------------
+
+// SetSubscriptionResponse
+
+// -------------------------------------------------------------------
+
+// GetSubscriptionRequest
+
+// required string token = 1;
+inline bool GetSubscriptionRequest::has_token() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void GetSubscriptionRequest::set_has_token() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void GetSubscriptionRequest::clear_has_token() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void GetSubscriptionRequest::clear_token() {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    token_->clear();
+  }
+  clear_has_token();
+}
+inline const ::std::string& GetSubscriptionRequest::token() const {
+  return *token_;
+}
+inline void GetSubscriptionRequest::set_token(const ::std::string& value) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void GetSubscriptionRequest::set_token(const char* value) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void GetSubscriptionRequest::set_token(const char* value, size_t size) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* GetSubscriptionRequest::mutable_token() {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  return token_;
+}
+inline ::std::string* GetSubscriptionRequest::release_token() {
+  clear_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = token_;
+    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void GetSubscriptionRequest::set_allocated_token(::std::string* token) {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (token) {
+    set_has_token();
+    token_ = token;
+  } else {
+    clear_has_token();
+    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// -------------------------------------------------------------------
+
+// GetSubscriptionResponse
+
+// required string token = 1;
+inline bool GetSubscriptionResponse::has_token() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void GetSubscriptionResponse::set_has_token() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void GetSubscriptionResponse::clear_has_token() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void GetSubscriptionResponse::clear_token() {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    token_->clear();
+  }
+  clear_has_token();
+}
+inline const ::std::string& GetSubscriptionResponse::token() const {
+  return *token_;
+}
+inline void GetSubscriptionResponse::set_token(const ::std::string& value) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void GetSubscriptionResponse::set_token(const char* value) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void GetSubscriptionResponse::set_token(const char* value, size_t size) {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* GetSubscriptionResponse::mutable_token() {
+  set_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  return token_;
+}
+inline ::std::string* GetSubscriptionResponse::release_token() {
+  clear_has_token();
+  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = token_;
+    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void GetSubscriptionResponse::set_allocated_token(::std::string* token) {
+  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (token) {
+    set_has_token();
+    token_ = token;
+  } else {
+    clear_has_token();
+    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// repeated .LS.SubscriptionRecord subscriptions = 2;
+inline int GetSubscriptionResponse::subscriptions_size() const {
+  return subscriptions_.size();
+}
+inline void GetSubscriptionResponse::clear_subscriptions() {
+  subscriptions_.Clear();
+}
+inline const ::LS::SubscriptionRecord& GetSubscriptionResponse::subscriptions(int index) const {
+  return subscriptions_.Get(index);
+}
+inline ::LS::SubscriptionRecord* GetSubscriptionResponse::mutable_subscriptions(int index) {
+  return subscriptions_.Mutable(index);
+}
+inline ::LS::SubscriptionRecord* GetSubscriptionResponse::add_subscriptions() {
+  return subscriptions_.Add();
+}
+inline const ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >&
+GetSubscriptionResponse::subscriptions() const {
+  return subscriptions_;
+}
+inline ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >*
+GetSubscriptionResponse::mutable_subscriptions() {
+  return &subscriptions_;
 }
 
 

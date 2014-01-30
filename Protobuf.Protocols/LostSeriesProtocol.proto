@@ -12,10 +12,20 @@ message Message
   // requests
   optional SeriesRequest seriesRequest = 1000;
   optional ArtworkRequest artworkRequest = 1001;
+  optional SetSubscriptionRequest setSubscriptionRequest = 1002;
+  optional GetSubscriptionRequest getSubscriptionRequest = 1003;
 
   // responses
   optional SeriesResponse seriesResponse = 2000;
   optional ArtworkResponse artworkResponse = 2001;
+  optional SetSubscriptionResponse setSubscriptionResponse = 2002;
+  optional GetSubscriptionResponse getSubscriptionResponse = 2003;
+}
+
+
+message SubscriptionRecord
+{
+  required string originalTitle = 1;
 }
 
 
@@ -45,9 +55,34 @@ message ArtworkRequest
 }
 
 
-// with following banaries
+// with a following banaries
 message ArtworkResponse
 {
   required string snapshot = 1;
   required string originalTitle = 2;
+}
+
+
+message SetSubscriptionRequest
+{
+  required string token = 1;
+  repeated SubscriptionRecord subscriptions = 2;
+}
+
+
+message SetSubscriptionResponse
+{
+}
+
+
+message GetSubscriptionRequest
+{
+  required string token = 1;
+}
+
+
+message GetSubscriptionResponse
+{
+  required string token = 1;
+  repeated SubscriptionRecord subscriptions = 2;
 }
