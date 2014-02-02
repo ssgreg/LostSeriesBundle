@@ -11,6 +11,15 @@
 #import "Remote/LSBatchArtworkGetter.h"
 
 
-@interface LSShowInfoCollectionViewController : UICollectionViewController<UICollectionViewDataSource, UICollectionViewDelegate, LSBatchArtworkGetterDelegate>
+@interface LSShowInfoCollectionViewController : UICollectionViewController
+  <
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
+    UIActionSheetDelegate,
+    LSBatchArtworkGetterDelegate
+  >
+
+- (IBAction) selectButtonClicked:(id)sender;
+- (IBAction) subscribeButtonClicked:(id)sender;
 
 @end

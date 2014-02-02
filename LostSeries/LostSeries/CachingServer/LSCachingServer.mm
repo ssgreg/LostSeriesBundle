@@ -55,7 +55,7 @@
     return nil;
   }
   //
-  static char const* backendAddres = "tcp://localhost:8500";
+  static char const* backendAddres = "tcp://10.250.144.18:8500";
   static char const* frontendAddres = "inproc://caching_server.frontend";
   //
   theLocalCache = [LSLocalCache localCache];

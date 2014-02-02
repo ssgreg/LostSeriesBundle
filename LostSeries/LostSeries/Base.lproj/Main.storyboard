@@ -4,11 +4,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller - Favorite Shows-->
+        <!--Navigation Controller - Subscription-->
         <scene sceneID="5pM-sd-0wA">
             <objects>
                 <navigationController definesPresentationContext="YES" id="l9f-ur-miL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Favorite Shows" image="FavoriteShowsTabItem" id="GLA-kU-omX"/>
+                    <tabBarItem key="tabBarItem" title="Subscription" image="FavoriteShowsTabItem" id="GLA-kU-omX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UH9-fm-bbO">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -20,11 +20,11 @@
             </objects>
             <point key="canvasLocation" x="-1151" y="60"/>
         </scene>
-        <!--Navigation Controller - Show Album-->
+        <!--Navigation Controller - Shows-->
         <scene sceneID="56l-YU-EnO">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Xu5-nL-u24" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Show Album" image="ShowAlbumTabItem" id="qbs-Ug-Obp"/>
+                    <tabBarItem key="tabBarItem" title="Shows" image="ShowAlbumTabItem" id="qbs-Ug-Obp"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2sX-CZ-rHN">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -36,7 +36,7 @@
             </objects>
             <point key="canvasLocation" x="-1151" y="722"/>
         </scene>
-        <!--Show Info Collection View Controller-->
+        <!--Show Info Collection View Controller - Lost Series-->
         <scene sceneID="bo2-ZV-Rsh">
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" id="fzN-9f-KPV" customClass="LSShowInfoCollectionViewController" sceneMemberID="viewController">
@@ -58,16 +58,20 @@
                                     <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="foa-jI-tNW">
-                                            <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iep-v1-gvu">
                                             <rect key="frame" x="0.0" y="44" width="94" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="10"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="foa-jI-tNW">
+                                            <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SelectionChecked" translatesAutoresizingMaskIntoConstraints="NO" id="bXg-0D-Sqb">
+                                            <rect key="frame" x="66" y="66" width="24" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
@@ -75,6 +79,7 @@
                                 <connections>
                                     <outlet property="detail" destination="Iep-v1-gvu" id="ClX-ih-uie"/>
                                     <outlet property="image" destination="foa-jI-tNW" id="0Sr-8C-STX"/>
+                                    <outlet property="overlay" destination="bXg-0D-Sqb" id="rSC-Ew-Dhk"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -83,9 +88,17 @@
                             <outlet property="delegate" destination="fzN-9f-KPV" id="YOs-iq-2Gq"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="1Wj-ae-dLs"/>
+                    <navigationItem key="navigationItem" title="Lost Series" id="1Wj-ae-dLs">
+                        <barButtonItem key="rightBarButtonItem" title="Select" id="XK4-8I-mlJ">
+                            <connections>
+                                <action selector="selectButtonClicked:" destination="fzN-9f-KPV" id="Gbz-MT-8sA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="theCollectionView" destination="9gu-94-guR" id="dqw-70-uDa"/>
+                        <outlet property="theNavigationItem" destination="1Wj-ae-dLs" id="KOm-bf-QeC"/>
+                        <outlet property="theSelectButton" destination="XK4-8I-mlJ" id="xZr-e1-dIA"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2lR-3N-mXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -149,6 +162,7 @@
     </scenes>
     <resources>
         <image name="FavoriteShowsTabItem" width="27" height="26"/>
+        <image name="SelectionChecked" width="46" height="46"/>
         <image name="ShowAlbumTabItem" width="27" height="24"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
