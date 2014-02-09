@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EE76564D18A4B10700C2BB80 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76564C18A4B10700C2BB80 /* Foundation.framework */; };
+		EE76565218A4B10700C2BB80 /* WorkflowLink.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EE76565118A4B10700C2BB80 /* WorkflowLink.h */; };
+		EE76565418A4B10700C2BB80 /* WorkflowLink.m in Sources */ = {isa = PBXBuildFile; fileRef = EE76565318A4B10700C2BB80 /* WorkflowLink.m */; };
+		EE76565B18A4B10700C2BB80 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76565A18A4B10700C2BB80 /* XCTest.framework */; };
+		EE76565C18A4B10700C2BB80 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76564C18A4B10700C2BB80 /* Foundation.framework */; };
+		EE76565E18A4B10700C2BB80 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76565D18A4B10700C2BB80 /* UIKit.framework */; };
+		EE76566118A4B10700C2BB80 /* libWorkflowLink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76564918A4B10700C2BB80 /* libWorkflowLink.a */; };
+		EE76566718A4B10700C2BB80 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE76566518A4B10700C2BB80 /* InfoPlist.strings */; };
+		EE76566918A4B10700C2BB80 /* WorkflowLinkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE76566818A4B10700C2BB80 /* WorkflowLinkTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EE76565F18A4B10700C2BB80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE76564118A4B10700C2BB80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EE76564818A4B10700C2BB80;
+			remoteInfo = WorkflowLink;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EE76564718A4B10700C2BB80 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				EE76565218A4B10700C2BB80 /* WorkflowLink.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		EE76564918A4B10700C2BB80 /* libWorkflowLink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWorkflowLink.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE76564C18A4B10700C2BB80 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EE76565018A4B10700C2BB80 /* WorkflowLink-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WorkflowLink-Prefix.pch"; sourceTree = "<group>"; };
+		EE76565118A4B10700C2BB80 /* WorkflowLink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorkflowLink.h; sourceTree = "<group>"; };
+		EE76565318A4B10700C2BB80 /* WorkflowLink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkflowLink.m; sourceTree = "<group>"; };
+		EE76565918A4B10700C2BB80 /* WorkflowLinkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WorkflowLinkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE76565A18A4B10700C2BB80 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		EE76565D18A4B10700C2BB80 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		EE76566418A4B10700C2BB80 /* WorkflowLinkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WorkflowLinkTests-Info.plist"; sourceTree = "<group>"; };
+		EE76566618A4B10700C2BB80 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EE76566818A4B10700C2BB80 /* WorkflowLinkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkflowLinkTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EE76564618A4B10700C2BB80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE76564D18A4B10700C2BB80 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE76565618A4B10700C2BB80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE76566118A4B10700C2BB80 /* libWorkflowLink.a in Frameworks */,
+				EE76565B18A4B10700C2BB80 /* XCTest.framework in Frameworks */,
+				EE76565E18A4B10700C2BB80 /* UIKit.framework in Frameworks */,
+				EE76565C18A4B10700C2BB80 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE76564018A4B10700C2BB80 = {
+			isa = PBXGroup;
+			children = (
+				EE76564E18A4B10700C2BB80 /* WorkflowLink */,
+				EE76566218A4B10700C2BB80 /* WorkflowLinkTests */,
+				EE76564B18A4B10700C2BB80 /* Frameworks */,
+				EE76564A18A4B10700C2BB80 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EE76564A18A4B10700C2BB80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE76564918A4B10700C2BB80 /* libWorkflowLink.a */,
+				EE76565918A4B10700C2BB80 /* WorkflowLinkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE76564B18A4B10700C2BB80 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EE76564C18A4B10700C2BB80 /* Foundation.framework */,
+				EE76565A18A4B10700C2BB80 /* XCTest.framework */,
+				EE76565D18A4B10700C2BB80 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE76564E18A4B10700C2BB80 /* WorkflowLink */ = {
+			isa = PBXGroup;
+			children = (
+				EE76565118A4B10700C2BB80 /* WorkflowLink.h */,
+				EE76565318A4B10700C2BB80 /* WorkflowLink.m */,
+				EE76564F18A4B10700C2BB80 /* Supporting Files */,
+			);
+			path = WorkflowLink;
+			sourceTree = "<group>";
+		};
+		EE76564F18A4B10700C2BB80 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EE76565018A4B10700C2BB80 /* WorkflowLink-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EE76566218A4B10700C2BB80 /* WorkflowLinkTests */ = {
+			isa = PBXGroup;
+			children = (
+				EE76566818A4B10700C2BB80 /* WorkflowLinkTests.m */,
+				EE76566318A4B10700C2BB80 /* Supporting Files */,
+			);
+			path = WorkflowLinkTests;
+			sourceTree = "<group>";
+		};
+		EE76566318A4B10700C2BB80 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EE76566418A4B10700C2BB80 /* WorkflowLinkTests-Info.plist */,
+				EE76566518A4B10700C2BB80 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EE76564818A4B10700C2BB80 /* WorkflowLink */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE76566C18A4B10700C2BB80 /* Build configuration list for PBXNativeTarget "WorkflowLink" */;
+			buildPhases = (
+				EE76564518A4B10700C2BB80 /* Sources */,
+				EE76564618A4B10700C2BB80 /* Frameworks */,
+				EE76564718A4B10700C2BB80 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WorkflowLink;
+			productName = WorkflowLink;
+			productReference = EE76564918A4B10700C2BB80 /* libWorkflowLink.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		EE76565818A4B10700C2BB80 /* WorkflowLinkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE76566F18A4B10700C2BB80 /* Build configuration list for PBXNativeTarget "WorkflowLinkTests" */;
+			buildPhases = (
+				EE76565518A4B10700C2BB80 /* Sources */,
+				EE76565618A4B10700C2BB80 /* Frameworks */,
+				EE76565718A4B10700C2BB80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EE76566018A4B10700C2BB80 /* PBXTargetDependency */,
+			);
+			name = WorkflowLinkTests;
+			productName = WorkflowLinkTests;
+			productReference = EE76565918A4B10700C2BB80 /* WorkflowLinkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EE76564118A4B10700C2BB80 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Grigory Zubankov";
+			};
+			buildConfigurationList = EE76564418A4B10700C2BB80 /* Build configuration list for PBXProject "WorkflowLink" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EE76564018A4B10700C2BB80;
+			productRefGroup = EE76564A18A4B10700C2BB80 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EE76564818A4B10700C2BB80 /* WorkflowLink */,
+				EE76565818A4B10700C2BB80 /* WorkflowLinkTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EE76565718A4B10700C2BB80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE76566718A4B10700C2BB80 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EE76564518A4B10700C2BB80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE76565418A4B10700C2BB80 /* WorkflowLink.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE76565518A4B10700C2BB80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE76566918A4B10700C2BB80 /* WorkflowLinkTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EE76566018A4B10700C2BB80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EE76564818A4B10700C2BB80 /* WorkflowLink */;
+			targetProxy = EE76565F18A4B10700C2BB80 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EE76566518A4B10700C2BB80 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EE76566618A4B10700C2BB80 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EE76566A18A4B10700C2BB80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		EE76566B18A4B10700C2BB80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EE76566D18A4B10700C2BB80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/WorkflowLink.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WorkflowLink/WorkflowLink-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		EE76566E18A4B10700C2BB80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/WorkflowLink.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WorkflowLink/WorkflowLink-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		EE76567018A4B10700C2BB80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WorkflowLink/WorkflowLink-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "WorkflowLinkTests/WorkflowLinkTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		EE76567118A4B10700C2BB80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WorkflowLink/WorkflowLink-Prefix.pch";
+				INFOPLIST_FILE = "WorkflowLinkTests/WorkflowLinkTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EE76564418A4B10700C2BB80 /* Build configuration list for PBXProject "WorkflowLink" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE76566A18A4B10700C2BB80 /* Debug */,
+				EE76566B18A4B10700C2BB80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE76566C18A4B10700C2BB80 /* Build configuration list for PBXNativeTarget "WorkflowLink" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE76566D18A4B10700C2BB80 /* Debug */,
+				EE76566E18A4B10700C2BB80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		EE76566F18A4B10700C2BB80 /* Build configuration list for PBXNativeTarget "WorkflowLinkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE76567018A4B10700C2BB80 /* Debug */,
+				EE76567118A4B10700C2BB80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EE76564118A4B10700C2BB80 /* Project object */;
+}

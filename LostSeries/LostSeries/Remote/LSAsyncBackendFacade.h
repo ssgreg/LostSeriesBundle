@@ -12,6 +12,7 @@
 
 // forwards
 @class LSShowInfo;
+@class LSSubscriptionInfo;
 
 
 //
@@ -29,6 +30,7 @@
 #pragma mark - Interface
 - (void) getShowInfoArray:(void (^)(NSArray*))handler;
 - (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler;
+- (void) subscribeBySubscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)())handler;
 
 @end
 
@@ -38,10 +40,19 @@
 //
 
 @interface LSShowInfo : NSObject
-
+// properties
 @property NSString* title;
 @property NSString* originalTitle;
 @property NSInteger seasonNumber;
 @property NSString* snapshot;
+@end
 
+
+//
+// LSSubscriptionInfo
+//
+
+@interface LSSubscriptionInfo : NSObject
+// properties
+@property NSString* originalTitle;
 @end

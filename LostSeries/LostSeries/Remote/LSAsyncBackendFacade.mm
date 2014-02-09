@@ -79,7 +79,7 @@
 - (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler
 {
   LS::ArtworkRequest artworkRequest;
-  artworkRequest.set_originaltitle([showInfo.originalTitle UTF8String]);
+  artworkRequest.set_originaltitle(showInfo.originalTitle.UTF8String);
   artworkRequest.set_snapshot([showInfo.snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
   //
   LSMessagePtr request(new LS::Message);
@@ -96,6 +96,29 @@
   }];
 }
 
+- (void) subscribeBySubscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)())handler;
+{
+  LS::SetSubscriptionRequest subscriptionRequest;
+  for (LSSubscriptionInfo* subscription in subscriptions)
+  {
+    LS::SubscriptionRecord* record = subscriptionRequest.add_subscriptions();
+    record->set_originaltitle(subscription.originalTitle.UTF8String);
+  }
+  //
+  LSMessagePtr request(new LS::Message);
+  *request->mutable_setsubscriptionrequest() = subscriptionRequest;
+  //
+  [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
+  {
+    NSAssert(reply->has_setsubscriptionresponse(), @"Bad response!");
+    //
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      handler();
+    });
+  }];
+}
+
 @end
 
 
@@ -104,10 +127,19 @@
 //
 
 @implementation LSShowInfo
-
+// properties
 @synthesize title = theTitle;
 @synthesize originalTitle = theOriginalTitle;
 @synthesize seasonNumber = theSeasonNumber;
 @synthesize snapshot = theSnapshot;
+@end
 
+
+//
+// LSSubscriptionInfo
+//
+
+@implementation LSSubscriptionInfo
+// properties
+@synthesize originalTitle = theOriginalTitle;
 @end

@@ -15,6 +15,8 @@
 		EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79B3188E3E29004A0D4B /* LSCachingServer.mm */; };
 		EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79B7188E65E9004A0D4B /* ZeroMQ.cpp */; };
 		EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */; };
+		EE76567D18A4B36600C2BB80 /* libWorkflowLink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76567A18A4B10800C2BB80 /* libWorkflowLink.a */; };
+		EE7656BC18A517C500C2BB80 /* libUIComponents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE7656B618A5172700C2BB80 /* libUIComponents.a */; };
 		EEB11802187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
 		EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11803187F17D500337023 /* CoreGraphics.framework */; };
 		EEB11806187F17D500337023 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11805187F17D500337023 /* UIKit.framework */; };
@@ -47,6 +49,34 @@
 			remoteGlobalIDString = EE1AA5761887AD5F004B6E7D;
 			remoteInfo = Protobuf.GeneratedTests;
 		};
+		EE76567918A4B10800C2BB80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE76564918A4B10700C2BB80;
+			remoteInfo = WorkflowLink;
+		};
+		EE76567B18A4B10800C2BB80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE76565918A4B10700C2BB80;
+			remoteInfo = WorkflowLinkTests;
+		};
+		EE7656B518A5172700C2BB80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE7656B018A5172600C2BB80 /* UIComponents.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE76568718A5172600C2BB80;
+			remoteInfo = UIComponents;
+		};
+		EE7656B718A5172700C2BB80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE7656B018A5172600C2BB80 /* UIComponents.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE76569718A5172600C2BB80;
+			remoteInfo = UIComponentsTests;
+		};
 		EEB11824187F17D500337023 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EEB117F6187F17D500337023 /* Project object */;
@@ -72,6 +102,8 @@
 		EE6D79B7188E65E9004A0D4B /* ZeroMQ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ZeroMQ.cpp; path = ZeroMQ/ZeroMQ.cpp; sourceTree = "<group>"; };
 		EE6D79B9188EBAB8004A0D4B /* LSLocalCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSLocalCache.h; path = CachingServer/LSLocalCache.h; sourceTree = "<group>"; };
 		EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSLocalCache.mm; path = CachingServer/LSLocalCache.mm; sourceTree = "<group>"; };
+		EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WorkflowLink.xcodeproj; path = WorkflowLink/WorkflowLink.xcodeproj; sourceTree = "<group>"; };
+		EE7656B018A5172600C2BB80 /* UIComponents.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIComponents.xcodeproj; path = UIComponents/UIComponents.xcodeproj; sourceTree = "<group>"; };
 		EEB117FE187F17D500337023 /* LostSeries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostSeries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB11801187F17D500337023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EEB11803187F17D500337023 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -98,6 +130,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE7656BC18A517C500C2BB80 /* libUIComponents.a in Frameworks */,
+				EE76567D18A4B36600C2BB80 /* libWorkflowLink.a in Frameworks */,
 				EE1AA59B1888E99F004B6E7D /* libProtobuf.Generated.a in Frameworks */,
 				EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */,
 				EEB11837187F183700337023 /* libzmq.a in Frameworks */,
@@ -162,9 +196,29 @@
 			name = ZeroMQ;
 			sourceTree = "<group>";
 		};
+		EE76567318A4B10700C2BB80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE76567A18A4B10800C2BB80 /* libWorkflowLink.a */,
+				EE76567C18A4B10800C2BB80 /* WorkflowLinkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE7656B118A5172600C2BB80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE7656B618A5172700C2BB80 /* libUIComponents.a */,
+				EE7656B818A5172700C2BB80 /* UIComponentsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		EEB117F5187F17D500337023 = {
 			isa = PBXGroup;
 			children = (
+				EE7656B018A5172600C2BB80 /* UIComponents.xcodeproj */,
+				EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */,
 				EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */,
 				EEB11807187F17D500337023 /* LostSeries */,
 				EEB11826187F17D500337023 /* LostSeriesTests */,
@@ -310,6 +364,14 @@
 					ProductGroup = EE1AA5901887AD5F004B6E7D /* Products */;
 					ProjectRef = EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */;
 				},
+				{
+					ProductGroup = EE7656B118A5172600C2BB80 /* Products */;
+					ProjectRef = EE7656B018A5172600C2BB80 /* UIComponents.xcodeproj */;
+				},
+				{
+					ProductGroup = EE76567318A4B10700C2BB80 /* Products */;
+					ProjectRef = EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -332,6 +394,34 @@
 			fileType = wrapper.cfbundle;
 			path = Protobuf.GeneratedTests.xctest;
 			remoteRef = EE1AA5961887AD60004B6E7D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE76567A18A4B10800C2BB80 /* libWorkflowLink.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libWorkflowLink.a;
+			remoteRef = EE76567918A4B10800C2BB80 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE76567C18A4B10800C2BB80 /* WorkflowLinkTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WorkflowLinkTests.xctest;
+			remoteRef = EE76567B18A4B10800C2BB80 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE7656B618A5172700C2BB80 /* libUIComponents.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libUIComponents.a;
+			remoteRef = EE7656B518A5172700C2BB80 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EE7656B818A5172700C2BB80 /* UIComponentsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UIComponentsTests.xctest;
+			remoteRef = EE7656B718A5172700C2BB80 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -508,6 +598,8 @@
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
 					"$(SRCROOT)/Protobuf.Generated",
 					"$(SRCROOT)/LostSeries",
+					"$(SRCROOT)/WorkflowLink",
+					"$(SRCROOT)/UIComponents",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -537,6 +629,8 @@
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/include",
 					"$(SRCROOT)/Protobuf.Generated",
 					"$(SRCROOT)/LostSeries",
+					"$(SRCROOT)/WorkflowLink",
+					"$(SRCROOT)/UIComponents",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

@@ -12,8 +12,6 @@
 		EE1AA5791887AD5F004B6E7D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA5691887AD5F004B6E7D /* Foundation.framework */; };
 		EE1AA57B1887AD5F004B6E7D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA57A1887AD5F004B6E7D /* UIKit.framework */; };
 		EE1AA57E1887AD5F004B6E7D /* libProtobuf.Generated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA5661887AD5F004B6E7D /* libProtobuf.Generated.a */; };
-		EE1AA5841887AD5F004B6E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE1AA5821887AD5F004B6E7D /* InfoPlist.strings */; };
-		EE1AA5861887AD5F004B6E7D /* Protobuf_GeneratedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5851887AD5F004B6E7D /* Protobuf_GeneratedTests.m */; };
 		EE1AA59A1887ADB6004B6E7D /* LostSeriesProtocol.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5981887ADB6004B6E7D /* LostSeriesProtocol.pb.cc */; };
 /* End PBXBuildFile section */
 
@@ -46,9 +44,6 @@
 		EE1AA5761887AD5F004B6E7D /* Protobuf.GeneratedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Protobuf.GeneratedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE1AA5771887AD5F004B6E7D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		EE1AA57A1887AD5F004B6E7D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		EE1AA5811887AD5F004B6E7D /* Protobuf.GeneratedTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Protobuf.GeneratedTests-Info.plist"; sourceTree = "<group>"; };
-		EE1AA5831887AD5F004B6E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		EE1AA5851887AD5F004B6E7D /* Protobuf_GeneratedTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Protobuf_GeneratedTests.m; sourceTree = "<group>"; };
 		EE1AA5981887ADB6004B6E7D /* LostSeriesProtocol.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LostSeriesProtocol.pb.cc; sourceTree = "<group>"; };
 		EE1AA5991887ADB6004B6E7D /* LostSeriesProtocol.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LostSeriesProtocol.pb.h; sourceTree = "<group>"; };
 		EE1AA59C1888EBB0004B6E7D /* LostSeriesProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LostSeriesProtocol.h; sourceTree = "<group>"; };
@@ -81,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				EE1AA56B1887AD5F004B6E7D /* Protobuf.Generated */,
-				EE1AA57F1887AD5F004B6E7D /* Protobuf.GeneratedTests */,
 				EE1AA5681887AD5F004B6E7D /* Frameworks */,
 				EE1AA5671887AD5F004B6E7D /* Products */,
 			);
@@ -121,24 +115,6 @@
 			isa = PBXGroup;
 			children = (
 				EE1AA56D1887AD5F004B6E7D /* Protobuf.Generated-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		EE1AA57F1887AD5F004B6E7D /* Protobuf.GeneratedTests */ = {
-			isa = PBXGroup;
-			children = (
-				EE1AA5851887AD5F004B6E7D /* Protobuf_GeneratedTests.m */,
-				EE1AA5801887AD5F004B6E7D /* Supporting Files */,
-			);
-			path = Protobuf.GeneratedTests;
-			sourceTree = "<group>";
-		};
-		EE1AA5801887AD5F004B6E7D /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				EE1AA5811887AD5F004B6E7D /* Protobuf.GeneratedTests-Info.plist */,
-				EE1AA5821887AD5F004B6E7D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -213,7 +189,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE1AA5841887AD5F004B6E7D /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +207,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE1AA5861887AD5F004B6E7D /* Protobuf_GeneratedTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,17 +219,6 @@
 			targetProxy = EE1AA57C1887AD5F004B6E7D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		EE1AA5821887AD5F004B6E7D /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EE1AA5831887AD5F004B6E7D /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		EE1AA5871887AD5F004B6E7D /* Debug */ = {
@@ -421,6 +384,7 @@
 				EE1AA58B1887AD5F004B6E7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EE1AA58C1887AD5F004B6E7D /* Build configuration list for PBXNativeTarget "Protobuf.GeneratedTests" */ = {
 			isa = XCConfigurationList;
@@ -429,6 +393,7 @@
 				EE1AA58E1887AD5F004B6E7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

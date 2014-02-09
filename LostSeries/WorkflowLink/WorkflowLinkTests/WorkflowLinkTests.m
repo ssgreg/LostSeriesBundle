@@ -1,18 +1,18 @@
 //
-//  Protobuf_GeneratedTests.m
-//  Protobuf.GeneratedTests
+//  WorkflowLinkTests.m
+//  WorkflowLinkTests
 //
-//  Created by Grigory Zubankov on 16/01/14.
+//  Created by Grigory Zubankov on 07/02/14.
 //  Copyright (c) 2014 Grigory Zubankov. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface Protobuf_GeneratedTests : XCTestCase
+@interface WorkflowLinkTests : XCTestCase
 
 @end
 
-@implementation Protobuf_GeneratedTests
+@implementation WorkflowLinkTests
 
 - (void)setUp
 {

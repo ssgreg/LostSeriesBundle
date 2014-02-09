@@ -26,8 +26,6 @@
   LSLocalCache* theLocalCache;
   dispatch_queue_t thePollQueue;
   //
-  ZmqContextPtr theContext;
-  //
   ZmqSocketPtr theFrontendSocket;
   ZmqSocketPtr theBackendSocket;
 }
@@ -55,17 +53,14 @@
     return nil;
   }
   //
-  static char const* backendAddres = "tcp://10.250.144.18:8500";
-  static char const* frontendAddres = "inproc://caching_server.frontend";
-  //
   theLocalCache = [LSLocalCache localCache];
   thePollQueue = dispatch_queue_create("caching_server.poll.queue", NULL);
   //
-  theContext = ZmqContextPtr(new zmq::context_t);
-  //
+  static char const* backendAddres = "tcp://localhost:8500";
+  static char const* frontendAddres = "inproc://caching_server.frontend";
   theBackendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
   theBackendSocket->connect(backendAddres);
-  theFrontendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_REP));
+  theFrontendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_ROUTER));
   theFrontendSocket->bind(frontendAddres);
   //
   [self startPollQueue];
@@ -92,7 +87,7 @@
       if (items[0].revents & ZMQ_POLLIN)
       {
         std::deque<ZmqMessagePtr> multipartRequest = ZmqRecieveMultipartMessage(theFrontendSocket);
-        if (multipartRequest.size() != 2)
+        if (multipartRequest.size() != 4)
         {
           // TODO - warning!
           continue;
@@ -103,7 +98,6 @@
         {
           idToRequestMap[[self headerFrameID:multipartRequest.front()]] = [self copyRequest:multipartRequest.back()];
           //
-          multipartRequest.push_front(ZmqZeroFrame());
           ZmqSendMultipartMessage(theBackendSocket, multipartRequest);
         }
         else
@@ -117,25 +111,24 @@
       else if (items[1].revents & ZMQ_POLLIN)
       {
         std::deque<ZmqMessagePtr> multipartReply = ZmqRecieveMultipartMessage(theBackendSocket);
-        multipartReply.pop_front();
-        if (multipartReply.size() < 2)
+        if (multipartReply.size() < 4)
         {
           // TODO - warning!
           continue;
         }
-        ZmqMessagePtr header = multipartReply.front();
-        multipartReply.pop_front();
-        auto requestByID = idToRequestMap.find([self headerFrameID:header]);
-        if (requestByID == idToRequestMap.end())
-        {
-          // TODO - warning!
-          continue;
-        }
-        //
-        [theLocalCache cacheReply:multipartReply forRequest:requestByID->second];
-        idToRequestMap.erase(requestByID);
-        //
-        multipartReply.push_front(header);
+//        ZmqMessagePtr header = multipartReply.front();
+//        multipartReply.pop_front();
+//        auto requestByID = idToRequestMap.find([self headerFrameID:header]);
+//        if (requestByID == idToRequestMap.end())
+//        {
+//          // TODO - warning!
+//          continue;
+//        }
+//        //
+//        [theLocalCache cacheReply:multipartReply forRequest:requestByID->second];
+//        idToRequestMap.erase(requestByID);
+//        //
+//        multipartReply.push_front(header);
         ZmqSendMultipartMessage(theFrontendSocket, multipartReply);
       }
     }
