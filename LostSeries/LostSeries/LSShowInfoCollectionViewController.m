@@ -619,11 +619,6 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 {
   [super viewDidLoad];
   //
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                         selector:@selector(doSomething:)
-                                             name:UIApplicationWillChangeStatusBarOrientationNotification
-                                           object:nil];
-  //
   [self createSubscribeToolbar];
   [self createCollectionViewLoadingStub];
   //
