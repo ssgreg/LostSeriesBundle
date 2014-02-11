@@ -96,9 +96,10 @@
   }];
 }
 
-- (void) subscribeBySubscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)())handler;
+- (void) subscribeByDeviceToken:(NSString*)deviceToken subscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)())handler
 {
   LS::SetSubscriptionRequest subscriptionRequest;
+  subscriptionRequest.set_token(deviceToken.UTF8String);
   for (LSSubscriptionInfo* subscription in subscriptions)
   {
     LS::SubscriptionRecord* record = subscriptionRequest.add_subscriptions();

@@ -30,7 +30,7 @@
 #pragma mark - Interface
 - (void) getShowInfoArray:(void (^)(NSArray*))handler;
 - (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler;
-- (void) subscribeBySubscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)())handler;
+- (void) subscribeByDeviceToken:(NSString*)deviceToken subscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)())handler;
 
 @end
 

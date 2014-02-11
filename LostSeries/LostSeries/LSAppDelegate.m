@@ -7,6 +7,8 @@
 //
 
 #import "LSAppDelegate.h"
+#import "Logic/LSApplication.h"
+
 
 @implementation LSAppDelegate
 
@@ -47,12 +49,19 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-	NSLog(@"My token is: %@", deviceToken);
+  NSString* strDeviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+  strDeviceToken = [strDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+  //
+  [LSApplication singleInstance].deviceToken = strDeviceToken;
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
-	NSLog(@"Failed to get token, error: %@", error);
+  // "remote notifications are not supported in the simulator"
+  if (error.code == 3010)
+  {
+    [LSApplication singleInstance].deviceToken = @"99c2a09abce108cdea3a09c309323926a24b68dfbc78b790b28c520e93ff61fd";
+  }
 }
 
 @end

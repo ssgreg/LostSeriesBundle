@@ -13,13 +13,12 @@
 #import "CachingServer/LSCachingServer.h"
 #import <UIComponents/UILoadingView.h>
 #import <WorkflowLink/WorkflowLink.h>
+#import "Logic/LSApplication.h"
 
 
 @interface LSShowAlbumCellModel : NSObject
-
 @property LSShowInfo* showInfo;
 @property UIImage* artwork;
-
 @end
 
 
@@ -37,17 +36,12 @@
 
 
 @interface LSShowAlbumCell : UICollectionViewCell
-
 @property IBOutlet UIImageView* overlay;
 @property IBOutlet UIImageView* image;
 @property IBOutlet UILabel* detail;
-
 @end
 
 @implementation LSShowAlbumCell
-
-@synthesize image = theImage;
-@synthesize detail = theDetail;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -148,7 +142,7 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
 - (void) input
 {
   [self.view showActionIndicator:YES];
-  [self.data.backendFacade subscribeBySubscriptionInfo:self.makeSubscriptions replyHandler:^()
+  [self.data.backendFacade subscribeByDeviceToken:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^()
   {
     [self.view showActionIndicator:NO];
     [self output];
@@ -645,13 +639,14 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
     [weakSelectButtonWL clicked];
   }];
 
-//  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
   self.edgesForExtendedLayout = UIRectEdgeNone;
-     theCollectionView.window.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
-
-
   
   [theWorkflow start];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
 }
 
 - (void) updateVisibleItemIndexes
@@ -709,8 +704,8 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   NSArray *buttons = [NSArray arrayWithObjects:flexibleItem, theSubscribeButton, flexibleItem, nil];
   //
   CGRect optimalRect = self.tabBarController.tabBar.frame;
-  optimalRect.size.height -= 5;
-  optimalRect.origin.y += 5;
+//  optimalRect.size.height -= 5;
+//  optimalRect.origin.y += 5;
   //
 //  optimalRect = CGRectMake(0, 0, 320, 40);
   theSubscribeToolbar = [[UIToolbar alloc] initWithFrame:optimalRect];
@@ -723,19 +718,16 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 
 - (void) createCollectionViewLoadingStub
 {
-//  CGRect rect = theCollectionView.frame;
-//  // fix frame due the reason that frame takes height of tab bar and navigation bar
-//  rect.size.height -= self.tabBarController.tabBar.frame.size.height;
-//  rect.size.height -= self.navigationController.navigationBar.frame.size.height;
-//  //
-//  theCollectionViewLoadingStub = [[UILoadingView alloc] initWithFrame:rect];
-//  [theCollectionViewLoadingStub setText:@"Loading..."];
-//  [theCollectionView.viewForBaselineLayout addSubview:theCollectionViewLoadingStub];
-//  theCollectionViewLoadingStub.hidden = YES;
-  
-//    [self.navigationController.view addSubview:theCollectionViewLoadingStub];
-//temp= [[CHLoadingWindow alloc] init];
-//[temp makeKeyAndVisible];
+  CGRect rect = theCollectionView.frame;
+  // fix frame due the reason that frame takes height of tab bar and navigation bar
+  rect.size.height -= self.tabBarController.tabBar.frame.size.height;
+  rect.size.height -= self.navigationController.navigationBar.frame.size.height;
+  //
+  theCollectionViewLoadingStub = [[UILoadingView alloc] initWithFrame:rect];
+  [theCollectionViewLoadingStub setText:@"Loading..."];
+  [theCollectionView.viewForBaselineLayout addSubview:theCollectionViewLoadingStub];
+  theCollectionViewLoadingStub.hidden = YES;
+
   
   
   CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
@@ -746,7 +738,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   [myWindow makeKeyAndVisible];
   
   temp = [[UIStatusBarView alloc] initWithFrame:statusBarFrame];
-  [temp setText:@"Publishing Tweet..."];
+  [temp setText:@"Changing subscription..."];
   [myWindow.viewForBaselineLayout addSubview:temp];
   [myWindow setHidden:YES];
 }
@@ -863,6 +855,10 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 {
   theSubscribeToolbar.hidden = !flag;
   self.tabBarController.tabBar.hidden = flag;
+  
+//  CGRect collectionViewFrame = theCollectionView.frame;
+//  collectionViewFrame.size.height = flag ? theSubscribeToolbar.frame.origin.y - collectionViewFrame.origin.y : self.tabBarController.tabBar.frame.origin.y - collectionViewFrame.origin.y;
+//  theCollectionView.frame = collectionViewFrame;
 }
 
 - (void) showActionIndicator:(BOOL)flag
