@@ -96,7 +96,7 @@
   }];
 }
 
-- (void) subscribeByDeviceToken:(NSString*)deviceToken subscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)())handler
+- (void) subscribeByDeviceToken:(NSString*)deviceToken subscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)(BOOL result))handler
 {
   LS::SetSubscriptionRequest subscriptionRequest;
   subscriptionRequest.set_token(deviceToken.UTF8String);
@@ -115,7 +115,37 @@
     //
     dispatch_async(dispatch_get_main_queue(),
     ^{
-      handler();
+      handler(reply->setsubscriptionresponse().result());
+    });
+  }];
+}
+
+- (void) getSubscriptionInfoArrayByDeviceToken:(NSString*)deviceToken replyHandler:(void (^)(NSArray*))handler
+{
+  LS::GetSubscriptionRequest subscriptionRequest;
+  subscriptionRequest.set_token(deviceToken.UTF8String);
+  //
+  LSMessagePtr request(new LS::Message);
+  *request->mutable_getsubscriptionrequest() = subscriptionRequest;
+  //
+  [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
+  {
+    NSAssert(reply->mutable_getsubscriptionrequest(), @"Bad response!");
+    LS::GetSubscriptionResponse const& message = reply->getsubscriptionresponse();
+    //
+    NSMutableArray* subscriptions = [NSMutableArray array];
+    int subscriptionCount = message.subscriptions_size();
+    for (int i = 0; i < subscriptionCount; ++i)
+    {
+      LS::SubscriptionRecord record = message.subscriptions(i);
+      LSSubscriptionInfo* subscriptionInfo = [[LSSubscriptionInfo alloc] init];
+      subscriptionInfo.originalTitle = [NSString stringWithUTF8String: record.originaltitle().c_str()];
+      //
+      [subscriptions addObject:subscriptionInfo];
+    }
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      handler(subscriptions);
     });
   }];
 }

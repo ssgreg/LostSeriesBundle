@@ -8,7 +8,7 @@
         <scene sceneID="5pM-sd-0wA">
             <objects>
                 <navigationController definesPresentationContext="YES" id="l9f-ur-miL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Subscription" image="FavoriteShowsTabItem" id="GLA-kU-omX"/>
+                    <tabBarItem key="tabBarItem" title="Subscription" image="FavTVShowsTabItem" id="GLA-kU-omX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UH9-fm-bbO">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -20,11 +20,11 @@
             </objects>
             <point key="canvasLocation" x="-1151" y="60"/>
         </scene>
-        <!--Navigation Controller - Shows-->
+        <!--Navigation Controller - TV Shows-->
         <scene sceneID="56l-YU-EnO">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Xu5-nL-u24" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Shows" image="ShowAlbumTabItem" id="qbs-Ug-Obp"/>
+                    <tabBarItem key="tabBarItem" title="TV Shows" image="TVShowsTabItem" id="qbs-Ug-Obp"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="2sX-CZ-rHN">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -60,18 +60,19 @@
                                     <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="94" translatesAutoresizingMaskIntoConstraints="NO" id="IRZ-4b-g4L">
-                                            <rect key="frame" x="0.0" y="20" width="94" height="46"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="10"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="foa-jI-tNW">
                                             <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="84" translatesAutoresizingMaskIntoConstraints="NO" id="IRZ-4b-g4L">
+                                            <rect key="frame" x="5" y="46" width="84" height="46"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="11"/>
+                                            <color key="textColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Star" translatesAutoresizingMaskIntoConstraints="NO" id="tA7-DG-YAJ">
-                                            <rect key="frame" x="1.5" y="3" width="13" height="13"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SelectionChecked" translatesAutoresizingMaskIntoConstraints="NO" id="bXg-0D-Sqb">
@@ -86,6 +87,7 @@
                                     <outlet property="detail" destination="IRZ-4b-g4L" id="lzN-ad-lJW"/>
                                     <outlet property="image" destination="foa-jI-tNW" id="0Sr-8C-STX"/>
                                     <outlet property="overlay" destination="bXg-0D-Sqb" id="rSC-Ew-Dhk"/>
+                                    <outlet property="subscriptionOverlay" destination="tA7-DG-YAJ" id="Rxq-J1-1rz"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -167,10 +169,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="FavoriteShowsTabItem" width="27" height="26"/>
+        <image name="FavTVShowsTabItem" width="29" height="25"/>
         <image name="SelectionChecked" width="46" height="46"/>
-        <image name="ShowAlbumTabItem" width="27" height="24"/>
-        <image name="Star" width="13" height="13"/>
+        <image name="Star" width="40" height="40"/>
+        <image name="TVShowsTabItem" width="29" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

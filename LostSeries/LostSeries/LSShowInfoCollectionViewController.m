@@ -12,6 +12,7 @@
 #import "Remote/LSBatchArtworkGetter.h"
 #import "CachingServer/LSCachingServer.h"
 #import <UIComponents/UILoadingView.h>
+#import <UIComponents/UIStatusBarView.h>
 #import <WorkflowLink/WorkflowLink.h>
 #import "Logic/LSApplication.h"
 
@@ -24,9 +25,6 @@
 
 @implementation LSShowAlbumCellModel
 
-@synthesize showInfo = theShowInfo;
-@synthesize artwork = theArtwork;
-
 + (LSShowAlbumCellModel*)showAlbumCellModel
 {
   return [[LSShowAlbumCellModel alloc] init];
@@ -38,20 +36,11 @@
 @interface LSShowAlbumCell : UICollectionViewCell
 @property IBOutlet UIImageView* overlay;
 @property IBOutlet UIImageView* image;
+@property IBOutlet UIImageView* subscriptionOverlay;
 @property IBOutlet UILabel* detail;
 @end
 
 @implementation LSShowAlbumCell
-
-- (id)initWithFrame:(CGRect)frame
-{
-  self = [super initWithFrame:frame];
-  if (self) {
-    // Initialization code
-  }
-  return self;
-}
-
 @end
 
 
@@ -142,10 +131,12 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
 - (void) input
 {
   [self.view showActionIndicator:YES];
-  [self.data.backendFacade subscribeByDeviceToken:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^()
+  [self.data.backendFacade subscribeByDeviceToken:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^(BOOL result)
   {
     [self.view showActionIndicator:NO];
-    [self output];
+    result
+      ? [self output]
+      : [self forwardBlock];
   }];
   [self forwardBlock];
 }
@@ -301,21 +292,13 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 
 @end
 
-@interface LSShowCollectionWL ()
+@implementation LSShowCollectionWL
 {
   NSMutableDictionary* theSelectedShows;
   NSNumber* theIsMultipleSelectedAllowedFlag;
   //
   LSBatchArtworkGetter* theArtworkGetter;
 }
-
-- (void) updateView;
-- (void) tryToUpdateSelectionMode;
-- (void) tryToStartBatchArtworkGetter;
-
-@end
-
-@implementation LSShowCollectionWL
 
 SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 
@@ -431,7 +414,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 
 @end
 
-@interface LSShowAlbumModel ()
+@implementation LSShowAlbumModel
 {
   LSCachingServer* theCachingServer;
   LSAsyncBackendFacade* theBackendFacade;
@@ -440,9 +423,6 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   NSArray* theShows;
   NSDictionary* theSelectedShows;
 }
-@end
-
-@implementation LSShowAlbumModel
 
 - (id) init
 {
@@ -466,54 +446,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 @end
 
 
-
-@interface UIStatusBarView : UIView
-- (void) setText:(NSString*)text;
-@end
-
-@interface UIStatusBarView ()
-{
-  UILabel* theLabel;
-}
-@end
-
-@implementation UIStatusBarView
-
-- (id)initWithFrame:(CGRect)frame
-{
-  if (!(self = [super initWithFrame:frame]))
-  {
-    return nil;
-  }
-  theLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-  theLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
-  theLabel.adjustsFontSizeToFitWidth = YES;
-  //
-  [self addSubview: theLabel];
-  [self setBackgroundColor:[UIColor colorWithRed:(65/255.0) green:(95/255.0) blue:(127/255.0) alpha:1.f]];
-  theLabel.textColor = [UIColor whiteColor];
-  [self setText:nil];
-  //
-  return self;
-}
-
-
-- (void) setText:(NSString*)text
-{
-  // label
-  theLabel.text = text;
-  [theLabel sizeToFit];
-  theLabel.center = self.center;
-}
-
-@end
-
-
-//
-// LSShowInfoCollectionViewController
-//
-
-@interface LSShowInfoCollectionViewController ()
+@implementation LSShowInfoCollectionViewController
 {
   IBOutlet UICollectionView* theCollectionView;
   IBOutlet UIBarButtonItem* theSelectButton;
@@ -537,16 +470,6 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   LSSubscribeActionWL* theSubscribeActionWL;
 }
 
-- (void) updateVisibleItemIndexes;
-- (void) updateCell:(LSShowAlbumCell*)cell forIndexPath:(NSIndexPath*)indexPath;
-- (void) createSubscribeToolbar;
-- (void) createCollectionViewLoadingStub;
-
-- (void) doSomething:(NSNotification*)notification;
-@end
-
-@implementation LSShowInfoCollectionViewController
-
 - (IBAction) selectButtonClicked:(id)sender;
 {
   [theSelectButtonWL clicked];
@@ -554,8 +477,8 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 
 - (IBAction) subscribeButtonClicked:(id)sender
 {
-  UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Subscribe", nil];
-  [actionSheet showInView:self.view];
+  UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Unsubscribe" otherButtonTitles:@"Subscribe", nil];
+  [actionSheet showInView:self.tabBarController.view];
 }
 
 - (void) doSomething:(NSTimer*)timer
@@ -641,6 +564,17 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 
   self.edgesForExtendedLayout = UIRectEdgeNone;
   
+//  self.tabBarItem.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
+//  
+//  self.tabBarController.tabBarItem.selectedImage  = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
+//  
+//  UITabBarItem *item1 = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
+//  [item1.title];
+  
+  UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
+  item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
+  UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
+  item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
   [theWorkflow start];
 }
 
@@ -674,16 +608,20 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 
 - (void) updateCell:(LSShowAlbumCell*)cell forIndexPath:(NSIndexPath*)indexPath
 {
-  LSShowAlbumCellModel* cellModel = [theShowCollectionWL itemAtIndex:indexPath];
-  cell.detail.text = cellModel.showInfo.title;
-  cell.image.image = cellModel.artwork;
- 
-//    UIGraphicsBeginImageContext(CGSizeMake(320, 20));
-//  [theCollectionView.window.viewForBaselineLayout.layer renderInContext:UIGraphicsGetCurrentContext()];
-//  UIImage *r1esultingImage = UIGraphicsGetImageFromCurrentImageContext();
-//  cell.image.image = r1esultingImage;
-//  UIGraphicsEndImageContext();
-
+  LSShowAlbumCellModel* model = [theShowCollectionWL itemAtIndex:indexPath];
+  //text
+  cell.detail.text = model.showInfo.title;
+  //
+  if (model.artwork)
+  {
+    cell.image.image = model.artwork;
+    cell.detail.hidden = YES;
+  }
+  else
+  {
+    cell.image.image = [UIImage imageNamed:@"StubTVShowImage"];
+    cell.detail.hidden = NO;
+  }
   //
   if ([theShowCollectionWL isItemSelectedAtIndex:indexPath])
   {
@@ -695,6 +633,8 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
     cell.image.alpha = 1;
     cell.overlay.hidden = YES;
   }
+  //
+  cell.subscriptionOverlay.hidden = YES;
 }
 
 - (void) createSubscribeToolbar

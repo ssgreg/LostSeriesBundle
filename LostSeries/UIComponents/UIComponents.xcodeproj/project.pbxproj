@@ -15,6 +15,7 @@
 		EE7656A518A5172600C2BB80 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE7656A318A5172600C2BB80 /* InfoPlist.strings */; };
 		EE7656A718A5172600C2BB80 /* UIComponentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE7656A618A5172600C2BB80 /* UIComponentsTests.m */; };
 		EE7656BB18A5175C00C2BB80 /* UILoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE7656BA18A5175C00C2BB80 /* UILoadingView.m */; };
+		EEF8749E18AB91AE00F74CB6 /* UIStatusBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF8749D18AB91AE00F74CB6 /* UIStatusBarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		EE7656A618A5172600C2BB80 /* UIComponentsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIComponentsTests.m; sourceTree = "<group>"; };
 		EE7656B918A5175C00C2BB80 /* UILoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILoadingView.h; sourceTree = "<group>"; };
 		EE7656BA18A5175C00C2BB80 /* UILoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILoadingView.m; sourceTree = "<group>"; };
+		EEF8749C18AB91AE00F74CB6 /* UIStatusBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIStatusBarView.h; sourceTree = "<group>"; };
+		EEF8749D18AB91AE00F74CB6 /* UIStatusBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIStatusBarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +114,8 @@
 				EE76568D18A5172600C2BB80 /* Supporting Files */,
 				EE7656B918A5175C00C2BB80 /* UILoadingView.h */,
 				EE7656BA18A5175C00C2BB80 /* UILoadingView.m */,
+				EEF8749C18AB91AE00F74CB6 /* UIStatusBarView.h */,
+				EEF8749D18AB91AE00F74CB6 /* UIStatusBarView.m */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -222,6 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEF8749E18AB91AE00F74CB6 /* UIStatusBarView.m in Sources */,
 				EE7656BB18A5175C00C2BB80 /* UILoadingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,6 +413,7 @@
 				EE7656AC18A5172600C2BB80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EE7656AD18A5172600C2BB80 /* Build configuration list for PBXNativeTarget "UIComponentsTests" */ = {
 			isa = XCConfigurationList;
@@ -415,6 +422,7 @@
 				EE7656AF18A5172600C2BB80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

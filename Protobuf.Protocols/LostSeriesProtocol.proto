@@ -72,6 +72,7 @@ message SetSubscriptionRequest
 
 message SetSubscriptionResponse
 {
+  required bool result = 1;
 }
 
 

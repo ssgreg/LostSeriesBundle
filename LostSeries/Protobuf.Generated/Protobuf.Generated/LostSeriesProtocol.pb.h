@@ -1029,14 +1029,24 @@ class SetSubscriptionResponse : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
+  // required bool result = 1;
+  inline bool has_result() const;
+  inline void clear_result();
+  static const int kResultFieldNumber = 1;
+  inline bool result() const;
+  inline void set_result(bool value);
+
   // @@protoc_insertion_point(class_scope:LS.SetSubscriptionResponse)
  private:
+  inline void set_has_result();
+  inline void clear_has_result();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
+  bool result_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[1];
+  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -2302,6 +2312,28 @@ SetSubscriptionRequest::mutable_subscriptions() {
 // -------------------------------------------------------------------
 
 // SetSubscriptionResponse
+
+// required bool result = 1;
+inline bool SetSubscriptionResponse::has_result() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SetSubscriptionResponse::set_has_result() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SetSubscriptionResponse::clear_has_result() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SetSubscriptionResponse::clear_result() {
+  result_ = false;
+  clear_has_result();
+}
+inline bool SetSubscriptionResponse::result() const {
+  return result_;
+}
+inline void SetSubscriptionResponse::set_result(bool value) {
+  set_has_result();
+  result_ = value;
+}
 
 // -------------------------------------------------------------------
 
