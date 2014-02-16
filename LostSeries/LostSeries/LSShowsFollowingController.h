@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LSShowsFollowingController : UICollectionViewController
 
+//
+// LSShowsFollowingController
+//
+
+@interface LSShowsFollowingController : UICollectionViewController
 @end

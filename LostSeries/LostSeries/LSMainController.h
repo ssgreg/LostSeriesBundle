@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LSMainController : UITabBarController
 
+//
+// LSMainController
+//
+
+@interface LSMainController : UITabBarController
 @end
