@@ -58,3 +58,10 @@
 - (IBAction) subscribeButtonClicked:(id)sender;
 
 @end
+
+
+//
+// Notifications
+//
+
+extern NSString* LSShowsControllerDidLoadNotification; // device token has been recieved

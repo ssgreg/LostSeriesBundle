@@ -16,6 +16,7 @@
 
 @interface LSApplication ()
 {
+  LSModelBase* theModelBase;
   NSString* theDeviceToken;
 }
 @end
@@ -41,6 +42,8 @@
     return nil;
   }
   //
+  theModelBase = [[LSModelBase alloc] init];
+  //
   return self;
 }
 
@@ -53,6 +56,11 @@
 {
   theDeviceToken = deviceToken;
   [[NSNotificationCenter defaultCenter] postNotificationName:LSApplicationDeviceTokenDidRecieveNotification object:self];
+}
+
+- (LSModelBase*) modelBase
+{
+  return theModelBase;
 }
 
 @end

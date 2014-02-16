@@ -15,3 +15,10 @@
 
 @interface LSShowsFollowingController : UICollectionViewController
 @end
+
+
+//
+// Notifications
+//
+
+extern NSString* LSShowsFollowingControllerDidLoadNotification; // device token has been recieved

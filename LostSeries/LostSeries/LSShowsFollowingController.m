@@ -18,6 +18,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsFollowingControllerDidLoadNotification object:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -26,3 +27,10 @@
 }
 
 @end
+
+
+//
+// Notifications
+//
+
+NSString* LSShowsFollowingControllerDidLoadNotification = @"LSShowsFollowingControllerDidLoadNotification";

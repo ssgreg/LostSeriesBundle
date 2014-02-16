@@ -8,6 +8,8 @@
 
 // Cocoa
 #import <Foundation/Foundation.h>
+// LS
+#import "LSModelBase.h"
 
 
 //
@@ -22,6 +24,7 @@
 - (id) init;
 
 @property NSString* deviceToken;
+@property (readonly) LSModelBase* modelBase;
 
 @end
 
