@@ -71,8 +71,8 @@
                                             <color key="textColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Star" translatesAutoresizingMaskIntoConstraints="NO" id="tA7-DG-YAJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="FollowOverlayForTVShow" translatesAutoresizingMaskIntoConstraints="NO" id="tA7-DG-YAJ">
+                                            <rect key="frame" x="63" y="0.0" width="31" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SelectionChecked" translatesAutoresizingMaskIntoConstraints="NO" id="bXg-0D-Sqb">
@@ -152,7 +152,7 @@
         <scene sceneID="3eu-Ns-ufn">
             <objects>
                 <tabBarController autoresizesArchivedViewToFullSize="NO" definesPresentationContext="YES" modalTransitionStyle="crossDissolve" id="d2G-EP-egg" sceneMemberID="viewController">
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="Fi8-cI-lW8">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -170,8 +170,8 @@
     </scenes>
     <resources>
         <image name="FavTVShowsTabItem" width="29" height="25"/>
+        <image name="FollowOverlayForTVShow" width="31" height="31"/>
         <image name="SelectionChecked" width="46" height="46"/>
-        <image name="Star" width="40" height="40"/>
         <image name="TVShowsTabItem" width="29" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

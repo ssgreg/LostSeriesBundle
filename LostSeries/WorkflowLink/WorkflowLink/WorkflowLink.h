@@ -28,6 +28,9 @@
 
 @interface WFWorkflowLink : NSObject <WFWorkflowLinkProtocol>
 
+@property BOOL isBlocked;
+@property WFWorkflowLink* nextLink;
+
 - (id) initWithData:(id)data view:(id)view;
 - (id) initWithData:(id)data;
 - (id) initWithView:(id)view;
@@ -35,8 +38,6 @@
 - (id) workflowData;
 - (id) workflowView;
 
-- (void) setOutputHandler:(void (^)())handler;
-- (void) setForwardBlockHandler:(void (^)())handler;
 - (void) output;
 - (void) forwardBlock;
 
@@ -51,13 +52,40 @@
 // WFWorkflow
 //
 
-@interface WFWorkflow : NSObject
+@interface WFWorkflow : WFWorkflowLink
 
-- (id) init;
-- (WFWorkflow*) link:(WFWorkflowLink<WFWorkflowLinkProtocol>*) workflowLink;
-- (void) start;
+- (id) initWithFirstWLink:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast;
 
 @end
+
+
+//
+// WFForwardWorkflowLink
+//
+
+@interface WFForwardWorkflowLink : WFWorkflowLink
+
+- (id) initWithOutputHandler:(void (^)())outputHandler forwardBlockHandler:(void (^)())forwardBlockHandler;
+
+- (void) input;
+- (void) block;
+
+@end
+
+
+//
+// WFWorkflowBatchUsingAnd
+//
+
+@interface WFWorkflowBatchUsingAnd : WFWorkflowLink
+
+- (id) initWithArray:(NSArray*)wls;
+
+@end
+
+
+WFWorkflowLink* WFLinkWorkflow(WFWorkflowLink* wl, ...);
+WFWorkflowLink* WFLinkWorkflowBatchUsingAnd(WFWorkflowLink* wl, ...);
 
 
 #define SYNTHESIZE_WL_ACCESSORS(dataType, viewType) \

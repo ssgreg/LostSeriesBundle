@@ -22,8 +22,6 @@
 
 @implementation LSApplication
 
-@synthesize deviceToken = theDeviceToken;
-
 + (LSApplication*) singleInstance
 {
   static __weak LSApplication* weakSingleInstance = nil;
@@ -46,4 +44,18 @@
   return self;
 }
 
+- (NSString*) deviceToken
+{
+  return theDeviceToken;
+}
+
+- (void) setDeviceToken:(NSString *)deviceToken
+{
+  theDeviceToken = deviceToken;
+  [[NSNotificationCenter defaultCenter] postNotificationName:LSApplicationDeviceTokenDidRecieveNotification object:self];
+}
+
 @end
+
+
+NSString* LSApplicationDeviceTokenDidRecieveNotification = @"LSApplicationDeviceTokenDidRecieveNotification";

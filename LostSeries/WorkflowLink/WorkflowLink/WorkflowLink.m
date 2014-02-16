@@ -13,22 +13,34 @@
 // WFWorkflowLink
 //
 
-@interface WFWorkflowLink ()
+@implementation WFWorkflowLink
 {
   __weak id theData;
   __weak id theView;
+  BOOL theIsBlockedFlag;
   //
-  void (^theOutputHandler)();
-  void (^theForwardBlockHandler)();
-  void (^theNextLinkHandler)();
+  WFWorkflowLink* theNextWL;
 }
 
-- (void) setNextLinkHandler:(void (^)())handler;
-- (void) nextLink;
+@synthesize isBlocked = theIsBlockedFlag;
 
-@end
+- (void) internalInitWithData:(id)data view:(id)view
+{
+  theData = data;
+  theView = view;
+  self.isBlocked = YES;
+  [self update];
+}
 
-@implementation WFWorkflowLink
+- (id) init
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  [self internalInitWithData:nil view:nil];
+  return self;
+}
 
 - (id) initWithData:(id)data view:(id)view
 {
@@ -36,8 +48,7 @@
   {
     return nil;
   }
-  theData = data;
-  theView = view;
+  [self internalInitWithData:data view:view];
   return self;
 }
 
@@ -47,7 +58,7 @@
   {
     return nil;
   }
-  theData = data;
+  [self internalInitWithData:data view:nil];
   return self;
 }
 
@@ -57,7 +68,8 @@
   {
     return nil;
   }
-  theView = view;  return self;
+  [self internalInitWithData:nil view:view];
+  return self;
 }
 
 - (id) workflowData
@@ -70,47 +82,29 @@
   return theView;
 }
 
-- (void) setOutputHandler:(void (^)())handler
+- (WFWorkflowLink*) nextLink
 {
-  theOutputHandler = handler;
+  return theNextWL;
 }
 
-- (void) setForwardBlockHandler:(void (^)())handler
+- (void) setNextLink:(WFWorkflowLink *)nextLink
 {
-  theForwardBlockHandler = handler;
-}
-
-- (void) setNextLinkHandler:(void (^)())handler
-{
-  theNextLinkHandler = handler;
-}
-
-- (void) nextLink
-{
-  if (theNextLinkHandler)
-  {
-    theNextLinkHandler();
-  }
+  theNextWL = nextLink;
 }
 
 - (void) output
 {
-  if (theOutputHandler)
-  {
-    theOutputHandler();
-  }
+  [theNextWL internalInput];
 }
 
 - (void) forwardBlock
 {
-  if (theForwardBlockHandler)
-  {
-    theForwardBlockHandler();
-  }
+  [theNextWL internalBlock];
 }
 
 - (void) input
 {
+  [self output];
 }
 
 - (void) block
@@ -121,63 +115,218 @@
 {
 }
 
+- (void) internalInput
+{
+  NSLog(@"WLInput - %@", NSStringFromClass([self class]));
+  self.isBlocked = NO;
+  [self input];
+}
+
+- (void) internalBlock
+{
+  NSLog(@"WLBLock - %@", NSStringFromClass([self class]));
+  self.isBlocked = YES;
+  [self block];
+  [self forwardBlock];
+}
+
 @end
+
 
 
 //
 // WFWorkflow
 //
 
-@interface WFWorkflow ()
-{
-  __weak WFWorkflowLink<WFWorkflowLinkProtocol>* theInitialLink;
-  __weak WFWorkflowLink<WFWorkflowLinkProtocol>* theLastLink;
-}
-@end
-
 @implementation WFWorkflow
+{
+  WFWorkflowLink* theWLinkFirst;
+  WFWorkflowLink* theWLinkLast;
+}
 
-- (id) init
+- (id) initWithFirstWLink:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast
 {
   if (!(self = [super init]))
   {
     return nil;
   }
+  //
+  theWLinkFirst = wLinkFirst;
+  theWLinkLast = wLinkLast;
+  //
+  __weak typeof(self) weakSelf = self;
+  void(^outputHandler)() = ^()
+  {
+    [weakSelf output];
+  };
+  void(^forwardBlockHandler)() = ^()
+  {
+    [weakSelf forwardBlock];
+  };
+  WFForwardWorkflowLink* wLinkForward = [[WFForwardWorkflowLink alloc] initWithOutputHandler:outputHandler forwardBlockHandler:forwardBlockHandler];
+  //
+  wLinkLast.nextLink = wLinkForward;
+  //
   return self;
 }
 
-- (WFWorkflow*) link:(WFWorkflowLink<WFWorkflowLinkProtocol>*) link
+- (void) input
 {
-  if (!theInitialLink)
-  {
-    theInitialLink = link;
-  }
-  else
-  {
-    __weak WFWorkflowLink<WFWorkflowLinkProtocol>* weakLink = link;
-    [theLastLink setOutputHandler: ^()
-    {
-      [weakLink input];
-    }];
-    [theLastLink setForwardBlockHandler: ^()
-    {
-      [weakLink block];
-      [weakLink nextLink];
-    }];
-    [theLastLink setForwardBlockHandler: ^()
-    {
-      [weakLink block];
-      [weakLink nextLink];
-    }];
-  }
-  [link update];
-  theLastLink = link;
-  return self;
+  [theWLinkFirst internalInput];
 }
 
-- (void) start
+- (void) block
 {
-  [theInitialLink input];
+  [theWLinkLast forwardBlock];
 }
 
 @end
+
+
+//
+// WFForwardWorkflowLink
+//
+
+@implementation WFForwardWorkflowLink
+{
+  void (^theOutputHandler)();
+  void (^theForwardBlockHandler)();
+}
+
+- (id) initWithOutputHandler:(void (^)())outputHandler forwardBlockHandler:(void (^)())forwardBlockHandler;
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  theOutputHandler = outputHandler;
+  theForwardBlockHandler = forwardBlockHandler;
+  return self;
+}
+
+- (void) input
+{
+  theOutputHandler(self);
+}
+
+- (void) block
+{
+  theForwardBlockHandler(self);
+}
+
+@end
+
+
+//
+// WFWorkflowBatchUsingAnd
+//
+
+@implementation WFWorkflowBatchUsingAnd
+{
+  NSArray* theWLs;
+  NSMutableDictionary* theReplies;
+  BOOL theBlockBlockFlag;
+}
+
+- (id) initWithArray:(NSArray*)wls
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  //
+  theReplies = [NSMutableDictionary dictionary];
+  theWLs = wls;
+  //
+  for (WFWorkflowLink* wl in wls)
+  {
+    [self link:wl];
+  }
+  //
+  return self;
+}
+
+- (void) input
+{
+  theBlockBlockFlag = NO;
+  for (WFWorkflowLink* wl in theWLs)
+  {
+    [wl internalInput];
+  }
+}
+
+- (void) block
+{
+  for (WFWorkflowLink* wl in theWLs)
+  {
+    [wl internalBlock];
+  }
+}
+
+- (void) commonOutput:(WFWorkflowLink*)wl
+{
+  theReplies[[NSNumber numberWithLongLong:(uintptr_t)wl]] = @YES;
+  if (theReplies.count == theWLs.count)
+  {
+    [self output];
+  }
+}
+
+- (void) commonBlock
+{
+  if (!theBlockBlockFlag)
+  {
+    [self forwardBlock];
+  }
+  theBlockBlockFlag = YES;
+}
+
+- (void) link:(WFWorkflowLink*)wl
+{
+  __weak typeof(self) weakSelf = self;
+  void(^outputHandler)() = ^()
+  {
+    [weakSelf commonOutput:wl];
+  };
+  void(^forwardBlockHandler)() = ^()
+  {
+    [weakSelf commonBlock];
+  };
+  WFForwardWorkflowLink* wlForward = [[WFForwardWorkflowLink alloc] initWithOutputHandler:outputHandler forwardBlockHandler:forwardBlockHandler];
+  wl.nextLink = wlForward;
+}
+
+@end
+
+
+WFWorkflowLink* WFLinkWorkflow(WFWorkflowLink* wl, ...)
+{
+  va_list args;
+  va_start(args, wl);
+  //
+  WFWorkflowLink* nextWL = nil;
+  WFWorkflowLink* curWL = wl;
+  while ((nextWL = va_arg(args, WFWorkflowLink*)))
+  {
+    curWL.nextLink = nextWL;
+    curWL = nextWL;
+  }
+  //
+  va_end(args);
+  return [[WFWorkflow alloc] initWithFirstWLink:wl lastWLink:curWL];
+}
+
+WFWorkflowLink* WFLinkWorkflowBatchUsingAnd(WFWorkflowLink* wl, ...)
+{
+  va_list args;
+  va_start(args, wl);
+  //
+  NSMutableArray* wls = [NSMutableArray array];
+  for (WFWorkflowLink* nextWL = wl; nextWL; nextWL = va_arg(args, WFWorkflowLink*))
+  {
+    [wls addObject:nextWL];
+  }
+  //
+  va_end(args);
+  return [[WFWorkflowBatchUsingAnd alloc] initWithArray:wls];
+}

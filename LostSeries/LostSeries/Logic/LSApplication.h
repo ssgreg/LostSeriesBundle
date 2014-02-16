@@ -24,3 +24,10 @@
 @property NSString* deviceToken;
 
 @end
+
+
+//
+// Notifications
+//
+
+extern NSString* LSApplicationDeviceTokenDidRecieveNotification; // device token has been recieved

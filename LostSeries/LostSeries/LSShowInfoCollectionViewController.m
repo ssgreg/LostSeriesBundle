@@ -48,64 +48,193 @@
 // Getter protocols
 //
 
-@protocol LSShowsSelectionModeData
-@property (readonly) BOOL selectionModeActivated;
-@end
-
-
 @protocol LSShowAsyncBackendFacadeData
 @property (readonly) LSAsyncBackendFacade* backendFacade;
 @end
 
+@protocol LSShowsSelectionModeData
+@property BOOL selectionModeActivated;
+@end
 
 @protocol LSShowsShowsData
-@property (readonly) NSArray* shows;
-@end
-
-@protocol LSShowsSelectedShowsData
-@property (readonly) NSDictionary* selectedShows;
-@end
-
-
-//
-// LSLoadShowActionData
-//
-
-@protocol LSLoadShowActionData <LSShowAsyncBackendFacadeData, LSShowsShowsData>
 @property NSArray* shows;
 @end
 
+@protocol LSShowsSelectedShowsData
+@property NSDictionary* selectedShows;
+@end
 
-@interface LSLoadShowActionWL : WFWorkflowLink
+@protocol LSShowsFavoriteShowsData
+@property NSDictionary* favoriteShows;
+@end
+
+@protocol LSDataBaseShowsRaw
+@property NSArray* showsRaw;
+@end
+
+@protocol LSDataBaseShowsFavoriteRaw
+@property NSArray* showsFavoriteRaw;
 @end
 
 
-@implementation LSLoadShowActionWL
+//
+// LSShowsWaitForDeviceTokenDidRecieveWL
+//
 
-SYNTHESIZE_WL_DATA_ACCESSOR(LSLoadShowActionData);
+@interface LSShowsWaitForDeviceTokenDidRecieveWL : WFWorkflowLink
+@end
+
+@implementation LSShowsWaitForDeviceTokenDidRecieveWL
+
+- (void) update
+{
+  [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(receiveDeviceTokenNotification:)
+    name:LSApplicationDeviceTokenDidRecieveNotification
+    object:nil];
+}
+
+- (void) input
+{
+  if ([LSApplication singleInstance].deviceToken)
+  {
+    [self output];
+  }
+  else
+  {
+    [self forwardBlock];
+  }
+}
+
+- (void) receiveDeviceTokenNotification:(NSNotification *)notification
+{
+  if (!self.isBlocked)
+  {
+    [self output];
+  }
+}
+
+@end
+
+
+//
+// LSWLinkBaseGetterShows
+//
+
+@protocol LSDataBaseGetterShows <LSShowAsyncBackendFacadeData, LSDataBaseShowsRaw>
+@end
+
+@interface LSWLinkBaseGetterShows : WFWorkflowLink
+@end
+
+@implementation LSWLinkBaseGetterShows
+
+SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterShows);
 
 - (void) input
 {
   [self.data.backendFacade getShowInfoArray:^(NSArray* shows)
   {
-    NSMutableArray* newShows = [NSMutableArray array];
-    for (id show in shows)
+    if (!self.isBlocked)
     {
-     [newShows addObject:show];
-     [newShows addObject:show];
-     [newShows addObject:show];
+      self.data.showsRaw = shows;
+      [self output];
+    }
+  }];
+  [self forwardBlock];
+}
+
+@end
+
+
+//
+// LSWLinkBaseGetterShowsFavorite
+//
+
+@protocol LSDataBaseGetterFavoriteShows <LSShowAsyncBackendFacadeData, LSDataBaseShowsFavoriteRaw>
+@end
+
+@interface LSWLinkBaseGetterShowsFavorite : WFWorkflowLink
+@end
+
+@implementation LSWLinkBaseGetterShowsFavorite
+
+SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterFavoriteShows);
+
+- (void) input
+{
+  [self.data.backendFacade
+    getSubscriptionInfoArrayByDeviceToken:[LSApplication singleInstance].deviceToken
+    replyHandler:^(NSArray* infos)
+  {
+    if (!self.isBlocked)
+    {
+      self.data.showsFavoriteRaw = infos;
+      [self output];
+    }
+  }];
+  [self forwardBlock];
+}
+
+@end
+
+
+//
+// LSWLinkBaseConverterRaw
+//
+
+@protocol LSDataBaseConverterRaw <LSDataBaseShowsRaw, LSDataBaseShowsFavoriteRaw, LSShowsShowsData, LSShowsFavoriteShowsData>
+@end
+
+@interface LSWLinkBaseConverterRaw : WFWorkflowLink
+@end
+
+@implementation LSWLinkBaseConverterRaw
+
+SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
+
+- (void) input
+{
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+  {
+    // shows
+    NSMutableArray* newShowsRaw = [NSMutableArray array];
+    for (id show in self.data.showsRaw)
+    {
+     [newShowsRaw addObject:show];
+//     [newShows addObject:show];
+//     [newShows addObject:show];
     }
 
-    NSMutableArray* showModels = [NSMutableArray array];
-    for (id show in newShows)
+    NSMutableArray* modelsShow = [NSMutableArray array];
+    for (id show in newShowsRaw)
     {
      LSShowAlbumCellModel* cellModel = [LSShowAlbumCellModel showAlbumCellModel];
      cellModel.showInfo = show;
-     [showModels addObject: cellModel];
+     [modelsShow addObject: cellModel];
     }
-    self.data.shows = showModels;
-    [self output];
-  }];
+
+    // favorite shows
+    NSMutableDictionary* modelsShowFavorite = [NSMutableDictionary dictionary];
+    for (id info in self.data.showsFavoriteRaw)
+    {
+      NSUInteger index = [modelsShow indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
+      {
+        return [((LSShowAlbumCellModel*)object).showInfo.originalTitle isEqualToString:((LSSubscriptionInfo*)info).originalTitle];
+      }];
+      modelsShowFavorite[[NSIndexPath indexPathForRow:index inSection:0]] = [modelsShow objectAtIndex:index];
+    }
+    //
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+      if (!self.isBlocked)
+      {
+        self.data.shows = modelsShow;
+        self.data.favoriteShows = modelsShowFavorite;
+        [self output];
+      }
+    });
+  });
   [self forwardBlock];
 }
 
@@ -116,13 +245,11 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSLoadShowActionData);
 // LSSubscribeActionData
 //
 
-@protocol LSSubscribeActionData <LSShowAsyncBackendFacadeData, LSShowsSelectedShowsData>
+@protocol LSSubscribeActionData <LSShowAsyncBackendFacadeData, LSShowsFavoriteShowsData, LSShowsSelectedShowsData>
 @end
-
 
 @interface LSSubscribeActionWL : WFWorkflowLink
 @end
-
 
 @implementation LSSubscribeActionWL
 
@@ -138,7 +265,11 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
       ? [self output]
       : [self forwardBlock];
   }];
-  [self forwardBlock];
+  //
+  NSMutableDictionary* favoriteShows = [NSMutableDictionary dictionaryWithDictionary:self.data.favoriteShows];
+  [favoriteShows addEntriesFromDictionary:self.data.selectedShows];
+  self.data.favoriteShows = favoriteShows;
+  [self output];
 }
 
 - (NSArray*) makeSubscriptions
@@ -161,7 +292,6 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
 //
 
 @protocol LSSelectButtonData <LSShowsSelectionModeData>
-@property BOOL selectionModeActivated;
 @end
 
 
@@ -181,6 +311,7 @@ SYNTHESIZE_WL_ACCESSORS(LSSelectButtonData, LSSelectButtonView);
 - (void) input
 {
   [self.view selectButtonDisable:NO];
+  [self update];
   [self output];
 }
 
@@ -192,8 +323,23 @@ SYNTHESIZE_WL_ACCESSORS(LSSelectButtonData, LSSelectButtonView);
 - (void) clicked
 {
   self.data.selectionModeActivated = !self.data.selectionModeActivated;
-  [self update];
   [self input];
+}
+
+@end
+
+
+@interface LSCancelSelectionModeWL : WFWorkflowLink
+@end
+
+@implementation LSCancelSelectionModeWL
+
+SYNTHESIZE_WL_DATA_ACCESSOR(LSSelectButtonData);
+
+- (void) input
+{
+  self.data.selectionModeActivated = NO;
+  [self output];
 }
 
 @end
@@ -277,8 +423,7 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 // LSShowCollectionData
 //
 
-@protocol LSShowCollectionData <LSShowsSelectionModeData, LSShowsShowsData, LSShowAsyncBackendFacadeData>
-@property NSDictionary* selectedShows;
+@protocol LSShowCollectionData <LSShowsSelectionModeData, LSShowsShowsData, LSShowsSelectedShowsData, LSShowsFavoriteShowsData, LSShowAsyncBackendFacadeData>
 @end
 
 
@@ -287,6 +432,7 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath;
 - (void) didDeselectItemAtIndex:(NSIndexPath*)indexPath;
 - (BOOL) isItemSelectedAtIndex:(NSIndexPath*)indexPath;
+- (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath;
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath;
 - (NSUInteger) itemsCount;
 
@@ -317,6 +463,11 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 - (BOOL) isItemSelectedAtIndex:(NSIndexPath*)indexPath
 {
   return [theSelectedShows objectForKey:indexPath];
+}
+
+- (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath
+{
+  return [self.data.favoriteShows objectForKey:indexPath];
 }
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
@@ -408,9 +559,15 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 // LSShowAlbumModel
 //
 
-@interface LSShowAlbumModel : NSObject<LSLoadShowActionData, LSSelectButtonData, LSShowCollectionData, LSNavigationBarData>
+@interface LSShowAlbumModel : NSObject
+    < LSDataBaseShowsRaw
+    , LSDataBaseShowsFavoriteRaw
+    , LSSelectButtonData
+    , LSShowCollectionData
+    , LSNavigationBarData >
 
 - (id) init;
+@property NSDictionary* favoriteShows;
 
 @end
 
@@ -419,8 +576,12 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   LSCachingServer* theCachingServer;
   LSAsyncBackendFacade* theBackendFacade;
   //
+  NSArray* theShowsRaw;
+  NSArray* theShowsFavoriteRaw;
+  //
   BOOL theSelectionModeFlag;
   NSArray* theShows;
+  NSDictionary* theFavoriteShows;
   NSDictionary* theSelectedShows;
 }
 
@@ -438,7 +599,10 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   return self;
 }
 
+@synthesize showsRaw = theShowsRaw;
+@synthesize showsFavoriteRaw = theShowsFavoriteRaw;
 @synthesize shows = theShows;
+@synthesize favoriteShows = theFavoriteShows;
 @synthesize selectedShows = theSelectedShows;
 @synthesize selectionModeActivated = theSelectionModeFlag;
 @synthesize backendFacade = theBackendFacade;
@@ -460,14 +624,14 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   //
   NSArray* theVisibleItemIndexes;
   // workflow
+  WFWorkflowLink* theInitialWL;
   LSShowAlbumModel* theModel;
-  WFWorkflow* theWorkflow;
-  LSLoadShowActionWL* theLoadShowActionWL;
   LSSelectButtonWL* theSelectButtonWL;
   LSNavigationBarWL* theNavigationBarWL;
   LSShowCollectionWL* theShowCollectionWL;
   LSSubscribeButtonWL* theSubscribeButtonWL;
   LSSubscribeActionWL* theSubscribeActionWL;
+  LSCancelSelectionModeWL* theCancelSelectionModeWL;
 }
 
 - (IBAction) selectButtonClicked:(id)sender;
@@ -540,42 +704,42 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   [self createCollectionViewLoadingStub];
   //
   theModel = [[LSShowAlbumModel alloc] init];
-  theWorkflow = [[WFWorkflow alloc] init];
-  theLoadShowActionWL = [[LSLoadShowActionWL alloc] initWithData:theModel];
   theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:theModel view:self];
   theNavigationBarWL = [[LSNavigationBarWL alloc] initWithData:theModel view:self];
   theShowCollectionWL = [[LSShowCollectionWL alloc] initWithData:theModel view:self];
   theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:theModel view:self];
   theSubscribeActionWL = [[LSSubscribeActionWL alloc] initWithData:theModel view:self];
+  theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:theModel];
   //
-  [[[[[[theWorkflow
-    link:theLoadShowActionWL]
-    link:theSelectButtonWL]
-    link:theShowCollectionWL]
-    link:theNavigationBarWL]
-    link:theSubscribeButtonWL]
-    link:theSubscribeActionWL
-  ];
-  __weak LSSelectButtonWL* weakSelectButtonWL = theSelectButtonWL;
-  [theSubscribeActionWL setForwardBlockHandler:^()
-  {
-    [weakSelectButtonWL clicked];
-  }];
+  
+  theInitialWL = [[WFWorkflowLink alloc] init];
+  WFLinkWorkflow(
+      theInitialWL
+    , WFLinkWorkflowBatchUsingAnd(
+          WFLinkWorkflow(
+            [[LSShowsWaitForDeviceTokenDidRecieveWL alloc] init]
+          , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:theModel]
+          , nil)
+        , [[LSWLinkBaseGetterShows alloc] initWithData:theModel]
+        , nil)
+    , [[LSWLinkBaseConverterRaw alloc] initWithData:theModel]
+    , theSelectButtonWL
+    , theShowCollectionWL
+    , theNavigationBarWL
+    , theSubscribeButtonWL
+    , theSubscribeActionWL
+    , nil);
+  
 
   self.edgesForExtendedLayout = UIRectEdgeNone;
   
-//  self.tabBarItem.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
-//  
-//  self.tabBarController.tabBarItem.selectedImage  = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
-//  
-//  UITabBarItem *item1 = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
-//  [item1.title];
   
   UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
   item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
   UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
   item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
-  [theWorkflow start];
+  
+  [theInitialWL output];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -634,7 +798,14 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
     cell.overlay.hidden = YES;
   }
   //
-  cell.subscriptionOverlay.hidden = YES;
+  if ([theShowCollectionWL isFavoriteItemAtIndex:indexPath])
+  {
+    cell.subscriptionOverlay.hidden = NO;
+  }
+  else
+  {
+    cell.subscriptionOverlay.hidden = YES;
+  }
 }
 
 - (void) createSubscribeToolbar

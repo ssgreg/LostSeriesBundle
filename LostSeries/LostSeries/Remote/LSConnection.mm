@@ -256,8 +256,6 @@
 {
   dispatch_async(theDataProtectionQueue,
   ^{
-    [NSThread sleepForTimeInterval:1];
-
     NSNumber* requestKey = [NSNumber numberWithLongLong:replyID];
     if (NSString* encodedRequest = [theRequestsDict objectForKey:requestKey])
     {
