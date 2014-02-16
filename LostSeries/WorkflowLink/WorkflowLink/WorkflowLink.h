@@ -84,7 +84,7 @@
 @end
 
 
-WFWorkflowLink* WFLinkWorkflow(WFWorkflowLink* wl, ...);
+WFWorkflow* WFLinkWorkflow(WFWorkflowLink* wl, ...);
 WFWorkflowLink* WFLinkWorkflowBatchUsingAnd(WFWorkflowLink* wl, ...);
 
 

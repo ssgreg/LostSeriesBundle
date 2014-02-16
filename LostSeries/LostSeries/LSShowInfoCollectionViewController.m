@@ -624,7 +624,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   //
   NSArray* theVisibleItemIndexes;
   // workflow
-  WFWorkflowLink* theInitialWL;
+  WFWorkflow* theWorkflow;
   LSShowAlbumModel* theModel;
   LSSelectButtonWL* theSelectButtonWL;
   LSNavigationBarWL* theNavigationBarWL;
@@ -712,10 +712,8 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:theModel];
   //
   
-  theInitialWL = [[WFWorkflowLink alloc] init];
-  WFLinkWorkflow(
-      theInitialWL
-    , WFLinkWorkflowBatchUsingAnd(
+  theWorkflow = WFLinkWorkflow(
+      WFLinkWorkflowBatchUsingAnd(
           WFLinkWorkflow(
             [[LSShowsWaitForDeviceTokenDidRecieveWL alloc] init]
           , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:theModel]
@@ -739,7 +737,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
   item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
   
-  [theInitialWL output];
+  [theWorkflow input];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1014,52 +1012,6 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
     selector:@selector(doSomething:)
     userInfo:[NSNumber numberWithBool:flag]
     repeats:NO];
-
-//  [UIView beginAnimations:@"foo" context:nil];
-//[UIView setAnimationDuration:1.0];
-//  [[self navigationController] setNavigationBarHidden:NO animated:YES];
-
-//  CGRect df = self.view.frame;
-
-//  CGRect df1 = self.view.frame;
-
-//  [myWindow setHidden:NO];
-//[UIView commitAnimations];
-
-
-//  self.edgesForExtendedLayout = UIRectEdgeNone;
-//            CGRect frame=self.view.frame;
-//            frame.origin.y=20;
-//            frame.size.height-=20;
-//            self.view.frame=frame;
-//
-//  CGRect df = temp.frame;
-//  CGRect df1 = temp.frame;
-//  df.origin.y = -20;
-////
-//  self.view.frame = df;
-//  
-//  self
-//  
-//  [UIView animateWithDuration:0.4
-//                     animations:^{ self.view.frame = df1;}
-//                     completion:nil];
-
-//  temp.hidden = YES;
-  
-  
-  
-//  [UIView animateWithDuration:0.4 
-//                     animations:^{temp.frame = df;}
-//                     completion:nil];
-  
-//  [UIView beginAnimations:@"slideOn" context:nil];
-
-//firstView.frame = shrunkFirstViewRect; // The rect defining the first view's smaller frame. This should resize the first view
-
-//secondView.frame = secondViewOnScreenFrame; // This should move the second view on the frame.
-
-//[UIView commitAnimations];
 }
 
 @end

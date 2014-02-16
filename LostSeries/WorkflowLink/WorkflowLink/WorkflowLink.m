@@ -299,7 +299,7 @@
 @end
 
 
-WFWorkflowLink* WFLinkWorkflow(WFWorkflowLink* wl, ...)
+WFWorkflow* WFLinkWorkflow(WFWorkflowLink* wl, ...)
 {
   va_list args;
   va_start(args, wl);
