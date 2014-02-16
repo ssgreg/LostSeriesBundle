@@ -32,6 +32,8 @@
 		EEB1182D187F17D500337023 /* LostSeriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1182C187F17D500337023 /* LostSeriesTests.m */; };
 		EEB11837187F183700337023 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11836187F183700337023 /* libzmq.a */; };
 		EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11838187F1ABC00337023 /* libprotobuf.a */; };
+		EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FDD18B0CA0900CF68E3 /* LSMainController.m */; };
+		EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */; };
 		EEF8749B18A95D2900F74CB6 /* LSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF8749A18A95D2900F74CB6 /* LSApplication.m */; };
 /* End PBXBuildFile section */
 
@@ -124,6 +126,10 @@
 		EEB1182C187F17D500337023 /* LostSeriesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LostSeriesTests.m; sourceTree = "<group>"; };
 		EEB11836187F183700337023 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../Frameworks/zeromq-4.0.3/build/lib/libzmq.a"; sourceTree = "<group>"; };
 		EEB11838187F1ABC00337023 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = "../../Frameworks/protobuf-2.5.0/protobuf/lib/libprotobuf.a"; sourceTree = "<group>"; };
+		EED97FDC18B0CA0900CF68E3 /* LSMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMainController.h; sourceTree = "<group>"; };
+		EED97FDD18B0CA0900CF68E3 /* LSMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMainController.m; sourceTree = "<group>"; };
+		EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSShowsFollowingController.h; sourceTree = "<group>"; };
+		EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSShowsFollowingController.m; sourceTree = "<group>"; };
 		EEF8749918A95D2900F74CB6 /* LSApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSApplication.h; path = Logic/LSApplication.h; sourceTree = "<group>"; };
 		EEF8749A18A95D2900F74CB6 /* LSApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSApplication.m; path = Logic/LSApplication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -255,6 +261,12 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
+				EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */,
+				EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */,
+				EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */,
+				EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */,
+				EED97FDC18B0CA0900CF68E3 /* LSMainController.h */,
+				EED97FDD18B0CA0900CF68E3 /* LSMainController.m */,
 				EE6D79B5188E47DD004A0D4B /* ZeroMQ */,
 				EE6D79AF188E3DB7004A0D4B /* CachingServer */,
 				EE1AA59D1888F223004B6E7D /* Remote */,
@@ -262,8 +274,6 @@
 				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EEF8749918A95D2900F74CB6 /* LSApplication.h */,
 				EEF8749A18A95D2900F74CB6 /* LSApplication.m */,
-				EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */,
-				EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */,
 				EEB11808187F17D500337023 /* Supporting Files */,
 			);
 			path = LostSeries;
@@ -463,10 +473,12 @@
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
 				EEB1180E187F17D500337023 /* main.m in Sources */,
 				EEF8749B18A95D2900F74CB6 /* LSApplication.m in Sources */,
+				EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */,
 				EE1AA5A61888F2ED004B6E7D /* LSAsyncBackendFacade.mm in Sources */,
 				EE1AA5A9188BEFCF004B6E7D /* LSBatchArtworkGetter.mm in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */,
+				EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

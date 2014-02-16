@@ -627,10 +627,8 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   WFWorkflow* theWorkflow;
   LSShowAlbumModel* theModel;
   LSSelectButtonWL* theSelectButtonWL;
-  LSNavigationBarWL* theNavigationBarWL;
   LSShowCollectionWL* theShowCollectionWL;
   LSSubscribeButtonWL* theSubscribeButtonWL;
-  LSSubscribeActionWL* theSubscribeActionWL;
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
 }
 
@@ -705,10 +703,8 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   //
   theModel = [[LSShowAlbumModel alloc] init];
   theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:theModel view:self];
-  theNavigationBarWL = [[LSNavigationBarWL alloc] initWithData:theModel view:self];
   theShowCollectionWL = [[LSShowCollectionWL alloc] initWithData:theModel view:self];
   theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:theModel view:self];
-  theSubscribeActionWL = [[LSSubscribeActionWL alloc] initWithData:theModel view:self];
   theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:theModel];
   //
   
@@ -723,9 +719,9 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
     , [[LSWLinkBaseConverterRaw alloc] initWithData:theModel]
     , theSelectButtonWL
     , theShowCollectionWL
-    , theNavigationBarWL
+    , [[LSNavigationBarWL alloc] initWithData:theModel view:self]
     , theSubscribeButtonWL
-    , theSubscribeActionWL
+    , [[LSSubscribeActionWL alloc] initWithData:theModel view:self]
     , nil);
   
 
