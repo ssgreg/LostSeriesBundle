@@ -135,10 +135,10 @@
 
 
 //
-// WFWorkflow
+// WFWorkflowBatch
 //
 
-@implementation WFWorkflow
+@implementation WFWorkflowBatch
 {
   WFWorkflowLink* theWLinkFirst;
   WFWorkflowLink* theWLinkLast;
@@ -153,19 +153,7 @@
   //
   theWLinkFirst = wLinkFirst;
   theWLinkLast = wLinkLast;
-  //
-  __weak typeof(self) weakSelf = self;
-  void(^outputHandler)() = ^()
-  {
-    [weakSelf output];
-  };
-  void(^forwardBlockHandler)() = ^()
-  {
-    [weakSelf forwardBlock];
-  };
-  WFForwardWorkflowLink* wLinkForward = [[WFForwardWorkflowLink alloc] initWithOutputHandler:outputHandler forwardBlockHandler:forwardBlockHandler];
-  //
-  wLinkLast.nextLink = wLinkForward;
+  theWLinkLast.nextLink = WFLinkToSelfForward(self);
   //
   return self;
 }
@@ -177,7 +165,7 @@
 
 - (void) block
 {
-  [theWLinkLast forwardBlock];
+  [theWLinkFirst forwardBlock];
 }
 
 @end
@@ -218,25 +206,24 @@
 
 
 //
-// WFWorkflowBatchUsingAnd
+// WFWorkflowBatchWithOutputCondition
 //
 
-@implementation WFWorkflowBatchUsingAnd
+@implementation WFWorkflowBatchWithOutputCondition
 {
   NSArray* theWLs;
-  NSMutableDictionary* theReplies;
+  BOOL(^theOutputCondition)(NSArray*wls, WFWorkflowLink* wl);
   BOOL theBlockBlockFlag;
 }
 
-- (id) initWithArray:(NSArray*)wls
+- (id) initWithArray:(NSArray*)wls outputCodition:(BOOL(^)(NSArray*wls, WFWorkflowLink* wl))condition
 {
   if (!(self = [super init]))
   {
     return nil;
   }
-  //
-  theReplies = [NSMutableDictionary dictionary];
   theWLs = wls;
+  theOutputCondition = condition;
   //
   for (WFWorkflowLink* wl in wls)
   {
@@ -265,8 +252,7 @@
 
 - (void) commonOutput:(WFWorkflowLink*)wl
 {
-  theReplies[[NSNumber numberWithLongLong:(uintptr_t)wl]] = @YES;
-  if (theReplies.count == theWLs.count)
+  if (theOutputCondition(theWLs, wl))
   {
     [self output];
   }
@@ -299,6 +285,49 @@
 @end
 
 
+//
+// WFWorkflowSplitterWithOutputUsingAnd
+//
+
+@implementation WFWorkflowSplitterWithOutputUsingAnd
+{
+  NSMutableDictionary* theReplies;
+}
+
+- (id) initWithArray:(NSArray*)wls
+{
+  self = [super initWithArray:wls outputCodition:^BOOL(NSArray* wls, WFWorkflowLink* wl)
+  {
+    theReplies[[NSNumber numberWithLongLong:(uintptr_t)wl]] = @YES;
+    return theReplies.count == wls.count;
+  }];
+  if (self)
+  {
+    theReplies = [NSMutableDictionary dictionary];
+  }
+  return self;
+}
+
+@end
+
+
+//
+// WFWorkflowSplitterWithOutputUsingOr
+//
+
+@implementation WFWorkflowSplitterWithOutputUsingOr
+
+- (id) initWithArray:(NSArray*)wls
+{
+  return [super initWithArray:wls outputCodition:^BOOL(NSArray* wls, WFWorkflowLink* wl)
+  {
+    return YES;
+  }];
+}
+
+@end
+
+
 WFWorkflow* WFLinkWorkflow(WFWorkflowLink* wl, ...)
 {
   va_list args;
@@ -313,10 +342,11 @@ WFWorkflow* WFLinkWorkflow(WFWorkflowLink* wl, ...)
   }
   //
   va_end(args);
-  return [[WFWorkflow alloc] initWithFirstWLink:wl lastWLink:curWL];
+  return [[WFWorkflowBatch alloc] initWithFirstWLink:wl lastWLink:curWL];
 }
 
-WFWorkflowLink* WFLinkWorkflowBatchUsingAnd(WFWorkflowLink* wl, ...)
+
+WFWorkflow* WFSplitWorkflowWithOutputUsingAnd(WFWorkflowLink* wl, ...)
 {
   va_list args;
   va_start(args, wl);
@@ -328,5 +358,36 @@ WFWorkflowLink* WFLinkWorkflowBatchUsingAnd(WFWorkflowLink* wl, ...)
   }
   //
   va_end(args);
-  return [[WFWorkflowBatchUsingAnd alloc] initWithArray:wls];
+  return [[WFWorkflowSplitterWithOutputUsingAnd alloc] initWithArray:wls];
+}
+
+
+WFWorkflow* WFSplitWorkflowWithOutputUsingOr(WFWorkflowLink* wl, ...)
+{
+  va_list args;
+  va_start(args, wl);
+  //
+  NSMutableArray* wls = [NSMutableArray array];
+  for (WFWorkflowLink* nextWL = wl; nextWL; nextWL = va_arg(args, WFWorkflowLink*))
+  {
+    [wls addObject:nextWL];
+  }
+  //
+  va_end(args);
+  return [[WFWorkflowSplitterWithOutputUsingOr alloc] initWithArray:wls];
+}
+
+
+WFWorkflow* WFLinkToSelfForward(WFWorkflowLink* wlSelf)
+{
+  __weak WFWorkflowLink* weakSelf = wlSelf;
+  void(^outputHandler)() = ^()
+  {
+    [weakSelf output];
+  };
+  void(^forwardBlockHandler)() = ^()
+  {
+    [weakSelf forwardBlock];
+  };
+  return [[WFForwardWorkflowLink alloc] initWithOutputHandler:outputHandler forwardBlockHandler:forwardBlockHandler];
 }

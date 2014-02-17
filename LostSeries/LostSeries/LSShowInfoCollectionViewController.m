@@ -11,10 +11,13 @@
 #import "Remote/LSBatchArtworkGetter.h"
 #import <UIComponents/UILoadingView.h>
 #import <UIComponents/UIStatusBarView.h>
-#import <WorkflowLink/WorkflowLink.h>
 #import "LSModelBase.h"
 #import "Logic/LSApplication.h"
 
+
+//
+// LSShowAlbumCell
+//
 
 @interface LSShowAlbumCell : UICollectionViewCell
 @property IBOutlet UIImageView* overlay;
@@ -206,50 +209,26 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 
 
 //
-// LSShowCollectionData
+// LSWLinkShowsCollection
 //
 
-@protocol LSShowCollectionData <LSShowsSelectionModeData, LSShowsShowsData, LSShowsSelectedShowsData, LSShowsFavoriteShowsData, LSShowAsyncBackendFacadeData>
+@protocol LSDataShowsCollection <LSShowsShowsData, LSShowsFavoriteShowsData, LSShowAsyncBackendFacadeData>
 @end
 
+@interface LSWLinkShowsCollection : WFWorkflowLink <LSBatchArtworkGetterDelegate>
 
-@interface LSShowCollectionWL : WFWorkflowLink <LSBatchArtworkGetterDelegate>
-
-- (void) didSelectItemAtIndex:(NSIndexPath*)indexPath;
-- (void) didDeselectItemAtIndex:(NSIndexPath*)indexPath;
-- (BOOL) isItemSelectedAtIndex:(NSIndexPath*)indexPath;
 - (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath;
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath;
 - (NSUInteger) itemsCount;
 
 @end
 
-@implementation LSShowCollectionWL
+@implementation LSWLinkShowsCollection
 {
-  NSMutableDictionary* theSelectedShows;
-  NSNumber* theIsMultipleSelectedAllowedFlag;
-  //
   LSBatchArtworkGetter* theArtworkGetter;
 }
 
-SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
-
-- (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
-{
-  theSelectedShows[indexPath] = [self itemAtIndex:indexPath];
-  [self input];
-}
-
-- (void) didDeselectItemAtIndex:(NSIndexPath*)indexPath
-{
-  [theSelectedShows removeObjectForKey:indexPath];
-  [self input];
-}
-
-- (BOOL) isItemSelectedAtIndex:(NSIndexPath*)indexPath
-{
-  return [theSelectedShows objectForKey:indexPath];
-}
+SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 - (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath
 {
@@ -268,38 +247,20 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 
 - (void) update
 {
-  theSelectedShows = [NSMutableDictionary dictionary];
   theArtworkGetter = nil;
-  theIsMultipleSelectedAllowedFlag = nil;
-  //
-  self.data.selectedShows = theSelectedShows;
   [self updateView];
 }
 
 - (void) input
 {
   [self tryToStartBatchArtworkGetter];
-  [self tryToUpdateSelectionMode];
-  //
-  self.data.selectedShows = theSelectedShows;
+  [self updateView];
   [self output];
 }
 
 - (void) updateView
 {
-  [self.view showCollectionAllowMultipleSelection:theIsMultipleSelectedAllowedFlag.boolValue];
   [self.view showCollectionClearSelection];
-}
-
-- (void) tryToUpdateSelectionMode
-{
-  BOOL isSelectionModeChanged = !theIsMultipleSelectedAllowedFlag || self.data.selectionModeActivated != theIsMultipleSelectedAllowedFlag.boolValue;
-  if (isSelectionModeChanged)
-  {
-    theIsMultipleSelectedAllowedFlag = [NSNumber numberWithBool:self.data.selectionModeActivated];
-    [theSelectedShows removeAllObjects];
-    [self updateView];
-  }
 }
 
 - (void) tryToStartBatchArtworkGetter
@@ -341,6 +302,83 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 @end
 
 
+//
+// LSShowCollectionData
+//
+
+@protocol LSDataShowsSelection <LSShowsSelectionModeData, LSShowsShowsData, LSShowsSelectedShowsData, LSShowsFavoriteShowsData>
+@end
+
+@interface LSWLinkShowsSelection : WFWorkflowLink
+
+- (void) didSelectItemAtIndex:(NSIndexPath*)indexPath;
+- (void) didDeselectItemAtIndex:(NSIndexPath*)indexPath;
+- (BOOL) isItemSelectedAtIndex:(NSIndexPath*)indexPath;
+
+@end
+
+@implementation LSWLinkShowsSelection
+{
+  NSMutableDictionary* theSelectedShows;
+  NSNumber* theIsMultipleSelectedAllowedFlag;
+}
+
+SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
+
+- (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
+{
+  theSelectedShows[indexPath] = self.data.shows[indexPath.row];
+  [self input];
+}
+
+- (void) didDeselectItemAtIndex:(NSIndexPath*)indexPath
+{
+  [theSelectedShows removeObjectForKey:indexPath];
+  [self input];
+}
+
+- (BOOL) isItemSelectedAtIndex:(NSIndexPath*)indexPath
+{
+  return [theSelectedShows objectForKey:indexPath];
+}
+
+- (void) update
+{
+  theSelectedShows = [NSMutableDictionary dictionary];
+  theIsMultipleSelectedAllowedFlag = nil;
+  //
+  self.data.selectedShows = theSelectedShows;
+  [self updateView];
+}
+
+- (void) input
+{
+  [self tryToUpdateSelectionMode];
+  //
+  self.data.selectedShows = theSelectedShows;
+  [self output];
+}
+
+- (void) updateView
+{
+  [self.view showCollectionAllowMultipleSelection:theIsMultipleSelectedAllowedFlag.boolValue];
+  [self.view showCollectionClearSelection];
+}
+
+- (void) tryToUpdateSelectionMode
+{
+  BOOL isSelectionModeChanged = !theIsMultipleSelectedAllowedFlag || self.data.selectionModeActivated != theIsMultipleSelectedAllowedFlag.boolValue;
+  if (isSelectionModeChanged)
+  {
+    theIsMultipleSelectedAllowedFlag = [NSNumber numberWithBool:self.data.selectionModeActivated];
+    [theSelectedShows removeAllObjects];
+    [self updateView];
+  }
+}
+
+@end
+
+
 
 @implementation LSShowInfoCollectionViewController
 {
@@ -358,7 +396,8 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   // workflow
   WFWorkflow* theWorkflow;
   LSSelectButtonWL* theSelectButtonWL;
-  LSShowCollectionWL* theShowCollectionWL;
+  LSWLinkShowsCollection* theShowCollectionWL;
+  LSWLinkShowsSelection* theWLinkShowsSelection;
   LSSubscribeButtonWL* theSubscribeButtonWL;
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
 }
@@ -372,6 +411,11 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 {
   UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Unsubscribe" otherButtonTitles:@"Subscribe", nil];
   [actionSheet showInView:self.tabBarController.view];
+}
+
+- (WFWorkflow*) workflow
+{
+  return theWorkflow;
 }
 
 - (void) doSomething:(NSTimer*)timer
@@ -433,17 +477,24 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   [self createCollectionViewLoadingStub];
   //
   theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
-  theShowCollectionWL = [[LSShowCollectionWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
+  theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
+  theWLinkShowsSelection = [[LSWLinkShowsSelection alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
   theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
   theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:[LSApplication singleInstance].modelBase];
   //
   
-  theWorkflow = WFLinkWorkflow(
-      theSelectButtonWL
-    , theShowCollectionWL
-    , [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-    , theSubscribeButtonWL
-    , [[LSSubscribeActionWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+  
+  theWorkflow = WFSplitWorkflowWithOutputUsingOr(
+      WFLinkWorkflow(
+        theShowCollectionWL
+        , nil)
+    , WFLinkWorkflow(
+        theSelectButtonWL
+      , theWLinkShowsSelection
+      , [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+      , theSubscribeButtonWL
+      , [[LSSubscribeActionWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+      , nil)
     , nil);
   
 
@@ -454,8 +505,6 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
   item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
   UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
   item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
-  
-//  [theWorkflow input];
   
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsControllerDidLoadNotification object:self];
 }
@@ -505,7 +554,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
     cell.detail.hidden = NO;
   }
   //
-  if ([theShowCollectionWL isItemSelectedAtIndex:indexPath])
+  if ([theWLinkShowsSelection isItemSelectedAtIndex:indexPath])
   {
     cell.image.alpha = 0.66;
     cell.overlay.hidden = NO;
@@ -599,7 +648,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 {
   if (theCollectionView.allowsMultipleSelection)
   {
-    [theShowCollectionWL didSelectItemAtIndex:indexPath];
+    [theWLinkShowsSelection didSelectItemAtIndex:indexPath];
     LSShowAlbumCell* cell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath:indexPath];
     [self updateCell:cell forIndexPath:indexPath];
   }
@@ -609,7 +658,7 @@ SYNTHESIZE_WL_ACCESSORS(LSShowCollectionData, LSShowCollectionView);
 {
   if (theCollectionView.allowsMultipleSelection)
   {
-    [theShowCollectionWL didDeselectItemAtIndex:indexPath];
+    [theWLinkShowsSelection didDeselectItemAtIndex:indexPath];
     LSShowAlbumCell* cell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath:indexPath];
     [self updateCell:cell forIndexPath:indexPath];
   }

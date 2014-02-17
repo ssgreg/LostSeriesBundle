@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 // LS
 #import "Remote/LSBatchArtworkGetter.h"
+#import <WorkflowLink/WorkflowLink.h>
 
 
 @protocol LSSelectButtonView
@@ -23,13 +24,16 @@
 @end
 
 
-@protocol LSShowCollectionView
+@protocol LSViewShowsCollection
 - (void) showCollectionClearSelection;
-- (void) showCollectionAllowMultipleSelection:(BOOL)flag;
-- (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath;
 - (NSArray*) showCollectionVisibleItemIndexs;
+- (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath;
 @end
 
+@protocol LSViewShowsSelection
+- (void) showCollectionClearSelection;
+- (void) showCollectionAllowMultipleSelection:(BOOL)flag;
+@end
 
 @protocol LSShowSubscribeButtonView
 - (void) enableSubscribeButton:(BOOL)flag;
@@ -49,13 +53,16 @@
     UIActionSheetDelegate,
     LSSelectButtonView,
     LSNavigationView,
-    LSShowCollectionView,
+    LSViewShowsCollection,
+    LSViewShowsSelection,
     LSShowSubscribeButtonView,
     LSSubscribeActionView
   >
 
 - (IBAction) selectButtonClicked:(id)sender;
 - (IBAction) subscribeButtonClicked:(id)sender;
+
+- (WFWorkflow*) workflow;
 
 @end
 

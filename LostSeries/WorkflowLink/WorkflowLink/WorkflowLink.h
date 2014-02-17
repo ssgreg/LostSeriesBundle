@@ -49,10 +49,10 @@
 
 
 //
-// WFWorkflow
+// WFWorkflowBatch
 //
 
-@interface WFWorkflow : WFWorkflowLink
+@interface WFWorkflowBatch : WFWorkflowLink
 
 - (id) initWithFirstWLink:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast;
 
@@ -74,18 +74,43 @@
 
 
 //
-// WFWorkflowBatchUsingAnd
+// WFWorkflowBatchWithOutputCondition
 //
 
-@interface WFWorkflowBatchUsingAnd : WFWorkflowLink
+@interface WFWorkflowBatchWithOutputCondition : WFWorkflowLink
+
+- (id) initWithArray:(NSArray*)wls outputCodition:(BOOL(^)(NSArray*wls, WFWorkflowLink* wl))condition;
+
+@end
+
+//
+// WFWorkflowSplitterWithOutputUsingAnd
+//
+
+@interface WFWorkflowSplitterWithOutputUsingAnd : WFWorkflowBatchWithOutputCondition
 
 - (id) initWithArray:(NSArray*)wls;
 
 @end
 
 
+//
+// WFWorkflowSplitterWithOutputUsingOr
+//
+
+@interface WFWorkflowSplitterWithOutputUsingOr : WFWorkflowBatchWithOutputCondition
+
+- (id) initWithArray:(NSArray*)wls;
+
+@end
+
+
+typedef WFWorkflowLink WFWorkflow;
+
 WFWorkflow* WFLinkWorkflow(WFWorkflowLink* wl, ...);
-WFWorkflowLink* WFLinkWorkflowBatchUsingAnd(WFWorkflowLink* wl, ...);
+WFWorkflow* WFSplitWorkflowWithOutputUsingAnd(WFWorkflowLink* wl, ...);
+WFWorkflow* WFSplitWorkflowWithOutputUsingOr(WFWorkflowLink* wl, ...);
+WFWorkflow* WFLinkToSelfForward(WFWorkflowLink* wlSelf);
 
 
 #define SYNTHESIZE_WL_ACCESSORS(dataType, viewType) \

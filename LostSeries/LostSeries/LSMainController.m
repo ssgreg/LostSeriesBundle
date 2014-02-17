@@ -18,10 +18,10 @@
 // LSShowsWaitForDeviceTokenDidRecieveWL
 //
 
-@interface LSShowsWaitForDeviceTokenDidRecieveWL : WFWorkflowLink
+@interface LSWLinkBaseWaitForDeviceToken : WFWorkflowLink
 @end
 
-@implementation LSShowsWaitForDeviceTokenDidRecieveWL
+@implementation LSWLinkBaseWaitForDeviceToken
 
 - (void) update
 {
@@ -179,43 +179,52 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 
 
 //
-// LSMainController
+// LSWLinkBaseLinkerWorkflow
 //
 
-@implementation LSMainController
+@interface LSWLinkBaseLinkerWorkflow : WFWorkflowLink
+@end
+
+@implementation LSWLinkBaseLinkerWorkflow
 {
-  // child controllers
-  __weak LSShowInfoCollectionViewController* controllerShows;
-  __weak LSShowsFollowingController* controllerShowsFollowing;
-  //
-  WFWorkflow* theWorkflow;
+  WFWorkflow* theWorkflowShows;
+  WFWorkflow* theWorkflowShowsFollowing;
 }
 
-- (void) initInternal
+- (void) update
 {
-  theWorkflow = WFLinkWorkflow(
-    WFLinkWorkflowBatchUsingAnd(
-        WFLinkWorkflow(
-          [[LSShowsWaitForDeviceTokenDidRecieveWL alloc] init]
-        , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:[LSApplication singleInstance].modelBase]
-        , nil)
-      , [[LSWLinkBaseGetterShows alloc] initWithData:[LSApplication singleInstance].modelBase]
-      , nil)
-  , [[LSWLinkBaseConverterRaw alloc] initWithData:[LSApplication singleInstance].modelBase]
-  , nil);
-  //
-  [self listenForChildControllers];
-  //
-  [theWorkflow input];
+  [self listenForControllers];
 }
 
-- (void) viewDidLoad
+- (void) input
 {
-  [super viewDidLoad];
-  [self initInternal];
+  [theWorkflowShows input];
+  [theWorkflowShowsFollowing input];
 }
 
-- (void) listenForChildControllers
+- (void) block
+{
+  [theWorkflowShows forwardBlock];
+  [theWorkflowShowsFollowing forwardBlock];
+}
+
+- (void) onLSShowControllerDidLoadNotification:(NSNotification*)notification
+{
+  theWorkflowShows = ((LSShowInfoCollectionViewController*)notification.object).workflow;
+  theWorkflowShows.nextLink = WFLinkToSelfForward(self);
+  // try to start workflow
+  if (!self.isBlocked)
+  {
+    [self input];
+  }
+}
+
+- (void) onLSShowFollowingControllerDidLoadNotification:(NSNotification*)notification
+{
+//  theWorkflowShowsFollowing = ((LSShowsFollowingController*)notification.object).workflow;
+}
+
+- (void) listenForControllers
 {
   [[NSNotificationCenter defaultCenter] addObserver:self
     selector:@selector(onLSShowControllerDidLoadNotification:)
@@ -228,14 +237,40 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
     object:nil];
 }
 
-- (void) onLSShowControllerDidLoadNotification:(NSNotification*)notification
+@end
+
+
+
+//
+// LSMainController
+//
+
+@implementation LSMainController
 {
-  controllerShows = (LSShowInfoCollectionViewController*)notification.object;
+  WFWorkflow* theWorkflow;
 }
 
-- (void) onLSShowFollowingControllerDidLoadNotification:(NSNotification*)notification
+- (void) initInternal
 {
-  controllerShowsFollowing = (LSShowsFollowingController*)notification.object;
+  theWorkflow = WFLinkWorkflow(
+      WFSplitWorkflowWithOutputUsingAnd(
+          WFLinkWorkflow(
+              [[LSWLinkBaseWaitForDeviceToken alloc] init]
+            , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:[LSApplication singleInstance].modelBase]
+            , nil)
+        , [[LSWLinkBaseGetterShows alloc] initWithData:[LSApplication singleInstance].modelBase]
+        , nil)
+    , [[LSWLinkBaseConverterRaw alloc] initWithData:[LSApplication singleInstance].modelBase]
+    , [[LSWLinkBaseLinkerWorkflow alloc] init]
+    , nil);
+  //
+  [theWorkflow input];
+}
+
+- (void) viewDidLoad
+{
+  [super viewDidLoad];
+  [self initInternal];
 }
 
 @end
