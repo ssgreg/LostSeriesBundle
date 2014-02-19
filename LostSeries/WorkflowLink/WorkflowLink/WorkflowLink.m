@@ -94,11 +94,19 @@
 
 - (void) output
 {
+  if (self.needLog)
+  {
+    NSLog(@"WLOutput - %@", NSStringFromClass([self class]));
+  }
   [theNextWL internalInput];
 }
 
 - (void) forwardBlock
 {
+  if (self.needLog)
+  {
+    NSLog(@"WLForwardBlock - %@", NSStringFromClass([self class]));
+  }
   [theNextWL internalBlock];
 }
 
@@ -115,16 +123,27 @@
 {
 }
 
+- (BOOL) needLog
+{
+  return YES;
+}
+
 - (void) internalInput
 {
-  NSLog(@"WLInput - %@", NSStringFromClass([self class]));
+  if (self.needLog)
+  {
+    NSLog(@"WLInput - %@", NSStringFromClass([self class]));
+  }
   self.isBlocked = NO;
   [self input];
 }
 
 - (void) internalBlock
 {
-  NSLog(@"WLBLock - %@", NSStringFromClass([self class]));
+  if (self.needLog)
+  {
+    NSLog(@"WLBLock - %@", NSStringFromClass([self class]));
+  }
   self.isBlocked = YES;
   [self block];
   [self forwardBlock];
@@ -142,6 +161,15 @@
 {
   WFWorkflowLink* theWLinkFirst;
   WFWorkflowLink* theWLinkLast;
+  BOOL theFlagMakeRing;
+}
+
+- (void) initInternal:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast makeRing:(BOOL)flagMakeRing
+{
+  theWLinkFirst = wLinkFirst;
+  theWLinkLast = wLinkLast;
+  theWLinkLast.nextLink = WFLinkToSelfForward(self);
+  theFlagMakeRing = flagMakeRing;
 }
 
 - (id) initWithFirstWLink:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast
@@ -151,9 +179,19 @@
     return nil;
   }
   //
-  theWLinkFirst = wLinkFirst;
-  theWLinkLast = wLinkLast;
-  theWLinkLast.nextLink = WFLinkToSelfForward(self);
+  [self initInternal:wLinkFirst lastWLink:wLinkLast makeRing:NO];
+  //
+  return self;
+}
+
+- (id) initRingWithFirstWLink:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  //
+  [self initInternal:wLinkFirst lastWLink:wLinkLast makeRing:YES];
   //
   return self;
 }
@@ -166,6 +204,20 @@
 - (void) block
 {
   [theWLinkFirst forwardBlock];
+}
+
+- (BOOL) needLog
+{
+  return NO;
+}
+
+- (void) output
+{
+  if (theFlagMakeRing)
+  {
+    [self input];
+  }
+  [super output];
 }
 
 @end
@@ -200,6 +252,11 @@
 - (void) block
 {
   theForwardBlockHandler(self);
+}
+
+- (BOOL) needLog
+{
+  return NO;
 }
 
 @end
@@ -343,6 +400,24 @@ WFWorkflow* WFLinkWorkflow(WFWorkflowLink* wl, ...)
   //
   va_end(args);
   return [[WFWorkflowBatch alloc] initWithFirstWLink:wl lastWLink:curWL];
+}
+
+
+WFWorkflow* WFLinkRingWorkflow(WFWorkflowLink* wl, ...)
+{
+  va_list args;
+  va_start(args, wl);
+  //
+  WFWorkflowLink* nextWL = nil;
+  WFWorkflowLink* curWL = wl;
+  while ((nextWL = va_arg(args, WFWorkflowLink*)))
+  {
+    curWL.nextLink = nextWL;
+    curWL = nextWL;
+  }
+  //
+  va_end(args);
+  return [[WFWorkflowBatch alloc] initRingWithFirstWLink:wl lastWLink:curWL];
 }
 
 

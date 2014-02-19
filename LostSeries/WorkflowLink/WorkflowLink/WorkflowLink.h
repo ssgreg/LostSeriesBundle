@@ -55,6 +55,7 @@
 @interface WFWorkflowBatch : WFWorkflowLink
 
 - (id) initWithFirstWLink:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast;
+- (id) initRingWithFirstWLink:(WFWorkflowLink*)wLinkFirst lastWLink:(WFWorkflowLink*)wLinkLast;
 
 @end
 
@@ -108,6 +109,7 @@
 typedef WFWorkflowLink WFWorkflow;
 
 WFWorkflow* WFLinkWorkflow(WFWorkflowLink* wl, ...);
+WFWorkflow* WFLinkRingWorkflow(WFWorkflowLink* wl, ...);
 WFWorkflow* WFSplitWorkflowWithOutputUsingAnd(WFWorkflowLink* wl, ...);
 WFWorkflow* WFSplitWorkflowWithOutputUsingOr(WFWorkflowLink* wl, ...);
 WFWorkflow* WFLinkToSelfForward(WFWorkflowLink* wlSelf);

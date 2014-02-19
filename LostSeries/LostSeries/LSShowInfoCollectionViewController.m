@@ -50,15 +50,16 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
   [self.data.backendFacade subscribeByDeviceToken:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^(BOOL result)
   {
     [self.view showActionIndicator:NO];
-    result
-      ? [self output]
-      : [self forwardBlock];
+    if (result)
+    {
+      [self output];
+    }
   }];
   //
   NSMutableDictionary* favoriteShows = [NSMutableDictionary dictionaryWithDictionary:self.data.favoriteShows];
   [favoriteShows addEntriesFromDictionary:self.data.selectedShows];
   self.data.favoriteShows = favoriteShows;
-  [self output];
+  [self forwardBlock];
 }
 
 - (NSArray*) makeSubscriptions
@@ -94,19 +95,22 @@ SYNTHESIZE_WL_ACCESSORS(LSSelectButtonData, LSSelectButtonView);
 
 - (void) update
 {
-  self.data.selectionModeActivated ? [self.view selectButtonTurnIntoCancel] : [self.view selectButtonTurnIntoSelect];
+  self.data.selectionModeActivated
+    ? [self.view selectButtonTurnIntoCancel]
+    : [self.view selectButtonTurnIntoSelect];
+  //
+  [self.view selectButtonDisable:[self isBlocked]];
 }
 
 - (void) input
 {
-  [self.view selectButtonDisable:NO];
   [self update];
   [self output];
 }
 
 - (void) block
 {
-  [self.view selectButtonDisable:YES];
+  [self update];
 }
 
 - (void) clicked
@@ -486,15 +490,18 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   
   theWorkflow = WFSplitWorkflowWithOutputUsingOr(
       WFLinkWorkflow(
-        theShowCollectionWL
+          theShowCollectionWL
         , nil)
     , WFLinkWorkflow(
-        theSelectButtonWL
-      , theWLinkShowsSelection
-      , [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-      , theSubscribeButtonWL
-      , [[LSSubscribeActionWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-      , nil)
+          WFLinkRingWorkflow(
+              theSelectButtonWL
+            , theWLinkShowsSelection
+            , [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+            , theSubscribeButtonWL
+            , theCancelSelectionModeWL
+            , nil)
+        , [[LSSubscribeActionWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+        , nil)
     , nil);
   
 
