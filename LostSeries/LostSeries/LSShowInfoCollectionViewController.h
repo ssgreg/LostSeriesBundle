@@ -25,7 +25,7 @@
 
 
 @protocol LSViewShowsCollection
-- (void) showCollectionClearSelection;
+- (void) showCollectionReloadData;
 - (NSArray*) showCollectionVisibleItemIndexs;
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath;
 @end

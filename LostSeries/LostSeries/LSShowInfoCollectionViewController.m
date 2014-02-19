@@ -264,7 +264,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 - (void) updateView
 {
-  [self.view showCollectionClearSelection];
+  [self.view showCollectionReloadData];
 }
 
 - (void) tryToStartBatchArtworkGetter
@@ -307,7 +307,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 
 //
-// LSShowCollectionData
+// LSWLinkShowsSelection
 //
 
 @protocol LSDataShowsSelection <LSShowsSelectionModeData, LSShowsShowsData, LSShowsSelectedShowsData, LSShowsFavoriteShowsData>
@@ -706,9 +706,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   theNavigationItem.title = title;
 }
 
-- (void) showCollectionClearSelection
+- (void) showCollectionReloadData
 {
   [theCollectionView reloadData];
+}
+
+- (void) showCollectionClearSelection
+{
+  [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
 }
 
 - (void) showCollectionAllowMultipleSelection:(BOOL)flag
