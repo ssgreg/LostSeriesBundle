@@ -17,6 +17,7 @@
 @interface LSApplication ()
 {
   LSModelBase* theModelBase;
+  LSServiceArtworkGetter* theServiceArtworkGetter;
   NSString* theDeviceToken;
 }
 @end
@@ -61,6 +62,15 @@
 - (LSModelBase*) modelBase
 {
   return theModelBase;
+}
+
+- (LSServiceArtworkGetter*) serviceArtworkGetter
+{
+  if (!theServiceArtworkGetter)
+  {
+    theServiceArtworkGetter = [[LSServiceArtworkGetter alloc] initWithData:theModelBase];
+  }
+  return theServiceArtworkGetter;
 }
 
 @end

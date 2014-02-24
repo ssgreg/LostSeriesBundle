@@ -7,6 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+// LS
+#import <WorkflowLink/WorkflowLink.h>
+
+
+@protocol LSViewFollowingShowsCollection
+- (void) showCollectionReloadData;
+- (NSRange) showCollectionVisibleItemRange;
+- (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath;
+- (BOOL) isActive;
+@end
 
 
 //
@@ -14,6 +24,15 @@
 //
 
 @interface LSShowsFollowingController : UICollectionViewController
+  <
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
+    UIActionSheetDelegate,
+    LSViewFollowingShowsCollection
+  >
+
+- (WFWorkflow*) workflow;
+
 @end
 
 

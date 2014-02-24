@@ -42,6 +42,7 @@
 
 @protocol LSShowsFavoriteShowsData
 @property NSDictionary* favoriteShows;
+@property NSArray* showsFollowing;
 @end
 
 @protocol LSDataBaseShowsRaw

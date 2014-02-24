@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 // LS
 #import "LSModelBase.h"
+#import "LSServiceArtworkGetter.h"
 
 
 //
@@ -25,6 +26,7 @@
 
 @property NSString* deviceToken;
 @property (readonly) LSModelBase* modelBase;
+@property (readonly) LSServiceArtworkGetter* serviceArtworkGetter;
 
 @end
 

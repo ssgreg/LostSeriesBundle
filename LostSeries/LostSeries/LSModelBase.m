@@ -32,6 +32,7 @@
   //
   BOOL theSelectionModeFlag;
   NSArray* theShows;
+  NSArray* theShowsFollowing;
   NSDictionary* theFavoriteShows;
   NSDictionary* theSelectedShows;
 }
@@ -54,6 +55,7 @@
 @synthesize showsFavoriteRaw = theShowsFavoriteRaw;
 @synthesize shows = theShows;
 @synthesize favoriteShows = theFavoriteShows;
+@synthesize showsFollowing = theShowsFollowing;
 @synthesize selectedShows = theSelectedShows;
 @synthesize selectionModeActivated = theSelectionModeFlag;
 @synthesize backendFacade = theBackendFacade;

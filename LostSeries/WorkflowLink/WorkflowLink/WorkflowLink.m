@@ -213,11 +213,11 @@
 
 - (void) output
 {
+  [super output];
   if (theFlagMakeRing)
   {
     [self input];
   }
-  [super output];
 }
 
 @end

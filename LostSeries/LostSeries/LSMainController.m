@@ -132,15 +132,18 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 
 - (void) input
 {
+  NSArray* showsRaw = self.data.showsRaw;
+  NSArray* favoriteShowsRaw = self.data.showsFavoriteRaw;
+  //
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
   {
     // shows
     NSMutableArray* newShowsRaw = [NSMutableArray array];
-    for (id show in self.data.showsRaw)
+    for (id show in showsRaw)
     {
      [newShowsRaw addObject:show];
-//     [newShows addObject:show];
-//     [newShows addObject:show];
+     [newShowsRaw addObject:show];
+     [newShowsRaw addObject:show];
     }
 
     NSMutableArray* modelsShow = [NSMutableArray array];
@@ -153,13 +156,15 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 
     // favorite shows
     NSMutableDictionary* modelsShowFavorite = [NSMutableDictionary dictionary];
-    for (id info in self.data.showsFavoriteRaw)
+    NSMutableArray* modelsShowFollowing = [NSMutableArray array];
+    for (id info in favoriteShowsRaw)
     {
       NSUInteger index = [modelsShow indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
       {
         return [((LSShowAlbumCellModel*)object).showInfo.originalTitle isEqualToString:((LSSubscriptionInfo*)info).originalTitle];
       }];
       modelsShowFavorite[[NSIndexPath indexPathForRow:index inSection:0]] = [modelsShow objectAtIndex:index];
+      [modelsShowFollowing addObject:[modelsShow objectAtIndex:index]];
     }
     //
     dispatch_async(dispatch_get_main_queue(), ^
@@ -173,6 +178,42 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
     });
   });
   [self forwardBlock];
+}
+
+@end
+
+
+//
+// LSWLinkBaseArtworkGetter
+//
+
+@protocol LSDataBaseArtworkGetter <LSShowsShowsData>
+@end
+
+@interface LSWLinkBaseArtworkGetter : WFWorkflowLink <LSClientServiceArtworkGetters>
+@end
+
+@implementation LSWLinkBaseArtworkGetter
+
+SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
+
+- (void) input
+{
+  [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
+  [[LSApplication singleInstance].serviceArtworkGetter getArtworks];
+  [self output];
+}
+
+#pragma mark - LSBatchArtworkGetterDelegate implementation
+
+- (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+{
+  return YES;
+}
+
+- (NSRange) indexQueueForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+{
+  return NSMakeRange(0, self.data.shows.count);
 }
 
 @end
@@ -212,16 +253,14 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 {
   theWorkflowShows = ((LSShowInfoCollectionViewController*)notification.object).workflow;
   theWorkflowShows.nextLink = WFLinkToSelfForward(self);
-  // try to start workflow
-  if (!self.isBlocked)
-  {
-    [self input];
-  }
+  [self tryToStartWorkflow];
 }
 
 - (void) onLSShowFollowingControllerDidLoadNotification:(NSNotification*)notification
 {
-//  theWorkflowShowsFollowing = ((LSShowsFollowingController*)notification.object).workflow;
+  theWorkflowShowsFollowing = ((LSShowsFollowingController*)notification.object).workflow;
+  theWorkflowShowsFollowing.nextLink = WFLinkToSelfForward(self);
+  [self tryToStartWorkflow];
 }
 
 - (void) listenForControllers
@@ -235,6 +274,14 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
     selector:@selector(onLSShowFollowingControllerDidLoadNotification:)
     name:LSShowsFollowingControllerDidLoadNotification
     object:nil];
+}
+
+- (void) tryToStartWorkflow
+{
+  if (!self.isBlocked)
+  {
+    [self input];
+  }
 }
 
 @end
@@ -261,6 +308,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
         , [[LSWLinkBaseGetterShows alloc] initWithData:[LSApplication singleInstance].modelBase]
         , nil)
     , [[LSWLinkBaseConverterRaw alloc] initWithData:[LSApplication singleInstance].modelBase]
+    , [[LSWLinkBaseArtworkGetter alloc] initWithData:[LSApplication singleInstance].modelBase]
     , [[LSWLinkBaseLinkerWorkflow alloc] init]
     , nil);
   //

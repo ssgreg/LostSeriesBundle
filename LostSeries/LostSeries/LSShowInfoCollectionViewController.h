@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 // LS
-#import "Remote/LSBatchArtworkGetter.h"
 #import <WorkflowLink/WorkflowLink.h>
 
 
@@ -26,8 +25,9 @@
 
 @protocol LSViewShowsCollection
 - (void) showCollectionReloadData;
-- (NSArray*) showCollectionVisibleItemIndexs;
+- (NSRange) showCollectionVisibleItemRange;
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath;
+- (BOOL) isActive;
 @end
 
 @protocol LSViewShowsSelection

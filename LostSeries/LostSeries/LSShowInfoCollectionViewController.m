@@ -8,7 +8,6 @@
 
 // LS
 #import "LSShowInfoCollectionViewController.h"
-#import "Remote/LSBatchArtworkGetter.h"
 #import <UIComponents/UILoadingView.h>
 #import <UIComponents/UIStatusBarView.h>
 #import "LSModelBase.h"
@@ -219,7 +218,7 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 @protocol LSDataShowsCollection <LSShowsShowsData, LSShowsFavoriteShowsData, LSShowAsyncBackendFacadeData>
 @end
 
-@interface LSWLinkShowsCollection : WFWorkflowLink <LSBatchArtworkGetterDelegate>
+@interface LSWLinkShowsCollection : WFWorkflowLink <LSClientServiceArtworkGetters>
 
 - (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath;
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath;
@@ -228,9 +227,6 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 @end
 
 @implementation LSWLinkShowsCollection
-{
-  LSBatchArtworkGetter* theArtworkGetter;
-}
 
 SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
@@ -251,13 +247,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 - (void) update
 {
-  theArtworkGetter = nil;
   [self updateView];
+  // artworks
+  [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(onLSFacadeArtworkGetterArtworkDidGetNotification:)
+    name:LSServiceArtworkGetterArtworkDidGetNotification
+    object:nil];
+  [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
 }
 
 - (void) input
 {
-  [self tryToStartBatchArtworkGetter];
   [self updateView];
   [self output];
 }
@@ -267,40 +267,22 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
   [self.view showCollectionReloadData];
 }
 
-- (void) tryToStartBatchArtworkGetter
+- (void) onLSFacadeArtworkGetterArtworkDidGetNotification:(NSNotification *)notification
 {
-  if (!theArtworkGetter)
-  {
-    theArtworkGetter = [LSBatchArtworkGetter artworkGetterWithDelegate:self];
-  }
+  NSInteger index = ((NSNumber*)notification.object).integerValue;
+  [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:index inSection:0]];
 }
 
 #pragma mark - LSBatchArtworkGetterDelegate implementation
 
-- (NSInteger) getNumberOfItems
+- (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  return [self itemsCount];
+  return [self.view isActive] == NO;
 }
 
-- (NSArray*) getPriorityWindow
+- (NSRange) indexQueueForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  return [self.view showCollectionVisibleItemIndexs];
-}
-
-- (void) getArtworkAsyncForIndex:(NSInteger)index completionHandler:(void (^)(NSData*))handler
-{
-  LSShowAlbumCellModel* cellModel = [self itemAtIndex:[NSIndexPath indexPathForRow:index inSection:0]];
-  [[self.data backendFacade] getArtworkByShowInfo:cellModel.showInfo replyHandler:handler];
-}
-
-- (void) didGetArtwork:(NSData*)data forIndex:(NSInteger)index
-{
-  NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-  // update cache
-  LSShowAlbumCellModel* cellModel = [self itemAtIndex:indexPath];
-  cellModel.artwork = [UIImage imageWithData:data];
-  // update view
-  [self.view showCollectionUpdateItemAtIndex:indexPath];
+  return [self.view showCollectionVisibleItemRange];
 }
 
 @end
@@ -395,8 +377,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   UILoadingView* theCollectionViewLoadingStub;
   UIStatusBarView* temp;
   UIWindow* myWindow;
-  //
-  NSArray* theVisibleItemIndexes;
   // workflow
   WFWorkflow* theWorkflow;
   LSSelectButtonWL* theSelectButtonWL;
@@ -521,29 +501,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
 }
 
-- (void) updateVisibleItemIndexes
-{
-  NSMutableArray* indexes = [NSMutableArray array];
-  NSArray* cells = [theCollectionView visibleCells];
-  for (LSShowAlbumCell* cell in cells)
-  {
-    NSNumber* index = [NSNumber numberWithInteger:[theCollectionView indexPathForCell:cell].row];
-    [indexes addObject:index];
-  }
-  theVisibleItemIndexes = [indexes sortedArrayUsingComparator:^(id obj1, id obj2)
-  {
-    if ([obj1 integerValue] > [obj2 integerValue])
-    {
-      return (NSComparisonResult)NSOrderedDescending;
-    }
-    if ([obj1 integerValue] < [obj2 integerValue])
-    {
-      return (NSComparisonResult)NSOrderedAscending;
-    }
-    return (NSComparisonResult)NSOrderedSame;
-  }];
-}
-
 - (void) updateCell:(LSShowAlbumCell*)cell forIndexPath:(NSIndexPath*)indexPath
 {
   LSShowAlbumCellModel* model = [theShowCollectionWL itemAtIndex:indexPath];
@@ -640,8 +597,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self updateVisibleItemIndexes];
-  //
   LSShowAlbumCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"theCell" forIndexPath:indexPath];
   [self updateCell:cell forIndexPath:indexPath];
   return cell;
@@ -721,6 +676,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   theCollectionView.allowsMultipleSelection = flag;
 }
 
+- (BOOL) isActive
+{
+  return theCollectionView.hidden == NO;
+}
+
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath
 {
   LSShowAlbumCell* cell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath:indexPath];
@@ -731,9 +691,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   }
 }
 
-- (NSArray*) showCollectionVisibleItemIndexs
+- (NSRange) showCollectionVisibleItemRange
 {
-  return theVisibleItemIndexes;
+  NSArray* indexPaths = [theCollectionView indexPathsForVisibleItems];
+  NSInteger xmax = INT_MIN, xmin = INT_MAX;
+  for (NSIndexPath* indexPath in indexPaths)
+  {
+    NSInteger x = indexPath.row;
+    if (x < xmin) xmin = x;
+    if (x > xmax) xmax = x;
+  }
+  return NSMakeRange(xmin, xmax - xmin + 1);
 }
 
 - (void) enableSubscribeButton:(BOOL)flag
