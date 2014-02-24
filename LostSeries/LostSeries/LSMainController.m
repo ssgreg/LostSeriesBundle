@@ -194,12 +194,20 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 @end
 
 @implementation LSWLinkBaseArtworkGetter
+{
+  NSInteger theIndexNext;
+}
 
 SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 
+- (void) update
+{
+  theIndexNext = 0;
+  [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
+}
+
 - (void) input
 {
-  [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
   [[LSApplication singleInstance].serviceArtworkGetter getArtworks];
   [self output];
 }
@@ -214,6 +222,13 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 - (NSRange) indexQueueForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
   return NSMakeRange(0, self.data.shows.count);
+}
+
+- (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+{
+  return theIndexNext < self.data.shows.count
+    ? theIndexNext++
+    : INT_MAX;
 }
 
 @end

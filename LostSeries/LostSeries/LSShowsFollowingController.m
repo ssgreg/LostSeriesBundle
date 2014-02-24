@@ -43,7 +43,8 @@
 
 @implementation LSWLinkFollowingShowsCollection
 {
-  
+  NSRange theRangeVisibleItems;
+  NSInteger theIndexNext;
 }
 
 SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsCollection);
@@ -61,6 +62,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 - (void) update
 {
   [self updateView];
+  //
+  theRangeVisibleItems = NSMakeRange(INT_MAX, INT_MAX);
+  theIndexNext = INT_MAX;
   // artworks
   [[NSNotificationCenter defaultCenter] addObserver:self
     selector:@selector(onLSFacadeArtworkGetterArtworkDidGetNotification:)
@@ -104,10 +108,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   return [self.view isActive] == NO;
 }
 
-- (NSRange) indexQueueForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+- (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  
-  return [self.view showCollectionVisibleItemRange];
+  NSRange newRange = [self.view showCollectionVisibleItemRange];
+  if (!NSEqualRanges(theRangeVisibleItems, newRange))
+  {
+    theRangeVisibleItems = newRange;
+    theIndexNext = theRangeVisibleItems.location;
+  }
+  return theIndexNext < NSLocationInRange(theIndexNext, theRangeVisibleItems)
+    ? theIndexNext++
+    : INT_MAX;
 }
 
 @end

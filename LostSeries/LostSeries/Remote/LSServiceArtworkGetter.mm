@@ -8,39 +8,6 @@
 
 #import "LSServiceArtworkGetter.h"
 
-@interface MyClass : NSObject <NSFastEnumeration>
-@end
-
-@implementation MyClass
-{
-  __unsafe_unretained NSMutableArray* theInternalItems;
-}
-
-- (id) init
-{
-  self = [super init];
-  theInternalItems = [NSMutableArray array];
-  [theInternalItems addObject:[NSNumber numberWithBool:YES]];
-  [theInternalItems addObject:[NSNumber numberWithBool:NO]];
-  return self;
-}
-
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len;
-{
-  if (state->state >= theInternalItems.count)
-  {
-      return 0;
-  }
-  __unsafe_unretained id obj = [theInternalItems objectAtIndex:state->state];
-//  state->itemsPtr = (__unsafe_unretained)[theInternalItems objectAtIndex:state->state];
-  state->state = theInternalItems.count;
-  state->mutationsPtr = (uintptr_t*)(__bridge void*)self;
-   
-  return theInternalItems.count;
-}
-
-@end
-
 
 //
 // LSServiceArtworkGetter
@@ -55,15 +22,6 @@
 
 - (id) initWithData:(id)data
 {
-  MyClass* myClass = [[MyClass alloc] init];
-  
-  for (id test in myClass)
-  {
-    NSLog(@"%d", ((NSNumber*)test).boolValue);
-  }
-  
-  
-  
   if (!(self = [super init]))
   {
     return nil;
@@ -114,8 +72,7 @@
     if (![client isInBackgroundForServiceArtworkGetter:self])
     {
       NSLog(@"!back");
-      NSRange range = [client indexQueueForServiceArtworkGetter:self];
-      NSInteger index = [self nextInRange:range];
+      NSInteger index = [self nextIndexForClient:client];
       if (index != INT_MAX)
       {
         return index;
@@ -128,8 +85,7 @@
     if ([client isInBackgroundForServiceArtworkGetter:self])
     {
       NSLog(@"back");
-      NSRange range = [client indexQueueForServiceArtworkGetter:self];
-      NSInteger index = [self nextInRange:range];
+      NSInteger index = [self nextIndexForClient:client];
       if (index != INT_MAX)
       {
         return index;
@@ -139,14 +95,14 @@
   return INT_MAX;
 }
 
-- (NSInteger) nextInRange:(NSRange)range
+- (NSInteger) nextIndexForClient:(id<LSClientServiceArtworkGetters>)client
 {
-  range = NSIntersectionRange(range, NSMakeRange(0, theData.shows.count));
-  for (NSInteger loc = range.location; NSLocationInRange(loc, range); ++loc)
+  for (NSInteger index = 0; index != INT_MAX;)
   {
-    if (![theDones objectForKey:[NSNumber numberWithInteger:loc]])
+    index = [client nextIndexForServiceArtworkGetter:self];
+    if (![theDones objectForKey:[NSNumber numberWithInteger:index]])
     {
-      return loc;
+      return index;
     }
   }
   return INT_MAX;

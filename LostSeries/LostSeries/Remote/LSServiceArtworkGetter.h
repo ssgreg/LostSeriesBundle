@@ -15,7 +15,7 @@
 @protocol LSClientServiceArtworkGetters <NSObject>
 
 - (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
-- (NSRange) indexQueueForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
+- (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
 
 @end
 
