@@ -116,9 +116,18 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
     theRangeVisibleItems = newRange;
     theIndexNext = theRangeVisibleItems.location;
   }
-  return theIndexNext < NSLocationInRange(theIndexNext, theRangeVisibleItems)
-    ? theIndexNext++
+  return NSLocationInRange(theIndexNext, theRangeVisibleItems)
+    ? [self convertIndex:theIndexNext++]
     : INT_MAX;
+}
+
+- (NSInteger) convertIndex:(NSInteger)indexSource
+{
+  LSShowAlbumCellModel* source = self.data.favoriteShows.allValues[indexSource];
+  return [self.data.shows indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
+  {
+    return [((LSShowAlbumCellModel*)object).showInfo.originalTitle isEqualToString:source.showInfo.originalTitle];
+  }];
 }
 
 @end
@@ -189,20 +198,27 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 - (BOOL) isActive
 {
-  return theCollectionView.hidden == NO;
+  return self.tabBarController.selectedIndex == 1;
 }
 
 - (NSRange) showCollectionVisibleItemRange
 {
   NSArray* indexPaths = [theCollectionView indexPathsForVisibleItems];
-  NSInteger xmax = INT_MIN, xmin = INT_MAX;
-  for (NSIndexPath* indexPath in indexPaths)
+  if (indexPaths.count)
   {
-    NSInteger x = indexPath.row;
-    if (x < xmin) xmin = x;
-    if (x > xmax) xmax = x;
+    NSInteger xmax = INT_MIN, xmin = INT_MAX;
+    for (NSIndexPath* indexPath in indexPaths)
+    {
+      NSInteger x = indexPath.row;
+      if (x < xmin) xmin = x;
+      if (x > xmax) xmax = x;
+    }
+    return NSMakeRange(xmin, xmax - xmin + 1);
   }
-  return NSMakeRange(xmin, xmax - xmin + 1);
+  else
+  {
+    return NSMakeRange(0, 15);
+  }
 }
 
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath

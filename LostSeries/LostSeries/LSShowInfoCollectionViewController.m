@@ -693,7 +693,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (BOOL) isActive
 {
-  return theCollectionView.hidden == NO;
+  return self.tabBarController.selectedIndex == 0;
 }
 
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath
