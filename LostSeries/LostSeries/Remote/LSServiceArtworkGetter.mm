@@ -59,7 +59,14 @@
   {
     [weakSelf nextArtworkAsync];
     modelCell.artwork = [UIImage imageWithData:dataArtwork];
-    [[NSNotificationCenter defaultCenter] postNotificationName:LSServiceArtworkGetterArtworkDidGetNotification object:[NSNumber numberWithInteger:index]];
+    // notify clients
+    for (id<LSClientServiceArtworkGetters> client in theClients)
+    {
+      if ([client respondsToSelector:@selector(serviceArtworkGetter:didGetArtworkAtIndex:)])
+      {
+        [client serviceArtworkGetter:self didGetArtworkAtIndex:index];
+      }
+    }
   }];
   theDones[[NSNumber numberWithInteger:index]] = @YES;
 }
@@ -71,7 +78,6 @@
   {
     if (![client isInBackgroundForServiceArtworkGetter:self])
     {
-      NSLog(@"!back");
       NSInteger index = [self nextIndexForClient:client];
       if (index != INT_MAX)
       {
@@ -84,7 +90,6 @@
   {
     if ([client isInBackgroundForServiceArtworkGetter:self])
     {
-      NSLog(@"back");
       NSInteger index = [self nextIndexForClient:client];
       if (index != INT_MAX)
       {
@@ -109,11 +114,3 @@
 }
 
 @end
-
-
-//
-// Notifications
-//
-
-NSString* LSServiceArtworkGetterArtworkDidGetNotification = @"LSServiceArtworkGetterArtworkDidGetNotification";
-

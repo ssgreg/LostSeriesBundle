@@ -254,11 +254,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
   //
   theRangeVisibleItems = NSMakeRange(INT_MAX, INT_MAX);
   theIndexNext = INT_MAX;
-  // artworks
-  [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(onLSFacadeArtworkGetterArtworkDidGetNotification:)
-    name:LSServiceArtworkGetterArtworkDidGetNotification
-    object:nil];
   [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
 }
 
@@ -271,12 +266,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 - (void) updateView
 {
   [self.view showCollectionReloadData];
-}
-
-- (void) onLSFacadeArtworkGetterArtworkDidGetNotification:(NSNotification *)notification
-{
-  NSInteger index = ((NSNumber*)notification.object).integerValue;
-  [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:index inSection:0]];
 }
 
 #pragma mark - LSBatchArtworkGetterDelegate implementation
@@ -297,6 +286,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
     ? theIndexNext++
     : INT_MAX;
+}
+
+- (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
+{
+  [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:index inSection:0]];
 }
 
 @end

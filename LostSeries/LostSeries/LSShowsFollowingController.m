@@ -66,10 +66,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   theRangeVisibleItems = NSMakeRange(INT_MAX, INT_MAX);
   theIndexNext = INT_MAX;
   // artworks
-  [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(onLSFacadeArtworkGetterArtworkDidGetNotification:)
-    name:LSServiceArtworkGetterArtworkDidGetNotification
-    object:nil];
   [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
 }
 
@@ -90,16 +86,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   
 }
 
-- (void) onLSFacadeArtworkGetterArtworkDidGetNotification:(NSNotification *)notification
-{
-  NSInteger indexSource = ((NSNumber*)notification.object).integerValue;
-  NSInteger indexTarget = [self.data.showsFollowing indexSourceToTarget:indexSource];
-  if (indexTarget != INT_MAX)
-  {
-    [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
-  }
-}
-
 #pragma mark - LSBatchArtworkGetterDelegate implementation
 
 - (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
@@ -118,6 +104,15 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
     ? [self.data.showsFollowing indexTargetToSource:theIndexNext++]
     : INT_MAX;
+}
+
+- (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
+{
+  NSInteger indexTarget = [self.data.showsFollowing indexSourceToTarget:index];
+  if (indexTarget != INT_MAX)
+  {
+    [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
+  }
 }
 
 @end
