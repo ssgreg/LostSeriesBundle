@@ -58,7 +58,7 @@
 // LSWLinkBaseGetterShows
 //
 
-@protocol LSDataBaseGetterShows <LSShowAsyncBackendFacadeData, LSDataBaseShowsRaw>
+@protocol LSDataBaseGetterShows <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsRaw>
 @end
 
 @interface LSWLinkBaseGetterShows : WFWorkflowLink
@@ -88,7 +88,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterShows);
 // LSWLinkBaseGetterShowsFavorite
 //
 
-@protocol LSDataBaseGetterFavoriteShows <LSShowAsyncBackendFacadeData, LSDataBaseShowsFavoriteRaw>
+@protocol LSDataBaseGetterFavoriteShows <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFavoriteRaw>
 @end
 
 @interface LSWLinkBaseGetterShowsFavorite : WFWorkflowLink
@@ -120,7 +120,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterFavoriteShows);
 // LSWLinkBaseConverterRaw
 //
 
-@protocol LSDataBaseConverterRaw <LSDataBaseShowsRaw, LSDataBaseShowsFavoriteRaw, LSShowsShowsData, LSShowsFavoriteShowsData>
+@protocol LSDataBaseConverterRaw <LSDataBaseShowsRaw, LSDataBaseShowsFavoriteRaw, LSDataBaseModelShowsLists>
 @end
 
 @interface LSWLinkBaseConverterRaw : WFWorkflowLink
@@ -132,8 +132,8 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 
 - (void) input
 {
-  NSArray* showsRaw = self.data.showsRaw;
-  NSArray* favoriteShowsRaw = self.data.showsFavoriteRaw;
+  __block NSArray* showsRaw = self.data.showsRaw;
+  __block NSArray* favoriteShowsRaw = self.data.showsFavoriteRaw;
   //
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
   {
@@ -145,7 +145,6 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
      [newShowsRaw addObject:show];
      [newShowsRaw addObject:show];
     }
-
     NSMutableArray* modelsShow = [NSMutableArray array];
     for (id show in newShowsRaw)
     {
@@ -154,25 +153,22 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
      [modelsShow addObject: cellModel];
     }
 
-    // favorite shows
-    NSMutableDictionary* modelsShowFavorite = [NSMutableDictionary dictionary];
-    NSMutableArray* modelsShowFollowing = [NSMutableArray array];
+    LSModelShowsLists* modelShowsLists = [[LSModelShowsLists alloc] initWithShows:modelsShow];
+    // following shows
     for (id info in favoriteShowsRaw)
     {
       NSUInteger index = [modelsShow indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
       {
         return [((LSShowAlbumCellModel*)object).showInfo.originalTitle isEqualToString:((LSSubscriptionInfo*)info).originalTitle];
       }];
-      modelsShowFavorite[[NSIndexPath indexPathForRow:index inSection:0]] = [modelsShow objectAtIndex:index];
-      [modelsShowFollowing addObject:[modelsShow objectAtIndex:index]];
+      [modelShowsLists.showsFollowing addObjectByIndexSource:index];
     }
     //
     dispatch_async(dispatch_get_main_queue(), ^
     {
       if (!self.isBlocked)
       {
-        self.data.shows = modelsShow;
-        self.data.favoriteShows = modelsShowFavorite;
+        self.data.modelShowsLists = modelShowsLists;
         [self output];
       }
     });
@@ -187,7 +183,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 // LSWLinkBaseArtworkGetter
 //
 
-@protocol LSDataBaseArtworkGetter <LSShowsShowsData>
+@protocol LSDataBaseArtworkGetter <LSDataBaseShows>
 @end
 
 @interface LSWLinkBaseArtworkGetter : WFWorkflowLink <LSClientServiceArtworkGetters>

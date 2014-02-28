@@ -10,6 +10,54 @@
 #import "Remote/LSAsyncBackendFacade.h"
 
 
+@class LSArrayPartial;
+
+
+//
+// LSArrayPartial
+//
+
+@interface LSArrayPartial : NSObject <NSFastEnumeration>
+
++ (LSArrayPartial*) arrayPartialWithArraySource:(NSArray*)arraySource ;
+- (id) initWithArraySource:(NSArray*)arraySource;
+
+- (NSInteger) indexSourceToTarget:(NSInteger)indexSource;
+- (NSInteger) indexTargetToSource:(NSInteger)indexTarget;
+
+- (BOOL) hasIndexSource:(NSInteger)indexSource;
+
+- (void) addObjectByIndexSource:(NSInteger)indexSource;
+- (void) addObjectsFromArrayPartial:(LSArrayPartial*)array;
+
+- (void) removeObjectByIndexSource:(NSInteger)indexSource;
+- (void) removeObjectByIndexTarget:(NSInteger)indexTarget;
+
+- (NSInteger) count;
+- (void) removeAllObjectes;
+
+// operator []
+- (id) objectAtIndexedSubscript:(NSUInteger)index;
+- (void) setObject:(id)obj atIndexedSubscript:(NSUInteger)index;
+
+@end
+
+
+//
+// LSModelShowsLists
+//
+
+@interface LSModelShowsLists : NSObject
+
+- (id) initWithShows:(NSArray*)shows;
+
+@property (readonly) NSArray* shows;
+@property (readonly) LSArrayPartial* showsFollowing;
+@property (readonly) LSArrayPartial* showsSelected;
+
+@end
+
+
 //
 // LSShowAlbumCellModel
 //
@@ -24,25 +72,24 @@
 // Getter protocols
 //
 
-@protocol LSShowAsyncBackendFacadeData
+@protocol LSDataBaseFacadeAsyncBackend
 @property (readonly) LSAsyncBackendFacade* backendFacade;
 @end
 
-@protocol LSShowsSelectionModeData
+@protocol LSDataBaseModeSelection
 @property BOOL selectionModeActivated;
 @end
 
-@protocol LSShowsShowsData
-@property NSArray* shows;
+@protocol LSDataBaseShows
+@property (readonly) NSArray* shows;
 @end
 
-@protocol LSShowsSelectedShowsData
-@property NSDictionary* selectedShows;
+@protocol LSDataBaseShowsSelected
+@property (readonly) LSArrayPartial* showsSelected;
 @end
 
-@protocol LSShowsFavoriteShowsData
-@property NSDictionary* favoriteShows;
-@property NSArray* showsFollowing;
+@protocol LSDataBaseShowsFollowing
+@property (readonly) LSArrayPartial* showsFollowing;
 @end
 
 @protocol LSDataBaseShowsRaw
@@ -53,6 +100,9 @@
 @property NSArray* showsFavoriteRaw;
 @end
 
+@protocol LSDataBaseModelShowsLists
+@property LSModelShowsLists* modelShowsLists;
+@end
 
 //
 // LSModelBase
@@ -61,11 +111,12 @@
 @interface LSModelBase : NSObject
     < LSDataBaseShowsRaw
     , LSDataBaseShowsFavoriteRaw
-    , LSShowsSelectionModeData
-    , LSShowsFavoriteShowsData
-    , LSShowsShowsData
-    , LSShowsSelectedShowsData
-    , LSShowAsyncBackendFacadeData>
+    , LSDataBaseModelShowsLists
+    , LSDataBaseModeSelection
+    , LSDataBaseShows
+    , LSDataBaseShowsSelected
+    , LSDataBaseFacadeAsyncBackend
+    , LSDataBaseShowsFollowing>
 
 - (id) init;
 

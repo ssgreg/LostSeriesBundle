@@ -31,7 +31,7 @@
 // LSWLinkFollowingShowsCollection
 //
 
-@protocol LSDataFollowingShowsCollection <LSShowsShowsData, LSShowsFavoriteShowsData, LSShowAsyncBackendFacadeData>
+@protocol LSDataFollowingShowsCollection <LSDataBaseShows, LSDataBaseShowsFollowing, LSDataBaseFacadeAsyncBackend>
 @end
 
 @interface LSWLinkFollowingShowsCollection : WFWorkflowLink <LSClientServiceArtworkGetters>
@@ -51,12 +51,12 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
 {
-  return self.data.favoriteShows.allValues[indexPath.row];
+  return self.data.showsFollowing[indexPath.row];
 }
 
 - (NSUInteger) itemsCount
 {
-  return self.data.favoriteShows.count;
+  return self.data.showsFollowing.count;
 }
 
 - (void) update
@@ -92,12 +92,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 - (void) onLSFacadeArtworkGetterArtworkDidGetNotification:(NSNotification *)notification
 {
-  NSInteger indexSequential = ((NSNumber*)notification.object).integerValue;
-  LSShowAlbumCellModel* model = self.data.favoriteShows[[NSIndexPath indexPathForRow:indexSequential inSection:0]];
-  if (model)
+  NSInteger indexSource = ((NSNumber*)notification.object).integerValue;
+  NSInteger indexTarget = [self.data.showsFollowing indexSourceToTarget:indexSource];
+  if (indexTarget != INT_MAX)
   {
-    NSInteger index = [self.data.favoriteShows.allValues indexOfObject:model];
-    [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:index inSection:0]];
+    [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
   }
 }
 
@@ -117,17 +116,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
     theIndexNext = theRangeVisibleItems.location;
   }
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
-    ? [self convertIndex:theIndexNext++]
+    ? [self.data.showsFollowing indexTargetToSource:theIndexNext++]
     : INT_MAX;
-}
-
-- (NSInteger) convertIndex:(NSInteger)indexSource
-{
-  LSShowAlbumCellModel* source = self.data.favoriteShows.allValues[indexSource];
-  return [self.data.shows indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
-  {
-    return [((LSShowAlbumCellModel*)object).showInfo.originalTitle isEqualToString:source.showInfo.originalTitle];
-  }];
 }
 
 @end

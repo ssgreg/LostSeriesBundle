@@ -33,7 +33,7 @@
 // LSSubscribeActionData
 //
 
-@protocol LSSubscribeActionData <LSShowAsyncBackendFacadeData, LSShowsFavoriteShowsData, LSShowsSelectedShowsData>
+@protocol LSSubscribeActionData <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFollowing, LSDataBaseShowsSelected>
 @end
 
 @interface LSSubscribeActionWL : WFWorkflowLink
@@ -55,21 +55,20 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
     }
   }];
   //
-  NSMutableDictionary* favoriteShows = [NSMutableDictionary dictionaryWithDictionary:self.data.favoriteShows];
-  [favoriteShows addEntriesFromDictionary:self.data.selectedShows];
-  self.data.favoriteShows = favoriteShows;
+  [self.data.showsFollowing addObjectsFromArrayPartial:self.data.showsSelected];
   [self forwardBlock];
 }
 
 - (NSArray*) makeSubscriptions
 {
   NSMutableArray* subscriptions = [NSMutableArray array];
-  [self.data.selectedShows enumerateKeysAndObjectsUsingBlock:^(id key, id object, BOOL* stop)
+  for (LSShowAlbumCellModel* model in self.data.showsSelected)
   {
     LSSubscriptionInfo* subscription = [[LSSubscriptionInfo alloc] init];
-    subscription.originalTitle = ((LSShowAlbumCellModel*)object).showInfo.originalTitle;
+    subscription.originalTitle = model.showInfo.originalTitle;
+    //
     [subscriptions addObject:subscription];
-  }];
+  }
   return subscriptions;
 }
 
@@ -80,7 +79,7 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
 // LSSelectButtonData
 //
 
-@protocol LSSelectButtonData <LSShowsSelectionModeData>
+@protocol LSSelectButtonData <LSDataBaseModeSelection>
 @end
 
 
@@ -141,7 +140,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSSelectButtonData);
 // LSSubscribeButtonData
 //
 
-@protocol LSSubscribeButtonData <LSShowsSelectionModeData, LSShowsSelectedShowsData>
+@protocol LSSubscribeButtonData <LSDataBaseModeSelection, LSDataBaseShowsSelected>
 @end
 
 
@@ -156,7 +155,7 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeButtonData, LSShowSubscribeButtonView);
 - (void) update
 {
   [self.view showSubscribeButton:self.data.selectionModeActivated];
-  [self.view enableSubscribeButton:self.data.selectionModeActivated && self.data.selectedShows.count > 0];
+  [self.view enableSubscribeButton:self.data.selectionModeActivated && self.data.showsSelected.count > 0];
 }
 
 - (void) input
@@ -178,7 +177,7 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeButtonData, LSShowSubscribeButtonView);
 // LSNavigationBarData
 //
 
-@protocol LSNavigationBarData <LSShowsSelectionModeData, LSShowsSelectedShowsData>
+@protocol LSNavigationBarData <LSDataBaseModeSelection, LSDataBaseShowsSelected>
 @end
 
 
@@ -200,7 +199,7 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
   NSString* title = @"Lost Series";
   if (self.data.selectionModeActivated)
   {
-    NSInteger selectedShowCount = self.data.selectedShows.count;
+    NSInteger selectedShowCount = self.data.showsSelected.count;
     title = selectedShowCount == 0
       ? @"Select Items"
       : [NSString stringWithFormat:@"%ld %@ Selected", selectedShowCount, (selectedShowCount == 1 ? @"Show" : @"Shows")];
@@ -215,7 +214,7 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 // LSWLinkShowsCollection
 //
 
-@protocol LSDataShowsCollection <LSShowsShowsData, LSShowsFavoriteShowsData, LSShowAsyncBackendFacadeData>
+@protocol LSDataShowsCollection <LSDataBaseShows, LSDataBaseShowsFollowing>
 @end
 
 @interface LSWLinkShowsCollection : WFWorkflowLink <LSClientServiceArtworkGetters>
@@ -236,7 +235,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 - (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath
 {
-  return [self.data.favoriteShows objectForKey:indexPath];
+  return [self.data.showsFollowing hasIndexSource:indexPath.row];
 }
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
@@ -307,7 +306,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 // LSWLinkShowsSelection
 //
 
-@protocol LSDataShowsSelection <LSShowsSelectionModeData, LSShowsShowsData, LSShowsSelectedShowsData, LSShowsFavoriteShowsData>
+@protocol LSDataShowsSelection <LSDataBaseModeSelection, LSDataBaseShows, LSDataBaseShowsSelected>
 @end
 
 @interface LSWLinkShowsSelection : WFWorkflowLink
@@ -320,7 +319,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 @implementation LSWLinkShowsSelection
 {
-  NSMutableDictionary* theSelectedShows;
   NSNumber* theIsMultipleSelectedAllowedFlag;
 }
 
@@ -328,35 +326,31 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
 {
-  theSelectedShows[indexPath] = self.data.shows[indexPath.row];
-  [self input];
+  [self.data.showsSelected addObjectByIndexSource:indexPath.row];
+  [self output];
 }
 
 - (void) didDeselectItemAtIndex:(NSIndexPath*)indexPath
 {
-  [theSelectedShows removeObjectForKey:indexPath];
-  [self input];
+  [self.data.showsSelected removeObjectByIndexSource:indexPath.row];
+  [self output];
 }
 
 - (BOOL) isItemSelectedAtIndex:(NSIndexPath*)indexPath
 {
-  return [theSelectedShows objectForKey:indexPath];
+  return [self.data.showsSelected hasIndexSource:indexPath.row];
 }
 
 - (void) update
 {
-  theSelectedShows = [NSMutableDictionary dictionary];
   theIsMultipleSelectedAllowedFlag = nil;
-  //
-  self.data.selectedShows = theSelectedShows;
   [self updateView];
 }
 
 - (void) input
 {
+  // TODO: check selection diff
   [self tryToUpdateSelectionMode];
-  //
-  self.data.selectedShows = theSelectedShows;
   [self output];
 }
 
@@ -372,7 +366,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   if (isSelectionModeChanged)
   {
     theIsMultipleSelectedAllowedFlag = [NSNumber numberWithBool:self.data.selectionModeActivated];
-    [theSelectedShows removeAllObjects];
+    [self.data.showsSelected removeAllObjectes];
     [self updateView];
   }
 }

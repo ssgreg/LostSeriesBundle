@@ -20,7 +20,7 @@
 @end
 
 
-@protocol LSDataServiceArtworkGetter <LSShowAsyncBackendFacadeData, LSShowsShowsData>
+@protocol LSDataServiceArtworkGetter <LSDataBaseFacadeAsyncBackend, LSDataBaseShows>
 @end
 
 
