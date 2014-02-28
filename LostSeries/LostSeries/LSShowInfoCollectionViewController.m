@@ -229,6 +229,8 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 {
   NSRange theRangeVisibleItems;
   NSInteger theIndexNext;
+  //
+  
 }
 
 SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
@@ -270,9 +272,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 #pragma mark - LSBatchArtworkGetterDelegate implementation
 
-- (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+- (LSServiceArtworkGetterPriority) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  return [self.view isActive] == NO;
+  return [self.view isActive] ? LSServiceArtworkGetterPriorityHigh : LSServiceArtworkGetterPriorityNormal;
 }
 
 - (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service
@@ -387,6 +389,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   LSWLinkShowsSelection* theWLinkShowsSelection;
   LSSubscribeButtonWL* theSubscribeButtonWL;
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
+  //
+  NSRange theRangeVisibleItems;
 }
 
 - (IBAction) selectButtonClicked:(id)sender;
@@ -666,6 +670,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (void) showCollectionReloadData
 {
+  theRangeVisibleItems = NSMakeRange(0, 15);
+  NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   [theCollectionView reloadData];
 }
 
@@ -697,14 +703,19 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (NSRange) showCollectionVisibleItemRange
 {
   NSArray* indexPaths = [theCollectionView indexPathsForVisibleItems];
-  NSInteger xmax = INT_MIN, xmin = INT_MAX;
-  for (NSIndexPath* indexPath in indexPaths)
+  if (indexPaths.count)
   {
-    NSInteger x = indexPath.row;
-    if (x < xmin) xmin = x;
-    if (x > xmax) xmax = x;
+    NSInteger xmax = INT_MIN, xmin = INT_MAX;
+    for (NSIndexPath* indexPath in indexPaths)
+    {
+      NSInteger x = indexPath.row;
+      if (x < xmin) xmin = x;
+      if (x > xmax) xmax = x;
+    }
+    theRangeVisibleItems = NSMakeRange(xmin, xmax - xmin + 1);
   }
-  return NSMakeRange(xmin, xmax - xmin + 1);
+  NSLog(@"=========== %ld %ld", theRangeVisibleItems.location, theRangeVisibleItems.length);
+  return theRangeVisibleItems;
 }
 
 - (void) enableSubscribeButton:(BOOL)flag

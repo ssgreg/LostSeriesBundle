@@ -15,13 +15,25 @@
 
 
 //
+//
+//
+
+typedef enum
+{
+  LSServiceArtworkGetterPriorityLow,
+  LSServiceArtworkGetterPriorityNormal,
+  LSServiceArtworkGetterPriorityHigh
+} LSServiceArtworkGetterPriority;
+
+
+//
 // LSClientServiceArtworkGetters
 //
 
 @protocol LSClientServiceArtworkGetters <NSObject>
 
 @required
-- (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
+- (LSServiceArtworkGetterPriority) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
 - (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
 
 @optional

@@ -73,28 +73,19 @@
 
 - (NSInteger) nextArtworkIndex
 {
-  // enumerate non-background clients at first
-  for (id<LSClientServiceArtworkGetters> client in theClients)
+  NSArray* clientsByPriority = [self sortClientByPriority];
+  for (id<LSClientServiceArtworkGetters> client in clientsByPriority)
   {
-    if (![client isInBackgroundForServiceArtworkGetter:self])
-    {
-      NSInteger index = [self nextIndexForClient:client];
-      if (index != INT_MAX)
-      {
-        return index;
-      }
-    }
+      NSLog(@"%@", NSStringFromClass([client class]));
   }
-  // enumerate background clients at last
-  for (id<LSClientServiceArtworkGetters> client in theClients)
+  for (id<LSClientServiceArtworkGetters> client in clientsByPriority)
   {
-    if ([client isInBackgroundForServiceArtworkGetter:self])
+    NSInteger index = [self nextIndexForClient:client];
+    NSLog(@"%@ - %ld", NSStringFromClass([client class]), index);
+    if (index != INT_MAX)
     {
-      NSInteger index = [self nextIndexForClient:client];
-      if (index != INT_MAX)
-      {
-        return index;
-      }
+      NSLog(@"%@ - %ld", NSStringFromClass([client class]), index);
+      return index;
     }
   }
   return INT_MAX;
@@ -111,6 +102,20 @@
     }
   }
   return INT_MAX;
+}
+
+- (NSArray*) sortClientByPriority
+{
+  return [theClients sortedArrayUsingComparator:^(id left, id right)
+  {
+    LSServiceArtworkGetterPriority priorityLeft = [left isInBackgroundForServiceArtworkGetter:self];
+    LSServiceArtworkGetterPriority priorityRight = [right isInBackgroundForServiceArtworkGetter:self];
+    return priorityLeft == priorityRight
+      ? NSOrderedSame
+      : priorityLeft > priorityRight
+        ? NSOrderedAscending
+        : NSOrderedDescending;
+  }];
 }
 
 @end

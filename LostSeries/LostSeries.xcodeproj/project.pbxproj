@@ -11,7 +11,7 @@
 		EE1AA59B1888E99F004B6E7D /* libProtobuf.Generated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA5951887AD60004B6E7D /* libProtobuf.Generated.a */; };
 		EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA59F1888F28E004B6E7D /* LSConnection.mm */; };
 		EE1AA5A61888F2ED004B6E7D /* LSAsyncBackendFacade.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA5A51888F2ED004B6E7D /* LSAsyncBackendFacade.mm */; };
-		EE61FA1A18B9C6F10044CB80 /* LSServiceArtworkGetter.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE61FA1918B9C6F10044CB80 /* LSServiceArtworkGetter.mm */; };
+		EE61FA1A18B9C6F10044CB80 /* LSServiceArtworkGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = EE61FA1918B9C6F10044CB80 /* LSServiceArtworkGetter.m */; };
 		EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79B3188E3E29004A0D4B /* LSCachingServer.mm */; };
 		EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79B7188E65E9004A0D4B /* ZeroMQ.cpp */; };
 		EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */; };
@@ -99,7 +99,7 @@
 		EE1AA5A41888F2ED004B6E7D /* LSAsyncBackendFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSAsyncBackendFacade.h; path = Remote/LSAsyncBackendFacade.h; sourceTree = "<group>"; };
 		EE1AA5A51888F2ED004B6E7D /* LSAsyncBackendFacade.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSAsyncBackendFacade.mm; path = Remote/LSAsyncBackendFacade.mm; sourceTree = "<group>"; };
 		EE61FA1818B9C6F10044CB80 /* LSServiceArtworkGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSServiceArtworkGetter.h; path = Remote/LSServiceArtworkGetter.h; sourceTree = "<group>"; };
-		EE61FA1918B9C6F10044CB80 /* LSServiceArtworkGetter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSServiceArtworkGetter.mm; path = Remote/LSServiceArtworkGetter.mm; sourceTree = "<group>"; };
+		EE61FA1918B9C6F10044CB80 /* LSServiceArtworkGetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSServiceArtworkGetter.m; path = Remote/LSServiceArtworkGetter.m; sourceTree = "<group>"; };
 		EE6D79B2188E3E29004A0D4B /* LSCachingServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSCachingServer.h; path = CachingServer/LSCachingServer.h; sourceTree = "<group>"; };
 		EE6D79B3188E3E29004A0D4B /* LSCachingServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSCachingServer.mm; path = CachingServer/LSCachingServer.mm; sourceTree = "<group>"; };
 		EE6D79B6188E4830004A0D4B /* ZeroMQ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZeroMQ.h; path = ZeroMQ/ZeroMQ.h; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 				EE1AA5A41888F2ED004B6E7D /* LSAsyncBackendFacade.h */,
 				EE1AA5A51888F2ED004B6E7D /* LSAsyncBackendFacade.mm */,
 				EE61FA1818B9C6F10044CB80 /* LSServiceArtworkGetter.h */,
-				EE61FA1918B9C6F10044CB80 /* LSServiceArtworkGetter.mm */,
+				EE61FA1918B9C6F10044CB80 /* LSServiceArtworkGetter.m */,
 			);
 			name = Remote;
 			sourceTree = "<group>";
@@ -472,7 +472,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE61FA1A18B9C6F10044CB80 /* LSServiceArtworkGetter.mm in Sources */,
+				EE61FA1A18B9C6F10044CB80 /* LSServiceArtworkGetter.m in Sources */,
 				EE1A250B189A8D8000DBA78B /* LSShowInfoCollectionViewController.m in Sources */,
 				EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */,
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,

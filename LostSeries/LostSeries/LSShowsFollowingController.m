@@ -88,9 +88,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 #pragma mark - LSBatchArtworkGetterDelegate implementation
 
-- (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+- (LSServiceArtworkGetterPriority) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  return [self.view isActive] == NO;
+  return [self.view isActive] ? LSServiceArtworkGetterPriorityHigh : LSServiceArtworkGetterPriorityNormal;
 }
 
 - (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service

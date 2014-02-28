@@ -210,9 +210,9 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 
 #pragma mark - LSBatchArtworkGetterDelegate implementation
 
-- (BOOL) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+- (LSServiceArtworkGetterPriority) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  return YES;
+  return LSServiceArtworkGetterPriorityLow;
 }
 
 - (NSRange) indexQueueForServiceArtworkGetter:(LSServiceArtworkGetter*)service
