@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 // LS
+#import "LSControllerCollectionBase.h"
 #import <WorkflowLink/WorkflowLink.h>
 
 
@@ -46,7 +47,7 @@
 @end
 
 
-@interface LSShowInfoCollectionViewController : UICollectionViewController
+@interface LSShowInfoCollectionViewController : LSControllerCollectionBase
   <
     UICollectionViewDataSource,
     UICollectionViewDelegate,

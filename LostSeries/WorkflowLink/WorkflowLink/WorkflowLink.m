@@ -356,7 +356,12 @@
   self = [super initWithArray:wls outputCodition:^BOOL(NSArray* wls, WFWorkflowLink* wl)
   {
     theReplies[[NSNumber numberWithLongLong:(uintptr_t)wl]] = @YES;
-    return theReplies.count == wls.count;
+    if (theReplies.count == wls.count)
+    {
+      [theReplies removeAllObjects];
+      return YES;
+    }
+    return NO;
   }];
   if (self)
   {

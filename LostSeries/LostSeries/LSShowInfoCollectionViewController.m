@@ -254,8 +254,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 {
   [self updateView];
   //
-  theRangeVisibleItems = NSMakeRange(INT_MAX, INT_MAX);
-  theIndexNext = INT_MAX;
+  theRangeVisibleItems = NSMakeRange(NSNotFound, NSNotFound);
+  theIndexNext = NSNotFound;
   [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
 }
 
@@ -287,7 +287,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
   }
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
     ? theIndexNext++
-    : INT_MAX;
+    : NSNotFound;
 }
 
 - (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
@@ -389,8 +389,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   LSWLinkShowsSelection* theWLinkShowsSelection;
   LSSubscribeButtonWL* theSubscribeButtonWL;
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
-  //
-  NSRange theRangeVisibleItems;
 }
 
 - (IBAction) selectButtonClicked:(id)sender;
@@ -670,9 +668,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (void) showCollectionReloadData
 {
-  theRangeVisibleItems = NSMakeRange(0, 15);
-  NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  [theCollectionView reloadData];
+  [self reloadData];
 }
 
 - (void) showCollectionClearSelection
@@ -702,20 +698,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (NSRange) showCollectionVisibleItemRange
 {
-  NSArray* indexPaths = [theCollectionView indexPathsForVisibleItems];
-  if (indexPaths.count)
-  {
-    NSInteger xmax = INT_MIN, xmin = INT_MAX;
-    for (NSIndexPath* indexPath in indexPaths)
-    {
-      NSInteger x = indexPath.row;
-      if (x < xmin) xmin = x;
-      if (x > xmax) xmax = x;
-    }
-    theRangeVisibleItems = NSMakeRange(xmin, xmax - xmin + 1);
-  }
-  NSLog(@"=========== %ld %ld", theRangeVisibleItems.location, theRangeVisibleItems.length);
-  return theRangeVisibleItems;
+  return [self rangeVisibleItems];
 }
 
 - (void) enableSubscribeButton:(BOOL)flag

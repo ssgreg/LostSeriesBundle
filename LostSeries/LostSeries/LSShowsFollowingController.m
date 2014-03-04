@@ -63,8 +63,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 {
   [self updateView];
   //
-  theRangeVisibleItems = NSMakeRange(INT_MAX, INT_MAX);
-  theIndexNext = INT_MAX;
+  theRangeVisibleItems = NSMakeRange(NSNotFound, NSNotFound);
+  theIndexNext = NSNotFound;
   // artworks
   [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
 }
@@ -103,13 +103,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   }
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
     ? [self.data.showsFollowing indexTargetToSource:theIndexNext++]
-    : INT_MAX;
+    : NSNotFound;
 }
 
 - (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
 {
   NSInteger indexTarget = [self.data.showsFollowing indexSourceToTarget:index];
-  if (indexTarget != INT_MAX)
+  if (indexTarget != NSNotFound)
   {
     [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
   }
@@ -178,7 +178,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 - (void) showCollectionReloadData
 {
-  [theCollectionView reloadData];
+  [self reloadData];
 }
 
 - (BOOL) isActive
@@ -188,22 +188,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 - (NSRange) showCollectionVisibleItemRange
 {
-  NSArray* indexPaths = [theCollectionView indexPathsForVisibleItems];
-  if (indexPaths.count)
-  {
-    NSInteger xmax = INT_MIN, xmin = INT_MAX;
-    for (NSIndexPath* indexPath in indexPaths)
-    {
-      NSInteger x = indexPath.row;
-      if (x < xmin) xmin = x;
-      if (x > xmax) xmax = x;
-    }
-    return NSMakeRange(xmin, xmax - xmin + 1);
-  }
-  else
-  {
-    return NSMakeRange(0, 15);
-  }
+  return [self rangeVisibleItems];
 }
 
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath

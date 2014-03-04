@@ -15,7 +15,45 @@
 
 
 //
-// LSShowsWaitForDeviceTokenDidRecieveWL
+// LSWLinkRefresher
+//
+
+@protocol LSDataBaseRefresher <LSDataBaseFacadeAsyncBackend>
+@end
+
+@interface LSWLinkBaseRefresher : WFWorkflowLink
+@end
+
+@implementation LSWLinkBaseRefresher
+
+SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseRefresher);
+
+- (void) doSomething:(NSTimer*)timer
+{
+//  [self output];
+}
+
+- (void) input
+{
+  [self setTimer];
+  [self output];
+}
+
+- (void) setTimer
+{
+  [NSTimer scheduledTimerWithTimeInterval:10
+    target:self
+    selector:@selector(doSomething:)
+    userInfo:nil
+    repeats:YES];
+}
+
+@end
+
+
+
+//
+// LSWLinkBaseWaitForDeviceToken
 //
 
 @interface LSWLinkBaseWaitForDeviceToken : WFWorkflowLink
@@ -65,8 +103,16 @@
 @end
 
 @implementation LSWLinkBaseGetterShows
+{
+  NSInteger counter;
+}
 
 SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterShows);
+
+- (void) update
+{
+  counter = 0;
+}
 
 - (void) input
 {
@@ -74,7 +120,13 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterShows);
   {
     if (!self.isBlocked)
     {
-      self.data.showsRaw = shows;
+      NSMutableArray* mutArray = [NSMutableArray arrayWithArray:shows];
+      for (NSInteger i = 0; i < counter; ++i)
+      {
+        [mutArray removeObjectAtIndex:0];
+      }
+      ++counter;
+      self.data.showsRaw = mutArray;
       [self output];
     }
   }];
@@ -161,7 +213,10 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
       {
         return [((LSShowAlbumCellModel*)object).showInfo.originalTitle isEqualToString:((LSSubscriptionInfo*)info).originalTitle];
       }];
-      [modelShowsLists.showsFollowing addObjectByIndexSource:index];
+      if (index != NSNotFound)
+      {
+        [modelShowsLists.showsFollowing addObjectByIndexSource:index];
+      }
     }
     //
     dispatch_async(dispatch_get_main_queue(), ^
@@ -224,23 +279,31 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 {
   return theIndexNext < self.data.shows.count
     ? theIndexNext++
-    : INT_MAX;
+    : NSNotFound;
 }
 
 @end
 
 
 //
-// LSWLinkBaseLinkerWorkflow
+// LSWLinkRouterNavigation
 //
 
-@interface LSWLinkBaseLinkerWorkflow : WFWorkflowLink
+@interface LSWLinkRouterNavigation : WFWorkflowLink
+- (void) didChangeRouterNavigationWay;
 @end
 
-@implementation LSWLinkBaseLinkerWorkflow
+@implementation LSWLinkRouterNavigation
 {
   WFWorkflow* theWorkflowShows;
   WFWorkflow* theWorkflowShowsFollowing;
+}
+
+SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
+
+- (void) didChangeRouterNavigationWay
+{
+  [self tryToStartWorkflow];
 }
 
 - (void) update
@@ -250,8 +313,9 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 
 - (void) input
 {
-  [theWorkflowShows input];
-  [theWorkflowShowsFollowing input];
+  [self.view routerNavigationWay] == LSRouterNavigationWayShows
+    ? [theWorkflowShows input]
+    : [theWorkflowShowsFollowing input];
 }
 
 - (void) block
@@ -298,7 +362,6 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 @end
 
 
-
 //
 // LSMainController
 //
@@ -306,23 +369,31 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 @implementation LSMainController
 {
   WFWorkflow* theWorkflow;
+  LSWLinkRouterNavigation* theWLinkRouterNavigation;
 }
 
 - (void) initInternal
 {
+  // set delegate to self to catch tab changing (can't do it in IB)
+  self.delegate = self;
+  //
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  theWLinkRouterNavigation = [[LSWLinkRouterNavigation alloc] initWithView:self];
+  //
   theWorkflow = WFLinkWorkflow(
-      WFSplitWorkflowWithOutputUsingAnd(
+      [[LSWLinkBaseRefresher alloc] initWithData:model]
+    , WFSplitWorkflowWithOutputUsingAnd(
           WFLinkWorkflow(
               [[LSWLinkBaseWaitForDeviceToken alloc] init]
-            , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:[LSApplication singleInstance].modelBase]
+            , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:model]
             , nil)
-        , [[LSWLinkBaseGetterShows alloc] initWithData:[LSApplication singleInstance].modelBase]
+        , [[LSWLinkBaseGetterShows alloc] initWithData:model]
         , nil)
-    , [[LSWLinkBaseConverterRaw alloc] initWithData:[LSApplication singleInstance].modelBase]
-    , [[LSWLinkBaseArtworkGetter alloc] initWithData:[LSApplication singleInstance].modelBase]
-    , [[LSWLinkBaseLinkerWorkflow alloc] init]
+    , [[LSWLinkBaseConverterRaw alloc] initWithData:model]
+    , [[LSWLinkBaseArtworkGetter alloc] initWithData:model]
+    , theWLinkRouterNavigation
     , nil);
-  //
+   //
   [theWorkflow input];
 }
 
@@ -330,6 +401,23 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 {
   [super viewDidLoad];
   [self initInternal];
+}
+
+#pragma mark - LSViewRouterNavigation
+
+- (LSRouterNavigationWay) routerNavigationWay
+{
+  return self.selectedIndex == 0
+    ? LSRouterNavigationWayShows
+    : LSRouterNavigationWayShowsFollowing;
+}
+
+#pragma mark - UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+  // we should start workflow each time user changes view controller
+  [theWLinkRouterNavigation didChangeRouterNavigationWay];
 }
 
 @end

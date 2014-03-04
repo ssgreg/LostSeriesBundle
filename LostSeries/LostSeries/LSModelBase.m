@@ -48,7 +48,7 @@
   id numberTarget = [theDictionaryIndexSourceToTarget objectForKey:[NSNumber numberWithInteger:indexSource]];
   return numberTarget
     ? ((NSNumber*)numberTarget).integerValue
-    : INT_MAX;
+    : NSNotFound;
 }
 
 - (NSInteger) indexTargetToSource:(NSInteger)indexTarget
@@ -58,7 +58,7 @@
 
 - (BOOL) hasIndexSource:(NSInteger)indexSource
 {
-  return [self indexSourceToTarget:indexSource] != INT_MAX;
+  return [self indexSourceToTarget:indexSource] != NSNotFound;
 }
 
 - (void) addObjectByIndexSource:(NSInteger)indexSource

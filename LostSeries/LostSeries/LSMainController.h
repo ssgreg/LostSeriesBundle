@@ -8,10 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum
+{
+  LSRouterNavigationWayShows,
+  LSRouterNavigationWayShowsFollowing,
+} LSRouterNavigationWay;
+
+//
+// LSViewRouterNavigation
+//
+
+@protocol LSViewRouterNavigation <NSObject>
+@property (readonly) LSRouterNavigationWay routerNavigationWay;
+@end
+
 
 //
 // LSMainController
 //
 
-@interface LSMainController : UITabBarController
+@interface LSMainController : UITabBarController <UITabBarControllerDelegate, LSViewRouterNavigation>
 @end

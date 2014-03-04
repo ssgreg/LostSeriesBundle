@@ -17,8 +17,9 @@
 	// Let the device know we want to receive push notifications
   [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-    
-  return YES;}
+  
+  return YES;
+}
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {

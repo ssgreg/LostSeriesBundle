@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 // LS
+#import "LSControllerCollectionBase.h"
 #import <WorkflowLink/WorkflowLink.h>
 
 
@@ -23,7 +24,7 @@
 // LSShowsFollowingController
 //
 
-@interface LSShowsFollowingController : UICollectionViewController
+@interface LSShowsFollowingController : LSControllerCollectionBase
   <
     UICollectionViewDataSource,
     UICollectionViewDelegate,

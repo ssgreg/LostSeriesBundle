@@ -82,18 +82,18 @@
   {
     NSInteger index = [self nextIndexForClient:client];
     NSLog(@"%@ - %ld", NSStringFromClass([client class]), index);
-    if (index != INT_MAX)
+    if (index != NSNotFound)
     {
       NSLog(@"%@ - %ld", NSStringFromClass([client class]), index);
       return index;
     }
   }
-  return INT_MAX;
+  return NSNotFound;
 }
 
 - (NSInteger) nextIndexForClient:(id<LSClientServiceArtworkGetters>)client
 {
-  for (NSInteger index = 0; index != INT_MAX;)
+  for (NSInteger index = 0; index != NSNotFound;)
   {
     index = [client nextIndexForServiceArtworkGetter:self];
     if (![theDones objectForKey:[NSNumber numberWithInteger:index]])
@@ -101,7 +101,7 @@
       return index;
     }
   }
-  return INT_MAX;
+  return NSNotFound;
 }
 
 - (NSArray*) sortClientByPriority

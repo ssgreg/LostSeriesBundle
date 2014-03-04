@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE05CC1418C600A800491188 /* LSControllerCollectionBase.m in Sources */ = {isa = PBXBuildFile; fileRef = EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */; };
 		EE1A250B189A8D8000DBA78B /* LSShowInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */; };
 		EE1AA59B1888E99F004B6E7D /* libProtobuf.Generated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1AA5951887AD60004B6E7D /* libProtobuf.Generated.a */; };
 		EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE1AA59F1888F28E004B6E7D /* LSConnection.mm */; };
@@ -91,6 +92,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE05CC1218C600A700491188 /* LSControllerCollectionBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSControllerCollectionBase.h; sourceTree = "<group>"; };
+		EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSControllerCollectionBase.m; sourceTree = "<group>"; };
 		EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSShowInfoCollectionViewController.h; sourceTree = "<group>"; };
 		EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = LSShowInfoCollectionViewController.m; sourceTree = "<group>"; };
 		EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Protobuf.Generated.xcodeproj; path = Protobuf.Generated/Protobuf.Generated.xcodeproj; sourceTree = "<group>"; };
@@ -268,6 +271,8 @@
 				EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */,
 				EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */,
 				EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */,
+				EE05CC1218C600A700491188 /* LSControllerCollectionBase.h */,
+				EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */,
 				EED97FDC18B0CA0900CF68E3 /* LSMainController.h */,
 				EED97FDD18B0CA0900CF68E3 /* LSMainController.m */,
 				EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */,
@@ -477,6 +482,7 @@
 				EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */,
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
+				EE05CC1418C600A800491188 /* LSControllerCollectionBase.m in Sources */,
 				EEB1180E187F17D500337023 /* main.m in Sources */,
 				EEF8749B18A95D2900F74CB6 /* LSApplication.m in Sources */,
 				EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */,
