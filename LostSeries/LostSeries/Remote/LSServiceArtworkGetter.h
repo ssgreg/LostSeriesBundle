@@ -15,7 +15,7 @@
 
 
 //
-//
+// LSServiceArtworkGetterPriority
 //
 
 typedef enum
@@ -56,8 +56,10 @@ typedef enum
 
 @interface LSServiceArtworkGetter : NSObject
 
+- (void) start;
+- (void) stop;
+
 - (id) initWithData:(id)data;
-- (void) getArtworks;
 - (void) addClient:(id<LSClientServiceArtworkGetters>)client;
 
 @end

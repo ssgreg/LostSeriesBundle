@@ -253,13 +253,14 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 
 - (void) update
 {
-  theIndexNext = 0;
   [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
 }
 
 - (void) input
 {
-  [[LSApplication singleInstance].serviceArtworkGetter getArtworks];
+  // always get all arworks
+  theIndexNext = 0;
+  [[LSApplication singleInstance].serviceArtworkGetter start];
   [self output];
 }
 

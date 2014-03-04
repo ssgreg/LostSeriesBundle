@@ -32,12 +32,17 @@
   return self;
 }
 
-- (void) getArtworks
+- (void) start
 {
   [self nextArtworkAsync];
 //  [self nextArtworkAsync];
 //  [self nextArtworkAsync];
 //  [self nextArtworkAsync];
+}
+
+- (void) stop
+{
+  
 }
 
 - (void) addClient:(id<LSClientServiceArtworkGetters>)client
@@ -57,10 +62,15 @@
   //
   [[theData backendFacade] getArtworkByShowInfo:modelCell.showInfo replyHandler:^(NSData* dataArtwork)
   {
-    [weakSelf nextArtworkAsync];
+    typeof (self) strongSelf = weakSelf;
+    if (!strongSelf)
+    {
+      return;
+    }
+    [strongSelf nextArtworkAsync];
     modelCell.artwork = [UIImage imageWithData:dataArtwork];
     // notify clients
-    for (id<LSClientServiceArtworkGetters> client in theClients)
+    for (id<LSClientServiceArtworkGetters> client in strongSelf->theClients)
     {
       if ([client respondsToSelector:@selector(serviceArtworkGetter:didGetArtworkAtIndex:)])
       {
