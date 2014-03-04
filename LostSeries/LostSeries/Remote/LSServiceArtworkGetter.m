@@ -108,8 +108,8 @@
 {
   return [theClients sortedArrayUsingComparator:^(id left, id right)
   {
-    LSServiceArtworkGetterPriority priorityLeft = [left isInBackgroundForServiceArtworkGetter:self];
-    LSServiceArtworkGetterPriority priorityRight = [right isInBackgroundForServiceArtworkGetter:self];
+    LSServiceArtworkGetterPriority priorityLeft = [left priorityForServiceArtworkGetter:self];
+    LSServiceArtworkGetterPriority priorityRight = [right priorityForServiceArtworkGetter:self];
     return priorityLeft == priorityRight
       ? NSOrderedSame
       : priorityLeft > priorityRight

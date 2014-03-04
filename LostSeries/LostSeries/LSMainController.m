@@ -30,7 +30,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseRefresher);
 
 - (void) doSomething:(NSTimer*)timer
 {
-//  [self output];
+  [self output];
 }
 
 - (void) input
@@ -263,9 +263,9 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
   [self output];
 }
 
-#pragma mark - LSBatchArtworkGetterDelegate implementation
+#pragma mark - LSClientServiceArtworkGetters implementation
 
-- (LSServiceArtworkGetterPriority) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service
+- (LSServiceArtworkGetterPriority) priorityForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
   return LSServiceArtworkGetterPriorityLow;
 }

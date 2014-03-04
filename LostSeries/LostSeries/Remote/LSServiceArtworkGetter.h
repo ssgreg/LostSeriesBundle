@@ -33,7 +33,7 @@ typedef enum
 @protocol LSClientServiceArtworkGetters <NSObject>
 
 @required
-- (LSServiceArtworkGetterPriority) isInBackgroundForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
+- (LSServiceArtworkGetterPriority) priorityForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
 - (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service;
 
 @optional
