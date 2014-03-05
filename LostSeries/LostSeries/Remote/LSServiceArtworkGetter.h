@@ -12,6 +12,30 @@
 #import "LSModelBase.h"
 // forwards
 @class LSServiceArtworkGetter;
+@class LSArtworkGetterImpl;
+
+
+//
+// LSDelegateArtworkGetterImpl
+//
+
+@protocol LSDelegateArtworkGetterImpl <NSObject>
+
+- (NSInteger) nextIndexForServiceArtworkGetterImpl:(LSArtworkGetterImpl*)object;
+- (void) serviceArtworkGetter:(LSArtworkGetterImpl*)object didGetArtworkAtIndex:(NSInteger)index;
+
+@end
+
+
+//
+// LSArtworkGetterImpl
+//
+
+@interface LSArtworkGetterImpl : NSObject
+- (id) initWithData:(id)data;
+- (void) startWithDelegate:(id<LSDelegateArtworkGetterImpl>)delegate;
+- (void) stop;
+@end
 
 
 //
@@ -54,7 +78,7 @@ typedef enum
 // LSServiceArtworkGetter
 //
 
-@interface LSServiceArtworkGetter : NSObject
+@interface LSServiceArtworkGetter : NSObject <LSDelegateArtworkGetterImpl>
 
 - (void) start;
 - (void) stop;

@@ -6,18 +6,19 @@
 //  Copyright (c) 2014 Grigory Zubankov. All rights reserved.
 //
 
+// LS
 #import "LSServiceArtworkGetter.h"
 
 
 //
-// LSServiceArtworkGetter
+// LSArtworkGetterImpl
 //
 
-@implementation LSServiceArtworkGetter
+@implementation LSArtworkGetterImpl
 {
   id<LSDataServiceArtworkGetter> theData;
-  NSMutableArray* theClients;
   NSMutableDictionary* theDones;
+  id<LSDelegateArtworkGetterImpl> theDelegate;
 }
 
 - (id) initWithData:(id)data
@@ -26,14 +27,16 @@
   {
     return nil;
   }
+  //
   theData = (id<LSDataServiceArtworkGetter>)data;
-  theClients = [NSMutableArray array];
   theDones = [NSMutableDictionary dictionary];
+  //
   return self;
 }
 
-- (void) start
+- (void) startWithDelegate:(id<LSDelegateArtworkGetterImpl>)delegate
 {
+  theDelegate = delegate;
   [self nextArtworkAsync];
 //  [self nextArtworkAsync];
 //  [self nextArtworkAsync];
@@ -42,17 +45,12 @@
 
 - (void) stop
 {
-  
-}
-
-- (void) addClient:(id<LSClientServiceArtworkGetters>)client
-{
-  [theClients addObject:client];
+  theDelegate = nil;
 }
 
 - (void) nextArtworkAsync
 {
-  NSInteger index = [self nextArtworkIndex];
+  NSInteger index = [self indexNext];
   if (index >= theData.shows.count)
   {
     return;
@@ -63,49 +61,24 @@
   [[theData backendFacade] getArtworkByShowInfo:modelCell.showInfo replyHandler:^(NSData* dataArtwork)
   {
     typeof (self) strongSelf = weakSelf;
-    if (!strongSelf)
+    if (strongSelf)
     {
-      return;
-    }
-    [strongSelf nextArtworkAsync];
-    modelCell.artwork = [UIImage imageWithData:dataArtwork];
-    // notify clients
-    for (id<LSClientServiceArtworkGetters> client in strongSelf->theClients)
-    {
-      if ([client respondsToSelector:@selector(serviceArtworkGetter:didGetArtworkAtIndex:)])
+      [strongSelf nextArtworkAsync];
+      modelCell.artwork = [UIImage imageWithData:dataArtwork];
+      if (strongSelf->theDelegate)
       {
-        [client serviceArtworkGetter:self didGetArtworkAtIndex:index];
+        [strongSelf->theDelegate serviceArtworkGetter:strongSelf didGetArtworkAtIndex:index];
       }
     }
   }];
   theDones[[NSNumber numberWithInteger:index]] = @YES;
 }
 
-- (NSInteger) nextArtworkIndex
+- (NSInteger) indexNext
 {
-  NSArray* clientsByPriority = [self sortClientByPriority];
-  for (id<LSClientServiceArtworkGetters> client in clientsByPriority)
+  for (;;)
   {
-      NSLog(@"%@", NSStringFromClass([client class]));
-  }
-  for (id<LSClientServiceArtworkGetters> client in clientsByPriority)
-  {
-    NSInteger index = [self nextIndexForClient:client];
-    NSLog(@"%@ - %ld", NSStringFromClass([client class]), index);
-    if (index != NSNotFound)
-    {
-      NSLog(@"%@ - %ld", NSStringFromClass([client class]), index);
-      return index;
-    }
-  }
-  return NSNotFound;
-}
-
-- (NSInteger) nextIndexForClient:(id<LSClientServiceArtworkGetters>)client
-{
-  for (NSInteger index = 0; index != NSNotFound;)
-  {
-    index = [client nextIndexForServiceArtworkGetter:self];
+    NSInteger index = [theDelegate nextIndexForServiceArtworkGetterImpl:self];
     if (![theDones objectForKey:[NSNumber numberWithInteger:index]])
     {
       return index;
@@ -114,7 +87,52 @@
   return NSNotFound;
 }
 
-- (NSArray*) sortClientByPriority
+@end
+
+
+//
+// LSServiceArtworkGetter
+//
+
+@implementation LSServiceArtworkGetter
+{
+  LSArtworkGetterImpl* theServiceImpl;
+  id<LSDataServiceArtworkGetter> theData;
+  NSMutableArray* theClients;
+}
+
+- (id) initWithData:(id)data
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  //
+  theData = (id<LSDataServiceArtworkGetter>)data;
+  theClients = [NSMutableArray array];
+  //
+  return self;
+}
+
+- (void) start
+{
+  [self stop];
+  theServiceImpl = [[LSArtworkGetterImpl alloc] initWithData:theData];
+  [theServiceImpl startWithDelegate:self];
+}
+
+- (void) stop
+{
+  [theServiceImpl stop];
+  theServiceImpl = nil;
+}
+
+- (void) addClient:(id<LSClientServiceArtworkGetters>)client
+{
+  [theClients addObject:client];
+}
+
+- (NSArray*) sortClientsByPriority
 {
   return [theClients sortedArrayUsingComparator:^(id left, id right)
   {
@@ -126,6 +144,39 @@
         ? NSOrderedAscending
         : NSOrderedDescending;
   }];
+}
+
+- (NSInteger) indexNext
+{
+  NSArray* clientsByPriority = [self sortClientsByPriority];
+  for (id<LSClientServiceArtworkGetters> client in clientsByPriority)
+  {
+    NSInteger index = [client nextIndexForServiceArtworkGetter:self];
+    if (index != NSNotFound)
+    {
+      return index;
+    }
+  }
+  return NSNotFound;
+}
+
+#pragma mark - LSDelegateArtworkGetterImpl
+
+- (NSInteger) nextIndexForServiceArtworkGetterImpl:(LSArtworkGetterImpl*)object
+{
+  return [self indexNext];
+}
+
+- (void) serviceArtworkGetter:(LSArtworkGetterImpl*)object didGetArtworkAtIndex:(NSInteger)index
+{
+  // notify clients
+  for (id<LSClientServiceArtworkGetters> client in theClients)
+  {
+    if ([client respondsToSelector:@selector(serviceArtworkGetter:didGetArtworkAtIndex:)])
+    {
+      [client serviceArtworkGetter:self didGetArtworkAtIndex:index];
+    }
+  }
 }
 
 @end
