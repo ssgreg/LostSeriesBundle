@@ -14,9 +14,9 @@
 
 @protocol LSViewFollowingShowsCollection
 - (void) showCollectionReloadData;
-- (NSRange) showCollectionVisibleItemRange;
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath;
-- (BOOL) isActive;
+- (NSRange) showCollectionVisibleItemRange;
+- (BOOL) showCollectionIsActive;
 @end
 
 

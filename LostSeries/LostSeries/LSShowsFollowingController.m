@@ -90,7 +90,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 - (LSServiceArtworkGetterPriority) priorityForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  return [self.view isActive] ? LSServiceArtworkGetterPriorityHigh : LSServiceArtworkGetterPriorityNormal;
+  return [self.view showCollectionIsActive] ? LSServiceArtworkGetterPriorityHigh : LSServiceArtworkGetterPriorityNormal;
 }
 
 - (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service
@@ -181,7 +181,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   [self reloadData];
 }
 
-- (BOOL) isActive
+- (BOOL) showCollectionIsActive
 {
   return self.tabBarController.selectedIndex == 1;
 }

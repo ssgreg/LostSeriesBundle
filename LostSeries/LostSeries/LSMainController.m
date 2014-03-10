@@ -30,7 +30,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseRefresher);
 
 - (void) doSomething:(NSTimer*)timer
 {
-  [self output];
+//  [self output];
 }
 
 - (void) input

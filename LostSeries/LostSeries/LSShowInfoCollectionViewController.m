@@ -8,7 +8,6 @@
 
 // LS
 #import "LSShowInfoCollectionViewController.h"
-#import <UIComponents/UILoadingView.h>
 #import <UIComponents/UIStatusBarView.h>
 #import "LSModelBase.h"
 #import "Logic/LSApplication.h"
@@ -229,8 +228,6 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 {
   NSRange theRangeVisibleItems;
   NSInteger theIndexNext;
-  //
-  
 }
 
 SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
@@ -274,7 +271,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 - (LSServiceArtworkGetterPriority) priorityForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
-  return [self.view isActive] ? LSServiceArtworkGetterPriorityHigh : LSServiceArtworkGetterPriorityNormal;
+  return [self.view showCollectionIsActive] ? LSServiceArtworkGetterPriorityHigh : LSServiceArtworkGetterPriorityNormal;
 }
 
 - (NSInteger) nextIndexForServiceArtworkGetter:(LSServiceArtworkGetter*)service
@@ -370,6 +367,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 @end
 
 
+//
+// LSShowInfoCollectionViewController
+//
 
 @implementation LSShowInfoCollectionViewController
 {
@@ -379,7 +379,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   // custom views
   UIToolbar* theSubscribeToolbar;
   UIBarButtonItem* theSubscribeButton;
-  UILoadingView* theCollectionViewLoadingStub;
   UIStatusBarView* temp;
   UIWindow* myWindow;
   // workflow
@@ -461,9 +460,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  self.edgesForExtendedLayout = UIRectEdgeNone;
+  
+  
+  UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
+  item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
+  UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
+  item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
+
   //
   [self createSubscribeToolbar];
-  [self createCollectionViewLoadingStub];
   //
   theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
   theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
@@ -488,15 +495,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
         , [[LSSubscribeActionWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
         , nil)
     , nil);
-  
-
-  self.edgesForExtendedLayout = UIRectEdgeNone;
-  
-  
-  UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
-  item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
-  UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
-  item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
   
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsControllerDidLoadNotification object:self];
 }
@@ -563,19 +561,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 }
 
-- (void) createCollectionViewLoadingStub
+- (void) temp
 {
-  CGRect rect = theCollectionView.frame;
-  // fix frame due the reason that frame takes height of tab bar and navigation bar
-  rect.size.height -= self.tabBarController.tabBar.frame.size.height;
-  rect.size.height -= self.navigationController.navigationBar.frame.size.height;
-  //
-  theCollectionViewLoadingStub = [[UILoadingView alloc] initWithFrame:rect];
-  [theCollectionViewLoadingStub setText:@"Loading..."];
-  [theCollectionView.viewForBaselineLayout addSubview:theCollectionViewLoadingStub];
-  theCollectionViewLoadingStub.hidden = YES;
-
-  
   
   CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
   CGRect winFrame = statusBarFrame;
@@ -596,7 +583,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
   NSUInteger itemCount = [theShowCollectionWL itemsCount];
-  theCollectionViewLoadingStub.hidden = itemCount > 0;
   return itemCount;
 }
 
@@ -681,7 +667,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   theCollectionView.allowsMultipleSelection = flag;
 }
 
-- (BOOL) isActive
+- (BOOL) showCollectionIsActive
 {
   return self.tabBarController.selectedIndex == 0;
 }

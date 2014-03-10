@@ -15,4 +15,6 @@
 - (void) reloadData;
 - (NSRange) rangeVisibleItems;
 
+@property BOOL hiddenLoadingIndicator;
+
 @end

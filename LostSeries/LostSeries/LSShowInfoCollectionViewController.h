@@ -26,15 +26,17 @@
 
 @protocol LSViewShowsCollection
 - (void) showCollectionReloadData;
-- (NSRange) showCollectionVisibleItemRange;
 - (void) showCollectionUpdateItemAtIndex:(NSIndexPath*)indexPath;
-- (BOOL) isActive;
+- (NSRange) showCollectionVisibleItemRange;
+- (BOOL) showCollectionIsActive;
 @end
+
 
 @protocol LSViewShowsSelection
 - (void) showCollectionClearSelection;
 - (void) showCollectionAllowMultipleSelection:(BOOL)flag;
 @end
+
 
 @protocol LSShowSubscribeButtonView
 - (void) enableSubscribeButton:(BOOL)flag;
