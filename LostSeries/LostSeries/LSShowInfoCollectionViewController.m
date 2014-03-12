@@ -144,7 +144,8 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSSelectButtonData);
 
 
 @interface LSSubscribeButtonWL : WFWorkflowLink
-- (void) clicked;
+- (void) follow;
+- (void) unfollow;
 @end
 
 @implementation LSSubscribeButtonWL
@@ -163,10 +164,15 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeButtonData, LSShowSubscribeButtonView);
   [self forwardBlock];
 }
 
-- (void) clicked
+- (void) follow
 {
   [self update];
   [self output];
+}
+
+- (void) unfollow
+{
+  
 }
 
 @end
@@ -556,9 +562,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-  if (buttonIndex == 0)
+  if (buttonIndex == 1)
   {
-    [theSubscribeButtonWL clicked];
+    [theSubscribeButtonWL follow];
+  }
+  else if (buttonIndex == 2)
+  {
+    [theSubscribeButtonWL unfollow];
   }
 }
 
