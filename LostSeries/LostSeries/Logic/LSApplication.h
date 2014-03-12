@@ -13,6 +13,25 @@
 #import "LSServiceArtworkGetter.h"
 
 
+@class LSMessageBlackHole;
+
+
+@interface LSMessageMBH : NSObject
+- (id) initWithMessage:(NSString*) message delay:(double)delay;
+@end
+
+
+//
+// LSMessageBlackHole
+//
+
+@interface LSMessageBlackHole : NSObject
+- (void) queueNotification:(NSString*)message delay:(double)delay;
+- (LSMessageMBH*) queueManagedNotification:(NSString*)message delay:(double)delay;
+- (void) closeMessage:(LSMessageMBH*)message;
+@end
+
+
 //
 // LSApplication
 //
@@ -27,6 +46,7 @@
 @property NSString* deviceToken;
 @property (readonly) LSModelBase* modelBase;
 @property (readonly) LSServiceArtworkGetter* serviceArtworkGetter;
+@property (readonly) LSMessageBlackHole* messageBlackHole;
 
 @end
 

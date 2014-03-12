@@ -379,8 +379,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   // custom views
   UIToolbar* theSubscribeToolbar;
   UIBarButtonItem* theSubscribeButton;
-  UIStatusBarView* temp;
-  UIWindow* myWindow;
   // workflow
   WFWorkflow* theWorkflow;
   LSSelectButtonWL* theSelectButtonWL;
@@ -388,6 +386,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   LSWLinkShowsSelection* theWLinkShowsSelection;
   LSSubscribeButtonWL* theSubscribeButtonWL;
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
+  //
+  LSMessageMBH* theMessageSubscribing;
 }
 
 - (IBAction) selectButtonClicked:(id)sender;
@@ -404,57 +404,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (WFWorkflow*) workflow
 {
   return theWorkflow;
-}
-
-- (void) doSomething:(NSTimer*)timer
-{
-  BOOL flag = ((NSNumber*)[timer userInfo]).boolValue;
-  
-        CGRect tr = myWindow.frame;
-      CGRect tr1 = tr;
-  
-  
-  if (flag)
-  {
-    tr.origin.y = -20;
-    myWindow.frame = tr;
-    tr.origin.y = 0;
-    [myWindow setHidden:NO];
-
-        [myWindow setHidden:NO];
-  
-  [UIView beginAnimations:@"foo" context:nil];
-[UIView setAnimationDuration:0.3];
-  myWindow.frame = tr;
-
-
-    [UIView commitAnimations];
-
-  }
-  else
-  {
-       theCollectionView.window.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
-
-    CGRect rect = self.navigationController.navigationBar.frame;
-    CGRect rect1 = self.view.frame;
-
-
-  [[UIApplication sharedApplication] setStatusBarHidden:flag withAnimation:UIStatusBarAnimationSlide];
-
-      rect1 = self.navigationController.navigationBar.frame;
-
-    self.navigationController.navigationBar.frame = rect;
-
-  rect1 = self.view.frame;
-  rect1.origin.y = rect.origin.y + rect.size.height;
-  self.view.frame = rect1;
-    
-        [myWindow setHidden:YES];
-
-  }
-  
- // myWindow.frame = tr;
-
 }
 
 - (void)viewDidLoad
@@ -559,22 +508,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 //  [self.view addSubview:theSubscribeToolbar];
     [self.tabBarController.tabBar.window.viewForBaselineLayout addSubview:theSubscribeToolbar];
 
-}
-
-- (void) temp
-{
-  
-  CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-  CGRect winFrame = statusBarFrame;
-  winFrame.origin.y = -winFrame.size.height;
-  myWindow = [[UIWindow alloc] initWithFrame:winFrame];
-  [myWindow setWindowLevel:UIWindowLevelStatusBar+1];
-  [myWindow makeKeyAndVisible];
-  
-  temp = [[UIStatusBarView alloc] initWithFrame:statusBarFrame];
-  [temp setText:@"Changing subscription..."];
-  [myWindow.viewForBaselineLayout addSubview:temp];
-  [myWindow setHidden:YES];
 }
 
 #pragma mark - UICollectionViewDataSource implementationr
@@ -706,44 +639,12 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 {
   if (flag)
   {
-       theCollectionView.window.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
-
-    CGRect rect = self.navigationController.navigationBar.frame;
-    CGRect rect1 = self.view.frame;
-
-
-  [[UIApplication sharedApplication] setStatusBarHidden:flag withAnimation:UIStatusBarAnimationSlide];
-
-      rect1 = self.navigationController.navigationBar.frame;
-
-    self.navigationController.navigationBar.frame = rect;
-
-  rect1 = self.view.frame;
-  rect1.origin.y = rect.origin.y + rect.size.height;
-  self.view.frame = rect1;
-
+    theMessageSubscribing = [[LSApplication singleInstance].messageBlackHole queueManagedNotification:@"Following new shows..." delay:1.];
   }
   else
   {
-          CGRect tr = myWindow.frame;
-      CGRect tr1 = tr;
-  
-    tr.origin.y = -20;
-  
-  [UIView beginAnimations:@"foo" context:nil];
-[UIView setAnimationDuration:0.3];
-  myWindow.frame = tr;
-
-
-    [UIView commitAnimations];
-
+    [[LSApplication singleInstance].messageBlackHole closeMessage:theMessageSubscribing];
   }
-
-  [NSTimer scheduledTimerWithTimeInterval:0.3
-    target:self
-    selector:@selector(doSomething:)
-    userInfo:[NSNumber numberWithBool:flag]
-    repeats:NO];
 }
 
 @end
