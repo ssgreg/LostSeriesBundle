@@ -28,7 +28,7 @@
 - (BOOL) hasIndexSource:(NSInteger)indexSource;
 
 - (void) addObjectByIndexSource:(NSInteger)indexSource;
-- (void) addObjectsFromArrayPartial:(LSArrayPartial*)array;
+- (void) mergeObjectsFromArrayPartial:(LSArrayPartial*)array;
 
 - (void) removeObjectByIndexSource:(NSInteger)indexSource;
 - (void) removeObjectByIndexTarget:(NSInteger)indexTarget;

@@ -29,22 +29,23 @@
 
 
 //
-// LSSubscribeActionData
+// LSWLinkActionChangeFollowingShows
 //
 
-@protocol LSSubscribeActionData <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFollowing, LSDataBaseShowsSelected>
+@protocol LSDataActionChangeFollowingShows <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFollowing, LSDataBaseShowsSelected>
 @end
 
-@interface LSSubscribeActionWL : WFWorkflowLink
+@interface LSWLinkActionChangeFollowingShows : WFWorkflowLink
 @end
 
-@implementation LSSubscribeActionWL
+@implementation LSWLinkActionChangeFollowingShows
 
-SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
+SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowingShows, LSSubscribeActionView);
 
 - (void) input
 {
   [self.view showActionIndicator:YES];
+  [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.showsSelected];
   [self.data.backendFacade subscribeByDeviceToken:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^(BOOL result)
   {
     [self.view showActionIndicator:NO];
@@ -54,14 +55,13 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeActionData, LSSubscribeActionView);
     }
   }];
   //
-  [self.data.showsFollowing addObjectsFromArrayPartial:self.data.showsSelected];
   [self forwardBlock];
 }
 
 - (NSArray*) makeSubscriptions
 {
   NSMutableArray* subscriptions = [NSMutableArray array];
-  for (LSShowAlbumCellModel* model in self.data.showsSelected)
+  for (LSShowAlbumCellModel* model in self.data.showsFollowing)
   {
     LSSubscriptionInfo* subscription = [[LSSubscriptionInfo alloc] init];
     subscription.originalTitle = model.showInfo.originalTitle;
@@ -447,7 +447,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
             , theSubscribeButtonWL
             , theCancelSelectionModeWL
             , nil)
-        , [[LSSubscribeActionWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+        , [[LSWLinkActionChangeFollowingShows alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
         , nil)
     , nil);
   

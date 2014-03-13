@@ -4,11 +4,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller - Subscription-->
+        <!--Navigation Controller - Following-->
         <scene sceneID="5pM-sd-0wA">
             <objects>
                 <navigationController definesPresentationContext="YES" id="l9f-ur-miL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Subscription" image="FavTVShowsTabItem" id="GLA-kU-omX"/>
+                    <tabBarItem key="tabBarItem" title="Following" image="FavTVShowsTabItem" id="GLA-kU-omX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UH9-fm-bbO">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

@@ -70,7 +70,7 @@
   theDictionaryIndexSourceToTarget[numberSource] = [NSNumber numberWithInteger:theArrayTarget.count - 1];
 }
 
-- (void) addObjectsFromArrayPartial:(LSArrayPartial*)array
+- (void) mergeObjectsFromArrayPartial:(LSArrayPartial*)array
 {
   for (id object in array->theArrayIndexTargetToSource)
   {
