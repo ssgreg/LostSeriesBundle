@@ -10,6 +10,17 @@
 #import "CachingServer/LSCachingServer.h"
 
 
+@interface LSPartialArrayRecord : NSObject
+@property NSInteger indexSource;
+@property NSInteger indexTarget;
+@end
+
+@implementation LSPartialArrayRecord
+@synthesize indexSource;
+@synthesize indexTarget;
+@end
+
+
 //
 // LSArrayPartial
 //
@@ -18,8 +29,7 @@
 {
   NSArray* theArraySource;
   //
-  NSMutableArray* theArrayTarget;
-  NSMutableArray* theArrayIndexTargetToSource;
+  NSMutableArray* theRecord;
   NSMutableDictionary* theDictionaryIndexSourceToTarget;
 }
 
@@ -36,8 +46,7 @@
   }
   //
   theArraySource = arraySource;
-  theArrayTarget = [NSMutableArray array];
-  theArrayIndexTargetToSource = [NSMutableArray array];
+  theRecord = [NSMutableArray array];
   theDictionaryIndexSourceToTarget = [NSMutableDictionary dictionary];
   //
   return self;
@@ -45,15 +54,15 @@
 
 - (NSInteger) indexSourceToTarget:(NSInteger)indexSource
 {
-  id numberTarget = [theDictionaryIndexSourceToTarget objectForKey:[NSNumber numberWithInteger:indexSource]];
-  return numberTarget
-    ? ((NSNumber*)numberTarget).integerValue
+  id object = [theDictionaryIndexSourceToTarget objectForKey:[NSNumber numberWithInteger:indexSource]];
+  return object
+    ? ((LSPartialArrayRecord*)object).indexTarget
     : NSNotFound;
 }
 
 - (NSInteger) indexTargetToSource:(NSInteger)indexTarget
 {
-  return ((NSNumber*)theArrayIndexTargetToSource[indexTarget]).integerValue;
+  return ((LSPartialArrayRecord*)theRecord[indexTarget]).indexSource;
 }
 
 - (BOOL) hasIndexSource:(NSInteger)indexSource
@@ -63,33 +72,33 @@
 
 - (void) addObjectByIndexSource:(NSInteger)indexSource
 {
-  [theArrayTarget addObject:theArraySource[indexSource]];
-  // indexes
-  NSNumber* numberSource = [NSNumber numberWithInteger:indexSource];
-  [theArrayIndexTargetToSource addObject:numberSource];
-  theDictionaryIndexSourceToTarget[numberSource] = [NSNumber numberWithInteger:theArrayTarget.count - 1];
+  //
+  LSPartialArrayRecord* record = [[LSPartialArrayRecord alloc] init];
+  record.indexSource = indexSource;
+  record.indexTarget = theRecord.count;
+  //
+  [theRecord addObject:record];
+  theDictionaryIndexSourceToTarget[[NSNumber numberWithInteger:indexSource]] = record;
 }
 
 - (void) mergeObjectsFromArrayPartial:(LSArrayPartial*)array
 {
-  for (id object in array->theArrayIndexTargetToSource)
+  for (LSPartialArrayRecord* record in array->theRecord)
   {
-    NSInteger indexSource = ((NSNumber*)object).integerValue;
-    if (![self hasIndexSource:indexSource])
+    if (![self hasIndexSource:record.indexSource])
     {
-      [self addObjectByIndexSource:indexSource];
+      [self addObjectByIndexSource:record.indexSource];
     }
   }
 }
 
 - (void) subtractObjectsFromArrayPartial:(LSArrayPartial*)array
 {
-  for (id object in array->theArrayIndexTargetToSource)
+  for (LSPartialArrayRecord* record in array->theRecord)
   {
-    NSInteger indexSource = ((NSNumber*)object).integerValue;
-    if ([self hasIndexSource:indexSource])
+    if ([self hasIndexSource:record.indexSource])
     {
-      [self removeObjectByIndexSource:indexSource];
+      [self removeObjectByIndexSource:record.indexSource];
     }
   }
 }
@@ -101,53 +110,47 @@
 
 - (void) removeObjectByIndexTarget:(NSInteger)indexTarget
 {
-  [theArrayTarget removeObjectAtIndex:indexTarget];
-  // indexes
   NSNumber* numberSource = [NSNumber numberWithInteger:[self indexTargetToSource:indexTarget]];
+  [theRecord removeObjectAtIndex:indexTarget];
   [theDictionaryIndexSourceToTarget removeObjectForKey:numberSource];
-  [theArrayIndexTargetToSource removeObjectAtIndex:indexTarget];
-  
-  [theDictionaryIndexSourceToTarget enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+  // fix indexes
+  for (NSInteger i = indexTarget; i < theRecord.count; ++i)
   {
-    NSNumber* numberTarget = obj;
-    if (numberTarget.integerValue > indexTarget)
-    {
-      theDictionaryIndexSourceToTarget[key] = [NSNumber numberWithInteger:numberTarget.integerValue - 1];
-    }
-  }];
+    ((LSPartialArrayRecord*)theRecord[i]).indexTarget = i;
+  }
 }
 
 - (NSInteger) count
 {
-  return theArrayTarget.count;
+  return theRecord.count;
 }
 
 - (void) removeAllObjectes
 {
-  [theArrayTarget removeAllObjects];
-  [theArrayIndexTargetToSource removeAllObjects];
+  [theRecord removeAllObjects];
   [theDictionaryIndexSourceToTarget removeAllObjects];
 }
 
 - (id) objectAtIndexedSubscript:(NSUInteger)index
 {
-  return theArrayTarget[index];
+  return theArraySource[[self indexTargetToSource:index]];
 }
 
 - (void) setObject:(id)obj atIndexedSubscript:(NSUInteger)index
 {
-  theArrayTarget[index] = obj;
+  theRecord[index] = obj;
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len
 {
-  if (state->state >= theArrayTarget.count)
+  if (state->state >= theRecord.count)
   {
     return 0;
   }
-  __unsafe_unretained id obj = [theArrayTarget objectAtIndex:state->state];
+  NSInteger indexSource = [self indexTargetToSource:state->state];
+  __unsafe_unretained id obj = theArraySource[indexSource];
   state->itemsPtr = &obj;
-  state->mutationsPtr = (uintptr_t*)(__bridge void*)theArrayTarget;
+  state->mutationsPtr = (uintptr_t*)(__bridge void*)theRecord;
   state->state++;
   //
   return 1;
