@@ -32,7 +32,7 @@
 // LSWLinkActionChangeFollowingShows
 //
 
-@protocol LSDataActionChangeFollowingShows <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFollowing, LSDataBaseShowsSelected>
+@protocol LSDataActionChangeFollowingShows <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFollowing, LSDataBaseShowsSelected, LSDataBaseModeFollowing>
 @end
 
 @interface LSWLinkActionChangeFollowingShows : WFWorkflowLink
@@ -44,8 +44,16 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowingShows, LSSubscribeActionView)
 
 - (void) input
 {
+  if (self.data.followingModeFollow)
+  {
+    [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.showsSelected];
+  }
+  else
+  {
+    [self.data.showsFollowing subtractObjectsFromArrayPartial:self.data.showsSelected];
+  }
+  //
   [self.view showActionIndicator:YES];
-  [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.showsSelected];
   [self.data.backendFacade subscribeByDeviceToken:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^(BOOL result)
   {
     [self.view showActionIndicator:NO];
@@ -139,7 +147,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSSelectButtonData);
 // LSSubscribeButtonData
 //
 
-@protocol LSSubscribeButtonData <LSDataBaseModeSelection, LSDataBaseShowsSelected>
+@protocol LSSubscribeButtonData <LSDataBaseModeSelection, LSDataBaseShowsSelected, LSDataBaseModeFollowing>
 @end
 
 
@@ -166,13 +174,16 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeButtonData, LSShowSubscribeButtonView);
 
 - (void) follow
 {
+  self.data.followingModeFollow = YES;
   [self update];
   [self output];
 }
 
 - (void) unfollow
 {
-  
+  self.data.followingModeFollow = NO;
+  [self update];
+  [self output];
 }
 
 @end
@@ -566,7 +577,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   {
     [theSubscribeButtonWL follow];
   }
-  else if (buttonIndex == 2)
+  else if (buttonIndex == 0)
   {
     [theSubscribeButtonWL unfollow];
   }
@@ -649,7 +660,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 {
   if (flag)
   {
-    theMessageSubscribing = [[LSApplication singleInstance].messageBlackHole queueManagedNotification:@"Following new shows..." delay:1.];
+    theMessageSubscribing = [[LSApplication singleInstance].messageBlackHole queueManagedNotification:@"Following new shows..." delay:3.];
   }
   else
   {

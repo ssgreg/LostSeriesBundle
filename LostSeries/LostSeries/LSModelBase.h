@@ -29,6 +29,7 @@
 
 - (void) addObjectByIndexSource:(NSInteger)indexSource;
 - (void) mergeObjectsFromArrayPartial:(LSArrayPartial*)array;
+- (void) subtractObjectsFromArrayPartial:(LSArrayPartial*)array;
 
 - (void) removeObjectByIndexSource:(NSInteger)indexSource;
 - (void) removeObjectByIndexTarget:(NSInteger)indexTarget;
@@ -80,6 +81,10 @@
 @property BOOL selectionModeActivated;
 @end
 
+@protocol LSDataBaseModeFollowing
+@property BOOL followingModeFollow;
+@end
+
 @protocol LSDataBaseShows
 @property (readonly) NSArray* shows;
 @end
@@ -112,6 +117,7 @@
     < LSDataBaseShowsRaw
     , LSDataBaseShowsFavoriteRaw
     , LSDataBaseModelShowsLists
+    , LSDataBaseModeFollowing
     , LSDataBaseModeSelection
     , LSDataBaseShows
     , LSDataBaseShowsSelected

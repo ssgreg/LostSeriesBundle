@@ -82,6 +82,18 @@
   }
 }
 
+- (void) subtractObjectsFromArrayPartial:(LSArrayPartial*)array
+{
+  for (id object in array->theArrayIndexTargetToSource)
+  {
+    NSInteger indexSource = ((NSNumber*)object).integerValue;
+    if ([self hasIndexSource:indexSource])
+    {
+      [self removeObjectByIndexSource:indexSource];
+    }
+  }
+}
+
 - (void) removeObjectByIndexSource:(NSInteger)indexSource
 {
   [self removeObjectByIndexTarget:[self indexSourceToTarget:indexSource]];
@@ -94,6 +106,15 @@
   NSNumber* numberSource = [NSNumber numberWithInteger:[self indexTargetToSource:indexTarget]];
   [theDictionaryIndexSourceToTarget removeObjectForKey:numberSource];
   [theArrayIndexTargetToSource removeObjectAtIndex:indexTarget];
+  
+  [theDictionaryIndexSourceToTarget enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+  {
+    NSNumber* numberTarget = obj;
+    if (numberTarget.integerValue > indexTarget)
+    {
+      theDictionaryIndexSourceToTarget[key] = [NSNumber numberWithInteger:numberTarget.integerValue - 1];
+    }
+  }];
 }
 
 - (NSInteger) count
@@ -187,6 +208,7 @@
   NSArray* theShowsFavoriteRaw;
   //
   BOOL theSelectionModeFlag;
+  BOOL theFollowingModeFlag;
   LSModelShowsLists* theModelShowsLists;
 }
 
@@ -223,6 +245,7 @@
 @synthesize showsRaw = theShowsRaw;
 @synthesize showsFavoriteRaw = theShowsFavoriteRaw;
 @synthesize selectionModeActivated = theSelectionModeFlag;
+@synthesize followingModeFollow = theFollowingModeFlag;
 @synthesize backendFacade = theBackendFacade;
 
 @end
