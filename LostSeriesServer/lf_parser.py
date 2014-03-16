@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # 
 # lf_parser.py
 # LostSeriesServer
@@ -9,6 +10,8 @@
 import bs4
 import urllib2
 import datetime
+import logging
+import logging.config
 
 
 SE_EPISODE_NUMBER = "SeEpisodeNumber"
@@ -26,6 +29,11 @@ class LFParserException(Exception):
 
 class LSParserSyntaxException(LFParserException):
   pass
+
+
+# complete season reocord has '08 сезон' instead of episode and season numbers
+def IsCompleteSeason(data):
+  return data.find(u"сезон") != -1
 
 
 def ParseDataEpisodeNumberWithSeasonNumber(data):
@@ -90,19 +98,32 @@ def ParsePageLostFilmBrowse(page):
       showRawName = tagShowName.contents[0].strip()
       showRawEpisodeName = tagShowInfo.find("span").next.contents[0].strip()
       showRawEpisodeTranslateDate = tagShowInfo.contents[6].contents[0].strip()
+      # skip complete season records
+      if IsCompleteSeason(showRawEpisodeNumber):
+        continue
+      #
+      record = \
+      {
+        SE_TITLE: showRawName,
+        SE_EPISODE_TRANSLATE_DATE: ParseDataEpisodeTranslateDate(showRawEpisodeTranslateDate)
+      };
+      record.update(ParseDataEpisodeName(showRawEpisodeName))
+      record.update(ParseDataEpisodeNumberWithSeasonNumber(showRawEpisodeNumber))
+      #
+      seriesLast.append(record)
     except Exception, error:
-      raise LSParserSyntaxException()
-    #
-    record = \
-    {
-      SE_TITLE: showRawName,
-      SE_EPISODE_TRANSLATE_DATE: ParseDataEpisodeTranslateDate(showRawEpisodeTranslateDate)
-    };
-    record.update(ParseDataEpisodeName(showRawEpisodeName))
-    record.update(ParseDataEpisodeNumberWithSeasonNumber(showRawEpisodeNumber))
-    print record
-
-    seriesLast.append(record)
+      data = "ParsePageLostFilmBrowse: Undefined record: {0}".format(tagShowEpisode)
+      if 'tagShowName' in vars():
+        data += "{0}".format(tagShowName)
+      if 'tagShowInfo' in vars():
+        data += "{0}".format(tagShowInfo)
+      logger = logging.getLogger(__name__)
+      logger.info(data)
+      logger.warning(data, exc_info=True)
+      continue
+  #
+  if len(seriesLast) == 0:
+    raise LSParserSyntaxException()
   #
   return seriesLast;
 
@@ -112,9 +133,11 @@ def LoadPage(url):
 
 
 def LoadInfoLastSeries():
+  # add "?o=15" to skip some episodes
   url = "http://www.lostfilm.tv/browse.php"
   page = LoadPage(url)
   return ParsePageLostFilmBrowse(page)
 
 
-print LoadInfoLastSeries()
+logging.config.fileConfig('logging.ini')
+LoadInfoLastSeries()
