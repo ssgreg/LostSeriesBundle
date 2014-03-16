@@ -15,11 +15,13 @@ import logging.config
 
 
 SE_EPISODE_NUMBER = "SeEpisodeNumber"
-SE_SEASON_NUMBER = "SeSeasonNumber"
-SE_TITLE = "SeTitle"
 SE_EPISODE_NAME = "SeEpisodeName"
 SE_EPISODE_ORIGINAL_NAME = "SeEpisodeOriginalName"
 SE_EPISODE_TRANSLATE_DATE = "SeEpisodeTranslateDate"
+SE_SHOW_ID = "SeShowID"
+SE_SHOW_SEASON_NUMBER = "SeSeasonNumber"
+SE_SHOW_TITLE = "SeTitle"
+SE_SHOW_ORIGINAL_TITLE = "SeOriginalTitle"
 
 
 class LFParserException(Exception):
@@ -48,7 +50,7 @@ def ParseDataEpisodeNumberWithSeasonNumber(data):
   if not numberEpisode.isdigit() or not numberEpisode.isdigit():
     raise LSParserSyntaxException()
   #
-  return { SE_SEASON_NUMBER: int(numberSeason), SE_EPISODE_NUMBER: int(numberEpisode) }
+  return { SE_SHOW_SEASON_NUMBER: int(numberSeason), SE_EPISODE_NUMBER: int(numberEpisode) }
 
 
 def ParseDataEpisodeName(data):
@@ -71,9 +73,37 @@ def ParseDataEpisodeTranslateDate(data):
   except:
     raise LSParserSyntaxException()
 
+
+def ParseDataShowID(data):
+  posEquals = data.find("=")
+  #
+  if posEquals == -1:
+    raise LSParserSyntaxException()
+  #
+  idShow = data[posEquals + 1:]
+  if not idShow.isdigit():
+    raise LSParserSyntaxException()
+  #
+  return int(idShow)
+
+
 def HasNewSeries(tag):
   if tag.has_attr('style'):
     if "float:right;font-family:arial;font-size:18px;color:#000000" in tag['style']:
+      return True
+  return False
+
+
+def HasTagAllSeries(tag):
+  if tag.has_attr('class'):
+    if "bb" in tag['class']:
+      return True
+  return False
+
+
+def HasTagSeriesInAllSeries(tag):
+  if tag.has_attr('class'):
+    if "bb_a" in tag['class']:
       return True
   return False
 
@@ -97,6 +127,7 @@ def ParsePageLostFilmBrowse(page):
       showRawEpisodeNumber = tagShowEpisode.contents[2].strip()
       showRawName = tagShowName.contents[0].strip()
       showRawEpisodeName = tagShowInfo.find("span").next.contents[0].strip()
+      showRawID = tagShowInfo.find("a")["href"].strip()
       showRawEpisodeTranslateDate = tagShowInfo.contents[6].contents[0].strip()
       # skip complete season records
       if IsCompleteSeason(showRawEpisodeNumber):
@@ -104,7 +135,8 @@ def ParsePageLostFilmBrowse(page):
       #
       record = \
       {
-        SE_TITLE: showRawName,
+        SE_SHOW_TITLE: showRawName,
+        SE_SHOW_ID: ParseDataShowID(showRawID),
         SE_EPISODE_TRANSLATE_DATE: ParseDataEpisodeTranslateDate(showRawEpisodeTranslateDate)
       };
       record.update(ParseDataEpisodeName(showRawEpisodeName))
@@ -128,6 +160,30 @@ def ParsePageLostFilmBrowse(page):
   return seriesLast;
 
 
+def ParsePageLostFilmSerials(page):
+  seriesAll = []
+  soup = bs4.BeautifulSoup(page)
+  for a in soup.find(HasTagAllSeries).find_all(HasTagSeriesInAllSeries):
+    try:
+      showRawID = a["href"].strip()
+      showRawName = a.contents[0].strip()
+      showRawOriginalName = a.find("span").contents[0].strip()
+      #
+      record = \
+      {
+        SE_SHOW_ID: ParseDataShowID(showRawID),
+        SE_SHOW_TITLE: showRawName,
+        SE_SHOW_ORIGINAL_TITLE: ParseDataEpisodeName(showRawOriginalName)[SE_EPISODE_ORIGINAL_NAME]
+      };
+      #
+      seriesAll.append(record)
+    except Exception, error:
+      continue
+  #
+  if len(seriesAll) == 0:
+    raise LSParserSyntaxException()
+  return seriesAll
+
 def LoadPage(url):
   return urllib2.urlopen(url).read().decode('cp1251').encode('utf-8')
 
@@ -139,5 +195,11 @@ def LoadInfoLastSeries():
   return ParsePageLostFilmBrowse(page)
 
 
+def LoadInfoAllShows():
+  url = "http://www.lostfilm.tv/serials.php"
+  page = LoadPage(url)
+  return ParsePageLostFilmSerials(page)
+
+
 logging.config.fileConfig('logging.ini')
-LoadInfoLastSeries()
+print LoadInfoAllShows()
