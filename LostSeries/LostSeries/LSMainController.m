@@ -204,7 +204,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
     {
       NSUInteger index = [modelsShow indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
       {
-        return [((LSShowAlbumCellModel*)object).showInfo.originalTitle isEqualToString:((LSSubscriptionInfo*)info).originalTitle];
+        return [((LSShowAlbumCellModel*)object).showInfo.showID isEqualToString:((LSSubscriptionInfo*)info).showID];
       }];
       if (index != NSNotFound)
       {

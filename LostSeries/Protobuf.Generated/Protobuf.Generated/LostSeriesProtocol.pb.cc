@@ -105,7 +105,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       sizeof(Message));
   SubscriptionRecord_descriptor_ = file->message_type(2);
   static const int SubscriptionRecord_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscriptionRecord, originaltitle_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscriptionRecord, id_),
   };
   SubscriptionRecord_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -344,21 +344,20 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
     "tworkResponse\022=\n\027setSubscriptionResponse"
     "\030\322\017 \001(\0132\033.LS.SetSubscriptionResponse\022=\n\027"
     "getSubscriptionResponse\030\323\017 \001(\0132\033.LS.GetS"
-    "ubscriptionResponse\"+\n\022SubscriptionRecor"
-    "d\022\025\n\roriginalTitle\030\001 \002(\t\"\017\n\rSeriesReques"
-    "t\"\236\001\n\016SeriesResponse\022(\n\005shows\030\001 \003(\0132\031.LS"
-    ".SeriesResponse.TVShow\032b\n\006TVShow\022\r\n\005titl"
-    "e\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\022\024\n\014season"
-    "Number\030\003 \002(\005\022\n\n\002id\030c \002(\t\022\020\n\010snapshot\030d \002"
-    "(\t\".\n\016ArtworkRequest\022\020\n\010snapshot\030\001 \002(\t\022\n"
-    "\n\002id\030\002 \002(\t\"\021\n\017ArtworkResponse\"V\n\026SetSubs"
-    "criptionRequest\022\r\n\005token\030\001 \002(\t\022-\n\rsubscr"
-    "iptions\030\002 \003(\0132\026.LS.SubscriptionRecord\")\n"
-    "\027SetSubscriptionResponse\022\016\n\006result\030\001 \002(\010"
-    "\"\'\n\026GetSubscriptionRequest\022\r\n\005token\030\001 \002("
-    "\t\"W\n\027GetSubscriptionResponse\022\r\n\005token\030\001 "
-    "\002(\t\022-\n\rsubscriptions\030\002 \003(\0132\026.LS.Subscrip"
-    "tionRecord", 1050);
+    "ubscriptionResponse\" \n\022SubscriptionRecor"
+    "d\022\n\n\002id\030\001 \002(\t\"\017\n\rSeriesRequest\"\236\001\n\016Serie"
+    "sResponse\022(\n\005shows\030\001 \003(\0132\031.LS.SeriesResp"
+    "onse.TVShow\032b\n\006TVShow\022\r\n\005title\030\001 \002(\t\022\025\n\r"
+    "originalTitle\030\002 \002(\t\022\024\n\014seasonNumber\030\003 \002("
+    "\005\022\n\n\002id\030c \002(\t\022\020\n\010snapshot\030d \002(\t\".\n\016Artwo"
+    "rkRequest\022\020\n\010snapshot\030\001 \002(\t\022\n\n\002id\030\002 \002(\t\""
+    "\021\n\017ArtworkResponse\"V\n\026SetSubscriptionReq"
+    "uest\022\r\n\005token\030\001 \002(\t\022-\n\rsubscriptions\030\002 \003"
+    "(\0132\026.LS.SubscriptionRecord\")\n\027SetSubscri"
+    "ptionResponse\022\016\n\006result\030\001 \002(\010\"\'\n\026GetSubs"
+    "criptionRequest\022\r\n\005token\030\001 \002(\t\"W\n\027GetSub"
+    "scriptionResponse\022\r\n\005token\030\001 \002(\t\022-\n\rsubs"
+    "criptions\030\002 \003(\0132\026.LS.SubscriptionRecord", 1039);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
   Header::default_instance_ = new Header();
@@ -1153,7 +1152,7 @@ void Message::Swap(Message* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int SubscriptionRecord::kOriginalTitleFieldNumber;
+const int SubscriptionRecord::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 SubscriptionRecord::SubscriptionRecord()
@@ -1172,7 +1171,7 @@ SubscriptionRecord::SubscriptionRecord(const SubscriptionRecord& from)
 
 void SubscriptionRecord::SharedCtor() {
   _cached_size_ = 0;
-  originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1181,8 +1180,8 @@ SubscriptionRecord::~SubscriptionRecord() {
 }
 
 void SubscriptionRecord::SharedDtor() {
-  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete originaltitle_;
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -1211,9 +1210,9 @@ SubscriptionRecord* SubscriptionRecord::New() const {
 
 void SubscriptionRecord::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_originaltitle()) {
-      if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-        originaltitle_->clear();
+    if (has_id()) {
+      if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+        id_->clear();
       }
     }
   }
@@ -1227,14 +1226,14 @@ bool SubscriptionRecord::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required string originalTitle = 1;
+      // required string id = 1;
       case 1: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_originaltitle()));
+                input, this->mutable_id()));
           ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->originaltitle().data(), this->originaltitle().length(),
+            this->id().data(), this->id().length(),
             ::google_public::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
@@ -1261,13 +1260,13 @@ bool SubscriptionRecord::MergePartialFromCodedStream(
 
 void SubscriptionRecord::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
-  // required string originalTitle = 1;
-  if (has_originaltitle()) {
+  // required string id = 1;
+  if (has_id()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->originaltitle().data(), this->originaltitle().length(),
+      this->id().data(), this->id().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      1, this->originaltitle(), output);
+      1, this->id(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -1278,14 +1277,14 @@ void SubscriptionRecord::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* SubscriptionRecord::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
-  // required string originalTitle = 1;
-  if (has_originaltitle()) {
+  // required string id = 1;
+  if (has_id()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->originaltitle().data(), this->originaltitle().length(),
+      this->id().data(), this->id().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->originaltitle(), target);
+        1, this->id(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1299,11 +1298,11 @@ int SubscriptionRecord::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required string originalTitle = 1;
-    if (has_originaltitle()) {
+    // required string id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google_public::protobuf::internal::WireFormatLite::StringSize(
-          this->originaltitle());
+          this->id());
     }
 
   }
@@ -1333,8 +1332,8 @@ void SubscriptionRecord::MergeFrom(const ::google_public::protobuf::Message& fro
 void SubscriptionRecord::MergeFrom(const SubscriptionRecord& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_originaltitle()) {
-      set_originaltitle(from.originaltitle());
+    if (from.has_id()) {
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1360,7 +1359,7 @@ bool SubscriptionRecord::IsInitialized() const {
 
 void SubscriptionRecord::Swap(SubscriptionRecord* other) {
   if (other != this) {
-    std::swap(originaltitle_, other->originaltitle_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

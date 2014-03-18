@@ -72,7 +72,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowingShows, LSSubscribeActionView)
   for (LSShowAlbumCellModel* model in self.data.showsFollowing)
   {
     LSSubscriptionInfo* subscription = [[LSSubscriptionInfo alloc] init];
-    subscription.originalTitle = model.showInfo.originalTitle;
+    subscription.showID = model.showInfo.showID;
     //
     [subscriptions addObject:subscription];
   }

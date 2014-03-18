@@ -25,7 +25,7 @@ message Message
 
 message SubscriptionRecord
 {
-  required string originalTitle = 1;
+  required string id = 1;
 }
 
 

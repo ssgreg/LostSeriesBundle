@@ -352,26 +352,26 @@ class SubscriptionRecord : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string originalTitle = 1;
-  inline bool has_originaltitle() const;
-  inline void clear_originaltitle();
-  static const int kOriginalTitleFieldNumber = 1;
-  inline const ::std::string& originaltitle() const;
-  inline void set_originaltitle(const ::std::string& value);
-  inline void set_originaltitle(const char* value);
-  inline void set_originaltitle(const char* value, size_t size);
-  inline ::std::string* mutable_originaltitle();
-  inline ::std::string* release_originaltitle();
-  inline void set_allocated_originaltitle(::std::string* originaltitle);
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  inline void set_allocated_id(::std::string* id);
 
   // @@protoc_insertion_point(class_scope:LS.SubscriptionRecord)
  private:
-  inline void set_has_originaltitle();
-  inline void clear_has_originaltitle();
+  inline void set_has_id();
+  inline void clear_has_id();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::std::string* originaltitle_;
+  ::std::string* id_;
 
   mutable int _cached_size_;
   ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -1568,73 +1568,73 @@ inline void Message::set_allocated_getsubscriptionresponse(::LS::GetSubscription
 
 // SubscriptionRecord
 
-// required string originalTitle = 1;
-inline bool SubscriptionRecord::has_originaltitle() const {
+// required string id = 1;
+inline bool SubscriptionRecord::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SubscriptionRecord::set_has_originaltitle() {
+inline void SubscriptionRecord::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SubscriptionRecord::clear_has_originaltitle() {
+inline void SubscriptionRecord::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SubscriptionRecord::clear_originaltitle() {
-  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_->clear();
+inline void SubscriptionRecord::clear_id() {
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    id_->clear();
   }
-  clear_has_originaltitle();
+  clear_has_id();
 }
-inline const ::std::string& SubscriptionRecord::originaltitle() const {
-  return *originaltitle_;
+inline const ::std::string& SubscriptionRecord::id() const {
+  return *id_;
 }
-inline void SubscriptionRecord::set_originaltitle(const ::std::string& value) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline void SubscriptionRecord::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  originaltitle_->assign(value);
+  id_->assign(value);
 }
-inline void SubscriptionRecord::set_originaltitle(const char* value) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline void SubscriptionRecord::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  originaltitle_->assign(value);
+  id_->assign(value);
 }
-inline void SubscriptionRecord::set_originaltitle(const char* value, size_t size) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline void SubscriptionRecord::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  originaltitle_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SubscriptionRecord::mutable_originaltitle() {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline ::std::string* SubscriptionRecord::mutable_id() {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  return originaltitle_;
+  return id_;
 }
-inline ::std::string* SubscriptionRecord::release_originaltitle() {
-  clear_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
+inline ::std::string* SubscriptionRecord::release_id() {
+  clear_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = originaltitle_;
-    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void SubscriptionRecord::set_allocated_originaltitle(::std::string* originaltitle) {
-  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete originaltitle_;
+inline void SubscriptionRecord::set_allocated_id(::std::string* id) {
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete id_;
   }
-  if (originaltitle) {
-    set_has_originaltitle();
-    originaltitle_ = originaltitle;
+  if (id) {
+    set_has_id();
+    id_ = id;
   } else {
-    clear_has_originaltitle();
-    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    clear_has_id();
+    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
 }
 

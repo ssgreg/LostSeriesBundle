@@ -47,16 +47,9 @@ def HandleSetSubscriptionRequest(message):
   print "Handling SetSubscriptionRequest..."
   response = LostSeriesProtocol_pb2.SetSubscriptionResponse()
   #
-  client = pymongo.MongoClient()
-  db = client['lostseries-database']
-  subscriptionsSection = db.subscriptions
-  #
   subscriptions = []
   for record in message.subscriptions:
-    subscriptions.append(record.originalTitle)
-  #
-#  for idc in subscriptionsSection.find({"token": message.token}):
-#    subscriptions = subscriptions + idc["tags"]
+    subscriptions.append(record.id)
   #
   subscriptions = list(set(subscriptions))
   print "New records in database:"
@@ -68,6 +61,10 @@ def HandleSetSubscriptionRequest(message):
     "date": datetime.datetime.utcnow(),
     "tags": subscriptions,
   }
+  #
+  client = pymongo.MongoClient()
+  db = client['lostseries-database']
+  subscriptionsSection = db.subscriptions
   subscriptionsSection.remove({"token": message.token})
   subscriptionsSection.insert(post)
   #
@@ -91,7 +88,7 @@ def HandleGetSubscriptionRequest(message):
   #
   for subscription in subscriptions:
     record = response.subscriptions.add()
-    record.originalTitle = subscription
+    record.id = subscription
   #
   return {"message": response, "data": None}
 

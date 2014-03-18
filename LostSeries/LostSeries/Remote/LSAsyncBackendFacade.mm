@@ -104,7 +104,7 @@
   for (LSSubscriptionInfo* subscription in subscriptions)
   {
     LS::SubscriptionRecord* record = subscriptionRequest.add_subscriptions();
-    record->set_originaltitle(subscription.originalTitle.UTF8String);
+    record->set_id([subscription.showID cStringUsingEncoding:NSASCIIStringEncoding]);
   }
   //
   LSMessagePtr request(new LS::Message);
@@ -140,7 +140,7 @@
     {
       LS::SubscriptionRecord record = message.subscriptions(i);
       LSSubscriptionInfo* subscriptionInfo = [[LSSubscriptionInfo alloc] init];
-      subscriptionInfo.originalTitle = [NSString stringWithUTF8String: record.originaltitle().c_str()];
+      subscriptionInfo.showID = [NSString stringWithCString:record.id().c_str() encoding:NSASCIIStringEncoding];
       //
       [subscriptions addObject:subscriptionInfo];
     }
@@ -174,5 +174,5 @@
 
 @implementation LSSubscriptionInfo
 // properties
-@synthesize originalTitle = theOriginalTitle;
+@synthesize showID = theShowID;
 @end

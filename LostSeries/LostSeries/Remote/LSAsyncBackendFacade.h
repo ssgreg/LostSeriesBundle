@@ -56,5 +56,5 @@
 
 @interface LSSubscriptionInfo : NSObject
 // properties
-@property NSString* originalTitle;
+@property NSString* showID;
 @end

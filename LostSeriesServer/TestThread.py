@@ -1,11 +1,23 @@
-import Image
+import pymongo
 
-basewidth = 188
-img = Image.open('LostSeriesArtworks/artwork="The Tomorrow People"-1.jpg')
-wpercent = (basewidth/float(img.size[0]))
-print wpercent
-hsize = int((float(img.size[1])*float(wpercent)))
-print hsize
-img = img.resize((188, 188), Image.ANTIALIAS)
-quality_val = 100
-img.save("LostSeriesArtworks/thumbnail-tp.jpg", "JPEG", quality=90)
+def printAllRecords(section):
+  records = section.find().sort([("token", pymongo.DESCENDING)])
+  for i, d in enumerate(records):
+    print i, d
+
+def removeAllRecords(section):
+  records = section.find().sort([("token", pymongo.DESCENDING)])
+  for i, d in enumerate(records):
+    section.remove(d)
+
+
+#  for idc in subscriptionsSection.find({"token": message.token}):
+#    subscriptions = subscriptions + idc["tags"]
+  #
+
+
+client = pymongo.MongoClient()
+db = client['lostseries-database']
+subscriptionsSection = db.subscriptions
+
+printAllRecords(subscriptionsSection)
