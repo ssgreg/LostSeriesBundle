@@ -67,7 +67,7 @@ def MakeThumbnail(src, dst):
 logging.config.fileConfig('logging.ini')
 
 showsAll = lf_parser.LoadInfoAllShows()
-episodesLast = lf_parser.LoadInfoLastSeries(3)
+episodesLast = lf_parser.LoadInfoLastSeries(10)
 
 showsIDToOriginalName = dict((i[lf_parser.SE_SHOW_ID], i[lf_parser.SE_SHOW_ORIGINAL_TITLE]) for i in showsAll)
 

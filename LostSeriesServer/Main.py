@@ -24,7 +24,6 @@ def HandleSeriesRequest(message):
     showInfo.seasonNumber = record.Season
     showInfo.id = record.ID
     showInfo.snapshot = Snapshot.GetLatestSnapshot()
-  #  showInfo.artwork = ReadFile()
   return {"message": response, "data": None}
 
 
@@ -139,8 +138,6 @@ def DispatchMessage(message):
 def MessageLoop(socket):
   while True:
     try:
-#      zeroFrame = socket.recv()
-#      header = socket.recv()
       request = socket.recv()
       print "Handle!"
       #
@@ -148,60 +145,22 @@ def MessageLoop(socket):
       response = DispatchMessage(requestMessage)
       #
       binaryResponse = SerializeMessage(response["message"])
-#      socket.send(zeroFrame, zmq.SNDMORE)
-#      socket.send(header, zmq.SNDMORE)
       if response["data"] is None:
         socket.send(binaryResponse)
       else:
         socket.send(binaryResponse, zmq.SNDMORE)
         socket.send(response["data"])
-
+      #
     except Exception as e:
       print "Handling run-time exception:", e
       print traceback.format_exc()
       # to remove
       return
 
-class ServerWorker(threading.Thread):
-  """ServerWorker"""
-  def __init__(self, context):
-    threading.Thread.__init__ (self)
-    self.context = context
-
-  def run(self):
-    socket = self.context.socket(zmq.DEALER)
-    socket.connect("inproc://backend")
-    MessageLoop(socket)
-
-class ServerTask(threading.Thread):
-    """ServerTask"""
-    def __init__(self):
-        threading.Thread.__init__ (self)
-
-    def run(self):
-      context = zmq.Context()
-      #
-      frontend = context.socket(zmq.ROUTER)
-      frontend.bind("tcp://*:8500")
-      #
-      backend = context.socket(zmq.DEALER)
-      backend.bind("inproc://backend")
-      #
-      workers = []
-      for i in range(5):
-        worker = ServerWorker(context)
-        worker.start()
-        workers.append(worker)
-      #
-      zmq.device(zmq.QUEUE, frontend, backend)
 
 def Main():
   print "LostSeries Server started"
   #
-#  server = ServerTask()
-#  server.start()
-#  server.join()
-
   context = zmq.Context()
   socket = context.socket(zmq.REP)
   socket.bind("tcp://*:8500")
