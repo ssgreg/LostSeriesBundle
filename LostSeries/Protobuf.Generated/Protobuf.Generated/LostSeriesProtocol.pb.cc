@@ -148,10 +148,11 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesResponse));
   SeriesResponse_TVShow_descriptor_ = SeriesResponse_descriptor_->nested_type(0);
-  static const int SeriesResponse_TVShow_offsets_[4] = {
+  static const int SeriesResponse_TVShow_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, title_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, originaltitle_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, seasonnumber_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, snapshot_),
   };
   SeriesResponse_TVShow_reflection_ =
@@ -347,20 +348,20 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
     "getSubscriptionResponse\030\323\017 \001(\0132\033.LS.GetS"
     "ubscriptionResponse\"+\n\022SubscriptionRecor"
     "d\022\025\n\roriginalTitle\030\001 \002(\t\"\017\n\rSeriesReques"
-    "t\"\222\001\n\016SeriesResponse\022(\n\005shows\030\001 \003(\0132\031.LS"
-    ".SeriesResponse.TVShow\032V\n\006TVShow\022\r\n\005titl"
+    "t\"\236\001\n\016SeriesResponse\022(\n\005shows\030\001 \003(\0132\031.LS"
+    ".SeriesResponse.TVShow\032b\n\006TVShow\022\r\n\005titl"
     "e\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\022\024\n\014season"
-    "Number\030\003 \002(\005\022\020\n\010snapshot\030\004 \002(\t\"9\n\016Artwor"
-    "kRequest\022\020\n\010snapshot\030\001 \002(\t\022\025\n\roriginalTi"
-    "tle\030\002 \002(\t\":\n\017ArtworkResponse\022\020\n\010snapshot"
-    "\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\"V\n\026SetSubs"
-    "criptionRequest\022\r\n\005token\030\001 \002(\t\022-\n\rsubscr"
-    "iptions\030\002 \003(\0132\026.LS.SubscriptionRecord\")\n"
-    "\027SetSubscriptionResponse\022\016\n\006result\030\001 \002(\010"
-    "\"\'\n\026GetSubscriptionRequest\022\r\n\005token\030\001 \002("
-    "\t\"W\n\027GetSubscriptionResponse\022\r\n\005token\030\001 "
-    "\002(\t\022-\n\rsubscriptions\030\002 \003(\0132\026.LS.Subscrip"
-    "tionRecord", 1090);
+    "Number\030\003 \002(\005\022\n\n\002id\030c \002(\t\022\020\n\010snapshot\030d \002"
+    "(\t\"9\n\016ArtworkRequest\022\020\n\010snapshot\030\001 \002(\t\022\025"
+    "\n\roriginalTitle\030\002 \002(\t\":\n\017ArtworkResponse"
+    "\022\020\n\010snapshot\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002("
+    "\t\"V\n\026SetSubscriptionRequest\022\r\n\005token\030\001 \002"
+    "(\t\022-\n\rsubscriptions\030\002 \003(\0132\026.LS.Subscript"
+    "ionRecord\")\n\027SetSubscriptionResponse\022\016\n\006"
+    "result\030\001 \002(\010\"\'\n\026GetSubscriptionRequest\022\r"
+    "\n\005token\030\001 \002(\t\"W\n\027GetSubscriptionResponse"
+    "\022\r\n\005token\030\001 \002(\t\022-\n\rsubscriptions\030\002 \003(\0132\026"
+    ".LS.SubscriptionRecord", 1102);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
   Header::default_instance_ = new Header();
@@ -1543,6 +1544,7 @@ void SeriesRequest::Swap(SeriesRequest* other) {
 const int SeriesResponse_TVShow::kTitleFieldNumber;
 const int SeriesResponse_TVShow::kOriginalTitleFieldNumber;
 const int SeriesResponse_TVShow::kSeasonNumberFieldNumber;
+const int SeriesResponse_TVShow::kIdFieldNumber;
 const int SeriesResponse_TVShow::kSnapshotFieldNumber;
 #endif  // !_MSC_VER
 
@@ -1565,6 +1567,7 @@ void SeriesResponse_TVShow::SharedCtor() {
   title_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   seasonnumber_ = 0;
+  id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1579,6 +1582,9 @@ void SeriesResponse_TVShow::SharedDtor() {
   }
   if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
     delete originaltitle_;
+  }
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete id_;
   }
   if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
     delete snapshot_;
@@ -1621,6 +1627,11 @@ void SeriesResponse_TVShow::Clear() {
       }
     }
     seasonnumber_ = 0;
+    if (has_id()) {
+      if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+        id_->clear();
+      }
+    }
     if (has_snapshot()) {
       if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
         snapshot_->clear();
@@ -1682,12 +1693,29 @@ bool SeriesResponse_TVShow::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_snapshot;
+        if (input->ExpectTag(794)) goto parse_id;
         break;
       }
 
-      // required string snapshot = 4;
-      case 4: {
+      // required string id = 99;
+      case 99: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_id:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_id()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->id().data(), this->id().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(802)) goto parse_snapshot;
+        break;
+      }
+
+      // required string snapshot = 100;
+      case 100: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_snapshot:
@@ -1744,13 +1772,22 @@ void SeriesResponse_TVShow::SerializeWithCachedSizes(
     ::google_public::protobuf::internal::WireFormatLite::WriteInt32(3, this->seasonnumber(), output);
   }
 
-  // required string snapshot = 4;
+  // required string id = 99;
+  if (has_id()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->id().data(), this->id().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      99, this->id(), output);
+  }
+
+  // required string snapshot = 100;
   if (has_snapshot()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
       this->snapshot().data(), this->snapshot().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      4, this->snapshot(), output);
+      100, this->snapshot(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -1786,14 +1823,24 @@ void SeriesResponse_TVShow::SerializeWithCachedSizes(
     target = ::google_public::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->seasonnumber(), target);
   }
 
-  // required string snapshot = 4;
+  // required string id = 99;
+  if (has_id()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->id().data(), this->id().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        99, this->id(), target);
+  }
+
+  // required string snapshot = 100;
   if (has_snapshot()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
       this->snapshot().data(), this->snapshot().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->snapshot(), target);
+        100, this->snapshot(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1828,9 +1875,16 @@ int SeriesResponse_TVShow::ByteSize() const {
           this->seasonnumber());
     }
 
-    // required string snapshot = 4;
+    // required string id = 99;
+    if (has_id()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->id());
+    }
+
+    // required string snapshot = 100;
     if (has_snapshot()) {
-      total_size += 1 +
+      total_size += 2 +
         ::google_public::protobuf::internal::WireFormatLite::StringSize(
           this->snapshot());
     }
@@ -1871,6 +1925,9 @@ void SeriesResponse_TVShow::MergeFrom(const SeriesResponse_TVShow& from) {
     if (from.has_seasonnumber()) {
       set_seasonnumber(from.seasonnumber());
     }
+    if (from.has_id()) {
+      set_id(from.id());
+    }
     if (from.has_snapshot()) {
       set_snapshot(from.snapshot());
     }
@@ -1891,7 +1948,7 @@ void SeriesResponse_TVShow::CopyFrom(const SeriesResponse_TVShow& from) {
 }
 
 bool SeriesResponse_TVShow::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
 
   return true;
 }
@@ -1901,6 +1958,7 @@ void SeriesResponse_TVShow::Swap(SeriesResponse_TVShow* other) {
     std::swap(title_, other->title_);
     std::swap(originaltitle_, other->originaltitle_);
     std::swap(seasonnumber_, other->seasonnumber_);
+    std::swap(id_, other->id_);
     std::swap(snapshot_, other->snapshot_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

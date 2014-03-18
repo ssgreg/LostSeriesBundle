@@ -11,7 +11,6 @@ import bs4
 import urllib2
 import datetime
 import logging
-import logging.config
 
 
 SE_EPISODE_NUMBER = "SeEpisodeNumber"
@@ -188,18 +187,22 @@ def LoadPage(url):
   return urllib2.urlopen(url).read().decode('cp1251').encode('utf-8')
 
 
-def LoadInfoLastSeries():
-  # add "?o=15" to skip some episodes
-  url = "http://www.lostfilm.tv/browse.php"
-  page = LoadPage(url)
-  return ParsePageLostFilmBrowse(page)
+def LoadInfoLastSeries(numberPages):
+  numberSeriesPerPage = 15
+  formatUrl = "{0}?o={1}"
+  urlPrefix = "http://www.lostfilm.tv/browse.php"
+  #
+  result = []
+  for i in range(0, numberPages):
+    url = formatUrl.format(urlPrefix, i * numberSeriesPerPage)
+    print url
+    page = LoadPage(url)
+    result += ParsePageLostFilmBrowse(page)
+  #
+  return result
 
 
 def LoadInfoAllShows():
   url = "http://www.lostfilm.tv/serials.php"
   page = LoadPage(url)
   return ParsePageLostFilmSerials(page)
-
-
-logging.config.fileConfig('logging.ini')
-print LoadInfoAllShows()

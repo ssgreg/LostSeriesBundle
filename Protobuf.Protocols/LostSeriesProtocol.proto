@@ -41,7 +41,8 @@ message SeriesResponse
     required string title = 1;
     required string originalTitle = 2;
     required int32 seasonNumber = 3;
-    required string snapshot = 4;
+    required string id = 99;
+    required string snapshot = 100;
   }
 
   repeated TVShow shows = 1;

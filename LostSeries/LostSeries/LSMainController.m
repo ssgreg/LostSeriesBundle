@@ -190,15 +190,8 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
   {
     // shows
-    NSMutableArray* newShowsRaw = [NSMutableArray array];
-    for (id show in showsRaw)
-    {
-     [newShowsRaw addObject:show];
-     [newShowsRaw addObject:show];
-     [newShowsRaw addObject:show];
-    }
     NSMutableArray* modelsShow = [NSMutableArray array];
-    for (id show in newShowsRaw)
+    for (id show in showsRaw)
     {
      LSShowAlbumCellModel* cellModel = [[LSShowAlbumCellModel alloc] init];
      cellModel.showInfo = show;

@@ -22,6 +22,7 @@ def HandleSeriesRequest(message):
     showInfo.title = record.Title
     showInfo.originalTitle = record.OriginalTitle
     showInfo.seasonNumber = record.Season
+    showInfo.id = record.ID
     showInfo.snapshot = Snapshot.GetLatestSnapshot()
   #  showInfo.artwork = ReadFile()
   return {"message": response, "data": None}
@@ -43,7 +44,6 @@ def HandleArtworkRequest(message):
   #
   for record in data:
     print record.OriginalTitle
-#  time.sleep(random.randint(0, 2))
   return {"message": response, "data": artwork}
 
 

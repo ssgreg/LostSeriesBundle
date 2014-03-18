@@ -62,9 +62,10 @@
     {
       LS::SeriesResponse_TVShow show = message.shows(i);
       LSShowInfo* showInfo = [[LSShowInfo alloc] init];
-      showInfo.title = [NSString stringWithUTF8String: show.title().c_str()];
-      showInfo.originalTitle = [NSString stringWithUTF8String: show.originaltitle().c_str()];
+      showInfo.title = [NSString stringWithUTF8String:show.title().c_str()];
+      showInfo.originalTitle = [NSString stringWithUTF8String:show.originaltitle().c_str()];
       showInfo.seasonNumber = show.seasonnumber();
+      showInfo.showID = [NSString stringWithUTF8String:show.id().c_str()];
       showInfo.snapshot = [NSString stringWithCString: show.snapshot().c_str() encoding:NSASCIIStringEncoding];
       //
       [shows addObject:showInfo];
@@ -162,6 +163,7 @@
 @synthesize title = theTitle;
 @synthesize originalTitle = theOriginalTitle;
 @synthesize seasonNumber = theSeasonNumber;
+@synthesize showID = theShowID;
 @synthesize snapshot = theSnapshot;
 @end
 

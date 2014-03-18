@@ -542,10 +542,22 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   inline ::google_public::protobuf::int32 seasonnumber() const;
   inline void set_seasonnumber(::google_public::protobuf::int32 value);
 
-  // required string snapshot = 4;
+  // required string id = 99;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 99;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  inline void set_allocated_id(::std::string* id);
+
+  // required string snapshot = 100;
   inline bool has_snapshot() const;
   inline void clear_snapshot();
-  static const int kSnapshotFieldNumber = 4;
+  static const int kSnapshotFieldNumber = 100;
   inline const ::std::string& snapshot() const;
   inline void set_snapshot(const ::std::string& value);
   inline void set_snapshot(const char* value);
@@ -562,6 +574,8 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   inline void clear_has_originaltitle();
   inline void set_has_seasonnumber();
   inline void clear_has_seasonnumber();
+  inline void set_has_id();
+  inline void clear_has_id();
   inline void set_has_snapshot();
   inline void clear_has_snapshot();
 
@@ -569,11 +583,12 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
 
   ::std::string* title_;
   ::std::string* originaltitle_;
+  ::std::string* id_;
   ::std::string* snapshot_;
   ::google_public::protobuf::int32 seasonnumber_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(5 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -1823,15 +1838,85 @@ inline void SeriesResponse_TVShow::set_seasonnumber(::google_public::protobuf::i
   seasonnumber_ = value;
 }
 
-// required string snapshot = 4;
-inline bool SeriesResponse_TVShow::has_snapshot() const {
+// required string id = 99;
+inline bool SeriesResponse_TVShow::has_id() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void SeriesResponse_TVShow::set_has_snapshot() {
+inline void SeriesResponse_TVShow::set_has_id() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void SeriesResponse_TVShow::clear_has_snapshot() {
+inline void SeriesResponse_TVShow::clear_has_id() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void SeriesResponse_TVShow::clear_id() {
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& SeriesResponse_TVShow::id() const {
+  return *id_;
+}
+inline void SeriesResponse_TVShow::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SeriesResponse_TVShow::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SeriesResponse_TVShow::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SeriesResponse_TVShow::mutable_id() {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* SeriesResponse_TVShow::release_id() {
+  clear_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SeriesResponse_TVShow::set_allocated_id(::std::string* id) {
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete id_;
+  }
+  if (id) {
+    set_has_id();
+    id_ = id;
+  } else {
+    clear_has_id();
+    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// required string snapshot = 100;
+inline bool SeriesResponse_TVShow::has_snapshot() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SeriesResponse_TVShow::set_has_snapshot() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SeriesResponse_TVShow::clear_has_snapshot() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void SeriesResponse_TVShow::clear_snapshot() {
   if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {

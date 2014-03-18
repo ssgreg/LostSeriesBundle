@@ -1,6 +1,14 @@
 import ConfigParser
 import os
 import codecs
+import Tools
+
+
+ST_INFO_SECTION_INFORMATION = "information"
+ST_INFO_VALUE_TITLE = "title"
+ST_INFO_VALUE_ORIGINAL_TITLE = "original_title"
+ST_INFO_VALUE_SEASON_NUMBER = "season"
+ST_INFO_VALUE_ID = "id"
 
 
 class TVShowInfo:
@@ -8,6 +16,7 @@ class TVShowInfo:
   OriginalTitle = ""
   Season = 0
   Artwork = ""
+  ID = ""
 
 
 def ReadFile(name):
@@ -29,28 +38,18 @@ def GetTVShowFolderNamePrefix():
   return "TVShow="
 
 
-def GetTVShowFolderName(originalName):
-  disallowedFilenameChars = ':/\\'
-  normalizedName = ''.join(x for x in originalName if x not in disallowedFilenameChars)
-  return GetTVShowFolderNamePrefix() + "\"" + normalizedName + "\""
-
-
 def ListTVShowFolders(root):
   return [ f for f in os.listdir(root) if os.path.isdir(os.path.join(root, f)) and f.startswith(GetTVShowFolderNamePrefix()) ]
 
 
 def ReadLostSeriesData(snapshot = ""):
   #
-  dataFolderName = "LostSeriesData"
+  dataFolderName = "LoadSeriesData1"
   latestFolderName = "Latest"
   infoFileName = "info"
   artworkFileName = "artwork.jpg"
-  informationSectionName = "Information"
-  titleValueName = "Title"
-  originalTitleValueName = "OriginalTitle"
-  seasonValueName = "Season"
   #
-  dataPath = os.path.join(dataFolderName, latestFolderName if not snapshot else snapshot)
+  dataPath = dataFolderName # os.path.join(dataFolderName, latestFolderName if not snapshot else snapshot)
   data = []
   for folder in ListTVShowFolders(dataPath):
     #
@@ -59,10 +58,14 @@ def ReadLostSeriesData(snapshot = ""):
     config.readfp(codecs.open(os.path.join(dataPath, folder, infoFileName), "r", "utf8"))
     #
     info = TVShowInfo()
-    info.Title = config.get(informationSectionName, titleValueName)
-    info.OriginalTitle = config.get(informationSectionName, originalTitleValueName)
-    info.Season = config.getint(informationSectionName, seasonValueName)
-    info.Artwork = ReadFile(os.path.join(dataPath, folder, artworkFileName))
+    info.Title = config.get(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_TITLE)
+    info.OriginalTitle = config.get(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_ORIGINAL_TITLE)
+    info.Season = config.getint(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_SEASON_NUMBER)
+    info.ID = config.get(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_ID)
+    try:
+      info.Artwork = ReadFile(os.path.join(dataPath, folder, artworkFileName))
+    except Exception, error:
+      pass
     data.append(info)
   #
   return data

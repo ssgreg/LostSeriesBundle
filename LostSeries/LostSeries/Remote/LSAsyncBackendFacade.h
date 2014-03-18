@@ -45,6 +45,7 @@
 @property NSString* title;
 @property NSString* originalTitle;
 @property NSInteger seasonNumber;
+@property NSString* showID;
 @property NSString* snapshot;
 @end
 
