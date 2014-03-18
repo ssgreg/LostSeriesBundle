@@ -33,17 +33,13 @@ def HandleArtworkRequest(message):
   data = DataCache.Instance().GetData()
   #
   response = LostSeriesProtocol_pb2.ArtworkResponse()
-  response.snapshot = message.snapshot
-  response.originalTitle = message.originalTitle
   #
   artwork = ""
   try:
-    artwork = next(x for x in data if x.OriginalTitle == message.originalTitle).Artwork
+    artwork = next(x for x in data if x.ID == message.id).Artwork
   except:
     pass
   #
-  for record in data:
-    print record.OriginalTitle
   return {"message": response, "data": artwork}
 
 

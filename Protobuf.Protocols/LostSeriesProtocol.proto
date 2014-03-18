@@ -52,15 +52,13 @@ message SeriesResponse
 message ArtworkRequest
 {
   required string snapshot = 1;
-  required string originalTitle = 2;
+  required string id = 2;
 }
 
 
 // with a following banaries
 message ArtworkResponse
 {
-  required string snapshot = 1;
-  required string originalTitle = 2;
 }
 
 

@@ -130,10 +130,9 @@
 
 - (NSString*) fileNameFromArtworkRequest:(LS::ArtworkRequest const&)request
 {
-  NSData* plainData = [NSData dataWithBytes:request.originaltitle().data() length:request.originaltitle().size()];
-  NSString* base64String = [plainData base64EncodedStringWithOptions:0];
-  NSString* snapshotName = [NSString stringWithUTF8String: request.snapshot().c_str()];
-  return [NSString stringWithFormat:@"%@-%@", snapshotName, base64String];
+  NSString* snapshot = [NSString stringWithCString:request.snapshot().c_str() encoding:NSASCIIStringEncoding];
+  NSString* showID = [NSString stringWithCString:request.id().c_str() encoding:NSASCIIStringEncoding];
+  return [NSString stringWithFormat:@"%@-%@", snapshot, showID];
 }
 
 @end

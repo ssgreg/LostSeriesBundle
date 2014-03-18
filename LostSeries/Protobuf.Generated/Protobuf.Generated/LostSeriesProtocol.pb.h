@@ -752,29 +752,29 @@ class ArtworkRequest : public ::google_public::protobuf::Message {
   inline ::std::string* release_snapshot();
   inline void set_allocated_snapshot(::std::string* snapshot);
 
-  // required string originalTitle = 2;
-  inline bool has_originaltitle() const;
-  inline void clear_originaltitle();
-  static const int kOriginalTitleFieldNumber = 2;
-  inline const ::std::string& originaltitle() const;
-  inline void set_originaltitle(const ::std::string& value);
-  inline void set_originaltitle(const char* value);
-  inline void set_originaltitle(const char* value, size_t size);
-  inline ::std::string* mutable_originaltitle();
-  inline ::std::string* release_originaltitle();
-  inline void set_allocated_originaltitle(::std::string* originaltitle);
+  // required string id = 2;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 2;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  inline void set_allocated_id(::std::string* id);
 
   // @@protoc_insertion_point(class_scope:LS.ArtworkRequest)
  private:
   inline void set_has_snapshot();
   inline void clear_has_snapshot();
-  inline void set_has_originaltitle();
-  inline void clear_has_originaltitle();
+  inline void set_has_id();
+  inline void clear_has_id();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* snapshot_;
-  ::std::string* originaltitle_;
+  ::std::string* id_;
 
   mutable int _cached_size_;
   ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
@@ -842,44 +842,14 @@ class ArtworkResponse : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string snapshot = 1;
-  inline bool has_snapshot() const;
-  inline void clear_snapshot();
-  static const int kSnapshotFieldNumber = 1;
-  inline const ::std::string& snapshot() const;
-  inline void set_snapshot(const ::std::string& value);
-  inline void set_snapshot(const char* value);
-  inline void set_snapshot(const char* value, size_t size);
-  inline ::std::string* mutable_snapshot();
-  inline ::std::string* release_snapshot();
-  inline void set_allocated_snapshot(::std::string* snapshot);
-
-  // required string originalTitle = 2;
-  inline bool has_originaltitle() const;
-  inline void clear_originaltitle();
-  static const int kOriginalTitleFieldNumber = 2;
-  inline const ::std::string& originaltitle() const;
-  inline void set_originaltitle(const ::std::string& value);
-  inline void set_originaltitle(const char* value);
-  inline void set_originaltitle(const char* value, size_t size);
-  inline ::std::string* mutable_originaltitle();
-  inline ::std::string* release_originaltitle();
-  inline void set_allocated_originaltitle(::std::string* originaltitle);
-
   // @@protoc_insertion_point(class_scope:LS.ArtworkResponse)
  private:
-  inline void set_has_snapshot();
-  inline void clear_has_snapshot();
-  inline void set_has_originaltitle();
-  inline void clear_has_originaltitle();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::std::string* snapshot_;
-  ::std::string* originaltitle_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[1];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -2081,219 +2051,79 @@ inline void ArtworkRequest::set_allocated_snapshot(::std::string* snapshot) {
   }
 }
 
-// required string originalTitle = 2;
-inline bool ArtworkRequest::has_originaltitle() const {
+// required string id = 2;
+inline bool ArtworkRequest::has_id() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ArtworkRequest::set_has_originaltitle() {
+inline void ArtworkRequest::set_has_id() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ArtworkRequest::clear_has_originaltitle() {
+inline void ArtworkRequest::clear_has_id() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void ArtworkRequest::clear_originaltitle() {
-  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_->clear();
+inline void ArtworkRequest::clear_id() {
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    id_->clear();
   }
-  clear_has_originaltitle();
+  clear_has_id();
 }
-inline const ::std::string& ArtworkRequest::originaltitle() const {
-  return *originaltitle_;
+inline const ::std::string& ArtworkRequest::id() const {
+  return *id_;
 }
-inline void ArtworkRequest::set_originaltitle(const ::std::string& value) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline void ArtworkRequest::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  originaltitle_->assign(value);
+  id_->assign(value);
 }
-inline void ArtworkRequest::set_originaltitle(const char* value) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline void ArtworkRequest::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  originaltitle_->assign(value);
+  id_->assign(value);
 }
-inline void ArtworkRequest::set_originaltitle(const char* value, size_t size) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline void ArtworkRequest::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  originaltitle_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* ArtworkRequest::mutable_originaltitle() {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
+inline ::std::string* ArtworkRequest::mutable_id() {
+  set_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
   }
-  return originaltitle_;
+  return id_;
 }
-inline ::std::string* ArtworkRequest::release_originaltitle() {
-  clear_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
+inline ::std::string* ArtworkRequest::release_id() {
+  clear_has_id();
+  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = originaltitle_;
-    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void ArtworkRequest::set_allocated_originaltitle(::std::string* originaltitle) {
-  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete originaltitle_;
+inline void ArtworkRequest::set_allocated_id(::std::string* id) {
+  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete id_;
   }
-  if (originaltitle) {
-    set_has_originaltitle();
-    originaltitle_ = originaltitle;
+  if (id) {
+    set_has_id();
+    id_ = id;
   } else {
-    clear_has_originaltitle();
-    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    clear_has_id();
+    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
 }
 
 // -------------------------------------------------------------------
 
 // ArtworkResponse
-
-// required string snapshot = 1;
-inline bool ArtworkResponse::has_snapshot() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void ArtworkResponse::set_has_snapshot() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void ArtworkResponse::clear_has_snapshot() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void ArtworkResponse::clear_snapshot() {
-  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_->clear();
-  }
-  clear_has_snapshot();
-}
-inline const ::std::string& ArtworkResponse::snapshot() const {
-  return *snapshot_;
-}
-inline void ArtworkResponse::set_snapshot(const ::std::string& value) {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  snapshot_->assign(value);
-}
-inline void ArtworkResponse::set_snapshot(const char* value) {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  snapshot_->assign(value);
-}
-inline void ArtworkResponse::set_snapshot(const char* value, size_t size) {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  snapshot_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ArtworkResponse::mutable_snapshot() {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  return snapshot_;
-}
-inline ::std::string* ArtworkResponse::release_snapshot() {
-  clear_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = snapshot_;
-    snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void ArtworkResponse::set_allocated_snapshot(::std::string* snapshot) {
-  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete snapshot_;
-  }
-  if (snapshot) {
-    set_has_snapshot();
-    snapshot_ = snapshot;
-  } else {
-    clear_has_snapshot();
-    snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  }
-}
-
-// required string originalTitle = 2;
-inline bool ArtworkResponse::has_originaltitle() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void ArtworkResponse::set_has_originaltitle() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void ArtworkResponse::clear_has_originaltitle() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void ArtworkResponse::clear_originaltitle() {
-  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_->clear();
-  }
-  clear_has_originaltitle();
-}
-inline const ::std::string& ArtworkResponse::originaltitle() const {
-  return *originaltitle_;
-}
-inline void ArtworkResponse::set_originaltitle(const ::std::string& value) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
-  }
-  originaltitle_->assign(value);
-}
-inline void ArtworkResponse::set_originaltitle(const char* value) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
-  }
-  originaltitle_->assign(value);
-}
-inline void ArtworkResponse::set_originaltitle(const char* value, size_t size) {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
-  }
-  originaltitle_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ArtworkResponse::mutable_originaltitle() {
-  set_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    originaltitle_ = new ::std::string;
-  }
-  return originaltitle_;
-}
-inline ::std::string* ArtworkResponse::release_originaltitle() {
-  clear_has_originaltitle();
-  if (originaltitle_ == &::google_public::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = originaltitle_;
-    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void ArtworkResponse::set_allocated_originaltitle(::std::string* originaltitle) {
-  if (originaltitle_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete originaltitle_;
-  }
-  if (originaltitle) {
-    set_has_originaltitle();
-    originaltitle_ = originaltitle;
-  } else {
-    clear_has_originaltitle();
-    originaltitle_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  }
-}
 
 // -------------------------------------------------------------------
 

@@ -65,8 +65,8 @@
       showInfo.title = [NSString stringWithUTF8String:show.title().c_str()];
       showInfo.originalTitle = [NSString stringWithUTF8String:show.originaltitle().c_str()];
       showInfo.seasonNumber = show.seasonnumber();
-      showInfo.showID = [NSString stringWithUTF8String:show.id().c_str()];
-      showInfo.snapshot = [NSString stringWithCString: show.snapshot().c_str() encoding:NSASCIIStringEncoding];
+      showInfo.showID = [NSString stringWithCString:show.id().c_str() encoding:NSASCIIStringEncoding];
+      showInfo.snapshot = [NSString stringWithCString:show.snapshot().c_str() encoding:NSASCIIStringEncoding];
       //
       [shows addObject:showInfo];
     }
@@ -80,7 +80,7 @@
 - (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler
 {
   LS::ArtworkRequest artworkRequest;
-  artworkRequest.set_originaltitle(showInfo.originalTitle.UTF8String);
+  artworkRequest.set_id([showInfo.showID cStringUsingEncoding:NSASCIIStringEncoding]);
   artworkRequest.set_snapshot([showInfo.snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
   //
   LSMessagePtr request(new LS::Message);
