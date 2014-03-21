@@ -183,6 +183,7 @@ def ParsePageLostFilmSerials(page):
     raise LSParserSyntaxException()
   return seriesAll
 
+
 def LoadPage(url):
   return urllib2.urlopen(url).read().decode('cp1251').encode('utf-8')
 
@@ -206,3 +207,18 @@ def LoadInfoAllShows():
   url = "http://www.lostfilm.tv/serials.php"
   page = LoadPage(url)
   return ParsePageLostFilmSerials(page)
+
+
+def IsShowClosed(id):
+  formatUrl = "{0}?cat={1}"
+  urlPrefix = "http://www.lostfilm.tv/browse.php"
+  statusClosed = "Статус: закончен"
+  statusOpened = "Статус: снимается"
+  url = formatUrl.format(urlPrefix, id)
+  #
+  page = LoadPage(url)
+  if statusClosed in page:
+    return True
+  elif statusOpened in page:
+    return False
+  raise LSParserSyntaxException()

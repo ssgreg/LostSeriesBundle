@@ -10,34 +10,37 @@ import datetime
 from Cache import DataCache
 import LostSeriesProtocol_pb2
 import Snapshot
+from Storage import *
 
 
 def HandleSeriesRequest(message):
   print "Handling SeriesRequest..."
-  data = DataCache.Instance().GetData()
+  sectionData, sectionArtwors = DataCache.Instance().GetData()
   #
   response = LostSeriesProtocol_pb2.SeriesResponse()
-  for record in data:
+  for record in list(sectionData.find()):
     showInfo = response.shows.add()
-    showInfo.title = record.Title
-    showInfo.originalTitle = record.OriginalTitle
-    showInfo.seasonNumber = record.Season
-    showInfo.id = record.ID
+    showInfo.title = record[SHOW_TITLE]
+    showInfo.originalTitle = record[SHOW_ORIGINAL_TITLE]
+    showInfo.seasonNumber = record[SHOW_LAST_SEASON_NUMBER]
+    showInfo.id = str(record[SHOW_ID])
     showInfo.snapshot = Snapshot.GetLatestSnapshot()
   return {"message": response, "data": None}
 
 
 def HandleArtworkRequest(message):
   print "Handling ArtworkRequest..."
-  data = DataCache.Instance().GetData()
+  sectionData, sectionArtwors = DataCache.Instance().GetData()
   #
   response = LostSeriesProtocol_pb2.ArtworkResponse()
   #
   artwork = ""
   try:
-    artwork = next(x for x in data if x.ID == message.id).Artwork
-  except:
-    pass
+    show = next(x for x in list(sectionData.find()) if str(x[SHOW_ID]) == message.id)
+    artworkSeasons = next(x for x in list(sectionArtwors.find()) if str(x[SHOW_ID]) == message.id)[SHOW_SEASONS]
+    artwork = next(x for x in artworkSeasons if x[SHOW_SEASON_NUMBER] == show[SHOW_LAST_SEASON_NUMBER])[SHOW_SEASON_ARTWORK_THUMBNAIL]
+  except Exception as e:
+    print traceback.format_exc()
   #
   return {"message": response, "data": artwork}
 

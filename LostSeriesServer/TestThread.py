@@ -1,4 +1,7 @@
 import pymongo
+from Storage import *
+
+from bson.binary import Binary
 
 def printAllRecords(section):
   records = section.find().sort([("token", pymongo.DESCENDING)])
@@ -11,13 +14,31 @@ def removeAllRecords(section):
     section.remove(d)
 
 
-#  for idc in subscriptionsSection.find({"token": message.token}):
-#    subscriptions = subscriptions + idc["tags"]
   #
 
 
+data = ReadFile('LoadSeriesData1/TVShow="Bitten"/artwork.jpg')
 client = pymongo.MongoClient()
-db = client['lostseries-database']
-subscriptionsSection = db.subscriptions
+#db = client['lostseries-database']
+#subscriptionsSection = db.subscriptions
+#printAllRecords(subscriptionsSection)
 
-printAllRecords(subscriptionsSection)
+#client.drop_database('test')
+
+db = client['test']
+
+
+post = \
+{
+  "data": Binary(data),
+  "snapshot": "10"
+}
+subscriptionsSection = db.test
+subscriptionsSection.insert(post)
+a = list(subscriptionsSection.find())
+for i in a:
+  print i
+
+records = subscriptionsSection.find().sort([("snapshot", pymongo.DESCENDING)])
+# for i, d in enumerate(records):
+#   print 1
