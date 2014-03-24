@@ -18,7 +18,7 @@ def HandleSeriesRequest(message):
   sectionData, sectionArtwors = DataCache.Instance().GetData()
   #
   response = LostSeriesProtocol_pb2.SeriesResponse()
-  for record in list(sectionData.find()):
+  for record in list(sectionData.find({ SHOW_IS_CANCELED: False })):
     showInfo = response.shows.add()
     showInfo.title = record[SHOW_TITLE]
     showInfo.originalTitle = record[SHOW_ORIGINAL_TITLE]
@@ -36,9 +36,8 @@ def HandleArtworkRequest(message):
   #
   artwork = ""
   try:
-    show = next(x for x in list(sectionData.find()) if str(x[SHOW_ID]) == message.id)
-    artworkSeasons = next(x for x in list(sectionArtwors.find()) if str(x[SHOW_ID]) == message.id)[SHOW_SEASONS]
-    artwork = next(x for x in artworkSeasons if x[SHOW_SEASON_NUMBER] == show[SHOW_LAST_SEASON_NUMBER])[SHOW_SEASON_ARTWORK_THUMBNAIL]
+    show = sectionData.find_one({ SHOW_ID: message.id })
+    artwork = sectionArtwors.find_one({ SHOW_ID: show[SHOW_ID] })[SHOW_SEASON_ARTWORK_THUMBNAIL]
   except Exception as e:
     print traceback.format_exc()
   #

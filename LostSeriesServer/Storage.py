@@ -21,9 +21,8 @@ SHOW_TITLE = "Title"
 SHOW_ORIGINAL_TITLE = "OriginalTitle"
 SHOW_LAST_SEASON_NUMBER = "LastSeasonNumber"
 SHOW_LAST_EPISODE_NUMBER = "LastEpisodeNumber"
-SHOW_SEASONS = "Seasons"
+SHOW_IS_CANCELED = "IsCanceled"
 SHOW_SEASON_NUMBER = "SeasonNumber"
-SHOW_SEASON_EPISODES = "SeasonEpisodes"
 SHOW_SEASON_EPISODE_NUMBER = "EpisodeNumber"
 SHOW_SEASON_EPISODE_NAME = "EpisodeName"
 SHOW_SEASON_SPISODE_ORIGINAL_NAME = "EpisodeOriginalName"
@@ -35,39 +34,6 @@ SHOW_SEASON_ARTWORK_SNAPSHOT = "SeasonArtworkSnapshot"
 SECTION_SERVICE = "LostSeriesService"
 SECTION_ARTWORKS = "LostSeriesArtworks"
 SECTION_DATA = "LostSeriesData"
-
-
-postArtworkExample = \
-{
-  SHOW_ID: "100",
-  SHOW_SEASONS:
-  {
-    SHOW_SEASON_NUMBER: 1,
-    SHOW_SEASON_ARTWORK: "",
-    SHOW_SEASON_ARTWORK_THUMBNAIL: "",
-    SHOW_SEASON_ARTWORK_SNAPSHOT: "",
-  }
-}
-
-postDataExample = \
-{
-  SHOW_ID: "100",
-  SHOW_TITLE: "title",
-  SHOW_ORIGINAL_TITLE: "original_title",
-  SHOW_LAST_SEASON_NUMBER: 1,
-  SHOW_LAST_EPISODE_NUMBER: 1,
-  SHOW_SEASONS:
-  {
-    SHOW_SEASON_NUMBER: 1,
-    SHOW_SEASON_EPISODES:
-    {
-      SHOW_SEASON_EPISODE_NUMBER: 1,
-      SHOW_SEASON_EPISODE_NAME: "name",
-      SHOW_SEASON_SPISODE_ORIGINAL_NAME: "original_name",
-      SHOW_SEASON_SPISODE_TRANSLATE_TIME: "time",
-    }
-  }
-}
 
 
 class TVShowInfo:
@@ -132,6 +98,6 @@ def ReadLostSeriesData(snapshot = ""):
   db = mongo['lostseries']
 
   sectionService = db[SECTION_SERVICE]
-  sectionData = db[SECTION_DATA]
-  sectionArtworks = db[SECTION_ARTWORKS]
+  sectionData = db.shows
+  sectionArtworks = db.artworks
   return (sectionData, sectionArtworks)

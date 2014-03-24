@@ -23,6 +23,10 @@ SE_SHOW_TITLE = "SeTitle"
 SE_SHOW_ORIGINAL_TITLE = "SeOriginalTitle"
 
 
+def logger():
+  return logging.getLogger(__name__)
+
+
 class LFParserException(Exception):
   def __init__(self):
     pass
@@ -83,7 +87,7 @@ def ParseDataShowID(data):
   if not idShow.isdigit():
     raise LSParserSyntaxException()
   #
-  return int(idShow)
+  return idShow
 
 
 def HasNewSeries(tag):
@@ -162,7 +166,7 @@ def ParsePageLostFilmBrowse(page):
 def ParsePageLostFilmSerials(page):
   seriesAll = []
   soup = bs4.BeautifulSoup(page)
-  for a in soup.find(HasTagAllSeries).find_all(HasTagSeriesInAllSeries):
+  for a in soup.find_all(HasTagAllSeries)[2].find_all(HasTagSeriesInAllSeries):
     try:
       showRawID = a["href"].strip()
       showRawName = a.contents[0].strip()
@@ -177,6 +181,7 @@ def ParsePageLostFilmSerials(page):
       #
       seriesAll.append(record)
     except Exception, error:
+      print "greg!"
       continue
   #
   if len(seriesAll) == 0:
@@ -185,18 +190,18 @@ def ParsePageLostFilmSerials(page):
 
 
 def LoadPage(url):
+  logger().info("Requesting: {0}".format(url))
   return urllib2.urlopen(url).read().decode('cp1251').encode('utf-8')
 
 
-def LoadInfoLastSeries(numberPages):
+def LoadInfoLastSeries(numberPages, numberPagesToSkip = 0):
   numberSeriesPerPage = 15
   formatUrl = "{0}?o={1}"
   urlPrefix = "http://www.lostfilm.tv/browse.php"
   #
   result = []
-  for i in range(0, numberPages):
+  for i in range(numberPagesToSkip, numberPages):
     url = formatUrl.format(urlPrefix, i * numberSeriesPerPage)
-    print url
     page = LoadPage(url)
     result += ParsePageLostFilmBrowse(page)
   #
@@ -209,7 +214,7 @@ def LoadInfoAllShows():
   return ParsePageLostFilmSerials(page)
 
 
-def IsShowClosed(id):
+def IsShowCanceled(id):
   formatUrl = "{0}?cat={1}"
   urlPrefix = "http://www.lostfilm.tv/browse.php"
   statusClosed = "Статус: закончен"

@@ -15,46 +15,74 @@ import Image
 import dropbox
 import StringIO
 import Tools
+import logging
+import logging.config
+
+
+def logger():
+  return logging.getLogger(__name__)
 
 #
 # DropboxArtworkUpdater
 #
 
-class DropboxArtworkUpdater:
+STORAGE_ARTWORK_PATH = 'path'
+STORAGE_ARTWORK_ID = 'id'
+STORAGE_ARTWORK_SEASON = 'season'
+STORAGE_ARTWORK_ISNEW = 'is_new'
+
+
+class StorageArtworksDropbox:
   def __init__(self):
-    appKey = 'y1yob2s5uyfzivq'
-    appSecret = '6nv3t3h6h0a5z5b'
+    # appKey = 'y1yob2s5uyfzivq'
+    # appSecret = '6nv3t3h6h0a5z5b'
     # flow = dropbox.client.DropboxOAuth2FlowNoRedirect(app_key, app_secret)
     # authorize_url = flow.start()
     # access_token, user_id = flow.finish('8Dcg4wsNg_UAAAAAAAAAAR0CUe5wGVbLltfoR7Wa1kY')
     # print access_token, user_id
     token = 'jClEfTkq2IYAAAAAAAAAAfpHbJbfchT8L0syxBQZPtJrnoWFOXa5_wGGba6Wnofl'
     self._path = '/LostSeries/Artworks/'
-    self._client = dropbox.client.DropboxClient(token)
-    self._metadata = self._client.metadata(self._path)
-    self._rawExtension = '.raw'
+    self._newExtension = 'raw'
     self._artworksToDelete = list()
+    logger().debug("Connecting to dropbox...")
+    self._client = dropbox.client.DropboxClient(token)
 
-  def __enter__(self):
-    return self
+  def artworks(self):
+    logger().info("Getting artworks folder metadata...")
+    metadata = self._client.metadata(self._path)
+    result = []
+    for i in metadata['contents']:
+      record = self._parseArtwork(i['path'])
+      if record != None:
+        result.append(record)
+    #
+    return result
 
-  def __exit__(self, type, value, traceback):
-    for artwork in self._artworksToDelete:
-      if self._rawExtension in artwork:
-        print "Deleting", artwork
-        self._client.file_move(artwork, artwork.replace(self._rawExtension, ''))
+  def markArtworkAsNotNew(self, artwork):
+    name = artwork[STORAGE_ARTWORK_PATH];
+    logger().info("Marking artwork as not new {0}...".format(name))
+    return self._client.file_move(name, name.replace('.' + self._newExtension, ''))
 
-  def makeArtworkFileName(self, showOriginalName, showSeasonNumber):
-    return Tools.MakeArtworkFileName(showOriginalName, showSeasonNumber) + self._rawExtension
+  def artwork(self, artwork):
+    logger().debug("Getting artwork data for {0}...".format(artwork[STORAGE_ARTWORK_PATH]))
+    return self._client.get_file(artwork[STORAGE_ARTWORK_PATH]).read()
 
-  def hasArtwork(self, showOriginalName, showSeasonNumber):
-    name = self.makeArtworkFileName(showOriginalName, showSeasonNumber)
-    return any(name in i['path'] for i in self._metadata['contents'])
-
-  def getArtwork(self, showOriginalName, showSeasonNumber):
-    name = self._path + self.makeArtworkFileName(showOriginalName, showSeasonNumber)
-    self._artworksToDelete.append(name)
-    return self._client.get_file(name).read()
+  def _parseArtwork(self, artwork):
+    partsWithoutExtension = artwork.split('.')
+    parts = partsWithoutExtension[0].split('-')
+    #
+    if len(parts) < 3 or not parts[2].isdigit():
+      logger().warning("Skipped: {0}".format(artwork))
+      return None
+    #
+    result = \
+    {
+      STORAGE_ARTWORK_PATH: artwork,
+      STORAGE_ARTWORK_ID: parts[1],
+      STORAGE_ARTWORK_SEASON: int(parts[2]),
+      STORAGE_ARTWORK_ISNEW: partsWithoutExtension[-1] == self._newExtension
+    }
+    return result
 
 
 def MakeThumbnail(imageData):
@@ -68,254 +96,154 @@ def MakeThumbnail(imageData):
   return fileObjectOutput.getvalue()
 
 
-def UpdateArtworks(sectionData, sectionArtworks):
-  data = list(sectionData.find())
+def UpdateArtworks(db):
+  logger().info("Updating artworks from the storage...")
+  collArtworks = db.artworks
+  storageArtworks = StorageArtworksDropbox()
+  #
+  for artwork in storageArtworks.artworks():
+    artworkBase = collArtworks.find_one({ SHOW_ID: artwork[STORAGE_ARTWORK_ID], SHOW_SEASON_NUMBER: artwork[STORAGE_ARTWORK_SEASON] })
+    #
+    if artworkBase:
+      if artwork[STORAGE_ARTWORK_ISNEW]:
+        logger().info("Updating artwork with: {0}".format(artwork[STORAGE_ARTWORK_PATH]))
+        imageData = storageArtworks.artwork(artwork)
+        record = \
+        {
+          "$set":
+          {
+            SHOW_SEASON_ARTWORK: Binary(imageData),
+            SHOW_SEASON_ARTWORK_THUMBNAIL: Binary(MakeThumbnail(imageData)),
+            SHOW_SEASON_ARTWORK_SNAPSHOT: Tools.MakeSnapshotID(),
+          }
+        }
+        collArtworks.update(artworkBase, record, False, False)
+      else:
+        pass
+    else:
+      imageData = storageArtworks.artwork(artwork)
+      record = \
+      {
+        SHOW_ID: artwork[STORAGE_ARTWORK_ID],
+        SHOW_SEASON_NUMBER: artwork[STORAGE_ARTWORK_SEASON],
+        SHOW_SEASON_ARTWORK: Binary(imageData),
+        SHOW_SEASON_ARTWORK_THUMBNAIL: Binary(MakeThumbnail(imageData)),
+        SHOW_SEASON_ARTWORK_SNAPSHOT: Tools.MakeSnapshotID(),
+      }
+      logger().info("Adding artwork with: {0}".format(artwork[STORAGE_ARTWORK_PATH]))
+      collArtworks.insert(record)
+    #
+    if artwork[STORAGE_ARTWORK_ISNEW]:
+      storageArtworks.markArtworkAsNotNew(artwork)
+  #
+  logger().info("Artworks updated")
 
-  with DropboxArtworkUpdater() as artworkUpdater:
-    dataArtworks = list(sectionArtworks.find())
-    for show in data:
+
+def UpdateCancelStatus(show):
+  isCanceled = IsShowCanceled(show[SHOW_ID])
+  if SHOW_IS_CANCELED in show and show[SHOW_IS_CANCELED] == isCanceled:
+    return
+  showUpdate = \
+  {
+    "$set":
+    {
+      SHOW_IS_CANCELED: isCanceled
+    }
+  }
+  logger().info("Updating show cancel status to: {0} {1}-'{2}'".format(isCanceled, show[SHOW_ID], show[SHOW_ORIGINAL_TITLE].encode('utf-8')))
+  db.shows.update(show, showUpdate, False, False)
+
+
+def UpdateLastSeasonNumberAndEpisodeNumber(show, newSeasonNumber, newEpisodeNumber):
+  newSeasonNumberIsBigger = newSeasonNumber > show[SHOW_LAST_SEASON_NUMBER]
+  newEpisodeNumberIsBiggerWithEqualSeasonNumbers = (newSeasonNumber == show[SHOW_LAST_SEASON_NUMBER] and newEpisodeNumber > show[SHOW_LAST_EPISODE_NUMBER])
+  if newSeasonNumberIsBigger or newEpisodeNumberIsBiggerWithEqualSeasonNumbers:
+    showUpdate = \
+    {
+      "$set":
+      {
+        SHOW_LAST_SEASON_NUMBER: newSeasonNumber,
+        SHOW_LAST_EPISODE_NUMBER: newEpisodeNumber,
+      }
+    }
+    logger().info("Updating show: {0}-'{1}'".format(show[SHOW_ID], show[SHOW_ORIGINAL_TITLE].encode('utf-8')))
+    db.shows.update(show, showUpdate, False, False)
+
+
+def UpdateData(db, episodes):
+  logger().info("Updating series from LostFile.TV...")
+  showsAll = LoadInfoAllShows()
+  showsIDToOriginalName = dict((i[SE_SHOW_ID], i[SE_SHOW_ORIGINAL_TITLE]) for i in showsAll)
+  #
+  result = []
+  #
+  for record in episodes:
+    # show
+    show = db.shows.find_one({ SHOW_ID: record[SE_SHOW_ID] })
+    if not show:
       #
-      hasArtwork = artworkUpdater.hasArtwork(show[SHOW_ORIGINAL_TITLE], show[SHOW_LAST_SEASON_NUMBER])
-      if not hasArtwork:
-        try:
-          artworkShow = next(i for i in dataArtworks if i[SHOW_ID] == show[SHOW_ID])
-        except Exception, error:
-          print "No artwork for:", show[SHOW_ORIGINAL_TITLE], show[SHOW_LAST_SEASON_NUMBER]
+      try:
+        originalTitle = showsIDToOriginalName[record[SE_SHOW_ID]]
+      except Exception, error:
         continue
       #
-      artworkShow = None
-      try:
-        artworkShow = next(i for i in dataArtworks if i[SHOW_ID] == show[SHOW_ID])
-      except Exception, error:
-        pass
-      if not artworkShow:
-        artworkShow = \
-        {
-          SHOW_ID: show[SHOW_ID],
-          SHOW_SEASONS: list()
-        }
-        dataArtworks.append(artworkShow)
-      #
-      artworkSeason = None
-      imageData = artworkUpdater.getArtwork(show[SHOW_ORIGINAL_TITLE], show[SHOW_LAST_SEASON_NUMBER])
-      try:
-        artworkSeason = next(i for i in artworkShow[SHOW_SEASONS] if i[SHOW_SEASON_NUMBER] == show[SHOW_LAST_SEASON_NUMBER])
-        artworkSeason[SHOW_SEASON_ARTWORK] = Binary(imageData)
-        artworkSeason[SHOW_SEASON_ARTWORK_THUMBNAIL] = Binary(MakeThumbnail(imageData))
-        artworkSeason[SHOW_SEASON_ARTWORK_SNAPSHOT] = Tools.MakeSnapshotID()
-        print "Updating artwork for:", show[SHOW_ORIGINAL_TITLE], show[SHOW_LAST_SEASON_NUMBER]
-      except Exception, error:
-        pass
-      if not artworkSeason:
-        artworkSeason = \
-        {
-          SHOW_SEASON_NUMBER: show[SHOW_LAST_SEASON_NUMBER],
-          SHOW_SEASON_ARTWORK: Binary(imageData),
-          SHOW_SEASON_ARTWORK_THUMBNAIL: Binary(MakeThumbnail(imageData)),
-          SHOW_SEASON_ARTWORK_SNAPSHOT: Tools.MakeSnapshotID(),
-        }
-        print "New artwork for:", show[SHOW_ORIGINAL_TITLE], show[SHOW_LAST_SEASON_NUMBER]
-        artworkShow[SHOW_SEASONS].append(artworkSeason)
-      #
-    for record in dataArtworks:
-      sectionArtworks.remove({SHOW_ID: record[SHOW_ID]})
-      sectionArtworks.insert(record)
-
-
-def UpdateData(sectionData):
-  showsAll = LoadInfoAllShows()
-  episodesLast = LoadInfoLastSeries(1)
-  showsIDToOriginalName = dict((i[SE_SHOW_ID], i[SE_SHOW_ORIGINAL_TITLE]) for i in showsAll)
-
-  data = list(sectionData.find())
-
-  for record in episodesLast:
-    #
-    # show
-    show = None
-    try:
-      show = next(i for i in data if i[SHOW_ID] == record[SE_SHOW_ID])
-    except Exception, error:
-      pass
-    if not show:
       show = \
       {
         SHOW_ID: record[SE_SHOW_ID],
         SHOW_TITLE: record[SE_SHOW_TITLE],
-        SHOW_LAST_SEASON_NUMBER: 0,
-        SHOW_LAST_EPISODE_NUMBER: 0,
-        SHOW_ORIGINAL_TITLE: showsIDToOriginalName[record[SE_SHOW_ID]],
-        SHOW_SEASONS: list(),
+        SHOW_ORIGINAL_TITLE: originalTitle,
+        SHOW_LAST_SEASON_NUMBER: record[SE_SHOW_SEASON_NUMBER],
+        SHOW_LAST_EPISODE_NUMBER: record[SE_EPISODE_NUMBER],
       }
-      print "New show:", show[SHOW_ORIGINAL_TITLE].encode('utf-8')
-      data.append(show)
-    #
-    show[SHOW_LAST_SEASON_NUMBER] = max(show[SHOW_LAST_SEASON_NUMBER], record[SE_SHOW_SEASON_NUMBER])
-    show[SHOW_LAST_EPISODE_NUMBER] = max(show[SHOW_LAST_EPISODE_NUMBER], record[SE_EPISODE_NUMBER])
-    #
-    # season
-    season = None
-    try:
-      season = next(i for i in show[SHOW_SEASONS] if i[SHOW_SEASON_NUMBER] == record[SE_SHOW_SEASON_NUMBER])
-    except Exception, error:
-      pass
-    if not season:
-      season = \
-      {
-        SHOW_SEASON_NUMBER: record[SE_SHOW_SEASON_NUMBER],
-        SHOW_SEASON_EPISODES: list(),
-      }
-      print "New season:", record[SE_SHOW_SEASON_NUMBER]
-      show[SHOW_SEASONS].append(season)
-    #
+      logger().info("Adding show: {0}-'{1}'".format(show[SHOW_ID], show[SHOW_ORIGINAL_TITLE].encode('utf-8')))
+      db.shows.insert(show)
+    else:
+      UpdateLastSeasonNumberAndEpisodeNumber(show, record[SE_SHOW_SEASON_NUMBER], record[SE_EPISODE_NUMBER])
     # episode
-    episode = None
-    try:
-      episode = next(i for i in season[SHOW_SEASON_EPISODES] if i[SHOW_SEASON_EPISODE_NUMBER] == record[SE_EPISODE_NUMBER])
-    except Exception, error:
-      pass
+    episode = db.episodes.find_one({ SHOW_ID: record[SE_SHOW_ID], SHOW_SEASON_NUMBER: record[SE_SHOW_SEASON_NUMBER], SHOW_SEASON_EPISODE_NUMBER: record[SE_EPISODE_NUMBER]})
     if not episode:
       episode = \
       {
+        SHOW_ID: record[SE_SHOW_ID],
+        SHOW_SEASON_NUMBER: record[SE_SHOW_SEASON_NUMBER],
         SHOW_SEASON_EPISODE_NUMBER: record[SE_EPISODE_NUMBER],
         SHOW_SEASON_EPISODE_NAME: record[SE_EPISODE_NAME],
         SHOW_SEASON_SPISODE_ORIGINAL_NAME: record[SE_EPISODE_ORIGINAL_NAME],
         SHOW_SEASON_SPISODE_TRANSLATE_TIME: record[SE_EPISODE_TRANSLATE_DATE],
       }
-      print "New episode:", record[SE_EPISODE_NUMBER], record[SE_EPISODE_ORIGINAL_NAME].encode('utf-8')
-      season[SHOW_SEASON_EPISODES].append(episode)
+      logger().info("Adding episode: {0}-'{1}'-'{2}'-{3}-{4}".format(show[SHOW_ID], show[SHOW_ORIGINAL_TITLE].encode('utf-8'), episode[SHOW_SEASON_SPISODE_ORIGINAL_NAME].encode('utf-8'), episode[SHOW_SEASON_NUMBER], episode[SHOW_SEASON_EPISODE_NUMBER]))
+      db.episodes.insert(episode)
+      result.append(episode)
+      # recheck cancel status for new episode
+      UpdateCancelStatus(show)
+  #
+  logger().info("Series updated. Total shows: {0}, episodes {1}".format(len(list(db.shows.find())), len(list(db.episodes.find()))))
 
-  for record in data:
-    sectionData.remove({SHOW_ID: record[SHOW_ID]})
-    sectionData.insert(record)
+
+def UpdateShowsCancelStatus(db):
+  logger().info("Updating series cancel status...")
+  for show in db.shows.find():
+    if SHOW_IS_CANCELED in show and show[SHOW_IS_CANCELED]:
+      continue
+    #
+    UpdateCancelStatus(show)
+  #
+  logger().info("Cancel statuses were updated")
 
 
+
+logging.config.fileConfig('logging.ini')
 mongo = pymongo.MongoClient()
 #mongo.drop_database('lostseries')
-db = mongo['lostseries']
+db = mongo.lostseries
+#db.shows.drop()
+#db.episodes.drop()
 
-sectionService = db[SECTION_SERVICE]
-sectionData = db[SECTION_DATA]
-sectionArtworks = db[SECTION_ARTWORKS]
+episodesPage1 = LoadInfoLastSeries(1)
+episodesNew = UpdateData(db, episodesPage1)
+UpdateArtworks(db)
+#UpdateShowsCancelStatus(db)
 
-print "data"
-UpdateData(sectionData)
-print "artworks"
-UpdateArtworks(sectionData, sectionArtworks)
-
-
-#  i.SHOW_ID == 1 for i in data
-  # print showOriginalName
-
-# sectionData.insert(post)
-# for i in list(db.collection_names()):
-#   print i
-
-
-
-
-# import os
-# import shutil
-# import logging.config
-# import ConfigParser
-# import codecs
-# import Image
-
-
-# import lf_parser
-# import Tools
-# from Storage import *
-
-
-
-# DATA_DIRECTORY = "LoadSeriesData1"
-# SHOW_DIRECTORY_FORMAT = 'TVShow="{0}"'
-# ARTWORK_DIRECTORY = "LostSeriesArtworks"
-
-
-# class UnicodeConfigParser(ConfigParser.RawConfigParser):
-
-#     def __init__(self, defaults=None, dict_type=dict):
-#         ConfigParser.RawConfigParser.__init__(self, defaults, dict_type)
-       
-#     def write(self, fp):
-#         """Fixed for Unicode output"""
-#         if self._defaults:
-#             fp.write("[%s]\n" % DEFAULTSECT)
-#             for (key, value) in self._defaults.items():
-#                 fp.write("%s = %s\n" % (key, unicode(value).replace('\n', '\n\t')))
-#             fp.write("\n")
-#         for section in self._sections:
-#             fp.write("[%s]\n" % section)
-#             for (key, value) in self._sections[section].items():
-#                 if key != "__name__":
-#                     fp.write("%s = %s\n" %
-#                              (key, unicode(value).replace('\n','\n\t')))
-#             fp.write("\n")
-
-#     # This function is needed to override default lower-case conversion
-#     # of the parameter's names. They will be saved 'as is'.
-#     def optionxform(self, strOut):
-#         return strOut
-
-
-# def MakeShowDirectoryName(showOriginalName):
-#   return SHOW_DIRECTORY_FORMAT.format(showOriginalName)
-
-
-# def MakeThumbnail(src, dst):
-#   size = 188, 188
-#   im = Image.open(src)
-#   im = im.resize((188, 188), Image.ANTIALIAS)
-#   im.save(dst, "JPEG", quality=90)
-
-
-
-# logging.config.fileConfig('logging.ini')
-
-# showsAll = lf_parser.LoadInfoAllShows()
-# episodesLast = lf_parser.LoadInfoLastSeries(3)
-
-# showsIDToOriginalName = dict((i[lf_parser.SE_SHOW_ID], i[lf_parser.SE_SHOW_ORIGINAL_TITLE]) for i in showsAll)
-
-# if os.path.isdir(DATA_DIRECTORY):
-#   shutil.rmtree(DATA_DIRECTORY)
-
-# os.mkdir(DATA_DIRECTORY)
-
-# for episode in episodesLast:
-#   showOriginalName = showsIDToOriginalName[episode[lf_parser.SE_SHOW_ID]]
-#   pathShow = os.path.join(DATA_DIRECTORY, MakeShowDirectoryName(showOriginalName))
-
-#   if not os.path.isdir(pathShow):
-#     os.mkdir(pathShow)
-#     artworkFileName = Tools.MakeArtworkFileName(showOriginalName, episode[lf_parser.SE_SHOW_SEASON_NUMBER])
-#     pathArtwork = os.path.join(ARTWORK_DIRECTORY, artworkFileName)
-#     # artwork
-#     if os.path.isfile(pathArtwork):
-# #      shutil.copyfile(pathArtwork, os.path.join(pathShow, "artwork.jpg"))
-#       MakeThumbnail(pathArtwork, os.path.join(pathShow, "artwork.jpg"))
-#     #
-# #    print lf_parser.IsShowClosed(episode[lf_parser.SE_SHOW_ID]), episode[lf_parser.SE_SHOW_TITLE].encode('utf-8')
-
-#   infoFileName = "info"
-#   pathInfo = os.path.join(pathShow, infoFileName)
-#   config = UnicodeConfigParser()
-#   #
-#   if os.path.isfile(pathInfo):
-#     config.readfp(codecs.open(pathInfo, "r", "utf8"))
-#   else:
-#     # information section
-#     config.add_section(ST_INFO_SECTION_INFORMATION)
-#     config.set(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_TITLE, episode[lf_parser.SE_SHOW_TITLE])
-#     config.set(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_ORIGINAL_TITLE, showOriginalName)
-#     config.set(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_SEASON_NUMBER, episode[lf_parser.SE_SHOW_SEASON_NUMBER])
-#     config.set(ST_INFO_SECTION_INFORMATION, ST_INFO_VALUE_ID, episode[lf_parser.SE_SHOW_ID])
-
-#   # episodes section
-#   sectionEpisode = ST_INFO_SECTION_EPISODE.format(episode[lf_parser.SE_SHOW_SEASON_NUMBER], episode[lf_parser.SE_EPISODE_NUMBER])
-#   config.add_section(sectionEpisode)
-#   config.set(sectionEpisode, ST_INFO_VALUE_NAME, episode[lf_parser.SE_EPISODE_NAME])
-#   config.set(sectionEpisode, ST_INFO_VALUE_ORIGINAL_NAME, episode[lf_parser.SE_EPISODE_ORIGINAL_NAME])
-#   #
-#   with codecs.open(pathInfo, encoding = 'utf-8', mode = 'wb') as conffile: config.write(conffile)
+print len(list(db.shows.find({ SHOW_IS_CANCELED: False })))
+# for record in list(db.shows.find({ SHOW_IS_CANCELED: False })):
+#   print record[SHOW_ORIGINAL_TITLE].encode('utf-8'), record[SHOW_ID]
