@@ -18,6 +18,7 @@
 		EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */; };
 		EE76567D18A4B36600C2BB80 /* libWorkflowLink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76567A18A4B10800C2BB80 /* libWorkflowLink.a */; };
 		EE7656BC18A517C500C2BB80 /* libUIComponents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE7656B618A5172700C2BB80 /* libUIComponents.a */; };
+		EEB0166A18E18C1400B25965 /* LSControllerShowDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */; };
 		EEB11802187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
 		EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11803187F17D500337023 /* CoreGraphics.framework */; };
 		EEB11806187F17D500337023 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11805187F17D500337023 /* UIKit.framework */; };
@@ -111,6 +112,8 @@
 		EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSLocalCache.mm; path = CachingServer/LSLocalCache.mm; sourceTree = "<group>"; };
 		EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WorkflowLink.xcodeproj; path = WorkflowLink/WorkflowLink.xcodeproj; sourceTree = "<group>"; };
 		EE7656B018A5172600C2BB80 /* UIComponents.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIComponents.xcodeproj; path = UIComponents/UIComponents.xcodeproj; sourceTree = "<group>"; };
+		EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSControllerShowDetails.h; sourceTree = "<group>"; };
+		EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSControllerShowDetails.m; sourceTree = "<group>"; };
 		EEB117FE187F17D500337023 /* LostSeries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostSeries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB11801187F17D500337023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EEB11803187F17D500337023 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -293,6 +296,8 @@
 			isa = PBXGroup;
 			children = (
 				EEB11813187F17D500337023 /* Main.storyboard */,
+				EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */,
+				EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */,
 				EEB11819187F17D500337023 /* Images.xcassets */,
 				EEB11809187F17D500337023 /* LostSeries-Info.plist */,
 				EEB1180A187F17D500337023 /* InfoPlist.strings */,
@@ -481,6 +486,7 @@
 				EE1A250B189A8D8000DBA78B /* LSShowInfoCollectionViewController.m in Sources */,
 				EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */,
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
+				EEB0166A18E18C1400B25965 /* LSControllerShowDetails.m in Sources */,
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
 				EE05CC1418C600A800491188 /* LSControllerCollectionBase.m in Sources */,
 				EEB1180E187F17D500337023 /* main.m in Sources */,

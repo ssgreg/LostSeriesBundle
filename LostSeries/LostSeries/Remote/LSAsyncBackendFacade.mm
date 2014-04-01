@@ -67,6 +67,17 @@
       showInfo.seasonNumber = show.seasonnumber();
       showInfo.showID = [NSString stringWithCString:show.id().c_str() encoding:NSASCIIStringEncoding];
       showInfo.snapshot = [NSString stringWithCString:show.snapshot().c_str() encoding:NSASCIIStringEncoding];
+      NSMutableArray* episodes = [NSMutableArray array];
+      int episodesSize = show.episodes_size();
+      for (int j = 0; j < episodesSize; ++j)
+      {
+        LS::SeriesResponse_Episode episode = show.episodes(j);
+        LSEpisodeInfo* episodeInfo = [[LSEpisodeInfo alloc] init];
+        episodeInfo.name = [NSString stringWithUTF8String:episode.name().c_str()];
+        episodeInfo.originalName = [NSString stringWithUTF8String:episode.originalname().c_str()];
+        episodeInfo.number = episode.number();
+        [episodes addObject:episodeInfo];
+      }
       //
       [shows addObject:showInfo];
     }
@@ -80,8 +91,10 @@
 - (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler
 {
   LS::ArtworkRequest artworkRequest;
-  artworkRequest.set_id([showInfo.showID cStringUsingEncoding:NSASCIIStringEncoding]);
-  artworkRequest.set_snapshot([showInfo.snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
+  artworkRequest.set_idshow([showInfo.showID cStringUsingEncoding:NSASCIIStringEncoding]);
+  artworkRequest.set_seasonnumber((int)showInfo.seasonNumber);
+  artworkRequest.set_thumbnail(YES);
+//  artworkRequest.set_snapshot([showInfo.snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
   //
   LSMessagePtr request(new LS::Message);
   *request->mutable_artworkrequest() = artworkRequest;
@@ -155,6 +168,17 @@
 
 
 //
+// LSEpisodeInfo
+//
+
+@implementation LSEpisodeInfo
+@synthesize name;
+@synthesize originalName;
+@synthesize number;
+@end
+
+
+//
 // LSShowInfo
 //
 
@@ -165,6 +189,7 @@
 @synthesize seasonNumber = theSeasonNumber;
 @synthesize showID = theShowID;
 @synthesize snapshot = theSnapshot;
+@synthesize episodes = theEpisodes;
 @end
 
 

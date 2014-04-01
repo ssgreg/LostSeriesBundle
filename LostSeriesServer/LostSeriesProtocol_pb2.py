@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='LostSeriesProtocol.proto',
   package='LS',
-  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xb5\x03\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12;\n\x16setSubscriptionRequest\x18\xea\x07 \x01(\x0b\x32\x1a.LS.SetSubscriptionRequest\x12;\n\x16getSubscriptionRequest\x18\xeb\x07 \x01(\x0b\x32\x1a.LS.GetSubscriptionRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\x12=\n\x17setSubscriptionResponse\x18\xd2\x0f \x01(\x0b\x32\x1b.LS.SetSubscriptionResponse\x12=\n\x17getSubscriptionResponse\x18\xd3\x0f \x01(\x0b\x32\x1b.LS.GetSubscriptionResponse\" \n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\"\x0f\n\rSeriesRequest\"\x9e\x01\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1a\x62\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\n\n\x02id\x18\x63 \x02(\t\x12\x10\n\x08snapshot\x18\x64 \x02(\t\".\n\x0e\x41rtworkRequest\x12\x10\n\x08snapshot\x18\x01 \x02(\t\x12\n\n\x02id\x18\x02 \x02(\t\"\x11\n\x0f\x41rtworkResponse\"V\n\x16SetSubscriptionRequest\x12\r\n\x05token\x18\x01 \x02(\t\x12-\n\rsubscriptions\x18\x02 \x03(\x0b\x32\x16.LS.SubscriptionRecord\")\n\x17SetSubscriptionResponse\x12\x0e\n\x06result\x18\x01 \x02(\x08\"\'\n\x16GetSubscriptionRequest\x12\r\n\x05token\x18\x01 \x02(\t\"W\n\x17GetSubscriptionResponse\x12\r\n\x05token\x18\x01 \x02(\t\x12-\n\rsubscriptions\x18\x02 \x03(\x0b\x32\x16.LS.SubscriptionRecord')
+  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xb5\x03\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12;\n\x16setSubscriptionRequest\x18\xea\x07 \x01(\x0b\x32\x1a.LS.SetSubscriptionRequest\x12;\n\x16getSubscriptionRequest\x18\xeb\x07 \x01(\x0b\x32\x1a.LS.GetSubscriptionRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\x12=\n\x17setSubscriptionResponse\x18\xd2\x0f \x01(\x0b\x32\x1b.LS.SetSubscriptionResponse\x12=\n\x17getSubscriptionResponse\x18\xd3\x0f \x01(\x0b\x32\x1b.LS.GetSubscriptionResponse\" \n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\"\x0f\n\rSeriesRequest\"\xa3\x02\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1a=\n\x07\x45pisode\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x14\n\x0coriginalName\x18\x02 \x02(\t\x12\x0e\n\x06number\x18\x03 \x02(\x05\x1a\xa7\x01\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x15\n\repisodeNumber\x18\x04 \x02(\x05\x12\n\n\x02id\x18\x63 \x02(\t\x12\x10\n\x08snapshot\x18\x64 \x02(\t\x12,\n\x08\x65pisodes\x18\x65 \x03(\x0b\x32\x1a.LS.SeriesResponse.Episode\"[\n\x0e\x41rtworkRequest\x12\x0e\n\x06idShow\x18\x01 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x02 \x02(\x05\x12\x11\n\tthumbnail\x18\x03 \x02(\x08\x12\x10\n\x08snapshot\x18\x64 \x02(\t\"\x11\n\x0f\x41rtworkResponse\"V\n\x16SetSubscriptionRequest\x12\r\n\x05token\x18\x01 \x02(\t\x12-\n\rsubscriptions\x18\x02 \x03(\x0b\x32\x16.LS.SubscriptionRecord\")\n\x17SetSubscriptionResponse\x12\x0e\n\x06result\x18\x01 \x02(\x08\"\'\n\x16GetSubscriptionRequest\x12\r\n\x05token\x18\x01 \x02(\t\"W\n\x17GetSubscriptionResponse\x12\r\n\x05token\x18\x01 \x02(\t\x12-\n\rsubscriptions\x18\x02 \x03(\x0b\x32\x16.LS.SubscriptionRecord')
 
 
 
@@ -172,6 +172,47 @@ _SERIESREQUEST = _descriptor.Descriptor(
 )
 
 
+_SERIESRESPONSE_EPISODE = _descriptor.Descriptor(
+  name='Episode',
+  full_name='LS.SeriesResponse.Episode',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='LS.SeriesResponse.Episode.name', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='originalName', full_name='LS.SeriesResponse.Episode.originalName', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='number', full_name='LS.SeriesResponse.Episode.number', index=2,
+      number=3, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=613,
+  serialized_end=674,
+)
+
 _SERIESRESPONSE_TVSHOW = _descriptor.Descriptor(
   name='TVShow',
   full_name='LS.SeriesResponse.TVShow',
@@ -201,16 +242,30 @@ _SERIESRESPONSE_TVSHOW = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='id', full_name='LS.SeriesResponse.TVShow.id', index=3,
+      name='episodeNumber', full_name='LS.SeriesResponse.TVShow.episodeNumber', index=3,
+      number=4, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='id', full_name='LS.SeriesResponse.TVShow.id', index=4,
       number=99, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='snapshot', full_name='LS.SeriesResponse.TVShow.snapshot', index=4,
+      name='snapshot', full_name='LS.SeriesResponse.TVShow.snapshot', index=5,
       number=100, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='episodes', full_name='LS.SeriesResponse.TVShow.episodes', index=6,
+      number=101, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -223,8 +278,8 @@ _SERIESRESPONSE_TVSHOW = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=613,
-  serialized_end=711,
+  serialized_start=677,
+  serialized_end=844,
 )
 
 _SERIESRESPONSE = _descriptor.Descriptor(
@@ -244,14 +299,14 @@ _SERIESRESPONSE = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_SERIESRESPONSE_TVSHOW, ],
+  nested_types=[_SERIESRESPONSE_EPISODE, _SERIESRESPONSE_TVSHOW, ],
   enum_types=[
   ],
   options=None,
   is_extendable=False,
   extension_ranges=[],
   serialized_start=553,
-  serialized_end=711,
+  serialized_end=844,
 )
 
 
@@ -263,15 +318,29 @@ _ARTWORKREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='snapshot', full_name='LS.ArtworkRequest.snapshot', index=0,
+      name='idShow', full_name='LS.ArtworkRequest.idShow', index=0,
       number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='id', full_name='LS.ArtworkRequest.id', index=1,
-      number=2, type=9, cpp_type=9, label=2,
+      name='seasonNumber', full_name='LS.ArtworkRequest.seasonNumber', index=1,
+      number=2, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='thumbnail', full_name='LS.ArtworkRequest.thumbnail', index=2,
+      number=3, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='snapshot', full_name='LS.ArtworkRequest.snapshot', index=3,
+      number=100, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -285,8 +354,8 @@ _ARTWORKREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=713,
-  serialized_end=759,
+  serialized_start=846,
+  serialized_end=937,
 )
 
 
@@ -306,8 +375,8 @@ _ARTWORKRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=761,
-  serialized_end=778,
+  serialized_start=939,
+  serialized_end=956,
 )
 
 
@@ -341,8 +410,8 @@ _SETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=780,
-  serialized_end=866,
+  serialized_start=958,
+  serialized_end=1044,
 )
 
 
@@ -369,8 +438,8 @@ _SETSUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=868,
-  serialized_end=909,
+  serialized_start=1046,
+  serialized_end=1087,
 )
 
 
@@ -397,8 +466,8 @@ _GETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=911,
-  serialized_end=950,
+  serialized_start=1089,
+  serialized_end=1128,
 )
 
 
@@ -432,8 +501,8 @@ _GETSUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=952,
-  serialized_end=1039,
+  serialized_start=1130,
+  serialized_end=1217,
 )
 
 _MESSAGE.fields_by_name['seriesRequest'].message_type = _SERIESREQUEST
@@ -444,6 +513,8 @@ _MESSAGE.fields_by_name['seriesResponse'].message_type = _SERIESRESPONSE
 _MESSAGE.fields_by_name['artworkResponse'].message_type = _ARTWORKRESPONSE
 _MESSAGE.fields_by_name['setSubscriptionResponse'].message_type = _SETSUBSCRIPTIONRESPONSE
 _MESSAGE.fields_by_name['getSubscriptionResponse'].message_type = _GETSUBSCRIPTIONRESPONSE
+_SERIESRESPONSE_EPISODE.containing_type = _SERIESRESPONSE;
+_SERIESRESPONSE_TVSHOW.fields_by_name['episodes'].message_type = _SERIESRESPONSE_EPISODE
 _SERIESRESPONSE_TVSHOW.containing_type = _SERIESRESPONSE;
 _SERIESRESPONSE.fields_by_name['shows'].message_type = _SERIESRESPONSE_TVSHOW
 _SETSUBSCRIPTIONREQUEST.fields_by_name['subscriptions'].message_type = _SUBSCRIPTIONRECORD
@@ -486,6 +557,12 @@ class SeriesRequest(_message.Message):
 
 class SeriesResponse(_message.Message):
   __metaclass__ = _reflection.GeneratedProtocolMessageType
+
+  class Episode(_message.Message):
+    __metaclass__ = _reflection.GeneratedProtocolMessageType
+    DESCRIPTOR = _SERIESRESPONSE_EPISODE
+
+    # @@protoc_insertion_point(class_scope:LS.SeriesResponse.Episode)
 
   class TVShow(_message.Message):
     __metaclass__ = _reflection.GeneratedProtocolMessageType

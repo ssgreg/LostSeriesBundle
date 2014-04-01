@@ -6,40 +6,58 @@ import threading
 import random
 import pymongo
 import datetime
+import logging
+import logging.config
 #
 from Cache import DataCache
 import LostSeriesProtocol_pb2
 import Snapshot
 from Storage import *
+import Database
+
+
+def logger():
+  return logging.getLogger(__name__)
 
 
 def HandleSeriesRequest(message):
   print "Handling SeriesRequest..."
-  sectionData, sectionArtwors = DataCache.Instance().GetData()
   #
+  db = Database.instance();
   response = LostSeriesProtocol_pb2.SeriesResponse()
-  for record in list(sectionData.find({ SHOW_IS_CANCELED: False })):
+  for showData in list(db.shows.find({"$or": [{ "value." + SHOW_IS_CANCELED: False }, { "value." + SHOW_IS_CANCELED_FIXED: False }]})):
+    show = showData['value'];
+    if not SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED]:
+      continue
+    if SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED_FIXED]:
+      continue
     showInfo = response.shows.add()
-    showInfo.title = record[SHOW_TITLE]
-    showInfo.originalTitle = record[SHOW_ORIGINAL_TITLE]
-    showInfo.seasonNumber = record[SHOW_LAST_SEASON_NUMBER]
-    showInfo.id = str(record[SHOW_ID])
+    showInfo.title = show[SHOW_TITLE]
+    showInfo.originalTitle = show[SHOW_ORIGINAL_TITLE]
+    showInfo.seasonNumber = show[SHOW_LAST_SEASON_NUMBER]
+    showInfo.episodeNumber = show[SHOW_LAST_EPISODE_NUMBER]
+    showInfo.id = show[SHOW_ID]
     showInfo.snapshot = Snapshot.GetLatestSnapshot()
+    for episodeData in list(db.episodes.find({"$and": [{"value." + SHOW_ID: show[SHOW_ID]}, {"value." + SHOW_SEASON_NUMBER: show[SHOW_LAST_SEASON_NUMBER]}]})):
+      episode = episodeData['value'];
+      episodeInfo = showInfo.episodes.add()
+      episodeInfo.name = episode[SHOW_SEASON_EPISODE_NAME]
+      episodeInfo.originalName = episode[SHOW_SEASON_SPISODE_ORIGINAL_NAME]
+      episodeInfo.number = episode[SHOW_SEASON_EPISODE_NUMBER]
   return {"message": response, "data": None}
 
 
 def HandleArtworkRequest(message):
   print "Handling ArtworkRequest..."
-  sectionData, sectionArtwors = DataCache.Instance().GetData()
   #
   response = LostSeriesProtocol_pb2.ArtworkResponse()
-  #
+  record = Database.instance().artworks.find_one({"$and": [{SHOW_ID: message.idShow}, {SHOW_SEASON_NUMBER: message.seasonNumber}]})
   artwork = ""
-  try:
-    show = sectionData.find_one({ SHOW_ID: message.id })
-    artwork = sectionArtwors.find_one({ SHOW_ID: show[SHOW_ID] })[SHOW_SEASON_ARTWORK_THUMBNAIL]
-  except Exception as e:
-    print traceback.format_exc()
+  if record:
+    if message.thumbnail:
+      artwork = record[SHOW_SEASON_ARTWORK_THUMBNAIL]
+    else:
+      artwork = record[SHOW_SEASON_ARTWORK]
   #
   return {"message": response, "data": artwork}
 
@@ -141,7 +159,7 @@ def MessageLoop(socket):
   while True:
     try:
       request = socket.recv()
-      print "Handle!"
+      logging.debug("Packet recieved from client:")
       #
       requestMessage = ParseData(request)
       response = DispatchMessage(requestMessage)
@@ -161,7 +179,8 @@ def MessageLoop(socket):
 
 
 def Main():
-  print "LostSeries Server started"
+  logging.config.fileConfig('logging.ini')
+  logger().info("LostSeries Server started")
   #
   context = zmq.Context()
   socket = context.socket(zmq.REP)

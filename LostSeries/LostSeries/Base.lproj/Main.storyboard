@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13D17" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="d2G-EP-egg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="d2G-EP-egg">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -44,7 +44,7 @@
             <objects>
                 <collectionViewController id="fzN-9f-KPV" customClass="LSShowInfoCollectionViewController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="9gu-94-guR">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
@@ -90,6 +90,7 @@
                                     <outlet property="image" destination="foa-jI-tNW" id="0Sr-8C-STX"/>
                                     <outlet property="overlay" destination="bXg-0D-Sqb" id="rSC-Ew-Dhk"/>
                                     <outlet property="subscriptionOverlay" destination="tA7-DG-YAJ" id="Rxq-J1-1rz"/>
+                                    <segue destination="RlL-ld-aZF" kind="push" id="Pj0-Cc-ZoZ"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -120,7 +121,7 @@
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" id="G1C-ik-Un2" customClass="LSShowsFollowingController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="WZa-jc-AA3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="9" id="qec-mS-SNa">
@@ -183,11 +184,42 @@
             </objects>
             <point key="canvasLocation" x="-722" y="60"/>
         </scene>
+        <!--Controller Show Details-->
+        <scene sceneID="Nxb-Qe-QW2">
+            <objects>
+                <viewController id="RlL-ld-aZF" customClass="LSControllerShowDetails" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7ED-en-hyO">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="vpo-WL-qbX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="408"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="UNs-eW-gWa">
+                                <rect key="frame" x="0.0" y="320" width="320" height="132"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="DAp-gv-Vdz"/>
+                    <connections>
+                        <outlet property="theImageShow" destination="vpo-WL-qbX" id="jfd-yC-NJ9"/>
+                        <outlet property="theTableEpisodes" destination="UNs-eW-gWa" id="lFQ-bd-PXd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="16z-ti-EBk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-280" y="722"/>
+        </scene>
         <!--Main Controller-->
         <scene sceneID="3eu-Ns-ufn">
             <objects>
                 <tabBarController autoresizesArchivedViewToFullSize="NO" definesPresentationContext="YES" modalTransitionStyle="crossDissolve" id="d2G-EP-egg" customClass="LSMainController" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="Fi8-cI-lW8">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>

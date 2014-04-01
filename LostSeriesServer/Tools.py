@@ -8,6 +8,7 @@
 #
 
 import datetime
+from math import pow
 
 
 def ShowDirectoryNamePrefix():
@@ -34,3 +35,7 @@ def MakeArtworkFileName(originalName, numberSeason):
 def MakeSnapshotID():
   today = datetime.datetime.now()
   return today.strftime('%Y-%m%d-%H%M%S')
+
+def MakeTimestamp():
+  t = datetime.datetime.utcnow()
+  return int((t.year - 2000) * pow(10, 10) + t.month * pow(10, 8) + t.day * pow(10, 6) + t.hour * pow(10, 4) + t.minute * pow(10, 2) + t.second)

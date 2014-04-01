@@ -36,13 +36,22 @@ message SeriesRequest
 
 message SeriesResponse
 {
+  message Episode
+  {
+    required string name = 1;
+    required string originalName = 2;
+    required int32 number = 3;
+  }
+
   message TVShow
   {
     required string title = 1;
     required string originalTitle = 2;
     required int32 seasonNumber = 3;
+    required int32 episodeNumber = 4;
     required string id = 99;
     required string snapshot = 100;
+    repeated Episode episodes = 101;
   }
 
   repeated TVShow shows = 1;
@@ -51,8 +60,10 @@ message SeriesResponse
 
 message ArtworkRequest
 {
-  required string snapshot = 1;
-  required string id = 2;
+  required string idShow = 1;
+  required int32 seasonNumber = 2;
+  required bool thumbnail = 3;
+  required string snapshot = 100;
 }
 
 

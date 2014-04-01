@@ -131,7 +131,7 @@
 - (NSString*) fileNameFromArtworkRequest:(LS::ArtworkRequest const&)request
 {
   NSString* snapshot = [NSString stringWithCString:request.snapshot().c_str() encoding:NSASCIIStringEncoding];
-  NSString* showID = [NSString stringWithCString:request.id().c_str() encoding:NSASCIIStringEncoding];
+  NSString* showID = [NSString stringWithCString:request.idshow().c_str() encoding:NSASCIIStringEncoding];
   return [NSString stringWithFormat:@"%@-%@", snapshot, showID];
 }
 

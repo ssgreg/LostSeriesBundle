@@ -56,7 +56,7 @@
   theLocalCache = [LSLocalCache localCache];
   thePollQueue = dispatch_queue_create("caching_server.poll.queue", NULL);
   //
-  static char const* backendAddres = "tcp://localhost:8500"; // 188.226.138.15
+  static char const* backendAddres = "tcp://localhost:8500"; // server.lostseriesapp.com
   static char const* frontendAddres = "inproc://caching_server.frontend";
   theBackendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
   theBackendSocket->connect(backendAddres);

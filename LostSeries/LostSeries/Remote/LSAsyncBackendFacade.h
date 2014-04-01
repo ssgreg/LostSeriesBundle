@@ -37,6 +37,17 @@
 
 
 //
+// LSEpisodeInfo
+//
+
+@interface LSEpisodeInfo : NSObject
+@property NSString* name;
+@property NSString* originalName;
+@property NSInteger number;
+@end
+
+
+//
 // LSShowInfo
 //
 
@@ -47,6 +58,7 @@
 @property NSInteger seasonNumber;
 @property NSString* showID;
 @property NSString* snapshot;
+@property NSArray* episodes;
 @end
 
 

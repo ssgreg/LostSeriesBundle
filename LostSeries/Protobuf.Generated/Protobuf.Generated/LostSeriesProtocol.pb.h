@@ -38,6 +38,7 @@ class Message;
 class SubscriptionRecord;
 class SeriesRequest;
 class SeriesResponse;
+class SeriesResponse_Episode;
 class SeriesResponse_TVShow;
 class ArtworkRequest;
 class ArtworkResponse;
@@ -457,6 +458,118 @@ class SeriesRequest : public ::google_public::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class SeriesResponse_Episode : public ::google_public::protobuf::Message {
+ public:
+  SeriesResponse_Episode();
+  virtual ~SeriesResponse_Episode();
+
+  SeriesResponse_Episode(const SeriesResponse_Episode& from);
+
+  inline SeriesResponse_Episode& operator=(const SeriesResponse_Episode& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google_public::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google_public::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google_public::protobuf::Descriptor* descriptor();
+  static const SeriesResponse_Episode& default_instance();
+
+  void Swap(SeriesResponse_Episode* other);
+
+  // implements Message ----------------------------------------------
+
+  SeriesResponse_Episode* New() const;
+  void CopyFrom(const ::google_public::protobuf::Message& from);
+  void MergeFrom(const ::google_public::protobuf::Message& from);
+  void CopyFrom(const SeriesResponse_Episode& from);
+  void MergeFrom(const SeriesResponse_Episode& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google_public::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google_public::protobuf::io::CodedOutputStream* output) const;
+  ::google_public::protobuf::uint8* SerializeWithCachedSizesToArray(::google_public::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google_public::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string name = 1;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
+
+  // required string originalName = 2;
+  inline bool has_originalname() const;
+  inline void clear_originalname();
+  static const int kOriginalNameFieldNumber = 2;
+  inline const ::std::string& originalname() const;
+  inline void set_originalname(const ::std::string& value);
+  inline void set_originalname(const char* value);
+  inline void set_originalname(const char* value, size_t size);
+  inline ::std::string* mutable_originalname();
+  inline ::std::string* release_originalname();
+  inline void set_allocated_originalname(::std::string* originalname);
+
+  // required int32 number = 3;
+  inline bool has_number() const;
+  inline void clear_number();
+  static const int kNumberFieldNumber = 3;
+  inline ::google_public::protobuf::int32 number() const;
+  inline void set_number(::google_public::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:LS.SeriesResponse.Episode)
+ private:
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_originalname();
+  inline void clear_has_originalname();
+  inline void set_has_number();
+  inline void clear_has_number();
+
+  ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::std::string* name_;
+  ::std::string* originalname_;
+  ::google_public::protobuf::int32 number_;
+
+  mutable int _cached_size_;
+  ::google_public::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+
+  friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
+  friend void protobuf_ShutdownFile_LostSeriesProtocol_2eproto();
+
+  void InitAsDefaultInstance();
+  static SeriesResponse_Episode* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
  public:
   SeriesResponse_TVShow();
@@ -542,6 +655,13 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   inline ::google_public::protobuf::int32 seasonnumber() const;
   inline void set_seasonnumber(::google_public::protobuf::int32 value);
 
+  // required int32 episodeNumber = 4;
+  inline bool has_episodenumber() const;
+  inline void clear_episodenumber();
+  static const int kEpisodeNumberFieldNumber = 4;
+  inline ::google_public::protobuf::int32 episodenumber() const;
+  inline void set_episodenumber(::google_public::protobuf::int32 value);
+
   // required string id = 99;
   inline bool has_id() const;
   inline void clear_id();
@@ -566,6 +686,18 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   inline ::std::string* release_snapshot();
   inline void set_allocated_snapshot(::std::string* snapshot);
 
+  // repeated .LS.SeriesResponse.Episode episodes = 101;
+  inline int episodes_size() const;
+  inline void clear_episodes();
+  static const int kEpisodesFieldNumber = 101;
+  inline const ::LS::SeriesResponse_Episode& episodes(int index) const;
+  inline ::LS::SeriesResponse_Episode* mutable_episodes(int index);
+  inline ::LS::SeriesResponse_Episode* add_episodes();
+  inline const ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_Episode >&
+      episodes() const;
+  inline ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_Episode >*
+      mutable_episodes();
+
   // @@protoc_insertion_point(class_scope:LS.SeriesResponse.TVShow)
  private:
   inline void set_has_title();
@@ -574,6 +706,8 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   inline void clear_has_originaltitle();
   inline void set_has_seasonnumber();
   inline void clear_has_seasonnumber();
+  inline void set_has_episodenumber();
+  inline void clear_has_episodenumber();
   inline void set_has_id();
   inline void clear_has_id();
   inline void set_has_snapshot();
@@ -583,12 +717,14 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
 
   ::std::string* title_;
   ::std::string* originaltitle_;
+  ::google_public::protobuf::int32 seasonnumber_;
+  ::google_public::protobuf::int32 episodenumber_;
   ::std::string* id_;
   ::std::string* snapshot_;
-  ::google_public::protobuf::int32 seasonnumber_;
+  ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_Episode > episodes_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(7 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -651,6 +787,7 @@ class SeriesResponse : public ::google_public::protobuf::Message {
 
   // nested types ----------------------------------------------------
 
+  typedef SeriesResponse_Episode Episode;
   typedef SeriesResponse_TVShow TVShow;
 
   // accessors -------------------------------------------------------
@@ -740,10 +877,36 @@ class ArtworkRequest : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string snapshot = 1;
+  // required string idShow = 1;
+  inline bool has_idshow() const;
+  inline void clear_idshow();
+  static const int kIdShowFieldNumber = 1;
+  inline const ::std::string& idshow() const;
+  inline void set_idshow(const ::std::string& value);
+  inline void set_idshow(const char* value);
+  inline void set_idshow(const char* value, size_t size);
+  inline ::std::string* mutable_idshow();
+  inline ::std::string* release_idshow();
+  inline void set_allocated_idshow(::std::string* idshow);
+
+  // required int32 seasonNumber = 2;
+  inline bool has_seasonnumber() const;
+  inline void clear_seasonnumber();
+  static const int kSeasonNumberFieldNumber = 2;
+  inline ::google_public::protobuf::int32 seasonnumber() const;
+  inline void set_seasonnumber(::google_public::protobuf::int32 value);
+
+  // required bool thumbnail = 3;
+  inline bool has_thumbnail() const;
+  inline void clear_thumbnail();
+  static const int kThumbnailFieldNumber = 3;
+  inline bool thumbnail() const;
+  inline void set_thumbnail(bool value);
+
+  // required string snapshot = 100;
   inline bool has_snapshot() const;
   inline void clear_snapshot();
-  static const int kSnapshotFieldNumber = 1;
+  static const int kSnapshotFieldNumber = 100;
   inline const ::std::string& snapshot() const;
   inline void set_snapshot(const ::std::string& value);
   inline void set_snapshot(const char* value);
@@ -752,32 +915,26 @@ class ArtworkRequest : public ::google_public::protobuf::Message {
   inline ::std::string* release_snapshot();
   inline void set_allocated_snapshot(::std::string* snapshot);
 
-  // required string id = 2;
-  inline bool has_id() const;
-  inline void clear_id();
-  static const int kIdFieldNumber = 2;
-  inline const ::std::string& id() const;
-  inline void set_id(const ::std::string& value);
-  inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
-  inline ::std::string* mutable_id();
-  inline ::std::string* release_id();
-  inline void set_allocated_id(::std::string* id);
-
   // @@protoc_insertion_point(class_scope:LS.ArtworkRequest)
  private:
+  inline void set_has_idshow();
+  inline void clear_has_idshow();
+  inline void set_has_seasonnumber();
+  inline void clear_has_seasonnumber();
+  inline void set_has_thumbnail();
+  inline void clear_has_thumbnail();
   inline void set_has_snapshot();
   inline void clear_has_snapshot();
-  inline void set_has_id();
-  inline void clear_has_id();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
+  ::std::string* idshow_;
+  ::google_public::protobuf::int32 seasonnumber_;
+  bool thumbnail_;
   ::std::string* snapshot_;
-  ::std::string* id_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(4 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -1644,6 +1801,172 @@ inline void SubscriptionRecord::set_allocated_id(::std::string* id) {
 
 // -------------------------------------------------------------------
 
+// SeriesResponse_Episode
+
+// required string name = 1;
+inline bool SeriesResponse_Episode::has_name() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SeriesResponse_Episode::set_has_name() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SeriesResponse_Episode::clear_has_name() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SeriesResponse_Episode::clear_name() {
+  if (name_ != &::google_public::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& SeriesResponse_Episode::name() const {
+  return *name_;
+}
+inline void SeriesResponse_Episode::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google_public::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void SeriesResponse_Episode::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google_public::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void SeriesResponse_Episode::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google_public::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SeriesResponse_Episode::mutable_name() {
+  set_has_name();
+  if (name_ == &::google_public::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* SeriesResponse_Episode::release_name() {
+  clear_has_name();
+  if (name_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SeriesResponse_Episode::set_allocated_name(::std::string* name) {
+  if (name_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (name) {
+    set_has_name();
+    name_ = name;
+  } else {
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// required string originalName = 2;
+inline bool SeriesResponse_Episode::has_originalname() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SeriesResponse_Episode::set_has_originalname() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SeriesResponse_Episode::clear_has_originalname() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SeriesResponse_Episode::clear_originalname() {
+  if (originalname_ != &::google_public::protobuf::internal::kEmptyString) {
+    originalname_->clear();
+  }
+  clear_has_originalname();
+}
+inline const ::std::string& SeriesResponse_Episode::originalname() const {
+  return *originalname_;
+}
+inline void SeriesResponse_Episode::set_originalname(const ::std::string& value) {
+  set_has_originalname();
+  if (originalname_ == &::google_public::protobuf::internal::kEmptyString) {
+    originalname_ = new ::std::string;
+  }
+  originalname_->assign(value);
+}
+inline void SeriesResponse_Episode::set_originalname(const char* value) {
+  set_has_originalname();
+  if (originalname_ == &::google_public::protobuf::internal::kEmptyString) {
+    originalname_ = new ::std::string;
+  }
+  originalname_->assign(value);
+}
+inline void SeriesResponse_Episode::set_originalname(const char* value, size_t size) {
+  set_has_originalname();
+  if (originalname_ == &::google_public::protobuf::internal::kEmptyString) {
+    originalname_ = new ::std::string;
+  }
+  originalname_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SeriesResponse_Episode::mutable_originalname() {
+  set_has_originalname();
+  if (originalname_ == &::google_public::protobuf::internal::kEmptyString) {
+    originalname_ = new ::std::string;
+  }
+  return originalname_;
+}
+inline ::std::string* SeriesResponse_Episode::release_originalname() {
+  clear_has_originalname();
+  if (originalname_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = originalname_;
+    originalname_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SeriesResponse_Episode::set_allocated_originalname(::std::string* originalname) {
+  if (originalname_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete originalname_;
+  }
+  if (originalname) {
+    set_has_originalname();
+    originalname_ = originalname;
+  } else {
+    clear_has_originalname();
+    originalname_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// required int32 number = 3;
+inline bool SeriesResponse_Episode::has_number() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void SeriesResponse_Episode::set_has_number() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void SeriesResponse_Episode::clear_has_number() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void SeriesResponse_Episode::clear_number() {
+  number_ = 0;
+  clear_has_number();
+}
+inline ::google_public::protobuf::int32 SeriesResponse_Episode::number() const {
+  return number_;
+}
+inline void SeriesResponse_Episode::set_number(::google_public::protobuf::int32 value) {
+  set_has_number();
+  number_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // SeriesResponse_TVShow
 
 // required string title = 1;
@@ -1808,15 +2131,37 @@ inline void SeriesResponse_TVShow::set_seasonnumber(::google_public::protobuf::i
   seasonnumber_ = value;
 }
 
-// required string id = 99;
-inline bool SeriesResponse_TVShow::has_id() const {
+// required int32 episodeNumber = 4;
+inline bool SeriesResponse_TVShow::has_episodenumber() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void SeriesResponse_TVShow::set_has_id() {
+inline void SeriesResponse_TVShow::set_has_episodenumber() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void SeriesResponse_TVShow::clear_has_id() {
+inline void SeriesResponse_TVShow::clear_has_episodenumber() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void SeriesResponse_TVShow::clear_episodenumber() {
+  episodenumber_ = 0;
+  clear_has_episodenumber();
+}
+inline ::google_public::protobuf::int32 SeriesResponse_TVShow::episodenumber() const {
+  return episodenumber_;
+}
+inline void SeriesResponse_TVShow::set_episodenumber(::google_public::protobuf::int32 value) {
+  set_has_episodenumber();
+  episodenumber_ = value;
+}
+
+// required string id = 99;
+inline bool SeriesResponse_TVShow::has_id() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SeriesResponse_TVShow::set_has_id() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SeriesResponse_TVShow::clear_has_id() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void SeriesResponse_TVShow::clear_id() {
   if (id_ != &::google_public::protobuf::internal::kEmptyString) {
@@ -1880,13 +2225,13 @@ inline void SeriesResponse_TVShow::set_allocated_id(::std::string* id) {
 
 // required string snapshot = 100;
 inline bool SeriesResponse_TVShow::has_snapshot() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void SeriesResponse_TVShow::set_has_snapshot() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void SeriesResponse_TVShow::clear_has_snapshot() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void SeriesResponse_TVShow::clear_snapshot() {
   if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
@@ -1948,6 +2293,31 @@ inline void SeriesResponse_TVShow::set_allocated_snapshot(::std::string* snapsho
   }
 }
 
+// repeated .LS.SeriesResponse.Episode episodes = 101;
+inline int SeriesResponse_TVShow::episodes_size() const {
+  return episodes_.size();
+}
+inline void SeriesResponse_TVShow::clear_episodes() {
+  episodes_.Clear();
+}
+inline const ::LS::SeriesResponse_Episode& SeriesResponse_TVShow::episodes(int index) const {
+  return episodes_.Get(index);
+}
+inline ::LS::SeriesResponse_Episode* SeriesResponse_TVShow::mutable_episodes(int index) {
+  return episodes_.Mutable(index);
+}
+inline ::LS::SeriesResponse_Episode* SeriesResponse_TVShow::add_episodes() {
+  return episodes_.Add();
+}
+inline const ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_Episode >&
+SeriesResponse_TVShow::episodes() const {
+  return episodes_;
+}
+inline ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_Episode >*
+SeriesResponse_TVShow::mutable_episodes() {
+  return &episodes_;
+}
+
 // -------------------------------------------------------------------
 
 // SeriesResponse
@@ -1981,15 +2351,129 @@ SeriesResponse::mutable_shows() {
 
 // ArtworkRequest
 
-// required string snapshot = 1;
-inline bool ArtworkRequest::has_snapshot() const {
+// required string idShow = 1;
+inline bool ArtworkRequest::has_idshow() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ArtworkRequest::set_has_snapshot() {
+inline void ArtworkRequest::set_has_idshow() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ArtworkRequest::clear_has_snapshot() {
+inline void ArtworkRequest::clear_has_idshow() {
   _has_bits_[0] &= ~0x00000001u;
+}
+inline void ArtworkRequest::clear_idshow() {
+  if (idshow_ != &::google_public::protobuf::internal::kEmptyString) {
+    idshow_->clear();
+  }
+  clear_has_idshow();
+}
+inline const ::std::string& ArtworkRequest::idshow() const {
+  return *idshow_;
+}
+inline void ArtworkRequest::set_idshow(const ::std::string& value) {
+  set_has_idshow();
+  if (idshow_ == &::google_public::protobuf::internal::kEmptyString) {
+    idshow_ = new ::std::string;
+  }
+  idshow_->assign(value);
+}
+inline void ArtworkRequest::set_idshow(const char* value) {
+  set_has_idshow();
+  if (idshow_ == &::google_public::protobuf::internal::kEmptyString) {
+    idshow_ = new ::std::string;
+  }
+  idshow_->assign(value);
+}
+inline void ArtworkRequest::set_idshow(const char* value, size_t size) {
+  set_has_idshow();
+  if (idshow_ == &::google_public::protobuf::internal::kEmptyString) {
+    idshow_ = new ::std::string;
+  }
+  idshow_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ArtworkRequest::mutable_idshow() {
+  set_has_idshow();
+  if (idshow_ == &::google_public::protobuf::internal::kEmptyString) {
+    idshow_ = new ::std::string;
+  }
+  return idshow_;
+}
+inline ::std::string* ArtworkRequest::release_idshow() {
+  clear_has_idshow();
+  if (idshow_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = idshow_;
+    idshow_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void ArtworkRequest::set_allocated_idshow(::std::string* idshow) {
+  if (idshow_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idshow_;
+  }
+  if (idshow) {
+    set_has_idshow();
+    idshow_ = idshow;
+  } else {
+    clear_has_idshow();
+    idshow_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// required int32 seasonNumber = 2;
+inline bool ArtworkRequest::has_seasonnumber() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ArtworkRequest::set_has_seasonnumber() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ArtworkRequest::clear_has_seasonnumber() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ArtworkRequest::clear_seasonnumber() {
+  seasonnumber_ = 0;
+  clear_has_seasonnumber();
+}
+inline ::google_public::protobuf::int32 ArtworkRequest::seasonnumber() const {
+  return seasonnumber_;
+}
+inline void ArtworkRequest::set_seasonnumber(::google_public::protobuf::int32 value) {
+  set_has_seasonnumber();
+  seasonnumber_ = value;
+}
+
+// required bool thumbnail = 3;
+inline bool ArtworkRequest::has_thumbnail() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ArtworkRequest::set_has_thumbnail() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ArtworkRequest::clear_has_thumbnail() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ArtworkRequest::clear_thumbnail() {
+  thumbnail_ = false;
+  clear_has_thumbnail();
+}
+inline bool ArtworkRequest::thumbnail() const {
+  return thumbnail_;
+}
+inline void ArtworkRequest::set_thumbnail(bool value) {
+  set_has_thumbnail();
+  thumbnail_ = value;
+}
+
+// required string snapshot = 100;
+inline bool ArtworkRequest::has_snapshot() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ArtworkRequest::set_has_snapshot() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ArtworkRequest::clear_has_snapshot() {
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void ArtworkRequest::clear_snapshot() {
   if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
@@ -2048,76 +2532,6 @@ inline void ArtworkRequest::set_allocated_snapshot(::std::string* snapshot) {
   } else {
     clear_has_snapshot();
     snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  }
-}
-
-// required string id = 2;
-inline bool ArtworkRequest::has_id() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void ArtworkRequest::set_has_id() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void ArtworkRequest::clear_has_id() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void ArtworkRequest::clear_id() {
-  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
-    id_->clear();
-  }
-  clear_has_id();
-}
-inline const ::std::string& ArtworkRequest::id() const {
-  return *id_;
-}
-inline void ArtworkRequest::set_id(const ::std::string& value) {
-  set_has_id();
-  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
-  id_->assign(value);
-}
-inline void ArtworkRequest::set_id(const char* value) {
-  set_has_id();
-  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
-  id_->assign(value);
-}
-inline void ArtworkRequest::set_id(const char* value, size_t size) {
-  set_has_id();
-  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
-  id_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ArtworkRequest::mutable_id() {
-  set_has_id();
-  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
-  return id_;
-}
-inline ::std::string* ArtworkRequest::release_id() {
-  clear_has_id();
-  if (id_ == &::google_public::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = id_;
-    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void ArtworkRequest::set_allocated_id(::std::string* id) {
-  if (id_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete id_;
-  }
-  if (id) {
-    set_has_id();
-    id_ = id;
-  } else {
-    clear_has_id();
-    id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
 }
 
