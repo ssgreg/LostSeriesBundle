@@ -8,6 +8,7 @@
 
 // LS
 #import "LSShowInfoCollectionViewController.h"
+#import "LSControllerShowDetails.h"
 #import <UIComponents/UIStatusBarView.h>
 #import "LSModelBase.h"
 #import "Logic/LSApplication.h"
@@ -554,6 +555,10 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
     [theWLinkShowsSelection didSelectItemAtIndex:indexPath];
     LSShowAlbumCell* cell = (LSShowAlbumCell*)[theCollectionView cellForItemAtIndexPath:indexPath];
     [self updateCell:cell forIndexPath:indexPath];
+  }
+  else
+  {
+    [self performSegueWithIdentifier:@"ShowDetails" sender:self];
   }
 }
 

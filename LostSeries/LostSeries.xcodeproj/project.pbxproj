@@ -270,6 +270,8 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
+				EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */,
+				EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */,
 				EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */,
 				EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */,
 				EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */,
@@ -296,8 +298,6 @@
 			isa = PBXGroup;
 			children = (
 				EEB11813187F17D500337023 /* Main.storyboard */,
-				EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */,
-				EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */,
 				EEB11819187F17D500337023 /* Images.xcassets */,
 				EEB11809187F17D500337023 /* LostSeries-Info.plist */,
 				EEB1180A187F17D500337023 /* InfoPlist.strings */,

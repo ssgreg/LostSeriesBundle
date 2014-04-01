@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="d2G-EP-egg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13D28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="d2G-EP-egg">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -90,7 +90,6 @@
                                     <outlet property="image" destination="foa-jI-tNW" id="0Sr-8C-STX"/>
                                     <outlet property="overlay" destination="bXg-0D-Sqb" id="rSC-Ew-Dhk"/>
                                     <outlet property="subscriptionOverlay" destination="tA7-DG-YAJ" id="Rxq-J1-1rz"/>
-                                    <segue destination="RlL-ld-aZF" kind="push" id="Pj0-Cc-ZoZ"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -110,6 +109,7 @@
                         <outlet property="theCollectionView" destination="9gu-94-guR" id="dqw-70-uDa"/>
                         <outlet property="theNavigationItem" destination="1Wj-ae-dLs" id="KOm-bf-QeC"/>
                         <outlet property="theSelectButton" destination="XK4-8I-mlJ" id="xZr-e1-dIA"/>
+                        <segue destination="RlL-ld-aZF" kind="push" identifier="ShowDetails" id="tCA-Ak-xzq"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2lR-3N-mXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -187,7 +187,7 @@
         <!--Controller Show Details-->
         <scene sceneID="Nxb-Qe-QW2">
             <objects>
-                <viewController id="RlL-ld-aZF" customClass="LSControllerShowDetails" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LSControllerShowDetails" id="RlL-ld-aZF" customClass="LSControllerShowDetails" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7ED-en-hyO">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -205,6 +205,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="DAp-gv-Vdz"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="theImageShow" destination="vpo-WL-qbX" id="jfd-yC-NJ9"/>
                         <outlet property="theTableEpisodes" destination="UNs-eW-gWa" id="lFQ-bd-PXd"/>
