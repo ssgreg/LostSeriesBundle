@@ -446,7 +446,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:[LSApplication singleInstance].modelBase];
   //
   
-  
   theWorkflow = WFSplitWorkflowWithOutputUsingOr(
       WFLinkWorkflow(
           theShowCollectionWL

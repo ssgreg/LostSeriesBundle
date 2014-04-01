@@ -8,6 +8,7 @@
 
 // LS
 #import "LSControllerShowDetails.h"
+#import "LSApplication.h"
 
 
 //
@@ -23,6 +24,9 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  //
+  LSShowAlbumCellModel* info = [LSApplication singleInstance].modelBase.shows[0];
+  theImageShow.image = info.artwork;
 }
 
 @end
