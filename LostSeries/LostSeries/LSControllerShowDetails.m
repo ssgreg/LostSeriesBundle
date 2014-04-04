@@ -15,10 +15,10 @@
 // LSWLinkLockWaitForViewDidLoad
 //
 
-@interface LSWLinkWaitForViewDidLoad : WFWorkflowLink
+@interface LSWLinkLockWaitForViewDidLoad : WFWorkflowLink
 @end
 
-@implementation LSWLinkWaitForViewDidLoad
+@implementation LSWLinkLockWaitForViewDidLoad
 {
   BOOL theIsLockedFlag;
 }
@@ -93,7 +93,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
   NSString* theIdController;
   // workflow
   WFWorkflow* theWorkflow;
-  LSWLinkWaitForViewDidLoad* theWLinkLockWaitForViewDidLoad;
+  LSWLinkLockWaitForViewDidLoad* theWLinkLockWaitForViewDidLoad;
 }
  
 - (void) setIdController:(NSString*)id
@@ -110,7 +110,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
   }
   //
   LSModelBase* model = [LSApplication singleInstance].modelBase;
-  theWLinkLockWaitForViewDidLoad = [[LSWLinkWaitForViewDidLoad alloc] init];
+  theWLinkLockWaitForViewDidLoad = [[LSWLinkLockWaitForViewDidLoad alloc] init];
   //
   theWorkflow = WFLinkWorkflow(
       theWLinkLockWaitForViewDidLoad
