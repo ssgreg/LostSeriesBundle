@@ -53,7 +53,7 @@
 // LSWLinkActionGetFullSizeArtwork
 //
 
-@protocol LSDataActionGetFullSizeArtwork <LSDataBaseFacadeAsyncBackend>
+@protocol LSDataActionGetFullSizeArtwork <LSDataBaseFacadeAsyncBackend, LSDataBaseShows>
 @end
 
 @interface LSWLinkActionGetFullSizeArtwork : WFWorkflowLink
@@ -65,15 +65,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
 
 - (void) input
 {
-  //
-//  [self.data.backendFacade getArtworkByShowInfo:<#(LSShowInfo *)#> replyHandler:<#^(NSData *)handler#>:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^(BOOL result)
-//  {
-//    [self.view showActionIndicator:NO];
-//    if (result)
-//    {
-//      [self output];
-//    }
-//  }];
+  [self.data.backendFacade getArtworkByShowInfo:((LSShowAlbumCellModel*)self.data.shows[0]).showInfo thumbnail:NO replyHandler:^(NSData* dataArtwork)
+  {
+    [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
+    [self output];
+  }];
   //
   [self forwardBlock];
 }
@@ -137,6 +133,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
     [[LSApplication singleInstance].registryControllers removeController:theIdController];
     theIdController = @"";
   }
+}
+
+- (void) setImageArtwork:(UIImage*)image
+{
+  theImageShow.image = image;
 }
 
 @end

@@ -54,6 +54,7 @@ def HandleArtworkRequest(message):
   record = Database.instance().artworks.find_one({"$and": [{SHOW_ID: message.idShow}, {SHOW_SEASON_NUMBER: message.seasonNumber}]})
   artwork = ""
   if record:
+    print message.thumbnail
     if message.thumbnail:
       artwork = record[SHOW_SEASON_ARTWORK_THUMBNAIL]
     else:

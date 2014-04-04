@@ -12,6 +12,7 @@
 
 
 @protocol LSViewActionGetFullSizeArtwork <NSObject>
+- (void) setImageArtwork:(UIImage*)image;
 @end
 
 

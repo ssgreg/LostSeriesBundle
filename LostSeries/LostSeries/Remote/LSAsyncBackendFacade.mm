@@ -88,12 +88,12 @@
   }];
 }
 
-- (void) getArtworkByShowInfo:(LSShowInfo*)showInfo replyHandler:(void (^)(NSData*))handler
+- (void) getArtworkByShowInfo:(LSShowInfo*)showInfo thumbnail:(BOOL)thumbnail replyHandler:(void (^)(NSData*))handler
 {
   LS::ArtworkRequest artworkRequest;
   artworkRequest.set_idshow([showInfo.showID cStringUsingEncoding:NSASCIIStringEncoding]);
   artworkRequest.set_seasonnumber((int)showInfo.seasonNumber);
-  artworkRequest.set_thumbnail(YES);
+  artworkRequest.set_thumbnail(thumbnail);
 //  artworkRequest.set_snapshot([showInfo.snapshot cStringUsingEncoding:NSASCIIStringEncoding]);
   //
   LSMessagePtr request(new LS::Message);

@@ -58,7 +58,7 @@
   __weak typeof(self) weakSelf = self;
   LSShowAlbumCellModel* modelCell = [theData.shows objectAtIndex:index];
   //
-  [[theData backendFacade] getArtworkByShowInfo:modelCell.showInfo replyHandler:^(NSData* dataArtwork)
+  [[theData backendFacade] getArtworkByShowInfo:modelCell.showInfo thumbnail:YES replyHandler:^(NSData* dataArtwork)
   {
     typeof (self) strongSelf = weakSelf;
     if (strongSelf)
