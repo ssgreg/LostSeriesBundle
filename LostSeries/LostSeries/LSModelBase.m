@@ -213,6 +213,8 @@
   BOOL theSelectionModeFlag;
   BOOL theFollowingModeFlag;
   LSModelShowsLists* theModelShowsLists;
+  //
+  LSShowAlbumCellModel* theShowForDetails;
 }
 
 - (id) init
@@ -250,5 +252,6 @@
 @synthesize selectionModeActivated = theSelectionModeFlag;
 @synthesize followingModeFollow = theFollowingModeFlag;
 @synthesize backendFacade = theBackendFacade;
+@synthesize showForDetails = theShowForDetails;
 
 @end

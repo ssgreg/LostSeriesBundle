@@ -50,7 +50,7 @@
 
 
 @protocol LSViewSwitcherShowDetails <NSObject>
-- (void) switchToShowDetails;
+- (void) switchToController:(NSString*)identifier;
 @end
 
 

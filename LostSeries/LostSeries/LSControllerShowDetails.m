@@ -53,7 +53,7 @@
 // LSWLinkActionGetFullSizeArtwork
 //
 
-@protocol LSDataActionGetFullSizeArtwork <LSDataBaseFacadeAsyncBackend, LSDataBaseShows>
+@protocol LSDataActionGetFullSizeArtwork <LSDataBaseFacadeAsyncBackend, LSDataBaseModelShowForDatails>
 @end
 
 @interface LSWLinkActionGetFullSizeArtwork : WFWorkflowLink
@@ -65,7 +65,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
 
 - (void) input
 {
-  [self.data.backendFacade getArtworkByShowInfo:((LSShowAlbumCellModel*)self.data.shows[0]).showInfo thumbnail:NO replyHandler:^(NSData* dataArtwork)
+  [self.data.backendFacade getArtworkByShowInfo:self.data.showForDetails.showInfo thumbnail:NO replyHandler:^(NSData* dataArtwork)
   {
     [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
     [self output];

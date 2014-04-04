@@ -109,12 +109,18 @@
 @property LSModelShowsLists* modelShowsLists;
 @end
 
+@protocol LSDataBaseModelShowForDatails
+@property LSShowAlbumCellModel* showForDetails;
+@end
+
+
 //
 // LSModelBase
 //
 
 @interface LSModelBase : NSObject
-    < LSDataBaseShowsRaw
+    <
+      LSDataBaseShowsRaw
     , LSDataBaseShowsFavoriteRaw
     , LSDataBaseModelShowsLists
     , LSDataBaseModeFollowing
@@ -122,7 +128,9 @@
     , LSDataBaseShows
     , LSDataBaseShowsSelected
     , LSDataBaseFacadeAsyncBackend
-    , LSDataBaseShowsFollowing>
+    , LSDataBaseShowsFollowing
+    , LSDataBaseModelShowForDatails
+    >
 
 - (id) init;
 

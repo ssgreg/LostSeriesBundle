@@ -33,7 +33,7 @@
 // LSWLinkProxyController
 //
 
-@protocol LSDataProxyController <LSDataBaseShows>
+@protocol LSDataProxyController <LSDataBaseShows, LSDataBaseModelShowForDatails>
 @end
 
 @interface LSWLinkProxyController : WFWorkflowLink
@@ -45,14 +45,16 @@ SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
 
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
 {
+  self.data.showForDetails = self.data.shows[indexPath.row];
   //
-  [self.view switchToShowDetails];
+  [self.view switchToController:@"LSShowInfoCollectionViewController.ShowDetails"];
   [self input];
 }
 
 - (void) input
 {
-  LSControllerShowDetails* controller = [[LSApplication singleInstance].registryControllers findControllerByIdentifier:@"LSShowInfoCollectionViewController.ShowDetails"];
+  LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
+  LSControllerShowDetails* controller = [registry findControllerByIdentifier:@"LSShowInfoCollectionViewController.ShowDetails"];
   [controller.workflow input];
 }
 
@@ -717,9 +719,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   }
 }
 
-- (void) switchToShowDetails
+- (void) switchToController:(NSString*)identifier
 {
-  [self performSegueWithIdentifier:@"LSShowInfoCollectionViewController.ShowDetails" sender:self];
+  [self performSegueWithIdentifier:identifier sender:self];
 }
 
 @end
