@@ -18,6 +18,8 @@
 		EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */; };
 		EE76567D18A4B36600C2BB80 /* libWorkflowLink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76567A18A4B10800C2BB80 /* libWorkflowLink.a */; };
 		EE7656BC18A517C500C2BB80 /* libUIComponents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE7656B618A5172700C2BB80 /* libUIComponents.a */; };
+		EE8A964518EED5D500C24E06 /* LSCDID.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8A964418EED5D500C24E06 /* LSCDID.m */; };
+		EE8A964918EED7AE00C24E06 /* LSRegistryControllers.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8A964818EED7AE00C24E06 /* LSRegistryControllers.m */; };
 		EEB0166A18E18C1400B25965 /* LSControllerShowDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */; };
 		EEB11802187F17D500337023 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11801187F17D500337023 /* Foundation.framework */; };
 		EEB11804187F17D500337023 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11803187F17D500337023 /* CoreGraphics.framework */; };
@@ -93,10 +95,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		EE05CC1218C600A700491188 /* LSControllerCollectionBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSControllerCollectionBase.h; sourceTree = "<group>"; };
-		EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSControllerCollectionBase.m; sourceTree = "<group>"; };
-		EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSShowInfoCollectionViewController.h; sourceTree = "<group>"; };
-		EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = LSShowInfoCollectionViewController.m; sourceTree = "<group>"; };
+		EE05CC1218C600A700491188 /* LSControllerCollectionBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSControllerCollectionBase.h; path = LostSeries/LSControllerCollectionBase.h; sourceTree = "<group>"; };
+		EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSControllerCollectionBase.m; path = LostSeries/LSControllerCollectionBase.m; sourceTree = "<group>"; };
+		EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSShowInfoCollectionViewController.h; path = LostSeries/LSShowInfoCollectionViewController.h; sourceTree = "<group>"; };
+		EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; name = LSShowInfoCollectionViewController.m; path = LostSeries/LSShowInfoCollectionViewController.m; sourceTree = "<group>"; };
 		EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Protobuf.Generated.xcodeproj; path = Protobuf.Generated/Protobuf.Generated.xcodeproj; sourceTree = "<group>"; };
 		EE1AA59E1888F28E004B6E7D /* LSConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSConnection.h; path = Remote/LSConnection.h; sourceTree = "<group>"; };
 		EE1AA59F1888F28E004B6E7D /* LSConnection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSConnection.mm; path = Remote/LSConnection.mm; sourceTree = "<group>"; };
@@ -112,8 +114,13 @@
 		EE6D79BA188EBAB8004A0D4B /* LSLocalCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LSLocalCache.mm; path = CachingServer/LSLocalCache.mm; sourceTree = "<group>"; };
 		EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WorkflowLink.xcodeproj; path = WorkflowLink/WorkflowLink.xcodeproj; sourceTree = "<group>"; };
 		EE7656B018A5172600C2BB80 /* UIComponents.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIComponents.xcodeproj; path = UIComponents/UIComponents.xcodeproj; sourceTree = "<group>"; };
-		EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSControllerShowDetails.h; sourceTree = "<group>"; };
-		EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSControllerShowDetails.m; sourceTree = "<group>"; };
+		EE8A964218ED491A00C24E06 /* LostSeries.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LostSeries.entitlements; sourceTree = "<group>"; };
+		EE8A964318EED5D500C24E06 /* LSCDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSCDID.h; path = Logic/LSCDID.h; sourceTree = "<group>"; };
+		EE8A964418EED5D500C24E06 /* LSCDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSCDID.m; path = Logic/LSCDID.m; sourceTree = "<group>"; };
+		EE8A964718EED7AE00C24E06 /* LSRegistryControllers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSRegistryControllers.h; path = Logic/LSRegistryControllers.h; sourceTree = "<group>"; };
+		EE8A964818EED7AE00C24E06 /* LSRegistryControllers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSRegistryControllers.m; path = Logic/LSRegistryControllers.m; sourceTree = "<group>"; };
+		EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSControllerShowDetails.h; path = LostSeries/LSControllerShowDetails.h; sourceTree = "<group>"; };
+		EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSControllerShowDetails.m; path = LostSeries/LSControllerShowDetails.m; sourceTree = "<group>"; };
 		EEB117FE187F17D500337023 /* LostSeries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LostSeries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB11801187F17D500337023 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EEB11803187F17D500337023 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -122,8 +129,8 @@
 		EEB1180B187F17D500337023 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EEB1180D187F17D500337023 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EEB1180F187F17D500337023 /* LostSeries-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LostSeries-Prefix.pch"; sourceTree = "<group>"; };
-		EEB11810187F17D500337023 /* LSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSAppDelegate.h; sourceTree = "<group>"; };
-		EEB11811187F17D500337023 /* LSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSAppDelegate.m; sourceTree = "<group>"; };
+		EEB11810187F17D500337023 /* LSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LSAppDelegate.h; path = LostSeries/LSAppDelegate.h; sourceTree = "<group>"; };
+		EEB11811187F17D500337023 /* LSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LSAppDelegate.m; path = LostSeries/LSAppDelegate.m; sourceTree = "<group>"; };
 		EEB11814187F17D500337023 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EEB11819187F17D500337023 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EEB1181F187F17D500337023 /* LostSeriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LostSeriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,12 +140,12 @@
 		EEB1182C187F17D500337023 /* LostSeriesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LostSeriesTests.m; sourceTree = "<group>"; };
 		EEB11836187F183700337023 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../Frameworks/zeromq-4.0.3/build/lib/libzmq.a"; sourceTree = "<group>"; };
 		EEB11838187F1ABC00337023 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = "../../Frameworks/protobuf-2.5.0/protobuf/lib/libprotobuf.a"; sourceTree = "<group>"; };
-		EED97FDC18B0CA0900CF68E3 /* LSMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSMainController.h; sourceTree = "<group>"; };
-		EED97FDD18B0CA0900CF68E3 /* LSMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSMainController.m; sourceTree = "<group>"; };
-		EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSShowsFollowingController.h; sourceTree = "<group>"; };
-		EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSShowsFollowingController.m; sourceTree = "<group>"; };
-		EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSModelBase.h; sourceTree = "<group>"; };
-		EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSModelBase.m; sourceTree = "<group>"; };
+		EED97FDC18B0CA0900CF68E3 /* LSMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSMainController.h; path = LostSeries/LSMainController.h; sourceTree = "<group>"; };
+		EED97FDD18B0CA0900CF68E3 /* LSMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSMainController.m; path = LostSeries/LSMainController.m; sourceTree = "<group>"; };
+		EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSShowsFollowingController.h; path = LostSeries/LSShowsFollowingController.h; sourceTree = "<group>"; };
+		EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSShowsFollowingController.m; path = LostSeries/LSShowsFollowingController.m; sourceTree = "<group>"; };
+		EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSModelBase.h; path = LostSeries/LSModelBase.h; sourceTree = "<group>"; };
+		EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSModelBase.m; path = LostSeries/LSModelBase.m; sourceTree = "<group>"; };
 		EEF8749918A95D2900F74CB6 /* LSApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSApplication.h; path = Logic/LSApplication.h; sourceTree = "<group>"; };
 		EEF8749A18A95D2900F74CB6 /* LSApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSApplication.m; path = Logic/LSApplication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -232,6 +239,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EE8A964618EED61800C24E06 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				EE8A964318EED5D500C24E06 /* LSCDID.h */,
+				EE8A964418EED5D500C24E06 /* LSCDID.m */,
+				EEF8749918A95D2900F74CB6 /* LSApplication.h */,
+				EEF8749A18A95D2900F74CB6 /* LSApplication.m */,
+				EE8A964718EED7AE00C24E06 /* LSRegistryControllers.h */,
+				EE8A964818EED7AE00C24E06 /* LSRegistryControllers.m */,
+			);
+			name = Logic;
+			sourceTree = "<group>";
+		};
 		EEB117F5187F17D500337023 = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +259,20 @@
 				EE76567218A4B10700C2BB80 /* WorkflowLink.xcodeproj */,
 				EE1AA58F1887AD5F004B6E7D /* Protobuf.Generated.xcodeproj */,
 				EEB11807187F17D500337023 /* LostSeries */,
+				EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */,
+				EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */,
+				EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */,
+				EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */,
+				EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */,
+				EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */,
+				EE05CC1218C600A700491188 /* LSControllerCollectionBase.h */,
+				EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */,
+				EED97FDC18B0CA0900CF68E3 /* LSMainController.h */,
+				EED97FDD18B0CA0900CF68E3 /* LSMainController.m */,
+				EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */,
+				EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */,
+				EEB11810187F17D500337023 /* LSAppDelegate.h */,
+				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EEB11826187F17D500337023 /* LostSeriesTests */,
 				EEB11800187F17D500337023 /* Frameworks */,
 				EEB117FF187F17D500337023 /* Products */,
@@ -270,25 +304,10 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
-				EEB0166818E18C1400B25965 /* LSControllerShowDetails.h */,
-				EEB0166918E18C1400B25965 /* LSControllerShowDetails.m */,
-				EE1A2509189A8D8000DBA78B /* LSShowInfoCollectionViewController.h */,
-				EE1A250A189A8D8000DBA78B /* LSShowInfoCollectionViewController.m */,
-				EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */,
-				EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */,
-				EE05CC1218C600A700491188 /* LSControllerCollectionBase.h */,
-				EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */,
-				EED97FDC18B0CA0900CF68E3 /* LSMainController.h */,
-				EED97FDD18B0CA0900CF68E3 /* LSMainController.m */,
-				EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */,
-				EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */,
+				EE8A964618EED61800C24E06 /* Logic */,
 				EE6D79B5188E47DD004A0D4B /* ZeroMQ */,
 				EE6D79AF188E3DB7004A0D4B /* CachingServer */,
 				EE1AA59D1888F223004B6E7D /* Remote */,
-				EEB11810187F17D500337023 /* LSAppDelegate.h */,
-				EEB11811187F17D500337023 /* LSAppDelegate.m */,
-				EEF8749918A95D2900F74CB6 /* LSApplication.h */,
-				EEF8749A18A95D2900F74CB6 /* LSApplication.m */,
 				EEB11808187F17D500337023 /* Supporting Files */,
 			);
 			path = LostSeries;
@@ -297,6 +316,7 @@
 		EEB11808187F17D500337023 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EE8A964218ED491A00C24E06 /* LostSeries.entitlements */,
 				EEB11813187F17D500337023 /* Main.storyboard */,
 				EEB11819187F17D500337023 /* Images.xcassets */,
 				EEB11809187F17D500337023 /* LostSeries-Info.plist */,
@@ -373,6 +393,14 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Grigory Zubankov";
 				TargetAttributes = {
+					EEB117FD187F17D500337023 = {
+						DevelopmentTeam = V9234UZ7BY;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
 					EEB1181E187F17D500337023 = {
 						TestTargetID = EEB117FD187F17D500337023;
 					};
@@ -488,6 +516,7 @@
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
 				EEB0166A18E18C1400B25965 /* LSControllerShowDetails.m in Sources */,
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
+				EE8A964518EED5D500C24E06 /* LSCDID.m in Sources */,
 				EE05CC1418C600A800491188 /* LSControllerCollectionBase.m in Sources */,
 				EEB1180E187F17D500337023 /* main.m in Sources */,
 				EEF8749B18A95D2900F74CB6 /* LSApplication.m in Sources */,
@@ -497,6 +526,7 @@
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */,
 				EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */,
+				EE8A964918EED7AE00C24E06 /* LSRegistryControllers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,6 +651,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = LostSeries/LostSeries.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LostSeries/LostSeries-Prefix.pch";
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = YES;
@@ -653,6 +684,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = LostSeries/LostSeries.entitlements;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LostSeries/LostSeries-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

@@ -11,6 +11,8 @@
 // LS
 #import "LSModelBase.h"
 #import "LSServiceArtworkGetter.h"
+// LS.Logic
+#import "Logic/LSRegistryControllers.h"
 
 
 @class LSMessageBlackHole;
@@ -36,7 +38,7 @@
 // LSApplication
 //
 
-@interface LSApplication : NSObject
+@interface LSApplication : NSObject <UIApplicationDelegate>
 
 + (LSApplication*) singleInstance;
 
@@ -47,6 +49,7 @@
 @property (readonly) LSModelBase* modelBase;
 @property (readonly) LSServiceArtworkGetter* serviceArtworkGetter;
 @property (readonly) LSMessageBlackHole* messageBlackHole;
+@property (readonly) LSRegistryControllers* registryControllers;
 
 @end
 

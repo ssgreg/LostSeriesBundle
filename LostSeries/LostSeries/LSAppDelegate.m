@@ -6,19 +6,31 @@
 //  Copyright (c) 2014 Grigory Zubankov. All rights reserved.
 //
 
+// LS
 #import "LSAppDelegate.h"
 #import "Logic/LSApplication.h"
 
+
+//
+// LSAppDelegate
+// Just delegate everything to the LSapplication
+//
 
 @implementation LSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Let the device know we want to receive push notifications
-  [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-    (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-  
-  return YES;
+  return [[LSApplication singleInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+  [[LSApplication singleInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+  [[LSApplication singleInstance] application:application didFailToRegisterForRemoteNotificationsWithError:error];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -46,23 +58,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
   // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
-{
-  NSString* strDeviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-  strDeviceToken = [strDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
-  //
-  [LSApplication singleInstance].deviceToken = strDeviceToken;
-}
-
-- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
-{
-  // "remote notifications are not supported in the simulator"
-  if (error.code == 3010)
-  {
-    [LSApplication singleInstance].deviceToken = @"99c2a09abce108cdea3a09c309323926a24b68dfbc78b790b28c520e93ff61fd";
-  }
 }
 
 @end

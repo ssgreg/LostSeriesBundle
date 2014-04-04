@@ -49,6 +49,11 @@
 @end
 
 
+@protocol LSViewSwitcherShowDetails <NSObject>
+- (void) switchToShowDetails;
+@end
+
+
 @interface LSShowInfoCollectionViewController : LSControllerCollectionBase
   <
     UICollectionViewDataSource,
@@ -59,7 +64,8 @@
     LSViewShowsCollection,
     LSViewShowsSelection,
     LSShowSubscribeButtonView,
-    LSSubscribeActionView
+    LSSubscribeActionView,
+    LSViewSwitcherShowDetails
   >
 
 - (IBAction) selectButtonClicked:(id)sender;

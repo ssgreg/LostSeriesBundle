@@ -7,7 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+// WL
+#import <WorkflowLink/WorkflowLink.h>
 
-@interface LSControllerShowDetails : UIViewController
 
+@protocol LSViewActionGetFullSizeArtwork <NSObject>
+@end
+
+
+//
+// LSControllerShowDetails
+//
+
+@interface LSControllerShowDetails : UIViewController <LSViewActionGetFullSizeArtwork>
+@property NSString* idController;
+@property (readonly) WFWorkflow* workflow;
 @end

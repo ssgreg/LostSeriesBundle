@@ -10,6 +10,7 @@
 #import <UIComponents/UIStatusBarView.h>
 // Logic
 #import "LSApplication.h"
+#import "LSCDID.h"
 
 
 
@@ -280,7 +281,9 @@ typedef enum
   LSModelBase* theModelBase;
   LSServiceArtworkGetter* theServiceArtworkGetter;
   LSMessageBlackHole* theMBH;
+  LSRegistryControllers* theRegistryControllers;
   NSString* theDeviceToken;
+  LSCDID* theCDID;
 }
 @end
 
@@ -305,9 +308,8 @@ typedef enum
     return nil;
   }
   //
-  theModelBase = [[LSModelBase alloc] init];
-  //
   return self;
+
 }
 
 - (NSString*) deviceToken
@@ -342,6 +344,105 @@ typedef enum
     theMBH = [[LSMessageBlackHole alloc] init];
   }
   return theMBH;
+}
+
+- (LSRegistryControllers*) registryControllers
+{
+  if (!theRegistryControllers)
+  {
+    theRegistryControllers = [[LSRegistryControllers alloc] init];
+  }
+  return theRegistryControllers;
+}
+
+- (void) ubiquitousKeyValueStoreDidChangeExternallyWithReason:(NSInteger)reason changedKeys:(NSArray*)keysChanged
+{
+  if (reason == NSUbiquitousKeyValueStoreServerChange || reason == NSUbiquitousKeyValueStoreInitialSyncChange)
+  {
+    for (NSString* key in keysChanged)
+    {
+      // CDID
+      if ([key isEqualToString:@"CDID"])
+      {
+        theCDID = [self getUpdatedCDID];
+      }
+    }
+  }
+}
+
+- (LSCDID*) getUpdatedCDID
+{
+  LSCDID* cdidThisDevice = [[LSCDID alloc] initWithString:[[UIDevice currentDevice] identifierForVendor].UUIDString];
+  LSCDID* cdid = [[LSCDID alloc] initWithAnother:theCDID
+    ? theCDID
+    : cdidThisDevice];
+  //
+  NSArray* arrayWithCDID = [[NSUbiquitousKeyValueStore defaultStore] arrayForKey:@"CDID"];
+  if (arrayWithCDID)
+  {
+    LSCDID* cdidCommon = [[LSCDID alloc] initWithRaw:arrayWithCDID];
+    [cdid merge:cdidCommon];
+  }
+  [[NSUbiquitousKeyValueStore defaultStore] setArray:cdid.raw forKey:@"CDID"];
+  return cdid;
+}
+
+- (void) registerForRemoteNotifications
+{
+  [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+    UIRemoteNotificationTypeBadge |
+    UIRemoteNotificationTypeSound |
+    UIRemoteNotificationTypeAlert];
+}
+
+- (void) registerForUbiquitousKeyValueStoreNotifications
+{
+  [[NSNotificationCenter defaultCenter]
+    addObserverForName: NSUbiquitousKeyValueStoreDidChangeExternallyNotification
+    object: [NSUbiquitousKeyValueStore defaultStore]
+    queue: nil
+    usingBlock:^(NSNotification *notification)
+    {
+      NSNumber* reasonForChange = [[notification userInfo] objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
+      NSArray* keysChanged = [[notification userInfo] objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
+      if (reasonForChange)
+      {
+        [self ubiquitousKeyValueStoreDidChangeExternallyWithReason:reasonForChange.integerValue changedKeys:keysChanged];
+      }
+    }
+  ];
+  [[NSUbiquitousKeyValueStore defaultStore] synchronize];
+}
+
+#pragma mark - UIApplicationDelegate implementation
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+	theCDID = [self getUpdatedCDID];
+  [theCDID toString];
+  theModelBase = [[LSModelBase alloc] init];
+  //
+  [self registerForRemoteNotifications];
+  [self registerForUbiquitousKeyValueStoreNotifications];
+  //
+  return YES;
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+  NSString* strDeviceToken = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+  strDeviceToken = [strDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+  //
+  self.deviceToken = strDeviceToken;
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+  // "remote notifications are not supported in the simulator"
+  if (error.code == 3010)
+  {
+    self.deviceToken = @"99c2a09abce108cdea3a09c309323926a24b68dfbc78b790b28c520e93ff61fd";
+  }
 }
 
 @end

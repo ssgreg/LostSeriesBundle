@@ -30,6 +30,36 @@
 
 
 //
+// LSWLinkProxyController
+//
+
+@protocol LSDataProxyController <LSDataBaseShows>
+@end
+
+@interface LSWLinkProxyController : WFWorkflowLink
+@end
+
+@implementation LSWLinkProxyController
+
+SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
+
+- (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
+{
+  //
+  [self.view switchToShowDetails];
+  [self input];
+}
+
+- (void) input
+{
+  LSControllerShowDetails* controller = [[LSApplication singleInstance].registryControllers findControllerByIdentifier:@"LSShowInfoCollectionViewController.ShowDetails"];
+  [controller.workflow input];
+}
+
+@end
+
+
+//
 // LSWLinkActionChangeFollowingShows
 //
 
@@ -219,7 +249,7 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
     NSInteger selectedShowCount = self.data.showsSelected.count;
     title = selectedShowCount == 0
       ? @"Select Items"
-      : [NSString stringWithFormat:@"%ld %@ Selected", selectedShowCount, (selectedShowCount == 1 ? @"Show" : @"Shows")];
+      : [NSString stringWithFormat:@"%ld %@ Selected", (long)selectedShowCount, (selectedShowCount == 1 ? @"Show" : @"Shows")];
   }
   return title;
 }
@@ -402,6 +432,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   LSSelectButtonWL* theSelectButtonWL;
   LSWLinkShowsCollection* theShowCollectionWL;
   LSWLinkShowsSelection* theWLinkShowsSelection;
+  LSWLinkProxyController* theWLinkProxyController;
   LSSubscribeButtonWL* theSubscribeButtonWL;
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
   //
@@ -439,11 +470,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   //
   [self createSubscribeToolbar];
   //
-  theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
-  theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
-  theWLinkShowsSelection = [[LSWLinkShowsSelection alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
-  theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
-  theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:[LSApplication singleInstance].modelBase];
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  //
+  theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:model view:self];
+  theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:model view:self];
+  theWLinkShowsSelection = [[LSWLinkShowsSelection alloc] initWithData:model view:self];
+  theWLinkProxyController = [[LSWLinkProxyController alloc] initWithData:model view:self];
+  theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:model view:self];
+  theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:model];
   //
   
   theWorkflow = WFSplitWorkflowWithOutputUsingOr(
@@ -454,9 +488,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
           WFLinkRingWorkflow(
               theSelectButtonWL
             , theWLinkShowsSelection
-            , [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-            , theSubscribeButtonWL
-            , theCancelSelectionModeWL
+            , WFSplitWorkflowWithOutputUsingOr(
+                  theWLinkProxyController
+                , WFLinkWorkflow(
+                      [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+                    , theSubscribeButtonWL
+                    , theCancelSelectionModeWL
+                    , nil)
+                , nil)
             , nil)
         , [[LSWLinkActionChangeFollowingShows alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
         , nil)
@@ -469,6 +508,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 {
   [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
+{
+  LSControllerShowDetails* controller = segue.destinationViewController;
+  controller.idController = segue.identifier;
+  [[LSApplication singleInstance].registryControllers registerController:segue.destinationViewController withIdentifier:@"LSShowInfoCollectionViewController.ShowDetails"];
+}
+
 
 - (void) updateCell:(LSShowAlbumCell*)cell forIndexPath:(NSIndexPath*)indexPath
 {
@@ -557,7 +604,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   }
   else
   {
-    [self performSegueWithIdentifier:@"ShowDetails" sender:self];
+    [theWLinkProxyController didSelectItemAtIndex:indexPath];
   }
 }
 
@@ -670,6 +717,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   {
     [[LSApplication singleInstance].messageBlackHole closeMessage:theMessageSubscribing];
   }
+}
+
+- (void) switchToShowDetails
+{
+  [self performSegueWithIdentifier:@"LSShowInfoCollectionViewController.ShowDetails" sender:self];
 }
 
 @end

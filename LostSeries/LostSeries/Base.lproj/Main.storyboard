@@ -109,7 +109,7 @@
                         <outlet property="theCollectionView" destination="9gu-94-guR" id="dqw-70-uDa"/>
                         <outlet property="theNavigationItem" destination="1Wj-ae-dLs" id="KOm-bf-QeC"/>
                         <outlet property="theSelectButton" destination="XK4-8I-mlJ" id="xZr-e1-dIA"/>
-                        <segue destination="RlL-ld-aZF" kind="push" identifier="ShowDetails" id="tCA-Ak-xzq"/>
+                        <segue destination="RlL-ld-aZF" kind="push" identifier="LSShowInfoCollectionViewController.ShowDetails" id="tCA-Ak-xzq"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2lR-3N-mXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -187,7 +187,6 @@
         <!--Controller Show Details-->
         <scene sceneID="Nxb-Qe-QW2">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="16z-ti-EBk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="LSControllerShowDetails" id="RlL-ld-aZF" customClass="LSControllerShowDetails" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7ED-en-hyO">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
@@ -219,6 +218,7 @@
                         <outlet property="theTableEpisodes" destination="UNs-eW-gWa" id="lFQ-bd-PXd"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="16z-ti-EBk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-280" y="722"/>
         </scene>
