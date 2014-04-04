@@ -12,6 +12,44 @@
 
 
 //
+// LSWLinkLockWaitForViewDidLoad
+//
+
+@interface LSWLinkWaitForViewDidLoad : WFWorkflowLink
+@end
+
+@implementation LSWLinkWaitForViewDidLoad
+{
+  BOOL theIsLockedFlag;
+}
+
+- (void) unlock
+{
+  theIsLockedFlag = NO;
+  [self input];
+}
+
+- (void) update
+{
+  theIsLockedFlag = YES;
+}
+
+- (void) input
+{
+  if (theIsLockedFlag)
+  {
+    [self forwardBlock];
+  }
+  else
+  {
+    [self output];
+  }
+}
+
+@end
+
+
+//
 // LSWLinkActionGetFullSizeArtwork
 //
 
@@ -51,14 +89,33 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
 {
   IBOutlet UIImageView* theImageShow;
   IBOutlet UITableView* theTableEpisodes;
+  //
+  NSString* theIdController;
   // workflow
   WFWorkflow* theWorkflow;
+  LSWLinkWaitForViewDidLoad* theWLinkLockWaitForViewDidLoad;
 }
  
-@synthesize idController;
+- (void) setIdController:(NSString*)id
+{
+  theIdController = id;
+  [[LSApplication singleInstance].registryControllers registerController:self withIdentifier:id];
+}
 
 - (WFWorkflow*) workflow
 {
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }
+  //
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  theWLinkLockWaitForViewDidLoad = [[LSWLinkWaitForViewDidLoad alloc] init];
+  //
+  theWorkflow = WFLinkWorkflow(
+      theWLinkLockWaitForViewDidLoad
+    , [[LSWLinkActionGetFullSizeArtwork alloc] initWithData:model view:self]
+    , nil);
   return theWorkflow;
 }
 
@@ -66,14 +123,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
 {
   [super viewDidLoad];
   //
-  LSShowAlbumCellModel* info = [LSApplication singleInstance].modelBase.shows[0];
-  theImageShow.image = info.artwork;
-  //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
-  //
-  theWorkflow = WFLinkWorkflow(
-      [[LSWLinkActionGetFullSizeArtwork alloc] initWithData:model view:self]
-    , nil);
+  [theWLinkLockWaitForViewDidLoad unlock];
+//  LSShowAlbumCellModel* info = [LSApplication singleInstance].modelBase.shows[0];
+//  theImageShow.image = info.artwork;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -82,8 +134,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
   //
   if (self.isMovingFromParentViewController || self.isBeingDismissed)
   {
-    [[LSApplication singleInstance].registryControllers removeController:idController];
-    idController = @"";
+    [[LSApplication singleInstance].registryControllers removeController:theIdController];
+    theIdController = @"";
   }
 }
 

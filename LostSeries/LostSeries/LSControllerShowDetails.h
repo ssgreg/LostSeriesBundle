@@ -20,6 +20,8 @@
 //
 
 @interface LSControllerShowDetails : UIViewController <LSViewActionGetFullSizeArtwork>
-@property NSString* idController;
+//@property NSString* idController;
+- (void) setIdController:(NSString*)idController;
+
 @property (readonly) WFWorkflow* workflow;
 @end

@@ -513,9 +513,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 {
   LSControllerShowDetails* controller = segue.destinationViewController;
   controller.idController = segue.identifier;
-  [[LSApplication singleInstance].registryControllers registerController:segue.destinationViewController withIdentifier:@"LSShowInfoCollectionViewController.ShowDetails"];
 }
-
 
 - (void) updateCell:(LSShowAlbumCell*)cell forIndexPath:(NSIndexPath*)indexPath
 {
