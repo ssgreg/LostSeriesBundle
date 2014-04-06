@@ -70,8 +70,12 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
     [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
     [self output];
   }];
-  //
-  [self forwardBlock];
+  // set thumbail at first
+  if (self.data.showForDetails.artwork)
+  {
+    [self.view setImageArtwork:self.data.showForDetails.artwork];
+  }
+  [self output];
 }
 
 @end
