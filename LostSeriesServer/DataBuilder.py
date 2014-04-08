@@ -316,32 +316,11 @@ for show in list(db.shows_full.find()):
     for rec in show[Database.DATA_HISTORY]:
       print rec
 
+# for episode in list(db.episodes_full.find()):
+#   print len(episode[Database.DATA_HISTORY]), episode[Database.DATA_ID]
+#   for rec in episode[Database.DATA_HISTORY]:
+#     print rec
+
 UpdateArtworks(db)
 
 
-#print list(db.shows.find())
-# shows = Database.find(db.shows, 3)
-# print list(shows.find())
-
-# print db.collection_names()
-# print list(db.myresult.find())
-
-# for show in shows['results']:
-#   print show['value']
-
-# print list(db.shows.find({'history':{"$elemMatch": {'timestamp': {'$lte':myts}}}}))
-#print list(db.shows.find({'history':[{'timestamp': myts, 'name':'test'}]}))
-
-
-# print len(list(db.shows.find({"$or": [{ SHOW_IS_CANCELED: False }, { SHOW_IS_CANCELED_FIXED: False }]})))
-
-
-# for record in list(db.shows.find({ SHOW_IS_CANCELED: False })):
-#   print record[SHOW_ORIGINAL_TITLE].encode('utf-8'), record[SHOW_ID]
-
-
-# To fix show cancel status
-
-# show = db.shows.find_one({SHOW_ID: "203"})
-# UpdateFixedCancelStatus(show, False)
-# print show

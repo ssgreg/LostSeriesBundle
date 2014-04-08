@@ -543,6 +543,18 @@ class SeriesResponse_Episode : public ::google_public::protobuf::Message {
   inline ::google_public::protobuf::int32 number() const;
   inline void set_number(::google_public::protobuf::int32 value);
 
+  // required string dateTranslate = 4;
+  inline bool has_datetranslate() const;
+  inline void clear_datetranslate();
+  static const int kDateTranslateFieldNumber = 4;
+  inline const ::std::string& datetranslate() const;
+  inline void set_datetranslate(const ::std::string& value);
+  inline void set_datetranslate(const char* value);
+  inline void set_datetranslate(const char* value, size_t size);
+  inline ::std::string* mutable_datetranslate();
+  inline ::std::string* release_datetranslate();
+  inline void set_allocated_datetranslate(::std::string* datetranslate);
+
   // @@protoc_insertion_point(class_scope:LS.SeriesResponse.Episode)
  private:
   inline void set_has_name();
@@ -551,15 +563,18 @@ class SeriesResponse_Episode : public ::google_public::protobuf::Message {
   inline void clear_has_originalname();
   inline void set_has_number();
   inline void clear_has_number();
+  inline void set_has_datetranslate();
+  inline void clear_has_datetranslate();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* name_;
   ::std::string* originalname_;
+  ::std::string* datetranslate_;
   ::google_public::protobuf::int32 number_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(4 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -1963,6 +1978,76 @@ inline ::google_public::protobuf::int32 SeriesResponse_Episode::number() const {
 inline void SeriesResponse_Episode::set_number(::google_public::protobuf::int32 value) {
   set_has_number();
   number_ = value;
+}
+
+// required string dateTranslate = 4;
+inline bool SeriesResponse_Episode::has_datetranslate() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SeriesResponse_Episode::set_has_datetranslate() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SeriesResponse_Episode::clear_has_datetranslate() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SeriesResponse_Episode::clear_datetranslate() {
+  if (datetranslate_ != &::google_public::protobuf::internal::kEmptyString) {
+    datetranslate_->clear();
+  }
+  clear_has_datetranslate();
+}
+inline const ::std::string& SeriesResponse_Episode::datetranslate() const {
+  return *datetranslate_;
+}
+inline void SeriesResponse_Episode::set_datetranslate(const ::std::string& value) {
+  set_has_datetranslate();
+  if (datetranslate_ == &::google_public::protobuf::internal::kEmptyString) {
+    datetranslate_ = new ::std::string;
+  }
+  datetranslate_->assign(value);
+}
+inline void SeriesResponse_Episode::set_datetranslate(const char* value) {
+  set_has_datetranslate();
+  if (datetranslate_ == &::google_public::protobuf::internal::kEmptyString) {
+    datetranslate_ = new ::std::string;
+  }
+  datetranslate_->assign(value);
+}
+inline void SeriesResponse_Episode::set_datetranslate(const char* value, size_t size) {
+  set_has_datetranslate();
+  if (datetranslate_ == &::google_public::protobuf::internal::kEmptyString) {
+    datetranslate_ = new ::std::string;
+  }
+  datetranslate_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SeriesResponse_Episode::mutable_datetranslate() {
+  set_has_datetranslate();
+  if (datetranslate_ == &::google_public::protobuf::internal::kEmptyString) {
+    datetranslate_ = new ::std::string;
+  }
+  return datetranslate_;
+}
+inline ::std::string* SeriesResponse_Episode::release_datetranslate() {
+  clear_has_datetranslate();
+  if (datetranslate_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = datetranslate_;
+    datetranslate_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SeriesResponse_Episode::set_allocated_datetranslate(::std::string* datetranslate) {
+  if (datetranslate_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete datetranslate_;
+  }
+  if (datetranslate) {
+    set_has_datetranslate();
+    datetranslate_ = datetranslate;
+  } else {
+    clear_has_datetranslate();
+    datetranslate_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
 }
 
 // -------------------------------------------------------------------

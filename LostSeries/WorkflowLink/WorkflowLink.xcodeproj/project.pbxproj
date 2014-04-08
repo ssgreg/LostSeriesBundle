@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE22994218F1657000C23304 /* WFLinkLockerDisposable.m in Sources */ = {isa = PBXBuildFile; fileRef = EE22994118F1657000C23304 /* WFLinkLockerDisposable.m */; };
 		EE76564D18A4B10700C2BB80 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE76564C18A4B10700C2BB80 /* Foundation.framework */; };
 		EE76565218A4B10700C2BB80 /* WorkflowLink.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EE76565118A4B10700C2BB80 /* WorkflowLink.h */; };
 		EE76565418A4B10700C2BB80 /* WorkflowLink.m in Sources */ = {isa = PBXBuildFile; fileRef = EE76565318A4B10700C2BB80 /* WorkflowLink.m */; };
@@ -42,6 +43,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EE22994018F1657000C23304 /* WFLinkLockerDisposable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFLinkLockerDisposable.h; sourceTree = "<group>"; };
+		EE22994118F1657000C23304 /* WFLinkLockerDisposable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFLinkLockerDisposable.m; sourceTree = "<group>"; };
 		EE76564918A4B10700C2BB80 /* libWorkflowLink.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWorkflowLink.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE76564C18A4B10700C2BB80 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EE76565018A4B10700C2BB80 /* WorkflowLink-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WorkflowLink-Prefix.pch"; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 		EE76564E18A4B10700C2BB80 /* WorkflowLink */ = {
 			isa = PBXGroup;
 			children = (
+				EE22994018F1657000C23304 /* WFLinkLockerDisposable.h */,
+				EE22994118F1657000C23304 /* WFLinkLockerDisposable.m */,
 				EE76565118A4B10700C2BB80 /* WorkflowLink.h */,
 				EE76565318A4B10700C2BB80 /* WorkflowLink.m */,
 				EE76564F18A4B10700C2BB80 /* Supporting Files */,
@@ -224,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE22994218F1657000C23304 /* WFLinkLockerDisposable.m in Sources */,
 				EE76565418A4B10700C2BB80 /* WorkflowLink.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

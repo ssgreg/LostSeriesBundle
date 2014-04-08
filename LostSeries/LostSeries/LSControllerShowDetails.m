@@ -9,41 +9,35 @@
 // LS
 #import "LSControllerShowDetails.h"
 #import "LSApplication.h"
+// WF
+#import <WorkflowLink/WorkflowLink.h>
+#import <WorkflowLink/WFLinkLockerDisposable.h>
 
 
-//
-// LSWLinkLockWaitForViewDidLoad
-//
-
-@interface LSWLinkLockWaitForViewDidLoad : WFWorkflowLink
+@interface LSTableViewCellEpisodeInfo : UITableViewCell
+@property IBOutlet UILabel* theEpisodeName;
+@property IBOutlet UILabel* theEpisodeNameOriginal;
+@property IBOutlet UILabel* theEpisodeDetails;
+@end
+@implementation LSTableViewCellEpisodeInfo
 @end
 
-@implementation LSWLinkLockWaitForViewDidLoad
-{
-  BOOL theIsLockedFlag;
-}
 
-- (void) unlock
-{
-  theIsLockedFlag = NO;
-  [self input];
-}
+//
+// LSWLinkShowDescription
+//
 
-- (void) update
-{
-  theIsLockedFlag = YES;
-}
+@interface LSWLinkShowDescription : WFWorkflowLink
+@end
+@implementation LSWLinkShowDescription
+
+SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowForDatails, LSViewShowDescription);
 
 - (void) input
 {
-  if (theIsLockedFlag)
-  {
-    [self forwardBlock];
-  }
-  else
-  {
-    [self output];
-  }
+  //
+  [self.view setShowInfo:self.data.showForDetails.showInfo];
+  [self output];
 }
 
 @end
@@ -53,8 +47,7 @@
 // LSWLinkActionGetFullSizeArtwork
 //
 
-@protocol LSDataActionGetFullSizeArtwork <LSDataBaseFacadeAsyncBackend, LSDataBaseModelShowForDatails>
-@end
+@protocol LSDataActionGetFullSizeArtwork <LSDataBaseFacadeAsyncBackend, LSDataBaseModelShowForDatails> @end
 
 @interface LSWLinkActionGetFullSizeArtwork : WFWorkflowLink
 @end
@@ -70,11 +63,51 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
     [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
     [self output];
   }];
-  // set thumbail at first
+  // set thumbnail at first
   if (self.data.showForDetails.artwork)
   {
     [self.view setImageArtwork:self.data.showForDetails.artwork];
   }
+  [self output];
+}
+
+@end
+
+
+//
+// LSWLinkCollectionEpisodes
+//
+
+@interface LSWLinkCollectionEpisodes : WFWorkflowLink
+
+- (LSEpisodeInfo*) itemAtIndex:(NSIndexPath*)indexPath;
+- (NSUInteger) numberOfItems;
+
+@end
+
+@implementation LSWLinkCollectionEpisodes
+{
+  NSArray* theEpisodesSorted;
+}
+
+SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModelShowForDatails);
+
+- (LSEpisodeInfo*) itemAtIndex:(NSIndexPath*)indexPath
+{
+  return theEpisodesSorted[indexPath.row];
+}
+
+- (NSUInteger) numberOfItems
+{
+  return theEpisodesSorted.count;
+}
+
+- (void) input
+{
+  theEpisodesSorted = [self.data.showForDetails.showInfo.episodes sortedArrayUsingComparator:^NSComparisonResult(LSEpisodeInfo* left, LSEpisodeInfo* right)
+  {
+    return [[NSNumber numberWithInteger:right.number] compare:[NSNumber numberWithInteger:left.number]];
+  }];
   [self output];
 }
 
@@ -88,12 +121,16 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
 @implementation LSControllerShowDetails
 {
   IBOutlet UIImageView* theImageShow;
+  IBOutlet UILabel* theLabelShowTitle;
+  IBOutlet UILabel* theLabelShowTitleOriginal;
+  IBOutlet UILabel* theLabelShowDetails;
   IBOutlet UITableView* theTableEpisodes;
   //
   NSString* theIdController;
   // workflow
   WFWorkflow* theWorkflow;
-  LSWLinkLockWaitForViewDidLoad* theWLinkLockWaitForViewDidLoad;
+  WFLinkLockerDisposable* theWLinkLockWaitForViewDidLoad;
+  LSWLinkCollectionEpisodes* theWLinkCollectionEpisodes;
 }
  
 - (void) setIdController:(NSString*)id
@@ -110,11 +147,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
   }
   //
   LSModelBase* model = [LSApplication singleInstance].modelBase;
-  theWLinkLockWaitForViewDidLoad = [[LSWLinkLockWaitForViewDidLoad alloc] init];
+  theWLinkLockWaitForViewDidLoad = [[WFLinkLockerDisposable alloc] init];
+  theWLinkCollectionEpisodes = [[LSWLinkCollectionEpisodes alloc] initWithData:model];
   //
   theWorkflow = WFLinkWorkflow(
       theWLinkLockWaitForViewDidLoad
+    , [[LSWLinkShowDescription alloc] initWithData:model view:self]
     , [[LSWLinkActionGetFullSizeArtwork alloc] initWithData:model view:self]
+    , theWLinkCollectionEpisodes
     , nil);
   return theWorkflow;
 }
@@ -123,9 +163,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
 {
   [super viewDidLoad];
   //
-  [theWLinkLockWaitForViewDidLoad unlock];
-//  LSShowAlbumCellModel* info = [LSApplication singleInstance].modelBase.shows[0];
-//  theImageShow.image = info.artwork;
+  [theWLinkLockWaitForViewDidLoad use];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -139,9 +177,81 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeA
   }
 }
 
+- (NSString*) stringFromDate:(NSDate*) date withFormat:(NSString*)format
+{
+  NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+  [dateFormatter setDateFormat:format];
+  [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+  [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ru_RU"]];
+  return [dateFormatter stringFromDate:date];
+}
+
+- (NSString*) formatSeasonTitle:(LSShowInfo*)info
+{
+  return [NSString stringWithFormat:@"%@", info.title];
+}
+
+- (NSString*) formatSeasonTitleOriginal:(LSShowInfo*)info
+{
+  return [NSString stringWithFormat:@"(%@)", info.originalTitle];
+}
+
+- (NSString*) formatSeasonDetails:(LSShowInfo*)info
+{
+  return [NSString stringWithFormat:@"Episode %ld, %ld", info.seasonNumber, info.year];
+}
+
+- (NSString*) formatEpisodeName:(LSEpisodeInfo*)info
+{
+  return [NSString stringWithFormat:@"%@", info.name];
+}
+
+- (NSString*) formatEpisodeNameOriginal:(LSEpisodeInfo*)info
+{
+  return [NSString stringWithFormat:@"(%@)", info.originalName];
+}
+
+- (NSString*) formatEpisodeDetails:(LSEpisodeInfo*)info
+{
+  NSString* date = [self stringFromDate:info.dateTranslate withFormat:@"dd.MM.yyyy HH:mm"];
+  return [NSString stringWithFormat:@"Episode %ld | %@", info.number, date];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+{
+  return [theWLinkCollectionEpisodes numberOfItems];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  LSTableViewCellEpisodeInfo* cell = (LSTableViewCellEpisodeInfo*)[tableView dequeueReusableCellWithIdentifier:@"theEpisodeCell"];
+  if (cell)
+  {
+    LSEpisodeInfo* info = [theWLinkCollectionEpisodes itemAtIndex:indexPath];
+    cell.theEpisodeName.text = [self formatEpisodeName:info];
+    cell.theEpisodeNameOriginal.text = [self formatEpisodeNameOriginal:info];
+    cell.theEpisodeDetails.text = [self formatEpisodeDetails:info];
+  }
+  return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  // fix size from IB
+  LSTableViewCellEpisodeInfo* cell = (LSTableViewCellEpisodeInfo*)[tableView dequeueReusableCellWithIdentifier:@"theEpisodeCell"];
+  return cell.frame.size.height;
+}
+
 - (void) setImageArtwork:(UIImage*)image
 {
   theImageShow.image = image;
+}
+
+- (void) setShowInfo:(LSShowInfo*)info
+{
+  theLabelShowTitle.text = [self formatSeasonTitle:info];
+  theLabelShowTitleOriginal.text = [self formatSeasonTitleOriginal:info];
+  theLabelShowDetails.text = [self formatSeasonDetails:info];
 }
 
 @end

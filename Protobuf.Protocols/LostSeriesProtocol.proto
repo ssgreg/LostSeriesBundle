@@ -41,6 +41,7 @@ message SeriesResponse
     required string name = 1;
     required string originalName = 2;
     required int32 number = 3;
+    required string dateTranslate = 4;
   }
 
   message TVShow

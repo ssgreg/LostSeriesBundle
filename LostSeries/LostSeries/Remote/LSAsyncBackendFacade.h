@@ -44,6 +44,7 @@
 @property NSString* name;
 @property NSString* originalName;
 @property NSInteger number;
+@property NSDate* dateTranslate;
 @end
 
 
@@ -56,6 +57,7 @@
 @property NSString* title;
 @property NSString* originalTitle;
 @property NSInteger seasonNumber;
+@property NSInteger year;
 @property NSString* showID;
 @property NSString* snapshot;
 @property NSArray* episodes;

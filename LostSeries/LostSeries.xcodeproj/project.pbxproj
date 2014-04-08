@@ -272,6 +272,7 @@
 				EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */,
 				EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */,
 				EEB11810187F17D500337023 /* LSAppDelegate.h */,
+				EEB11803187F17D500337023 /* CoreGraphics.framework */,
 				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EEB11826187F17D500337023 /* LostSeriesTests */,
 				EEB11800187F17D500337023 /* Frameworks */,
@@ -294,7 +295,6 @@
 				EEB11838187F1ABC00337023 /* libprotobuf.a */,
 				EEB11836187F183700337023 /* libzmq.a */,
 				EEB11801187F17D500337023 /* Foundation.framework */,
-				EEB11803187F17D500337023 /* CoreGraphics.framework */,
 				EEB11805187F17D500337023 /* UIKit.framework */,
 				EEB11820187F17D500337023 /* XCTest.framework */,
 			);

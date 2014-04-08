@@ -9,10 +9,16 @@
 #import <UIKit/UIKit.h>
 // WL
 #import <WorkflowLink/WorkflowLink.h>
+// LS
+#import "LSAsyncBackendFacade.h"
 
 
 @protocol LSViewActionGetFullSizeArtwork <NSObject>
 - (void) setImageArtwork:(UIImage*)image;
+@end
+
+@protocol LSViewShowDescription <NSObject>
+- (void) setShowInfo:(LSShowInfo*)info;
 @end
 
 
@@ -20,7 +26,13 @@
 // LSControllerShowDetails
 //
 
-@interface LSControllerShowDetails : UIViewController <LSViewActionGetFullSizeArtwork>
+@interface LSControllerShowDetails : UIViewController
+  <
+    UITableViewDataSource,
+    UITableViewDelegate,
+    LSViewActionGetFullSizeArtwork,
+    LSViewShowDescription
+  >
 //@property NSString* idController;
 - (void) setIdController:(NSString*)idController;
 

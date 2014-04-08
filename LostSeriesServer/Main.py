@@ -44,6 +44,7 @@ def HandleSeriesRequest(message):
       episodeInfo.name = episode[SHOW_SEASON_EPISODE_NAME]
       episodeInfo.originalName = episode[SHOW_SEASON_SPISODE_ORIGINAL_NAME]
       episodeInfo.number = episode[SHOW_SEASON_EPISODE_NUMBER]
+      episodeInfo.dateTranslate = episode[SHOW_SEASON_SPISODE_TRANSLATE_TIME].strftime("%Y-%m-%dT%H:%M:%S +04:00")
   return {"message": response, "data": None}
 
 

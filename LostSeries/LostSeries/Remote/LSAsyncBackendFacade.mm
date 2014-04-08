@@ -68,6 +68,7 @@
       showInfo.showID = [NSString stringWithCString:show.id().c_str() encoding:NSASCIIStringEncoding];
       showInfo.snapshot = [NSString stringWithCString:show.snapshot().c_str() encoding:NSASCIIStringEncoding];
       NSMutableArray* episodes = [NSMutableArray array];
+      // episodes
       int episodesSize = show.episodes_size();
       for (int j = 0; j < episodesSize; ++j)
       {
@@ -76,8 +77,22 @@
         episodeInfo.name = [NSString stringWithUTF8String:episode.name().c_str()];
         episodeInfo.originalName = [NSString stringWithUTF8String:episode.originalname().c_str()];
         episodeInfo.number = episode.number();
+        episodeInfo.dateTranslate = [self serverStringToDate:episode.datetranslate()];
         [episodes addObject:episodeInfo];
       }
+      showInfo.episodes = episodes;
+      //
+      NSDate* dateEarliest = [NSDate date];
+      for (LSEpisodeInfo* episode in episodes)
+      {
+        if ([dateEarliest compare:episode.dateTranslate] == NSOrderedDescending)
+        {
+          dateEarliest = episode.dateTranslate;
+        }
+      }
+      NSCalendar* calendar = [NSCalendar currentCalendar];
+      NSDateComponents* components = [calendar components:NSYearCalendarUnit fromDate:dateEarliest];
+      showInfo.year = components.year;
       //
       [shows addObject:showInfo];
     }
@@ -162,6 +177,15 @@
       handler(subscriptions);
     });
   }];
+}
+
+- (NSDate*) serverStringToDate:(std::string const&) str
+{
+  NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+  [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss Z"];
+  [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+  [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ru_RU"]];
+  return [dateFormatter dateFromString: [NSString stringWithUTF8String:str.c_str()]];
 }
 
 @end
