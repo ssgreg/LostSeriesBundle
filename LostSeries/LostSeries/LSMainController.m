@@ -198,7 +198,21 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
      [modelsShow addObject: cellModel];
     }
 
-    LSModelShowsLists* modelShowsLists = [[LSModelShowsLists alloc] initWithShows:modelsShow];
+    
+    NSArray* target = [modelsShow sortedArrayUsingComparator:^NSComparisonResult(LSShowAlbumCellModel* left, LSShowAlbumCellModel* right)
+    {
+      if (!left.showInfo.episodes || !right.showInfo.episodes || left.showInfo.episodes.count == 0 || right.showInfo.episodes.count == 0)
+      {
+        return NSOrderedSame;
+      }
+      NSDate* dateLeft = ((LSEpisodeInfo*)left.showInfo.episodes[0]).dateTranslate;
+      NSDate* dateRight = ((LSEpisodeInfo*)right.showInfo.episodes[0]).dateTranslate;
+      // sort by last episode date - show with latest episode comes first
+      return [dateRight compare:dateLeft];
+    }];
+
+    
+    LSModelShowsLists* modelShowsLists = [[LSModelShowsLists alloc] initWithShows:target];
     // following shows
     for (id info in favoriteShowsRaw)
     {
