@@ -439,6 +439,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
   //
   LSMessageMBH* theMessageSubscribing;
+  UISearchBar* searchBar;
 }
 
 - (IBAction) selectButtonClicked:(id)sender;
@@ -460,6 +461,19 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+//  searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.collectionView.frame), 44)];
+//  searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+//  searchBar.delegate = self;
+//    [self.collectionView addSubview:searchBar];
+//    [self.collectionView setContentOffset:CGPointMake(0, 44)];
+
+//      [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"MyHeader"];
+    searchBar = [[UISearchBar alloc]
+                  initWithFrame:CGRectMake(0.0, 50.0, self.view.bounds.size.width,
+                                           44.0)];
+    searchBar.placeholder = @"Search for channels";
+    searchBar.tintColor = [UIColor blackColor];
+    searchBar.delegate = self;
   
   self.edgesForExtendedLayout = UIRectEdgeNone;
   
@@ -590,6 +604,21 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   return cell;
 }
 
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *header = nil;
+
+    if ([kind isEqual:UICollectionElementKindSectionHeader])
+    {
+        header = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
+                                                    withReuseIdentifier:@"MyHeader"
+                                                           forIndexPath:indexPath];
+
+//        [header addSubview:searchBar];
+
+    }
+    return header;
+}
 
 #pragma mark - UICollectionViewDelegate implementation
 

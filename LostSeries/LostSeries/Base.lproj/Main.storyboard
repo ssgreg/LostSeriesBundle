@@ -50,13 +50,13 @@
                         <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="9" id="mIB-AE-9Dp">
                             <size key="itemSize" width="94" height="94"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theCell" id="pCg-wo-rJr" customClass="LSShowAlbumCell">
-                                <rect key="frame" x="10" y="10" width="94" height="94"/>
+                                <rect key="frame" x="10" y="60" width="94" height="94"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
@@ -93,6 +93,17 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MyHeader" id="l9q-yz-Mc1">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="thX-Ru-1qL">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
+                            </subviews>
+                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="fzN-9f-KPV" id="iw5-U4-jPs"/>
                             <outlet property="delegate" destination="fzN-9f-KPV" id="YOs-iq-2Gq"/>
@@ -235,7 +246,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oM6-cz-dCE">
-                                            <rect key="frame" x="0.0" y="370" width="320" height="17"/>
+                                            <rect key="frame" x="0.0" y="373" width="320" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="UMd-ts-FET"/>
@@ -249,7 +260,7 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="464-Fr-ibw" firstAttribute="top" secondItem="vpo-WL-qbX" secondAttribute="bottom" constant="11" id="0oW-MK-r7M"/>
-                                        <constraint firstItem="oM6-cz-dCE" firstAttribute="top" secondItem="ws0-RE-5bh" secondAttribute="bottom" id="2ME-jB-gfl"/>
+                                        <constraint firstItem="oM6-cz-dCE" firstAttribute="top" secondItem="ws0-RE-5bh" secondAttribute="bottom" constant="3" id="2ME-jB-gfl"/>
                                         <constraint firstItem="vpo-WL-qbX" firstAttribute="top" secondItem="gT5-PY-QLB" secondAttribute="top" id="CIv-Jy-Gnb"/>
                                         <constraint firstItem="464-Fr-ibw" firstAttribute="leading" secondItem="gT5-PY-QLB" secondAttribute="leading" id="gj5-oh-bQC"/>
                                         <constraint firstItem="ws0-RE-5bh" firstAttribute="top" secondItem="464-Fr-ibw" secondAttribute="bottom" id="lzU-hK-7Yp"/>
