@@ -531,23 +531,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsControllerDidLoadNotification object:self];
 }
 
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+- (void)searchBarTextDidChange:(NSString*)text
 {
-  [theShowCollectionWL filterByString:searchText];
-  [searchBar becomeFirstResponder];
-}
-
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar1
-{
-  [searchBar1 setShowsCancelButton:YES animated:YES];
-}
-
--(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar1
-{
-  [searchBar1 setText:@""];
-  [theShowCollectionWL filterByString:@""];
-  [searchBar1 setShowsCancelButton:NO animated:YES];
-  [searchBar1 resignFirstResponder];
+  [theShowCollectionWL filterByString:text];
 }
 
 - (void)viewDidAppear:(BOOL)animated

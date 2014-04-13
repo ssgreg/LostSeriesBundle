@@ -139,28 +139,39 @@
   }
 }
 
-
-//- (void)keyboardWillHide:(NSNotification *)notification
-//{
-//    peoplePickerController.navigationBar.hidden = YES;
-//}
-//
-- (void)hideNavbarAndKeepHidden
+- (void)searchBarTextDidChange:(NSString*)text
 {
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
-//
-//- (void)dealloc
-//{
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//    [super dealloc];
-//}
 
 
-#pragma mark - UICollectionViewDataSource implementationr
+#pragma mark - UISearchBarDelegate implementation
 
 
--(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+{
+  [self searchBarTextDidChange:searchText];
+  [searchBar becomeFirstResponder];
+}
+
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+  [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+  [searchBar setText:@""];
+  [self searchBarTextDidChange:@""];
+  [searchBar setShowsCancelButton:NO animated:YES];
+  [searchBar resignFirstResponder];
+}
+
+
+#pragma mark - UICollectionViewDataSource implementation
+
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
   id header = nil;
   if ([kind isEqual:UICollectionElementKindSectionHeader])
