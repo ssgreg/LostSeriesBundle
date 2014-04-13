@@ -198,7 +198,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModelShowForDatails);
 
 - (NSString*) formatSeasonDetails:(LSShowInfo*)info
 {
-  return [NSString stringWithFormat:@"Episode %ld, %ld", info.seasonNumber, info.year];
+  return [NSString stringWithFormat:@"Season %ld, %ld", info.seasonNumber, info.year];
 }
 
 - (NSString*) formatEpisodeName:(LSEpisodeInfo*)info

@@ -72,6 +72,7 @@
 
 - (void) addObjectByIndexSource:(NSInteger)indexSource
 {
+  NSAssert(![self hasIndexSource:indexSource], @"Index already exists");
   //
   LSPartialArrayRecord* record = [[LSPartialArrayRecord alloc] init];
   record.indexSource = indexSource;
@@ -131,6 +132,14 @@
   [theDictionaryIndexSourceToTarget removeAllObjects];
 }
 
+- (void) addAllObjects
+{
+  for (NSInteger i = 0; i < theArraySource.count; ++i)
+  {
+    [self addObjectByIndexSource:i];
+  }
+}
+
 - (id) objectAtIndexedSubscript:(NSUInteger)index
 {
   return theArraySource[[self indexTargetToSource:index]];
@@ -165,7 +174,8 @@
 
 @implementation LSModelShowsLists
 {
-  NSArray* theShows;
+  NSArray* theShowsSource;
+  LSArrayPartial* theShows;
   LSArrayPartial* theShowsFollowing;
   LSArrayPartial* theShowsSelected;
 }
@@ -180,10 +190,17 @@
   {
     return Nil;
   }
-  theShows = shows;
-  theShowsFollowing = [LSArrayPartial arrayPartialWithArraySource:theShows];
-  theShowsSelected = [LSArrayPartial arrayPartialWithArraySource:theShows];
+  theShowsSource = shows;
+  theShows = [LSArrayPartial arrayPartialWithArraySource:theShowsSource];
+  [theShows addAllObjects];
+  theShowsFollowing = [LSArrayPartial arrayPartialWithArraySource:theShowsSource];
+  theShowsSelected = [LSArrayPartial arrayPartialWithArraySource:theShowsSource];
   return self;
+}
+
+- (LSArrayPartial*) makeEmptyArrayPartial
+{
+  return [LSArrayPartial arrayPartialWithArraySource:theShowsSource];
 }
 
 @end
@@ -231,7 +248,7 @@
   return self;
 }
 
-- (NSArray*) shows
+- (LSArrayPartial*) shows
 {
   return theModelShowsLists.shows;
 }

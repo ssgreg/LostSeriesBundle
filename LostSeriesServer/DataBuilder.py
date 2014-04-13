@@ -307,7 +307,7 @@ db = Database.instance()
 # UpdateFixedCancelStatus("150", True)
 # UpdateFixedCancelStatus("152", True)
 
-episodesPage1 = LoadInfoLastSeries(1)
+episodesPage1 = LoadInfoLastSeries(2)
 UpdateData(episodesPage1)
 
 for show in list(db.shows_full.find()):

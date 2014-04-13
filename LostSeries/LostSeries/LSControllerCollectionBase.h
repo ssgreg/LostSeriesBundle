@@ -10,10 +10,11 @@
 #import <UIKit/UIKit.h>
 
 
-@interface LSControllerCollectionBase : UICollectionViewController
+@interface LSControllerCollectionBase : UICollectionViewController <UISearchBarDelegate>
 
 - (void) reloadData;
 - (NSRange) rangeVisibleItems;
+- (void) scrollToDefaultPosition;
 
 @property BOOL hiddenLoadingIndicator;
 

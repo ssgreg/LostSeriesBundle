@@ -36,6 +36,7 @@
 
 - (NSInteger) count;
 - (void) removeAllObjectes;
+- (void) addAllObjects;
 
 // operator []
 - (id) objectAtIndexedSubscript:(NSUInteger)index;
@@ -52,9 +53,11 @@
 
 - (id) initWithShows:(NSArray*)shows;
 
-@property (readonly) NSArray* shows;
+@property (readonly) LSArrayPartial* shows;
 @property (readonly) LSArrayPartial* showsFollowing;
 @property (readonly) LSArrayPartial* showsSelected;
+
+- (LSArrayPartial*) makeEmptyArrayPartial;
 
 @end
 

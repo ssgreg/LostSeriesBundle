@@ -56,7 +56,7 @@
     return;
   }
   __weak typeof(self) weakSelf = self;
-  LSShowAlbumCellModel* modelCell = [theData.shows objectAtIndex:index];
+  LSShowAlbumCellModel* modelCell = theData.shows[index];
   //
   [[theData backendFacade] getArtworkByShowInfo:modelCell.showInfo thumbnail:YES replyHandler:^(NSData* dataArtwork)
   {

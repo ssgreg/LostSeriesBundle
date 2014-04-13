@@ -263,14 +263,13 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 // LSWLinkShowsCollection
 //
 
-@protocol LSDataShowsCollection <LSDataBaseShows, LSDataBaseShowsFollowing>
-@end
-
 @interface LSWLinkShowsCollection : WFWorkflowLink <LSClientServiceArtworkGetters>
 
 - (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath;
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath;
 - (NSUInteger) itemsCount;
+
+- (void) filterByString:(NSString*)filter;
 
 @end
 
@@ -278,28 +277,31 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
 {
   NSRange theRangeVisibleItems;
   NSInteger theIndexNext;
+  //
+  LSArrayPartial* theShows;
+  NSString* theTextFilter;
 }
 
-SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
+SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
 
 - (BOOL) isFavoriteItemAtIndex:(NSIndexPath*)indexPath
 {
-  return [self.data.showsFollowing hasIndexSource:indexPath.row];
+  return [self.data.modelShowsLists.showsFollowing hasIndexSource:indexPath.row];
 }
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
 {
-  return self.data.shows[indexPath.row];
+  return theShows[indexPath.row];
 }
 
 - (NSUInteger) itemsCount
 {
-  return self.data.shows.count;
+  return theShows.count;
 }
 
 - (void) update
 {
-  [self updateView];
+//  [self updateView];
   //
   theRangeVisibleItems = NSMakeRange(NSNotFound, NSNotFound);
   theIndexNext = NSNotFound;
@@ -308,7 +310,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
 
 - (void) input
 {
-  [self updateView];
+  [self filterByString: theTextFilter];
   [self output];
 }
 
@@ -317,7 +319,31 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsCollection, LSViewShowsCollection);
   [self.view showCollectionReloadData];
 }
 
+- (void) filterByString:(NSString*)text
+{
+  if (text.length)
+  {
+    theShows = [self.data.modelShowsLists makeEmptyArrayPartial];
+    for (NSInteger index = 0; index < self.data.modelShowsLists.shows.count; ++index)
+    {
+      LSShowAlbumCellModel* show = self.data.modelShowsLists.shows[index];
+      if ([show.showInfo.title rangeOfString:text].location != NSNotFound)
+      {
+        [theShows addObjectByIndexSource:index];
+      }
+    }
+  }
+  else
+  {
+    theShows = self.data.modelShowsLists.shows;
+  }
+  theTextFilter = text;
+  [self updateView];
+}
+
+
 #pragma mark - LSBatchArtworkGetterDelegate implementation
+
 
 - (LSServiceArtworkGetterPriority) priorityForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
@@ -439,7 +465,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   LSCancelSelectionModeWL* theCancelSelectionModeWL;
   //
   LSMessageMBH* theMessageSubscribing;
-  UISearchBar* searchBar;
 }
 
 - (IBAction) selectButtonClicked:(id)sender;
@@ -461,20 +486,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-//  searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.collectionView.frame), 44)];
-//  searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-//  searchBar.delegate = self;
-//    [self.collectionView addSubview:searchBar];
-//    [self.collectionView setContentOffset:CGPointMake(0, 44)];
-
-//      [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"MyHeader"];
-    searchBar = [[UISearchBar alloc]
-                  initWithFrame:CGRectMake(0.0, 50.0, self.view.bounds.size.width,
-                                           44.0)];
-    searchBar.placeholder = @"Search for channels";
-    searchBar.tintColor = [UIColor blackColor];
-    searchBar.delegate = self;
-  
   self.edgesForExtendedLayout = UIRectEdgeNone;
   
   
@@ -520,9 +531,29 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsControllerDidLoadNotification object:self];
 }
 
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+{
+  [theShowCollectionWL filterByString:searchText];
+  [searchBar becomeFirstResponder];
+}
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar1
+{
+  [searchBar1 setShowsCancelButton:YES animated:YES];
+}
+
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar1
+{
+  [searchBar1 setText:@""];
+  [theShowCollectionWL filterByString:@""];
+  [searchBar1 setShowsCancelButton:NO animated:YES];
+  [searchBar1 resignFirstResponder];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
   [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
+  [super viewDidAppear:animated];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
@@ -588,6 +619,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 }
 
+
 #pragma mark - UICollectionViewDataSource implementationr
 
 
@@ -604,21 +636,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   return cell;
 }
 
--(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionReusableView *header = nil;
-
-    if ([kind isEqual:UICollectionElementKindSectionHeader])
-    {
-        header = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                    withReuseIdentifier:@"MyHeader"
-                                                           forIndexPath:indexPath];
-
-//        [header addSubview:searchBar];
-
-    }
-    return header;
-}
 
 #pragma mark - UICollectionViewDelegate implementation
 
