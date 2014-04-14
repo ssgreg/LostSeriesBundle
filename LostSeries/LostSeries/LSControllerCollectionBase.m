@@ -30,12 +30,10 @@
 - (void) reloadData
 {
   [self.collectionView reloadData];
-//  [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
   //
   NSInteger itemsCount = [self.collectionView numberOfItemsInSection:0];
   theRangeVisibleItems = NSMakeRange(0, MIN(itemsCount, MAX_VISIBLE_ITEMS_COUNT));
   self.hiddenLoadingIndicator = itemsCount != 0;
-  //
 }
 
 - (NSRange) rangeVisibleItems
@@ -62,18 +60,29 @@
 
 - (void) setHiddenLoadingIndicator:(BOOL)flag
 {
+  NSLog(@"%f",self.collectionView.contentSize.height);
+  static BOOL useAnimationOnce = YES;
   if (theCollectionViewLoadingStub.hidden == flag)
   {
     return;
   }
-  [UIView animateWithDuration:0.5 delay:.0 options:0 animations:^
+  if (useAnimationOnce)
   {
-    theCollectionViewLoadingStub.alpha = 0;
+    useAnimationOnce = NO;
+    [UIView animateWithDuration:0.5 delay:.0 options:0 animations:^
+    {
+      theCollectionViewLoadingStub.alpha = 0;
+    }
+    completion:^(BOOL finished)
+    {
+      theCollectionViewLoadingStub.hidden = flag;
+    }];
   }
-  completion:^(BOOL finished)
+  else
   {
     theCollectionViewLoadingStub.hidden = flag;
-  }];
+  }
+  [self scrollToDefaultPosition];
 }
 
 - (void) viewDidLoad
@@ -95,31 +104,15 @@
 
 - (void) createCollectionViewLoadingStub
 {
-  CGRect rect = self.collectionView.frame;
-  // fix frame due the reason that frame takes height of tab bar and navigation bar
-  rect.size.height -= self.tabBarController.tabBar.frame.size.height;
-  rect.size.height -= self.navigationController.navigationBar.frame.size.height;
-  //
-  theCollectionViewLoadingStub = [[UILoadingView alloc] initWithFrame:rect];
+  theCollectionViewLoadingStub = [[UILoadingView alloc] initWithFrame:self.collectionView.frame];
   [theCollectionViewLoadingStub setText:@"Loading..."];
   [self.view.viewForBaselineLayout addSubview:theCollectionViewLoadingStub];
   theCollectionViewLoadingStub.hidden = NO;
-
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-  // scroll position should be fixed once at start
-  if (theFlagFixScrollPositionAtStart)
-  {
-    [self scrollToDefaultPosition];
-    theFlagFixScrollPositionAtStart = NO;
-  }
 }
 
 - (void) scrollToDefaultPosition
 {
-  [self.collectionView setContentOffset:CGPointMake(0, 44)];
+  [self.collectionView setContentOffset:CGPointMake(0, -20)];
 }
 
 - (void) fixScrollPositionOnSearchBar
@@ -129,13 +122,16 @@
   {
     return;
   }
-  if (self.collectionView.contentOffset.y < 22)
+  if (self.collectionView.contentOffset.y < -64)
   {
-    [self.collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
   }
-  else if (self.collectionView.contentOffset.y < 44)
+  else if (self.collectionView.contentOffset.y < -42)
   {
-    [self.collectionView setContentOffset:CGPointMake(0, 44) animated:YES];
+    [self.collectionView setContentOffset:CGPointMake(0, -64) animated:YES];
+  }
+  else if (self.collectionView.contentOffset.y < -20)
+  {
+    [self.collectionView setContentOffset:CGPointMake(0, -20) animated:YES];
   }
 }
 
@@ -173,12 +169,22 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-  id header = nil;
+  id cell = nil;
   if ([kind isEqual:UICollectionElementKindSectionHeader])
   {
-    header = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"MyHeader" forIndexPath:indexPath];
+    cell = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"MyHeader" forIndexPath:indexPath];
+    // scroll position should be fixed once at start
+    if (theFlagFixScrollPositionAtStart)
+    {
+      [self scrollToDefaultPosition];
+      theFlagFixScrollPositionAtStart = NO;
+    }
   }
-  return header;
+  if ([kind isEqual:UICollectionElementKindSectionFooter])
+  {
+    cell = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"theFooter" forIndexPath:indexPath];
+  }
+  return cell;
 }
 
 

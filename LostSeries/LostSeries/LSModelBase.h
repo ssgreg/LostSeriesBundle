@@ -57,6 +57,9 @@
 @property (readonly) LSArrayPartial* showsFollowing;
 @property (readonly) LSArrayPartial* showsSelected;
 
+@property LSArrayPartial* showsSorted;
+@property LSArrayPartial* showsFollowingSorted;
+
 - (LSArrayPartial*) makeEmptyArrayPartial;
 
 @end
@@ -90,6 +93,7 @@
 
 @protocol LSDataBaseShows
 @property (readonly) NSArray* shows;
+@property NSArray* showsSorted;
 @end
 
 @protocol LSDataBaseShowsSelected
@@ -98,6 +102,7 @@
 
 @protocol LSDataBaseShowsFollowing
 @property (readonly) LSArrayPartial* showsFollowing;
+@property LSArrayPartial* showsFollowingSorted;
 @end
 
 @protocol LSDataBaseShowsRaw

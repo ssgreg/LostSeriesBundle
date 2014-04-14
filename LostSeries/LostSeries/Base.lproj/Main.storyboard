@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13D33" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d2G-EP-egg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D38" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d2G-EP-egg">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -25,11 +25,8 @@
             <objects>
                 <navigationController definesPresentationContext="YES" id="Xu5-nL-u24" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="TV Shows" image="TVShowsTabItem" id="qbs-Ug-Obp"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="2sX-CZ-rHN">
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
-                        <color key="barTintColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2sX-CZ-rHN">
+                        <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
                         <segue destination="fzN-9f-KPV" kind="relationship" relationship="rootViewController" id="y8V-sz-iPo"/>
@@ -43,20 +40,19 @@
         <scene sceneID="bo2-ZV-Rsh">
             <objects>
                 <collectionViewController id="fzN-9f-KPV" customClass="LSShowInfoCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="9gu-94-guR">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="9gu-94-guR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="9" id="mIB-AE-9Dp">
                             <size key="itemSize" width="94" height="94"/>
                             <size key="headerReferenceSize" width="50" height="44"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="50" height="1"/>
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theCell" id="pCg-wo-rJr" customClass="LSShowAlbumCell">
-                                <rect key="frame" x="10" y="54" width="94" height="94"/>
+                                <rect key="frame" x="10" y="118" width="94" height="94"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
@@ -94,7 +90,11 @@
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MyHeader" id="l9q-yz-Mc1">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </collectionReusableView>
+                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theFooter" id="SXP-Ry-ObK">
+                            <rect key="frame" x="0.0" y="222" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <connections>
@@ -123,15 +123,15 @@
         <!--Shows Following Controller - Lost Series-->
         <scene sceneID="okH-nu-qQi">
             <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="G1C-ik-Un2" customClass="LSShowsFollowingController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="WZa-jc-AA3">
+                <collectionViewController id="G1C-ik-Un2" customClass="LSShowsFollowingController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="WZa-jc-AA3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="9" id="qec-mS-SNa">
                             <size key="itemSize" width="94" height="94"/>
                             <size key="headerReferenceSize" width="50" height="44"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="50" height="341"/>
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
@@ -177,6 +177,10 @@
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
+                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theFooter" id="tdf-1y-K1b">
+                            <rect key="frame" x="0.0" y="222" width="320" height="341"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="G1C-ik-Un2" id="1Z6-mN-CLE"/>
                             <outlet property="delegate" destination="G1C-ik-Un2" id="qPc-PN-MsX"/>
@@ -186,6 +190,7 @@
                     <connections>
                         <outlet property="theCollectionView" destination="WZa-jc-AA3" id="stQ-bj-FpR"/>
                         <outlet property="theNavigationItem" destination="yeE-U5-JF8" id="GS2-WF-SDQ"/>
+                        <segue destination="RlL-ld-aZF" kind="push" identifier="LSShowsFollowingController.ShowDetails" id="GlR-aQ-ywY"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="khj-v6-NMI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -201,15 +206,15 @@
                         <viewControllerLayoutGuide type="bottom" id="dR7-k9-HdE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7ED-en-hyO">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="46" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="UNs-eW-gWa">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="454"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="gT5-PY-QLB">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="400"/>
+                                    <rect key="frame" x="0.0" y="64" width="320" height="400"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StubTVShowImage" translatesAutoresizingMaskIntoConstraints="NO" id="vpo-WL-qbX">
@@ -268,7 +273,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="theEpisodeCell" rowHeight="70" id="slZ-XF-wNn" customClass="LSTableViewCellEpisodeInfo">
-                                        <rect key="frame" x="0.0" y="422" width="320" height="70"/>
+                                        <rect key="frame" x="0.0" y="486" width="320" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="slZ-XF-wNn" id="Vym-sE-NxS">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
@@ -380,4 +385,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="tCA-Ak-xzq"/>
+    </inferredMetricsTieBreakers>
 </document>

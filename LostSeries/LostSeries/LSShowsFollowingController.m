@@ -7,6 +7,7 @@
 //
 
 #import "LSShowsFollowingController.h"
+#import "LSControllerShowDetails.h"
 #import "LSModelBase.h"
 #import "Logic/LSApplication.h"
 
@@ -28,11 +29,40 @@
 
 
 //
-// LSWLinkFollowingShowsCollection
+// LSWLinkShowsFollowingSwitchToDetails
 //
 
-@protocol LSDataFollowingShowsCollection <LSDataBaseShows, LSDataBaseShowsFollowing, LSDataBaseFacadeAsyncBackend>
+@protocol LSDataShowsFollowingSwitchToDetails <LSDataBaseShowsFollowing, LSDataBaseModelShowForDatails>
 @end
+
+@interface LSWLinkShowsFollowingSwitchToDetails : WFWorkflowLink
+@end
+
+@implementation LSWLinkShowsFollowingSwitchToDetails
+
+SYNTHESIZE_WL_ACCESSORS(LSDataShowsFollowingSwitchToDetails, LSViewFollowingSwitcherShowDetails);
+
+- (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
+{
+  self.data.showForDetails = self.data.showsFollowingSorted[indexPath.row];
+  //
+  [self.view switchToController:@"LSShowsFollowingController.ShowDetails"];
+  [self input];
+}
+
+- (void) input
+{
+  LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
+  LSControllerShowDetails* controller = [registry findControllerByIdentifier:@"LSShowsFollowingController.ShowDetails"];
+  [controller.workflow input];
+}
+
+@end
+
+
+//
+// LSWLinkFollowingShowsCollection
+//
 
 @interface LSWLinkFollowingShowsCollection : WFWorkflowLink <LSClientServiceArtworkGetters>
 
@@ -45,18 +75,20 @@
 {
   NSRange theRangeVisibleItems;
   NSInteger theIndexNext;
+  //
+  NSString* theTextFilter;
 }
 
-SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsCollection);
+SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollection);
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
 {
-  return self.data.showsFollowing[indexPath.row];
+  return self.data.modelShowsLists.showsFollowingSorted[indexPath.row];
 }
 
 - (NSUInteger) itemsCount
 {
-  return self.data.showsFollowing.count;
+  return self.data.modelShowsLists.showsFollowingSorted.count;
 }
 
 - (void) update
@@ -71,8 +103,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 
 - (void) input
 {
-  [self updateIndexes];
-  [self updateView];
+  [self filterByString: theTextFilter];
   [self output];
 }
 
@@ -81,9 +112,26 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   [self.view showCollectionReloadData];
 }
 
-- (void) updateIndexes
+- (void) filterByString:(NSString*)text
 {
-  
+  if (text.length)
+  {
+    self.data.modelShowsLists.showsFollowingSorted = [self.data.modelShowsLists makeEmptyArrayPartial];
+    for (NSInteger index = 0; index < self.data.modelShowsLists.showsFollowing.count; ++index)
+    {
+      LSShowAlbumCellModel* show = self.data.modelShowsLists.showsFollowing[index];
+      if ([show.showInfo.title rangeOfString:text].location != NSNotFound)
+      {
+        [self.data.modelShowsLists.showsFollowingSorted addObjectByIndexSource:[self.data.modelShowsLists.showsFollowing indexTargetToSource:index]];
+      }
+    }
+  }
+  else
+  {
+    self.data.modelShowsLists.showsFollowingSorted = self.data.modelShowsLists.showsFollowing;
+  }
+  theTextFilter = text;
+  [self updateView];
 }
 
 #pragma mark - LSBatchArtworkGetterDelegate implementation
@@ -102,13 +150,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
     theIndexNext = theRangeVisibleItems.location;
   }
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
-    ? [self.data.showsFollowing indexTargetToSource:theIndexNext++]
+    ? [self.data.modelShowsLists.showsFollowing indexTargetToSource:theIndexNext++]
     : NSNotFound;
 }
 
 - (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
 {
-  NSInteger indexTarget = [self.data.showsFollowing indexSourceToTarget:index];
+  NSInteger indexTarget = [self.data.modelShowsLists.showsFollowing indexSourceToTarget:index];
   if (indexTarget != NSNotFound)
   {
     [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
@@ -129,6 +177,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   // workflow
   WFWorkflow* theWorkflow;
   LSWLinkFollowingShowsCollection* theWLinkCollection;
+  LSWLinkShowsFollowingSwitchToDetails* theWLinkSwitchToDetails;
 }
 
 - (WFWorkflow*) workflow
@@ -162,13 +211,28 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
 {
   [super viewDidLoad];
 
-  theWLinkCollection = [[LSWLinkFollowingShowsCollection alloc] initWithData:[LSApplication singleInstance].modelBase view:self];
-
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  //
+  theWLinkCollection = [[LSWLinkFollowingShowsCollection alloc] initWithData:model view:self];
+  theWLinkSwitchToDetails = [[LSWLinkShowsFollowingSwitchToDetails alloc] initWithData:model view:self];
+  //
   theWorkflow = WFLinkWorkflow(
       theWLinkCollection
+    , theWLinkSwitchToDetails
     , nil);
   
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsFollowingControllerDidLoadNotification object:self];
+}
+
+- (void) searchBarTextDidChange:(NSString*)text
+{
+  [theWLinkCollection filterByString:text];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
+{
+  LSControllerShowDetails* controller = segue.destinationViewController;
+  controller.idController = segue.identifier;
 }
 
 - (void)didReceiveMemoryWarning
@@ -201,7 +265,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   }
 }
 
+- (void) switchToController:(NSString*)identifier
+{
+  [self performSegueWithIdentifier:identifier sender:self];
+}
+
+
 #pragma mark - UICollectionViewDataSource implementation
+
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -215,6 +286,15 @@ SYNTHESIZE_WL_ACCESSORS(LSDataFollowingShowsCollection, LSViewFollowingShowsColl
   LSCellFollowingShows* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"theCellFollowingShows" forIndexPath:indexPath];
   [self updateCell:cell forIndexPath:indexPath];
   return cell;
+}
+
+
+#pragma mark - UICollectionViewDelegate implementation
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
+{
+  [theWLinkSwitchToDetails didSelectItemAtIndex:indexPath];
 }
 
 @end

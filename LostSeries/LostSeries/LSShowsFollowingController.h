@@ -20,6 +20,11 @@
 @end
 
 
+@protocol LSViewFollowingSwitcherShowDetails <NSObject>
+- (void) switchToController:(NSString*)identifier;
+@end
+
+
 //
 // LSShowsFollowingController
 //
@@ -29,7 +34,8 @@
     UICollectionViewDataSource,
     UICollectionViewDelegate,
     UIActionSheetDelegate,
-    LSViewFollowingShowsCollection
+    LSViewFollowingShowsCollection,
+    LSViewFollowingSwitcherShowDetails
   >
 
 - (WFWorkflow*) workflow;

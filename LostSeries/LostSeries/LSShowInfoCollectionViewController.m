@@ -45,7 +45,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
 
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
 {
-  self.data.showForDetails = self.data.shows[indexPath.row];
+  self.data.showForDetails = self.data.showsSorted[indexPath.row];
   //
   [self.view switchToController:@"LSShowInfoCollectionViewController.ShowDetails"];
   [self input];
@@ -278,7 +278,6 @@ SYNTHESIZE_WL_ACCESSORS(LSNavigationBarData, LSNavigationView);
   NSRange theRangeVisibleItems;
   NSInteger theIndexNext;
   //
-  LSArrayPartial* theShows;
   NSString* theTextFilter;
 }
 
@@ -291,12 +290,12 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
 {
-  return theShows[indexPath.row];
+  return self.data.modelShowsLists.showsSorted[indexPath.row];
 }
 
 - (NSUInteger) itemsCount
 {
-  return theShows.count;
+  return self.data.modelShowsLists.showsSorted.count;
 }
 
 - (void) update
@@ -323,19 +322,19 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
 {
   if (text.length)
   {
-    theShows = [self.data.modelShowsLists makeEmptyArrayPartial];
+    self.data.modelShowsLists.showsSorted = [self.data.modelShowsLists makeEmptyArrayPartial];
     for (NSInteger index = 0; index < self.data.modelShowsLists.shows.count; ++index)
     {
       LSShowAlbumCellModel* show = self.data.modelShowsLists.shows[index];
       if ([show.showInfo.title rangeOfString:text].location != NSNotFound)
       {
-        [theShows addObjectByIndexSource:index];
+        [self.data.modelShowsLists.showsSorted addObjectByIndexSource:index];
       }
     }
   }
   else
   {
-    theShows = self.data.modelShowsLists.shows;
+    self.data.modelShowsLists.showsSorted = self.data.modelShowsLists.shows;
   }
   theTextFilter = text;
   [self updateView];
@@ -486,7 +485,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.edgesForExtendedLayout = UIRectEdgeNone;
+//  self.edgesForExtendedLayout = UIRectEdgeNone;
   
   
   UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
@@ -531,14 +530,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsControllerDidLoadNotification object:self];
 }
 
-- (void)searchBarTextDidChange:(NSString*)text
+- (void) searchBarTextDidChange:(NSString*)text
 {
   [theShowCollectionWL filterByString:text];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void) viewDidAppear:(BOOL)animated
 {
-  [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
+//  [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
   [super viewDidAppear:animated];
 }
 

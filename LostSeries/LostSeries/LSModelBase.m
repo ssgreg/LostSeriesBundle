@@ -183,6 +183,8 @@
 @synthesize shows = theShows;
 @synthesize showsFollowing = theShowsFollowing;
 @synthesize showsSelected = theShowsSelected;
+@synthesize showsSorted;
+@synthesize showsFollowingSorted;
 
 - (id) initWithShows:(NSArray*)shows
 {
@@ -195,6 +197,8 @@
   [theShows addAllObjects];
   theShowsFollowing = [LSArrayPartial arrayPartialWithArraySource:theShowsSource];
   theShowsSelected = [LSArrayPartial arrayPartialWithArraySource:theShowsSource];
+  showsSorted = theShows;
+  showsFollowingSorted = theShowsFollowing;
   return self;
 }
 
@@ -253,9 +257,19 @@
   return theModelShowsLists.shows;
 }
 
+- (LSArrayPartial*) showsSorted
+{
+  return theModelShowsLists.showsSorted;
+}
+
 - (LSArrayPartial*) showsFollowing
 {
   return theModelShowsLists.showsFollowing;
+}
+
+- (LSArrayPartial*) showsFollowingSorted
+{
+  return theModelShowsLists.showsFollowingSorted;
 }
 
 - (LSArrayPartial*) showsSelected
