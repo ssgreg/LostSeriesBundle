@@ -216,7 +216,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
     // following shows
     for (id info in favoriteShowsRaw)
     {
-      NSUInteger index = [modelsShow indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
+      NSUInteger index = [target indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
       {
         return [((LSShowAlbumCellModel*)object).showInfo.showID isEqualToString:((LSSubscriptionInfo*)info).showID];
       }];
