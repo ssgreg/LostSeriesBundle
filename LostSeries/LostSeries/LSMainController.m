@@ -205,8 +205,8 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
       {
         return NSOrderedSame;
       }
-      NSDate* dateLeft = ((LSEpisodeInfo*)left.showInfo.episodes[0]).dateTranslate;
-      NSDate* dateRight = ((LSEpisodeInfo*)right.showInfo.episodes[0]).dateTranslate;
+      NSDate* dateLeft = ((LSEpisodeInfo*)left.showInfo.episodes[left.showInfo.episodes.count - 1]).dateTranslate;
+      NSDate* dateRight = ((LSEpisodeInfo*)right.showInfo.episodes[right.showInfo.episodes.count - 1]).dateTranslate;
       // sort by last episode date - show with latest episode comes first
       return [dateRight compare:dateLeft];
     }];
