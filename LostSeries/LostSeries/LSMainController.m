@@ -182,43 +182,49 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterFavoriteShows);
 
 SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 
+- (NSArray*) sortByLastEpisodeTime:(NSArray*)source
+{
+  return [source sortedArrayUsingComparator:^NSComparisonResult(LSShowAlbumCellModel* left, LSShowAlbumCellModel* right)
+  {
+    if (!left.showInfo.episodes || !right.showInfo.episodes || left.showInfo.episodes.count == 0 || right.showInfo.episodes.count == 0)
+    {
+      return NSOrderedSame;
+    }
+    NSDate* dateLeft = ((LSEpisodeInfo*)left.showInfo.episodes[left.showInfo.episodes.count - 1]).dateTranslate;
+    NSDate* dateRight = ((LSEpisodeInfo*)right.showInfo.episodes[right.showInfo.episodes.count - 1]).dateTranslate;
+    //
+    return [dateRight compare:dateLeft];
+  }];
+}
+
+- (NSArray*) convertToModels:(NSArray*)showsRaw
+{
+  NSMutableArray* models = [NSMutableArray array];
+  for (id show in showsRaw)
+  {
+   LSShowAlbumCellModel* cellModel = [[LSShowAlbumCellModel alloc] init];
+   cellModel.showInfo = show;
+   //
+   [models addObject:cellModel];
+  }
+  return models;
+}
+
 - (void) input
 {
   __block NSArray* showsRaw = self.data.showsRaw;
-  __block NSArray* favoriteShowsRaw = self.data.showsFavoriteRaw;
+  __block NSArray* showsFavoriteRaw = self.data.showsFavoriteRaw;
   //
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
   {
-    // shows
-    NSMutableArray* modelsShow = [NSMutableArray array];
-    for (id show in showsRaw)
+    NSArray* models = [self sortByLastEpisodeTime:[self convertToModels:showsRaw]];
+    //
+    LSModelShowsLists* modelShowsLists = [[LSModelShowsLists alloc] initWithShows:models];
+    for (LSSubscriptionInfo* info in showsFavoriteRaw)
     {
-     LSShowAlbumCellModel* cellModel = [[LSShowAlbumCellModel alloc] init];
-     cellModel.showInfo = show;
-     [modelsShow addObject: cellModel];
-    }
-
-    
-    NSArray* target = [modelsShow sortedArrayUsingComparator:^NSComparisonResult(LSShowAlbumCellModel* left, LSShowAlbumCellModel* right)
-    {
-      if (!left.showInfo.episodes || !right.showInfo.episodes || left.showInfo.episodes.count == 0 || right.showInfo.episodes.count == 0)
+      NSUInteger index = [models indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
       {
-        return NSOrderedSame;
-      }
-      NSDate* dateLeft = ((LSEpisodeInfo*)left.showInfo.episodes[left.showInfo.episodes.count - 1]).dateTranslate;
-      NSDate* dateRight = ((LSEpisodeInfo*)right.showInfo.episodes[right.showInfo.episodes.count - 1]).dateTranslate;
-      // sort by last episode date - show with latest episode comes first
-      return [dateRight compare:dateLeft];
-    }];
-
-    
-    LSModelShowsLists* modelShowsLists = [[LSModelShowsLists alloc] initWithShows:target];
-    // following shows
-    for (id info in favoriteShowsRaw)
-    {
-      NSUInteger index = [target indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
-      {
-        return [((LSShowAlbumCellModel*)object).showInfo.showID isEqualToString:((LSSubscriptionInfo*)info).showID];
+        return [((LSShowAlbumCellModel*)object).showInfo.showID isEqualToString:info.showID];
       }];
       if (index != NSNotFound)
       {
