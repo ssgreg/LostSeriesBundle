@@ -25,6 +25,7 @@
   //
   UISearchBar* theSearchBar;
   BOOL theFlagFixScrollPositionAtStart;
+  BOOL theFlagHideLiadingIndicatorOnce;
 }
 
 - (void) reloadData
@@ -60,9 +61,8 @@
 
 - (void) setHiddenLoadingIndicator:(BOOL)flag
 {
-  NSLog(@"%f",self.collectionView.contentSize.height);
   static BOOL useAnimationOnce = YES;
-  if (theCollectionViewLoadingStub.hidden == flag)
+  if (theCollectionViewLoadingStub.hidden == flag || !theFlagHideLiadingIndicatorOnce)
   {
     return;
   }
@@ -82,6 +82,7 @@
   {
     theCollectionViewLoadingStub.hidden = flag;
   }
+  theFlagHideLiadingIndicatorOnce = NO;
   [self scrollToDefaultPosition];
 }
 
@@ -93,6 +94,7 @@
   [self createCollectionViewLoadingStub];
   theRangeVisibleItems = NSMakeRange(0, 0);
   theFlagFixScrollPositionAtStart = YES;
+  theFlagHideLiadingIndicatorOnce = YES;
 }
 
 - (void) createSearchBar
