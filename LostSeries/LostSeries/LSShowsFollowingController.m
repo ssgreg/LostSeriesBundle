@@ -95,7 +95,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 {
   [self updateView];
   //
-  theRangeVisibleItems = NSMakeRange(NSNotFound, NSNotFound);
+  theRangeVisibleItems = NSMakeRange(0, 0);
   theIndexNext = NSNotFound;
   // artworks
   [[LSApplication singleInstance].serviceArtworkGetter addClient:self];

@@ -302,7 +302,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
 {
 //  [self updateView];
   //
-  theRangeVisibleItems = NSMakeRange(NSNotFound, NSNotFound);
+  theRangeVisibleItems = NSMakeRange(0, 0);
   theIndexNext = NSNotFound;
   [[LSApplication singleInstance].serviceArtworkGetter addClient:self];
 }

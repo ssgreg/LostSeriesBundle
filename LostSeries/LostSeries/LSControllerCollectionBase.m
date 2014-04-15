@@ -91,7 +91,7 @@
   //
   [self createSearchBar];
   [self createCollectionViewLoadingStub];
-  theRangeVisibleItems = NSMakeRange(NSNotFound, NSNotFound);
+  theRangeVisibleItems = NSMakeRange(0, 0);
   theFlagFixScrollPositionAtStart = YES;
 }
 

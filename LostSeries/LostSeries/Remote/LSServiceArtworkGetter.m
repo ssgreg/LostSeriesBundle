@@ -160,6 +160,7 @@
   return NSNotFound;
 }
 
+
 #pragma mark - LSDelegateArtworkGetterImpl
 
 - (NSInteger) nextIndexForServiceArtworkGetterImpl:(LSArtworkGetterImpl*)object
