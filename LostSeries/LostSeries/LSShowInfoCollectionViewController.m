@@ -337,6 +337,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
     self.data.modelShowsLists.showsSorted = self.data.modelShowsLists.shows;
   }
   theTextFilter = text;
+  // reset range to renew artwork download
+  theRangeVisibleItems = NSMakeRange(0, 0);
   [self updateView];
 }
 
@@ -358,13 +360,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
     theIndexNext = theRangeVisibleItems.location;
   }
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
-    ? theIndexNext++
+    ? [self.data.modelShowsLists.showsSorted indexTargetToSource:theIndexNext++]
     : NSNotFound;
 }
 
 - (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
 {
-  [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:index inSection:0]];
+  NSInteger indexTarget = [self.data.modelShowsLists.showsSorted indexSourceToTarget:index];
+  if (indexTarget != NSNotFound)
+  {
+    [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
+  }
 }
 
 @end
