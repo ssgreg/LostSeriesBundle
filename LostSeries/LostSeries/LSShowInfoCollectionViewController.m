@@ -326,7 +326,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
     for (NSInteger index = 0; index < self.data.modelShowsLists.shows.count; ++index)
     {
       LSShowAlbumCellModel* show = self.data.modelShowsLists.shows[index];
-      if ([show.showInfo.title rangeOfString:text].location != NSNotFound)
+      if ([show.showInfo.title rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound ||
+        [show.showInfo.originalTitle rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound)
       {
         [self.data.modelShowsLists.showsSorted addObjectByIndexSource:index];
       }
