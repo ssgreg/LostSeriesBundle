@@ -19,11 +19,13 @@
 
 @implementation LSControllerCollectionBase
 {
-  UILoadingView* theCollectionViewLoadingStub;
+  CGFloat theOffsetContentLast;
+  BOOL theFlagIsScrollingUp;
   //
   NSRange theRangeVisibleItems;  
   //
   UISearchBar* theSearchBar;
+  UILoadingView* theCollectionViewLoadingStub;
   BOOL theFlagFixScrollPositionAtStart;
   BOOL theFlagHideLiadingIndicatorOnce;
 }
@@ -92,6 +94,8 @@
   //
   [self createSearchBar];
   [self createCollectionViewLoadingStub];
+  //
+  theOffsetContentLast = -20;
   theRangeVisibleItems = NSMakeRange(0, 0);
   theFlagFixScrollPositionAtStart = YES;
   theFlagHideLiadingIndicatorOnce = YES;
@@ -124,20 +128,14 @@
   {
     return;
   }
-  if (self.collectionView.contentOffset.y < -64)
+  if (self.collectionView.contentOffset.y <= -64 || self.collectionView.contentOffset.y > -20)
   {
+    return;
   }
-  else if (self.collectionView.contentOffset.y < -42)
-  {
-    [self.collectionView setContentOffset:CGPointMake(0, -64) animated:YES];
-  }
-  else if (self.collectionView.contentOffset.y < -20)
-  {
-    [self.collectionView setContentOffset:CGPointMake(0, -20) animated:YES];
-  }
+  [self.collectionView setContentOffset:CGPointMake(0, theFlagIsScrollingUp ? -64 : -20) animated:YES];
 }
 
-- (void)searchBarTextDidChange:(NSString*)text
+- (void) searchBarTextDidChange:(NSString*)text
 {
 }
 
@@ -145,19 +143,19 @@
 #pragma mark - UISearchBarDelegate implementation
 
 
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
+- (void) searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
 {
   [self searchBarTextDidChange:searchText];
   [searchBar becomeFirstResponder];
 }
 
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+- (void) searchBarTextDidBeginEditing:(UISearchBar*)searchBar
 {
   [searchBar setShowsCancelButton:YES animated:YES];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void) searchBarCancelButtonClicked:(UISearchBar*)searchBar
 {
   [searchBar setText:@""];
   [self searchBarTextDidChange:@""];
@@ -193,17 +191,23 @@
 #pragma mark - UICollectionViewDelegate implementation
 
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidEndDecelerating:(UIScrollView*)scrollView
 {
   [self fixScrollPositionOnSearchBar];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+- (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate
 {
   if (!decelerate)
   {
     [self fixScrollPositionOnSearchBar];
   }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+  theFlagIsScrollingUp = theOffsetContentLast > scrollView.contentOffset.y;
+  theOffsetContentLast = scrollView.contentOffset.y;
 }
 
 @end
