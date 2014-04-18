@@ -222,9 +222,11 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(ArtworkResponse));
   SetSubscriptionRequest_descriptor_ = file->message_type(7);
-  static const int SetSubscriptionRequest_offsets_[2] = {
+  static const int SetSubscriptionRequest_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, idclient_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, token_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, subscriptions_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SetSubscriptionRequest, flagunsubscribe_),
   };
   SetSubscriptionRequest_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -254,7 +256,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       sizeof(SetSubscriptionResponse));
   GetSubscriptionRequest_descriptor_ = file->message_type(9);
   static const int GetSubscriptionRequest_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionRequest, token_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionRequest, idclient_),
   };
   GetSubscriptionRequest_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -268,8 +270,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(GetSubscriptionRequest));
   GetSubscriptionResponse_descriptor_ = file->message_type(10);
-  static const int GetSubscriptionResponse_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionResponse, token_),
+  static const int GetSubscriptionResponse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetSubscriptionResponse, subscriptions_),
   };
   GetSubscriptionResponse_reflection_ =
@@ -385,13 +386,14 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
     "\032.LS.SeriesResponse.Episode\"[\n\016ArtworkRe"
     "quest\022\016\n\006idShow\030\001 \002(\t\022\024\n\014seasonNumber\030\002 "
     "\002(\005\022\021\n\tthumbnail\030\003 \002(\010\022\020\n\010snapshot\030d \002(\t"
-    "\"\021\n\017ArtworkResponse\"V\n\026SetSubscriptionRe"
-    "quest\022\r\n\005token\030\001 \002(\t\022-\n\rsubscriptions\030\002 "
-    "\003(\0132\026.LS.SubscriptionRecord\")\n\027SetSubscr"
-    "iptionResponse\022\016\n\006result\030\001 \002(\010\"\'\n\026GetSub"
-    "scriptionRequest\022\r\n\005token\030\001 \002(\t\"W\n\027GetSu"
-    "bscriptionResponse\022\r\n\005token\030\001 \002(\t\022-\n\rsub"
-    "scriptions\030\002 \003(\0132\026.LS.SubscriptionRecord", 1240);
+    "\"\021\n\017ArtworkResponse\"\201\001\n\026SetSubscriptionR"
+    "equest\022\020\n\010idClient\030\001 \002(\t\022\r\n\005token\030\002 \002(\t\022"
+    "-\n\rsubscriptions\030\003 \003(\0132\026.LS.Subscription"
+    "Record\022\027\n\017flagUnsubscribe\030\004 \002(\010\")\n\027SetSu"
+    "bscriptionResponse\022\016\n\006result\030\001 \002(\010\"*\n\026Ge"
+    "tSubscriptionRequest\022\020\n\010idClient\030\001 \002(\t\"H"
+    "\n\027GetSubscriptionResponse\022-\n\rsubscriptio"
+    "ns\030\001 \003(\0132\026.LS.SubscriptionRecord", 1272);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
   Header::default_instance_ = new Header();
@@ -3193,8 +3195,10 @@ void ArtworkResponse::Swap(ArtworkResponse* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int SetSubscriptionRequest::kIdClientFieldNumber;
 const int SetSubscriptionRequest::kTokenFieldNumber;
 const int SetSubscriptionRequest::kSubscriptionsFieldNumber;
+const int SetSubscriptionRequest::kFlagUnsubscribeFieldNumber;
 #endif  // !_MSC_VER
 
 SetSubscriptionRequest::SetSubscriptionRequest()
@@ -3213,7 +3217,9 @@ SetSubscriptionRequest::SetSubscriptionRequest(const SetSubscriptionRequest& fro
 
 void SetSubscriptionRequest::SharedCtor() {
   _cached_size_ = 0;
+  idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  flagunsubscribe_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3222,6 +3228,9 @@ SetSubscriptionRequest::~SetSubscriptionRequest() {
 }
 
 void SetSubscriptionRequest::SharedDtor() {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idclient_;
+  }
   if (token_ != &::google_public::protobuf::internal::kEmptyString) {
     delete token_;
   }
@@ -3252,11 +3261,17 @@ SetSubscriptionRequest* SetSubscriptionRequest::New() const {
 
 void SetSubscriptionRequest::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_idclient()) {
+      if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+        idclient_->clear();
+      }
+    }
     if (has_token()) {
       if (token_ != &::google_public::protobuf::internal::kEmptyString) {
         token_->clear();
       }
     }
+    flagunsubscribe_ = false;
   }
   subscriptions_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -3269,10 +3284,27 @@ bool SetSubscriptionRequest::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required string token = 1;
+      // required string idClient = 1;
       case 1: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_idclient()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->idclient().data(), this->idclient().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_token;
+        break;
+      }
+
+      // required string token = 2;
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_token:
           DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_token()));
           ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -3281,12 +3313,12 @@ bool SetSubscriptionRequest::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_subscriptions;
+        if (input->ExpectTag(26)) goto parse_subscriptions;
         break;
       }
 
-      // repeated .LS.SubscriptionRecord subscriptions = 2;
-      case 2: {
+      // repeated .LS.SubscriptionRecord subscriptions = 3;
+      case 3: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_subscriptions:
@@ -3295,7 +3327,23 @@ bool SetSubscriptionRequest::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_subscriptions;
+        if (input->ExpectTag(26)) goto parse_subscriptions;
+        if (input->ExpectTag(32)) goto parse_flagUnsubscribe;
+        break;
+      }
+
+      // required bool flagUnsubscribe = 4;
+      case 4: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_flagUnsubscribe:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google_public::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &flagunsubscribe_)));
+          set_has_flagunsubscribe();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3318,19 +3366,33 @@ bool SetSubscriptionRequest::MergePartialFromCodedStream(
 
 void SetSubscriptionRequest::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
-  // required string token = 1;
+  // required string idClient = 1;
+  if (has_idclient()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idclient().data(), this->idclient().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->idclient(), output);
+  }
+
+  // required string token = 2;
   if (has_token()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
       this->token().data(), this->token().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      1, this->token(), output);
+      2, this->token(), output);
   }
 
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 3;
   for (int i = 0; i < this->subscriptions_size(); i++) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->subscriptions(i), output);
+      3, this->subscriptions(i), output);
+  }
+
+  // required bool flagUnsubscribe = 4;
+  if (has_flagunsubscribe()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteBool(4, this->flagunsubscribe(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -3341,21 +3403,36 @@ void SetSubscriptionRequest::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* SetSubscriptionRequest::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
-  // required string token = 1;
+  // required string idClient = 1;
+  if (has_idclient()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idclient().data(), this->idclient().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->idclient(), target);
+  }
+
+  // required string token = 2;
   if (has_token()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
       this->token().data(), this->token().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->token(), target);
+        2, this->token(), target);
   }
 
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 3;
   for (int i = 0; i < this->subscriptions_size(); i++) {
     target = ::google_public::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        2, this->subscriptions(i), target);
+        3, this->subscriptions(i), target);
+  }
+
+  // required bool flagUnsubscribe = 4;
+  if (has_flagunsubscribe()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->flagunsubscribe(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -3369,15 +3446,27 @@ int SetSubscriptionRequest::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required string token = 1;
+    // required string idClient = 1;
+    if (has_idclient()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->idclient());
+    }
+
+    // required string token = 2;
     if (has_token()) {
       total_size += 1 +
         ::google_public::protobuf::internal::WireFormatLite::StringSize(
           this->token());
     }
 
+    // required bool flagUnsubscribe = 4;
+    if (has_flagunsubscribe()) {
+      total_size += 1 + 1;
+    }
+
   }
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 3;
   total_size += 1 * this->subscriptions_size();
   for (int i = 0; i < this->subscriptions_size(); i++) {
     total_size +=
@@ -3412,8 +3501,14 @@ void SetSubscriptionRequest::MergeFrom(const SetSubscriptionRequest& from) {
   GOOGLE_CHECK_NE(&from, this);
   subscriptions_.MergeFrom(from.subscriptions_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_idclient()) {
+      set_idclient(from.idclient());
+    }
     if (from.has_token()) {
       set_token(from.token());
+    }
+    if (from.has_flagunsubscribe()) {
+      set_flagunsubscribe(from.flagunsubscribe());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -3432,7 +3527,7 @@ void SetSubscriptionRequest::CopyFrom(const SetSubscriptionRequest& from) {
 }
 
 bool SetSubscriptionRequest::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if ((_has_bits_[0] & 0x0000000b) != 0x0000000b) return false;
 
   for (int i = 0; i < subscriptions_size(); i++) {
     if (!this->subscriptions(i).IsInitialized()) return false;
@@ -3442,8 +3537,10 @@ bool SetSubscriptionRequest::IsInitialized() const {
 
 void SetSubscriptionRequest::Swap(SetSubscriptionRequest* other) {
   if (other != this) {
+    std::swap(idclient_, other->idclient_);
     std::swap(token_, other->token_);
     subscriptions_.Swap(&other->subscriptions_);
+    std::swap(flagunsubscribe_, other->flagunsubscribe_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3669,7 +3766,7 @@ void SetSubscriptionResponse::Swap(SetSubscriptionResponse* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int GetSubscriptionRequest::kTokenFieldNumber;
+const int GetSubscriptionRequest::kIdClientFieldNumber;
 #endif  // !_MSC_VER
 
 GetSubscriptionRequest::GetSubscriptionRequest()
@@ -3688,7 +3785,7 @@ GetSubscriptionRequest::GetSubscriptionRequest(const GetSubscriptionRequest& fro
 
 void GetSubscriptionRequest::SharedCtor() {
   _cached_size_ = 0;
-  token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3697,8 +3794,8 @@ GetSubscriptionRequest::~GetSubscriptionRequest() {
 }
 
 void GetSubscriptionRequest::SharedDtor() {
-  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete token_;
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idclient_;
   }
   if (this != default_instance_) {
   }
@@ -3727,9 +3824,9 @@ GetSubscriptionRequest* GetSubscriptionRequest::New() const {
 
 void GetSubscriptionRequest::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_token()) {
-      if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-        token_->clear();
+    if (has_idclient()) {
+      if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+        idclient_->clear();
       }
     }
   }
@@ -3743,14 +3840,14 @@ bool GetSubscriptionRequest::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required string token = 1;
+      // required string idClient = 1;
       case 1: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_token()));
+                input, this->mutable_idclient()));
           ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->token().data(), this->token().length(),
+            this->idclient().data(), this->idclient().length(),
             ::google_public::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
@@ -3777,13 +3874,13 @@ bool GetSubscriptionRequest::MergePartialFromCodedStream(
 
 void GetSubscriptionRequest::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
-  // required string token = 1;
-  if (has_token()) {
+  // required string idClient = 1;
+  if (has_idclient()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
+      this->idclient().data(), this->idclient().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      1, this->token(), output);
+      1, this->idclient(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -3794,14 +3891,14 @@ void GetSubscriptionRequest::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* GetSubscriptionRequest::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
-  // required string token = 1;
-  if (has_token()) {
+  // required string idClient = 1;
+  if (has_idclient()) {
     ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
+      this->idclient().data(), this->idclient().length(),
       ::google_public::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->token(), target);
+        1, this->idclient(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -3815,11 +3912,11 @@ int GetSubscriptionRequest::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required string token = 1;
-    if (has_token()) {
+    // required string idClient = 1;
+    if (has_idclient()) {
       total_size += 1 +
         ::google_public::protobuf::internal::WireFormatLite::StringSize(
-          this->token());
+          this->idclient());
     }
 
   }
@@ -3849,8 +3946,8 @@ void GetSubscriptionRequest::MergeFrom(const ::google_public::protobuf::Message&
 void GetSubscriptionRequest::MergeFrom(const GetSubscriptionRequest& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_token()) {
-      set_token(from.token());
+    if (from.has_idclient()) {
+      set_idclient(from.idclient());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -3876,7 +3973,7 @@ bool GetSubscriptionRequest::IsInitialized() const {
 
 void GetSubscriptionRequest::Swap(GetSubscriptionRequest* other) {
   if (other != this) {
-    std::swap(token_, other->token_);
+    std::swap(idclient_, other->idclient_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3895,7 +3992,6 @@ void GetSubscriptionRequest::Swap(GetSubscriptionRequest* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int GetSubscriptionResponse::kTokenFieldNumber;
 const int GetSubscriptionResponse::kSubscriptionsFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3915,7 +4011,6 @@ GetSubscriptionResponse::GetSubscriptionResponse(const GetSubscriptionResponse& 
 
 void GetSubscriptionResponse::SharedCtor() {
   _cached_size_ = 0;
-  token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3924,9 +4019,6 @@ GetSubscriptionResponse::~GetSubscriptionResponse() {
 }
 
 void GetSubscriptionResponse::SharedDtor() {
-  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete token_;
-  }
   if (this != default_instance_) {
   }
 }
@@ -3953,13 +4045,6 @@ GetSubscriptionResponse* GetSubscriptionResponse::New() const {
 }
 
 void GetSubscriptionResponse::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_token()) {
-      if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-        token_->clear();
-      }
-    }
-  }
   subscriptions_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -3971,24 +4056,8 @@ bool GetSubscriptionResponse::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required string token = 1;
+      // repeated .LS.SubscriptionRecord subscriptions = 1;
       case 1: {
-        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_token()));
-          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->token().data(), this->token().length(),
-            ::google_public::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_subscriptions;
-        break;
-      }
-
-      // repeated .LS.SubscriptionRecord subscriptions = 2;
-      case 2: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_subscriptions:
@@ -3997,7 +4066,7 @@ bool GetSubscriptionResponse::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_subscriptions;
+        if (input->ExpectTag(10)) goto parse_subscriptions;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -4020,19 +4089,10 @@ bool GetSubscriptionResponse::MergePartialFromCodedStream(
 
 void GetSubscriptionResponse::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
-  // required string token = 1;
-  if (has_token()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      1, this->token(), output);
-  }
-
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 1;
   for (int i = 0; i < this->subscriptions_size(); i++) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->subscriptions(i), output);
+      1, this->subscriptions(i), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -4043,21 +4103,11 @@ void GetSubscriptionResponse::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* GetSubscriptionResponse::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
-  // required string token = 1;
-  if (has_token()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->token(), target);
-  }
-
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 1;
   for (int i = 0; i < this->subscriptions_size(); i++) {
     target = ::google_public::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        2, this->subscriptions(i), target);
+        1, this->subscriptions(i), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -4070,16 +4120,7 @@ void GetSubscriptionResponse::SerializeWithCachedSizes(
 int GetSubscriptionResponse::ByteSize() const {
   int total_size = 0;
 
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required string token = 1;
-    if (has_token()) {
-      total_size += 1 +
-        ::google_public::protobuf::internal::WireFormatLite::StringSize(
-          this->token());
-    }
-
-  }
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 1;
   total_size += 1 * this->subscriptions_size();
   for (int i = 0; i < this->subscriptions_size(); i++) {
     total_size +=
@@ -4113,11 +4154,6 @@ void GetSubscriptionResponse::MergeFrom(const ::google_public::protobuf::Message
 void GetSubscriptionResponse::MergeFrom(const GetSubscriptionResponse& from) {
   GOOGLE_CHECK_NE(&from, this);
   subscriptions_.MergeFrom(from.subscriptions_);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_token()) {
-      set_token(from.token());
-    }
-  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -4134,7 +4170,6 @@ void GetSubscriptionResponse::CopyFrom(const GetSubscriptionResponse& from) {
 }
 
 bool GetSubscriptionResponse::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   for (int i = 0; i < subscriptions_size(); i++) {
     if (!this->subscriptions(i).IsInitialized()) return false;
@@ -4144,7 +4179,6 @@ bool GetSubscriptionResponse::IsInitialized() const {
 
 void GetSubscriptionResponse::Swap(GetSubscriptionResponse* other) {
   if (other != this) {
-    std::swap(token_, other->token_);
     subscriptions_.Swap(&other->subscriptions_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

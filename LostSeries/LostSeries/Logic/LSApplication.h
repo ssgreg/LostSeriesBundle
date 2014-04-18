@@ -12,6 +12,7 @@
 #import "LSModelBase.h"
 #import "LSServiceArtworkGetter.h"
 // LS.Logic
+#import "Logic/LSCDID.h"
 #import "Logic/LSRegistryControllers.h"
 
 
@@ -46,6 +47,7 @@
 - (id) init;
 
 @property NSString* deviceToken;
+@property LSCDID* cdid;
 @property (readonly) LSModelBase* modelBase;
 @property (readonly) LSServiceArtworkGetter* serviceArtworkGetter;
 @property (readonly) LSMessageBlackHole* messageBlackHole;

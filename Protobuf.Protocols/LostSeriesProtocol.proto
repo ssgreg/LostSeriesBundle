@@ -76,8 +76,10 @@ message ArtworkResponse
 
 message SetSubscriptionRequest
 {
-  required string token = 1;
-  repeated SubscriptionRecord subscriptions = 2;
+  required string idClient = 1;
+  required string token = 2;
+  repeated SubscriptionRecord subscriptions = 3;
+  required bool flagUnsubscribe = 4;
 }
 
 
@@ -89,12 +91,11 @@ message SetSubscriptionResponse
 
 message GetSubscriptionRequest
 {
-  required string token = 1;
+  required string idClient = 1;
 }
 
 
 message GetSubscriptionResponse
 {
-  required string token = 1;
-  repeated SubscriptionRecord subscriptions = 2;
+  repeated SubscriptionRecord subscriptions = 1;
 }

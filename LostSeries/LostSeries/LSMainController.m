@@ -152,9 +152,7 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterFavoriteShows);
 
 - (void) input
 {
-  [self.data.backendFacade
-    getSubscriptionInfoArrayByDeviceToken:[LSApplication singleInstance].deviceToken
-    replyHandler:^(NSArray* infos)
+  [self.data.backendFacade getSubscriptionInfoArrayByCDID:[LSApplication singleInstance].cdid replyHandler:^(NSArray* infos)
   {
     if (!self.isBlocked)
     {

@@ -8,6 +8,7 @@
 
 // Foundation
 #import <Foundation/Foundation.h>
+#import "Logic/LSCDID.h"
 
 
 // forwards
@@ -30,8 +31,8 @@
 #pragma mark - Interface
 - (void) getShowInfoArray:(void (^)(NSArray*))handler;
 - (void) getArtworkByShowInfo:(LSShowInfo*)showInfo thumbnail:(BOOL)thumbnail replyHandler:(void (^)(NSData*))handler;
-- (void) subscribeByDeviceToken:(NSString*)deviceToken subscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)(BOOL result))handler;
-- (void) getSubscriptionInfoArrayByDeviceToken:(NSString*)deviceToken replyHandler:(void (^)(NSArray*))handler;
+- (void) subscribeByCDID:(LSCDID*)cdid subscriptionInfo:(NSArray*)subscriptions flagUnsubscribe:(BOOL)flagUnsibscribe replyHandler:(void (^)(BOOL result))handler;
+- (void) getSubscriptionInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler;
 
 @end
 

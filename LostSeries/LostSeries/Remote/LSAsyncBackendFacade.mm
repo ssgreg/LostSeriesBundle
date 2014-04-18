@@ -125,10 +125,11 @@
   }];
 }
 
-- (void) subscribeByDeviceToken:(NSString*)deviceToken subscriptionInfo:(NSArray*)subscriptions replyHandler:(void (^)(BOOL result))handler
+- (void) subscribeByCDID:(LSCDID*)cdid subscriptionInfo:(NSArray*)subscriptions flagUnsubscribe:(BOOL)flagUnsibscribe replyHandler:(void (^)(BOOL result))handler;
 {
   LS::SetSubscriptionRequest subscriptionRequest;
-  subscriptionRequest.set_token(deviceToken.UTF8String);
+  subscriptionRequest.set_idclient([cdid toString].UTF8String);
+  subscriptionRequest.set_flagunsubscribe(flagUnsibscribe);
   for (LSSubscriptionInfo* subscription in subscriptions)
   {
     LS::SubscriptionRecord* record = subscriptionRequest.add_subscriptions();
@@ -149,10 +150,10 @@
   }];
 }
 
-- (void) getSubscriptionInfoArrayByDeviceToken:(NSString*)deviceToken replyHandler:(void (^)(NSArray*))handler
+- (void) getSubscriptionInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler
 {
   LS::GetSubscriptionRequest subscriptionRequest;
-  subscriptionRequest.set_token(deviceToken.UTF8String);
+  subscriptionRequest.set_idclient([cdid toString].UTF8String);
   //
   LSMessagePtr request(new LS::Message);
   *request->mutable_getsubscriptionrequest() = subscriptionRequest;

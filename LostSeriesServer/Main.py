@@ -14,6 +14,7 @@ import LostSeriesProtocol_pb2
 import Snapshot
 from Storage import *
 import Database
+import Subscriptions
 
 
 def logger():
@@ -66,47 +67,24 @@ def HandleArtworkRequest(message):
 
 def HandleSetSubscriptionRequest(message):
   print "Handling SetSubscriptionRequest..."
-  response = LostSeriesProtocol_pb2.SetSubscriptionResponse()
   #
   subscriptions = []
   for record in message.subscriptions:
     subscriptions.append(record.id)
+  Subscriptions.ChangeSubscription(message.idClient, message.token, subscriptions, message.flagUnsubscribe)
   #
-  subscriptions = list(set(subscriptions))
-  print "New records in database:"
-  print subscriptions
-  print "end"
-  post = \
-  {
-    "token": message.token,
-    "date": datetime.datetime.utcnow(),
-    "tags": subscriptions,
-  }
-  #
-  client = pymongo.MongoClient()
-  db = client['lostseries-database']
-  subscriptionsSection = db.subscriptions
-  subscriptionsSection.remove({"token": message.token})
-  subscriptionsSection.insert(post)
-  #
+  response = LostSeriesProtocol_pb2.SetSubscriptionResponse()
   response.result = True
+  #
   return { "message": response, "data": None }
 
 
 def HandleGetSubscriptionRequest(message):
   print "Handling HandleGetSubscriptionRequest..."
   #
+  subscriptions = Subscriptions.GetSubscription(message.idClient)
+  #
   response = LostSeriesProtocol_pb2.GetSubscriptionResponse()
-  response.token = message.token
-  #
-  client = pymongo.MongoClient()
-  db = client['lostseries-database']
-  subscriptionsSection = db.subscriptions
-  #
-  subscriptions = []
-  for idc in subscriptionsSection.find({"token": message.token}):
-    subscriptions = subscriptions + idc["tags"]
-  #
   for subscription in subscriptions:
     record = response.subscriptions.add()
     record.id = subscription

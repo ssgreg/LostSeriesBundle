@@ -10,9 +10,11 @@
 #import <UIComponents/UIStatusBarView.h>
 // Logic
 #import "LSApplication.h"
-#import "LSCDID.h"
 
 
+//
+// LSMessageMBH
+//
 
 @interface LSMessageMBH ()
 
@@ -289,6 +291,8 @@ typedef enum
 
 @implementation LSApplication
 
+@synthesize cdid = theCDID;
+
 + (LSApplication*) singleInstance
 {
   static __weak LSApplication* weakSingleInstance = nil;
@@ -414,12 +418,13 @@ typedef enum
   [[NSUbiquitousKeyValueStore defaultStore] synchronize];
 }
 
+
 #pragma mark - UIApplicationDelegate implementation
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	theCDID = [self getUpdatedCDID];
-  [theCDID toString];
   theModelBase = [[LSModelBase alloc] init];
   //
   [self registerForRemoteNotifications];

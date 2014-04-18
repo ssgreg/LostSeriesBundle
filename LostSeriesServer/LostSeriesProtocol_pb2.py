@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='LostSeriesProtocol.proto',
   package='LS',
-  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xb5\x03\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12;\n\x16setSubscriptionRequest\x18\xea\x07 \x01(\x0b\x32\x1a.LS.SetSubscriptionRequest\x12;\n\x16getSubscriptionRequest\x18\xeb\x07 \x01(\x0b\x32\x1a.LS.GetSubscriptionRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\x12=\n\x17setSubscriptionResponse\x18\xd2\x0f \x01(\x0b\x32\x1b.LS.SetSubscriptionResponse\x12=\n\x17getSubscriptionResponse\x18\xd3\x0f \x01(\x0b\x32\x1b.LS.GetSubscriptionResponse\" \n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\"\x0f\n\rSeriesRequest\"\xba\x02\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aT\n\x07\x45pisode\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x14\n\x0coriginalName\x18\x02 \x02(\t\x12\x0e\n\x06number\x18\x03 \x02(\x05\x12\x15\n\rdateTranslate\x18\x04 \x02(\t\x1a\xa7\x01\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x15\n\repisodeNumber\x18\x04 \x02(\x05\x12\n\n\x02id\x18\x63 \x02(\t\x12\x10\n\x08snapshot\x18\x64 \x02(\t\x12,\n\x08\x65pisodes\x18\x65 \x03(\x0b\x32\x1a.LS.SeriesResponse.Episode\"[\n\x0e\x41rtworkRequest\x12\x0e\n\x06idShow\x18\x01 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x02 \x02(\x05\x12\x11\n\tthumbnail\x18\x03 \x02(\x08\x12\x10\n\x08snapshot\x18\x64 \x02(\t\"\x11\n\x0f\x41rtworkResponse\"V\n\x16SetSubscriptionRequest\x12\r\n\x05token\x18\x01 \x02(\t\x12-\n\rsubscriptions\x18\x02 \x03(\x0b\x32\x16.LS.SubscriptionRecord\")\n\x17SetSubscriptionResponse\x12\x0e\n\x06result\x18\x01 \x02(\x08\"\'\n\x16GetSubscriptionRequest\x12\r\n\x05token\x18\x01 \x02(\t\"W\n\x17GetSubscriptionResponse\x12\r\n\x05token\x18\x01 \x02(\t\x12-\n\rsubscriptions\x18\x02 \x03(\x0b\x32\x16.LS.SubscriptionRecord')
+  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xb5\x03\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12;\n\x16setSubscriptionRequest\x18\xea\x07 \x01(\x0b\x32\x1a.LS.SetSubscriptionRequest\x12;\n\x16getSubscriptionRequest\x18\xeb\x07 \x01(\x0b\x32\x1a.LS.GetSubscriptionRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\x12=\n\x17setSubscriptionResponse\x18\xd2\x0f \x01(\x0b\x32\x1b.LS.SetSubscriptionResponse\x12=\n\x17getSubscriptionResponse\x18\xd3\x0f \x01(\x0b\x32\x1b.LS.GetSubscriptionResponse\" \n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\"\x0f\n\rSeriesRequest\"\xba\x02\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aT\n\x07\x45pisode\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x14\n\x0coriginalName\x18\x02 \x02(\t\x12\x0e\n\x06number\x18\x03 \x02(\x05\x12\x15\n\rdateTranslate\x18\x04 \x02(\t\x1a\xa7\x01\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x15\n\repisodeNumber\x18\x04 \x02(\x05\x12\n\n\x02id\x18\x63 \x02(\t\x12\x10\n\x08snapshot\x18\x64 \x02(\t\x12,\n\x08\x65pisodes\x18\x65 \x03(\x0b\x32\x1a.LS.SeriesResponse.Episode\"[\n\x0e\x41rtworkRequest\x12\x0e\n\x06idShow\x18\x01 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x02 \x02(\x05\x12\x11\n\tthumbnail\x18\x03 \x02(\x08\x12\x10\n\x08snapshot\x18\x64 \x02(\t\"\x11\n\x0f\x41rtworkResponse\"\x81\x01\n\x16SetSubscriptionRequest\x12\x10\n\x08idClient\x18\x01 \x02(\t\x12\r\n\x05token\x18\x02 \x02(\t\x12-\n\rsubscriptions\x18\x03 \x03(\x0b\x32\x16.LS.SubscriptionRecord\x12\x17\n\x0f\x66lagUnsubscribe\x18\x04 \x02(\x08\")\n\x17SetSubscriptionResponse\x12\x0e\n\x06result\x18\x01 \x02(\x08\"*\n\x16GetSubscriptionRequest\x12\x10\n\x08idClient\x18\x01 \x02(\t\"H\n\x17GetSubscriptionResponse\x12-\n\rsubscriptions\x18\x01 \x03(\x0b\x32\x16.LS.SubscriptionRecord')
 
 
 
@@ -395,16 +395,30 @@ _SETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='token', full_name='LS.SetSubscriptionRequest.token', index=0,
+      name='idClient', full_name='LS.SetSubscriptionRequest.idClient', index=0,
       number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='subscriptions', full_name='LS.SetSubscriptionRequest.subscriptions', index=1,
-      number=2, type=11, cpp_type=10, label=3,
+      name='token', full_name='LS.SetSubscriptionRequest.token', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='subscriptions', full_name='LS.SetSubscriptionRequest.subscriptions', index=2,
+      number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='flagUnsubscribe', full_name='LS.SetSubscriptionRequest.flagUnsubscribe', index=3,
+      number=4, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -417,8 +431,8 @@ _SETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=981,
-  serialized_end=1067,
+  serialized_start=982,
+  serialized_end=1111,
 )
 
 
@@ -445,8 +459,8 @@ _SETSUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1069,
-  serialized_end=1110,
+  serialized_start=1113,
+  serialized_end=1154,
 )
 
 
@@ -458,7 +472,7 @@ _GETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='token', full_name='LS.GetSubscriptionRequest.token', index=0,
+      name='idClient', full_name='LS.GetSubscriptionRequest.idClient', index=0,
       number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
@@ -473,8 +487,8 @@ _GETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1112,
-  serialized_end=1151,
+  serialized_start=1156,
+  serialized_end=1198,
 )
 
 
@@ -486,15 +500,8 @@ _GETSUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='token', full_name='LS.GetSubscriptionResponse.token', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='subscriptions', full_name='LS.GetSubscriptionResponse.subscriptions', index=1,
-      number=2, type=11, cpp_type=10, label=3,
+      name='subscriptions', full_name='LS.GetSubscriptionResponse.subscriptions', index=0,
+      number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -508,8 +515,8 @@ _GETSUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1153,
-  serialized_end=1240,
+  serialized_start=1200,
+  serialized_end=1272,
 )
 
 _MESSAGE.fields_by_name['seriesRequest'].message_type = _SERIESREQUEST

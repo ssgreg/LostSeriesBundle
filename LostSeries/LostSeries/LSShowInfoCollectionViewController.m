@@ -87,7 +87,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowingShows, LSSubscribeActionView)
   }
   //
   [self.view showActionIndicator:YES];
-  [self.data.backendFacade subscribeByDeviceToken:[LSApplication singleInstance].deviceToken subscriptionInfo:self.makeSubscriptions replyHandler:^(BOOL result)
+  [self.data.backendFacade
+   subscribeByCDID:[LSApplication singleInstance].cdid
+   subscriptionInfo:self.makeSubscriptions
+   flagUnsubscribe:!self.data.followingModeFollow
+   replyHandler:^(BOOL result)
   {
     [self.view showActionIndicator:NO];
     if (result)
@@ -102,7 +106,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowingShows, LSSubscribeActionView)
 - (NSArray*) makeSubscriptions
 {
   NSMutableArray* subscriptions = [NSMutableArray array];
-  for (LSShowAlbumCellModel* model in self.data.showsFollowing)
+  for (LSShowAlbumCellModel* model in self.data.showsSelected)
   {
     LSSubscriptionInfo* subscription = [[LSSubscriptionInfo alloc] init];
     subscription.showID = model.showInfo.showID;

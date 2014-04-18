@@ -130,8 +130,8 @@
 		EEB1180B187F17D500337023 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EEB1180D187F17D500337023 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EEB1180F187F17D500337023 /* LostSeries-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LostSeries-Prefix.pch"; sourceTree = "<group>"; };
-		EEB11810187F17D500337023 /* LSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LSAppDelegate.h; path = LostSeries/LSAppDelegate.h; sourceTree = "<group>"; };
-		EEB11811187F17D500337023 /* LSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = LSAppDelegate.m; path = LostSeries/LSAppDelegate.m; sourceTree = "<group>"; };
+		EEB11810187F17D500337023 /* LSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSAppDelegate.h; sourceTree = "<group>"; };
+		EEB11811187F17D500337023 /* LSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSAppDelegate.m; sourceTree = "<group>"; };
 		EEB11814187F17D500337023 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EEB11819187F17D500337023 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EEB1181F187F17D500337023 /* LostSeriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LostSeriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -274,9 +274,7 @@
 				EED97FDD18B0CA0900CF68E3 /* LSMainController.m */,
 				EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */,
 				EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */,
-				EEB11810187F17D500337023 /* LSAppDelegate.h */,
-				EEB11803187F17D500337023 /* CoreGraphics.framework */,
-				EEB11811187F17D500337023 /* LSAppDelegate.m */,
+				EEB11808187F17D500337023 /* Supporting Files */,
 				EEB11826187F17D500337023 /* LostSeriesTests */,
 				EEB11800187F17D500337023 /* Frameworks */,
 				EEB117FF187F17D500337023 /* Products */,
@@ -297,6 +295,7 @@
 			children = (
 				EEB11838187F1ABC00337023 /* libprotobuf.a */,
 				EEB11836187F183700337023 /* libzmq.a */,
+				EEB11803187F17D500337023 /* CoreGraphics.framework */,
 				EEB11801187F17D500337023 /* Foundation.framework */,
 				EEB11805187F17D500337023 /* UIKit.framework */,
 				EEB11820187F17D500337023 /* XCTest.framework */,
@@ -312,7 +311,6 @@
 				EE6D79B5188E47DD004A0D4B /* ZeroMQ */,
 				EE6D79AF188E3DB7004A0D4B /* CachingServer */,
 				EE1AA59D1888F223004B6E7D /* Remote */,
-				EEB11808187F17D500337023 /* Supporting Files */,
 			);
 			path = LostSeries;
 			sourceTree = "<group>";
@@ -320,15 +318,18 @@
 		EEB11808187F17D500337023 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EEB1180D187F17D500337023 /* main.m */,
+				EEB11810187F17D500337023 /* LSAppDelegate.h */,
+				EEB11811187F17D500337023 /* LSAppDelegate.m */,
 				EE8A964218ED491A00C24E06 /* LostSeries.entitlements */,
 				EEB11813187F17D500337023 /* Main.storyboard */,
 				EEB11819187F17D500337023 /* Images.xcassets */,
 				EEB11809187F17D500337023 /* LostSeries-Info.plist */,
 				EEB1180A187F17D500337023 /* InfoPlist.strings */,
-				EEB1180D187F17D500337023 /* main.m */,
 				EEB1180F187F17D500337023 /* LostSeries-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = LostSeries;
 			sourceTree = "<group>";
 		};
 		EEB11826187F17D500337023 /* LostSeriesTests */ = {

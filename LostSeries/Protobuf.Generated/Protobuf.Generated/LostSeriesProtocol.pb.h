@@ -1086,10 +1086,22 @@ class SetSubscriptionRequest : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string token = 1;
+  // required string idClient = 1;
+  inline bool has_idclient() const;
+  inline void clear_idclient();
+  static const int kIdClientFieldNumber = 1;
+  inline const ::std::string& idclient() const;
+  inline void set_idclient(const ::std::string& value);
+  inline void set_idclient(const char* value);
+  inline void set_idclient(const char* value, size_t size);
+  inline ::std::string* mutable_idclient();
+  inline ::std::string* release_idclient();
+  inline void set_allocated_idclient(::std::string* idclient);
+
+  // required string token = 2;
   inline bool has_token() const;
   inline void clear_token();
-  static const int kTokenFieldNumber = 1;
+  static const int kTokenFieldNumber = 2;
   inline const ::std::string& token() const;
   inline void set_token(const ::std::string& value);
   inline void set_token(const char* value);
@@ -1098,10 +1110,10 @@ class SetSubscriptionRequest : public ::google_public::protobuf::Message {
   inline ::std::string* release_token();
   inline void set_allocated_token(::std::string* token);
 
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 3;
   inline int subscriptions_size() const;
   inline void clear_subscriptions();
-  static const int kSubscriptionsFieldNumber = 2;
+  static const int kSubscriptionsFieldNumber = 3;
   inline const ::LS::SubscriptionRecord& subscriptions(int index) const;
   inline ::LS::SubscriptionRecord* mutable_subscriptions(int index);
   inline ::LS::SubscriptionRecord* add_subscriptions();
@@ -1110,18 +1122,31 @@ class SetSubscriptionRequest : public ::google_public::protobuf::Message {
   inline ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >*
       mutable_subscriptions();
 
+  // required bool flagUnsubscribe = 4;
+  inline bool has_flagunsubscribe() const;
+  inline void clear_flagunsubscribe();
+  static const int kFlagUnsubscribeFieldNumber = 4;
+  inline bool flagunsubscribe() const;
+  inline void set_flagunsubscribe(bool value);
+
   // @@protoc_insertion_point(class_scope:LS.SetSubscriptionRequest)
  private:
+  inline void set_has_idclient();
+  inline void clear_has_idclient();
   inline void set_has_token();
   inline void clear_has_token();
+  inline void set_has_flagunsubscribe();
+  inline void clear_has_flagunsubscribe();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
+  ::std::string* idclient_;
   ::std::string* token_;
   ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord > subscriptions_;
+  bool flagunsubscribe_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(4 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -1268,26 +1293,26 @@ class GetSubscriptionRequest : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string token = 1;
-  inline bool has_token() const;
-  inline void clear_token();
-  static const int kTokenFieldNumber = 1;
-  inline const ::std::string& token() const;
-  inline void set_token(const ::std::string& value);
-  inline void set_token(const char* value);
-  inline void set_token(const char* value, size_t size);
-  inline ::std::string* mutable_token();
-  inline ::std::string* release_token();
-  inline void set_allocated_token(::std::string* token);
+  // required string idClient = 1;
+  inline bool has_idclient() const;
+  inline void clear_idclient();
+  static const int kIdClientFieldNumber = 1;
+  inline const ::std::string& idclient() const;
+  inline void set_idclient(const ::std::string& value);
+  inline void set_idclient(const char* value);
+  inline void set_idclient(const char* value, size_t size);
+  inline ::std::string* mutable_idclient();
+  inline ::std::string* release_idclient();
+  inline void set_allocated_idclient(::std::string* idclient);
 
   // @@protoc_insertion_point(class_scope:LS.GetSubscriptionRequest)
  private:
-  inline void set_has_token();
-  inline void clear_has_token();
+  inline void set_has_idclient();
+  inline void clear_has_idclient();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::std::string* token_;
+  ::std::string* idclient_;
 
   mutable int _cached_size_;
   ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -1355,22 +1380,10 @@ class GetSubscriptionResponse : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string token = 1;
-  inline bool has_token() const;
-  inline void clear_token();
-  static const int kTokenFieldNumber = 1;
-  inline const ::std::string& token() const;
-  inline void set_token(const ::std::string& value);
-  inline void set_token(const char* value);
-  inline void set_token(const char* value, size_t size);
-  inline ::std::string* mutable_token();
-  inline ::std::string* release_token();
-  inline void set_allocated_token(::std::string* token);
-
-  // repeated .LS.SubscriptionRecord subscriptions = 2;
+  // repeated .LS.SubscriptionRecord subscriptions = 1;
   inline int subscriptions_size() const;
   inline void clear_subscriptions();
-  static const int kSubscriptionsFieldNumber = 2;
+  static const int kSubscriptionsFieldNumber = 1;
   inline const ::LS::SubscriptionRecord& subscriptions(int index) const;
   inline ::LS::SubscriptionRecord* mutable_subscriptions(int index);
   inline ::LS::SubscriptionRecord* add_subscriptions();
@@ -1381,16 +1394,13 @@ class GetSubscriptionResponse : public ::google_public::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:LS.GetSubscriptionResponse)
  private:
-  inline void set_has_token();
-  inline void clear_has_token();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::std::string* token_;
   ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord > subscriptions_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -2628,15 +2638,85 @@ inline void ArtworkRequest::set_allocated_snapshot(::std::string* snapshot) {
 
 // SetSubscriptionRequest
 
-// required string token = 1;
-inline bool SetSubscriptionRequest::has_token() const {
+// required string idClient = 1;
+inline bool SetSubscriptionRequest::has_idclient() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SetSubscriptionRequest::set_has_token() {
+inline void SetSubscriptionRequest::set_has_idclient() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SetSubscriptionRequest::clear_has_token() {
+inline void SetSubscriptionRequest::clear_has_idclient() {
   _has_bits_[0] &= ~0x00000001u;
+}
+inline void SetSubscriptionRequest::clear_idclient() {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    idclient_->clear();
+  }
+  clear_has_idclient();
+}
+inline const ::std::string& SetSubscriptionRequest::idclient() const {
+  return *idclient_;
+}
+inline void SetSubscriptionRequest::set_idclient(const ::std::string& value) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  idclient_->assign(value);
+}
+inline void SetSubscriptionRequest::set_idclient(const char* value) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  idclient_->assign(value);
+}
+inline void SetSubscriptionRequest::set_idclient(const char* value, size_t size) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  idclient_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SetSubscriptionRequest::mutable_idclient() {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  return idclient_;
+}
+inline ::std::string* SetSubscriptionRequest::release_idclient() {
+  clear_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = idclient_;
+    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SetSubscriptionRequest::set_allocated_idclient(::std::string* idclient) {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idclient_;
+  }
+  if (idclient) {
+    set_has_idclient();
+    idclient_ = idclient;
+  } else {
+    clear_has_idclient();
+    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
+// required string token = 2;
+inline bool SetSubscriptionRequest::has_token() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SetSubscriptionRequest::set_has_token() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SetSubscriptionRequest::clear_has_token() {
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void SetSubscriptionRequest::clear_token() {
   if (token_ != &::google_public::protobuf::internal::kEmptyString) {
@@ -2698,7 +2778,7 @@ inline void SetSubscriptionRequest::set_allocated_token(::std::string* token) {
   }
 }
 
-// repeated .LS.SubscriptionRecord subscriptions = 2;
+// repeated .LS.SubscriptionRecord subscriptions = 3;
 inline int SetSubscriptionRequest::subscriptions_size() const {
   return subscriptions_.size();
 }
@@ -2721,6 +2801,28 @@ SetSubscriptionRequest::subscriptions() const {
 inline ::google_public::protobuf::RepeatedPtrField< ::LS::SubscriptionRecord >*
 SetSubscriptionRequest::mutable_subscriptions() {
   return &subscriptions_;
+}
+
+// required bool flagUnsubscribe = 4;
+inline bool SetSubscriptionRequest::has_flagunsubscribe() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SetSubscriptionRequest::set_has_flagunsubscribe() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SetSubscriptionRequest::clear_has_flagunsubscribe() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SetSubscriptionRequest::clear_flagunsubscribe() {
+  flagunsubscribe_ = false;
+  clear_has_flagunsubscribe();
+}
+inline bool SetSubscriptionRequest::flagunsubscribe() const {
+  return flagunsubscribe_;
+}
+inline void SetSubscriptionRequest::set_flagunsubscribe(bool value) {
+  set_has_flagunsubscribe();
+  flagunsubscribe_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -2753,73 +2855,73 @@ inline void SetSubscriptionResponse::set_result(bool value) {
 
 // GetSubscriptionRequest
 
-// required string token = 1;
-inline bool GetSubscriptionRequest::has_token() const {
+// required string idClient = 1;
+inline bool GetSubscriptionRequest::has_idclient() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void GetSubscriptionRequest::set_has_token() {
+inline void GetSubscriptionRequest::set_has_idclient() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void GetSubscriptionRequest::clear_has_token() {
+inline void GetSubscriptionRequest::clear_has_idclient() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void GetSubscriptionRequest::clear_token() {
-  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-    token_->clear();
+inline void GetSubscriptionRequest::clear_idclient() {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    idclient_->clear();
   }
-  clear_has_token();
+  clear_has_idclient();
 }
-inline const ::std::string& GetSubscriptionRequest::token() const {
-  return *token_;
+inline const ::std::string& GetSubscriptionRequest::idclient() const {
+  return *idclient_;
 }
-inline void GetSubscriptionRequest::set_token(const ::std::string& value) {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
+inline void GetSubscriptionRequest::set_idclient(const ::std::string& value) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
   }
-  token_->assign(value);
+  idclient_->assign(value);
 }
-inline void GetSubscriptionRequest::set_token(const char* value) {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
+inline void GetSubscriptionRequest::set_idclient(const char* value) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
   }
-  token_->assign(value);
+  idclient_->assign(value);
 }
-inline void GetSubscriptionRequest::set_token(const char* value, size_t size) {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
+inline void GetSubscriptionRequest::set_idclient(const char* value, size_t size) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
   }
-  token_->assign(reinterpret_cast<const char*>(value), size);
+  idclient_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* GetSubscriptionRequest::mutable_token() {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
+inline ::std::string* GetSubscriptionRequest::mutable_idclient() {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
   }
-  return token_;
+  return idclient_;
 }
-inline ::std::string* GetSubscriptionRequest::release_token() {
-  clear_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
+inline ::std::string* GetSubscriptionRequest::release_idclient() {
+  clear_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = token_;
-    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    ::std::string* temp = idclient_;
+    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
     return temp;
   }
 }
-inline void GetSubscriptionRequest::set_allocated_token(::std::string* token) {
-  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete token_;
+inline void GetSubscriptionRequest::set_allocated_idclient(::std::string* idclient) {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idclient_;
   }
-  if (token) {
-    set_has_token();
-    token_ = token;
+  if (idclient) {
+    set_has_idclient();
+    idclient_ = idclient;
   } else {
-    clear_has_token();
-    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    clear_has_idclient();
+    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
 }
 
@@ -2827,77 +2929,7 @@ inline void GetSubscriptionRequest::set_allocated_token(::std::string* token) {
 
 // GetSubscriptionResponse
 
-// required string token = 1;
-inline bool GetSubscriptionResponse::has_token() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void GetSubscriptionResponse::set_has_token() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void GetSubscriptionResponse::clear_has_token() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void GetSubscriptionResponse::clear_token() {
-  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-    token_->clear();
-  }
-  clear_has_token();
-}
-inline const ::std::string& GetSubscriptionResponse::token() const {
-  return *token_;
-}
-inline void GetSubscriptionResponse::set_token(const ::std::string& value) {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
-  }
-  token_->assign(value);
-}
-inline void GetSubscriptionResponse::set_token(const char* value) {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
-  }
-  token_->assign(value);
-}
-inline void GetSubscriptionResponse::set_token(const char* value, size_t size) {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
-  }
-  token_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* GetSubscriptionResponse::mutable_token() {
-  set_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    token_ = new ::std::string;
-  }
-  return token_;
-}
-inline ::std::string* GetSubscriptionResponse::release_token() {
-  clear_has_token();
-  if (token_ == &::google_public::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = token_;
-    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void GetSubscriptionResponse::set_allocated_token(::std::string* token) {
-  if (token_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete token_;
-  }
-  if (token) {
-    set_has_token();
-    token_ = token;
-  } else {
-    clear_has_token();
-    token_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  }
-}
-
-// repeated .LS.SubscriptionRecord subscriptions = 2;
+// repeated .LS.SubscriptionRecord subscriptions = 1;
 inline int GetSubscriptionResponse::subscriptions_size() const {
   return subscriptions_.size();
 }
