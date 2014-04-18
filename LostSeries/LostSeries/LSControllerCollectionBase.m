@@ -36,7 +36,7 @@
   //
   NSInteger itemsCount = [self.collectionView numberOfItemsInSection:0];
   theRangeVisibleItems = NSMakeRange(0, MIN(itemsCount, MAX_VISIBLE_ITEMS_COUNT));
-  self.hiddenLoadingIndicator = itemsCount != 0;
+  self.hiddenLoadingIndicator = YES;
 }
 
 - (NSRange) rangeVisibleItems

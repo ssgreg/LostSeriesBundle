@@ -92,8 +92,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 
 - (void) update
 {
-  [self updateView];
-  //
   theRangeVisibleItems = NSMakeRange(0, 0);
   theIndexNext = NSNotFound;
   // artworks
