@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 // LS
 #import "LSControllerCollectionBase.h"
-#import <WorkflowLink/WorkflowLink.h>
+#import "LSWLinkActionChangeFollowing.h"
 
 
 @protocol LSSelectButtonView
@@ -44,11 +44,6 @@
 @end
 
 
-@protocol LSSubscribeActionView
-- (void) showActionIndicator:(BOOL)flag;
-@end
-
-
 @protocol LSViewSwitcherShowDetails <NSObject>
 - (void) switchToController:(NSString*)identifier;
 @end
@@ -64,7 +59,7 @@
     LSViewShowsCollection,
     LSViewShowsSelection,
     LSShowSubscribeButtonView,
-    LSSubscribeActionView,
+    LSViewActionChangeFollowing,
     LSViewSwitcherShowDetails
   >
 

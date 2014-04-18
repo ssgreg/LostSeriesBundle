@@ -62,64 +62,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
 
 
 //
-// LSWLinkActionChangeFollowingShows
-//
-
-@protocol LSDataActionChangeFollowingShows <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFollowing, LSDataBaseShowsSelected, LSDataBaseModeFollowing>
-@end
-
-@interface LSWLinkActionChangeFollowingShows : WFWorkflowLink
-@end
-
-@implementation LSWLinkActionChangeFollowingShows
-
-SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowingShows, LSSubscribeActionView);
-
-- (void) input
-{
-  if (self.data.followingModeFollow)
-  {
-    [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.showsSelected];
-  }
-  else
-  {
-    [self.data.showsFollowing subtractObjectsFromArrayPartial:self.data.showsSelected];
-  }
-  //
-  [self.view showActionIndicator:YES];
-  [self.data.backendFacade
-   subscribeByCDID:[LSApplication singleInstance].cdid
-   subscriptionInfo:self.makeSubscriptions
-   flagUnsubscribe:!self.data.followingModeFollow
-   replyHandler:^(BOOL result)
-  {
-    [self.view showActionIndicator:NO];
-    if (result)
-    {
-      [self output];
-    }
-  }];
-  //
-  [self forwardBlock];
-}
-
-- (NSArray*) makeSubscriptions
-{
-  NSMutableArray* subscriptions = [NSMutableArray array];
-  for (LSShowAlbumCellModel* model in self.data.showsSelected)
-  {
-    LSSubscriptionInfo* subscription = [[LSSubscriptionInfo alloc] init];
-    subscription.showID = model.showInfo.showID;
-    //
-    [subscriptions addObject:subscription];
-  }
-  return subscriptions;
-}
-
-@end
-
-
-//
 // LSSelectButtonData
 //
 
@@ -532,7 +474,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
                     , nil)
                 , nil)
             , nil)
-        , [[LSWLinkActionChangeFollowingShows alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+        , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
         , nil)
     , nil);
   
@@ -747,7 +689,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 //  theCollectionView.frame = collectionViewFrame;
 }
 
-- (void) showActionIndicator:(BOOL)flag
+- (void) updateActionIndicatorChangeFollowing:(BOOL)flag
 {
   if (flag)
   {
