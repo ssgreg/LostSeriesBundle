@@ -36,6 +36,7 @@
 		EEB1182D187F17D500337023 /* LostSeriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1182C187F17D500337023 /* LostSeriesTests.m */; };
 		EEB11837187F183700337023 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11836187F183700337023 /* libzmq.a */; };
 		EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11838187F1ABC00337023 /* libprotobuf.a */; };
+		EECD4CFC1900EC200092ECA7 /* JetBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFB1900EC200092ECA7 /* JetBadge.m */; };
 		EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FDD18B0CA0900CF68E3 /* LSMainController.m */; };
 		EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */; };
 		EED97FEA18B0DE3C00CF68E3 /* LSModelBase.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */; };
@@ -140,6 +141,8 @@
 		EEB1182C187F17D500337023 /* LostSeriesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LostSeriesTests.m; sourceTree = "<group>"; };
 		EEB11836187F183700337023 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../Frameworks/zeromq-4.0.3/build/lib/libzmq.a"; sourceTree = "<group>"; };
 		EEB11838187F1ABC00337023 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = "../../Frameworks/protobuf-2.5.0/protobuf/lib/libprotobuf.a"; sourceTree = "<group>"; };
+		EECD4CFA1900EC200092ECA7 /* JetBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JetBadge.h; path = Jet/Controls/JetBadge.h; sourceTree = "<group>"; };
+		EECD4CFB1900EC200092ECA7 /* JetBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetBadge.m; path = Jet/Controls/JetBadge.m; sourceTree = "<group>"; };
 		EED97FDC18B0CA0900CF68E3 /* LSMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSMainController.h; path = LostSeries/LSMainController.h; sourceTree = "<group>"; };
 		EED97FDD18B0CA0900CF68E3 /* LSMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSMainController.m; path = LostSeries/LSMainController.m; sourceTree = "<group>"; };
 		EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSShowsFollowingController.h; path = LostSeries/LSShowsFollowingController.h; sourceTree = "<group>"; };
@@ -304,6 +307,7 @@
 		EEB11807187F17D500337023 /* LostSeries */ = {
 			isa = PBXGroup;
 			children = (
+				EECD4CF81900EAFA0092ECA7 /* Jet */,
 				EE8A964618EED61800C24E06 /* Logic */,
 				EE6D79B5188E47DD004A0D4B /* ZeroMQ */,
 				EE6D79AF188E3DB7004A0D4B /* CachingServer */,
@@ -343,6 +347,23 @@
 				EEB11829187F17D500337023 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EECD4CF81900EAFA0092ECA7 /* Jet */ = {
+			isa = PBXGroup;
+			children = (
+				EECD4CF91900EC130092ECA7 /* Controls */,
+			);
+			name = Jet;
+			sourceTree = "<group>";
+		};
+		EECD4CF91900EC130092ECA7 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				EECD4CFA1900EC200092ECA7 /* JetBadge.h */,
+				EECD4CFB1900EC200092ECA7 /* JetBadge.m */,
+			);
+			name = Controls;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -527,6 +548,7 @@
 				EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */,
 				EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */,
 				EE8A964918EED7AE00C24E06 /* LSRegistryControllers.m in Sources */,
+				EECD4CFC1900EC200092ECA7 /* JetBadge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,6 +687,7 @@
 					"$(SRCROOT)/LostSeries",
 					"$(SRCROOT)/WorkflowLink",
 					"$(SRCROOT)/UIComponents",
+					"$(SRCROOT)/Jet",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -697,6 +720,7 @@
 					"$(SRCROOT)/LostSeries",
 					"$(SRCROOT)/WorkflowLink",
 					"$(SRCROOT)/UIComponents",
+					"$(SRCROOT)/Jet",
 				);
 				INFOPLIST_FILE = "LostSeries/LostSeries-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D38" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d2G-EP-egg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D43" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d2G-EP-egg">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -47,7 +47,7 @@
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="9" id="mIB-AE-9Dp">
                             <size key="itemSize" width="94" height="94"/>
                             <size key="headerReferenceSize" width="50" height="44"/>
-                            <size key="footerReferenceSize" width="50" height="341"/>
+                            <size key="footerReferenceSize" width="50" height="342"/>
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
@@ -94,7 +94,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theFooter" id="SXP-Ry-ObK">
-                            <rect key="frame" x="0.0" y="222" width="320" height="341"/>
+                            <rect key="frame" x="0.0" y="222" width="320" height="342"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <connections>
@@ -128,48 +128,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="9" id="qec-mS-SNa">
-                            <size key="itemSize" width="94" height="94"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="3" minimumInteritemSpacing="0.0" id="qec-mS-SNa">
+                            <size key="itemSize" width="100" height="100"/>
                             <size key="headerReferenceSize" width="50" height="44"/>
-                            <size key="footerReferenceSize" width="50" height="341"/>
-                            <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <size key="footerReferenceSize" width="50" height="342"/>
+                            <inset key="sectionInset" minX="10" minY="4" maxX="4" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theCellFollowingShows" id="KDu-Pd-R41" customClass="LSCellFollowingShows">
-                                <rect key="frame" x="10" y="118" width="94" height="94"/>
+                                <rect key="frame" x="10" y="112" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zzS-gi-ofJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="94" height="94"/>
+                                            <rect key="frame" x="0.0" y="6" width="94" height="94"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="84" translatesAutoresizingMaskIntoConstraints="NO" id="r97-UV-6pp">
-                                            <rect key="frame" x="5" y="46" width="84" height="46"/>
+                                            <rect key="frame" x="5" y="54" width="84" height="46"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="11"/>
                                             <color key="textColor" red="0.98431372549999996" green="0.98431372549999996" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="FollowOverlayForTVShow" translatesAutoresizingMaskIntoConstraints="NO" id="T35-Y3-Jif">
-                                            <rect key="frame" x="63" y="0.0" width="31" height="31"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7rM-4z-EZ2" customClass="JetBadge">
+                                            <rect key="frame" x="0.0" y="0.0" width="99" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SelectionChecked" translatesAutoresizingMaskIntoConstraints="NO" id="zS1-wr-XiP">
-                                            <rect key="frame" x="66" y="66" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="22" id="nSK-ck-PdU"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <size key="customSize" width="94" height="94"/>
+                                <constraints>
+                                    <constraint firstItem="7rM-4z-EZ2" firstAttribute="leading" secondItem="KDu-Pd-R41" secondAttribute="leading" id="8ny-ta-wyM"/>
+                                    <constraint firstItem="7rM-4z-EZ2" firstAttribute="top" secondItem="KDu-Pd-R41" secondAttribute="top" id="8or-HY-rHa"/>
+                                    <constraint firstAttribute="trailing" secondItem="7rM-4z-EZ2" secondAttribute="trailing" constant="1" id="eRM-02-0Vj"/>
+                                </constraints>
+                                <size key="customSize" width="100" height="100"/>
                                 <connections>
+                                    <outlet property="badgeUnwatchedSeriesCount" destination="7rM-4z-EZ2" id="JWl-vJ-PIy"/>
                                     <outlet property="detail" destination="r97-UV-6pp" id="j1o-Od-ZZe"/>
                                     <outlet property="image" destination="zzS-gi-ofJ" id="teR-Up-T6f"/>
-                                    <outlet property="overlay" destination="zS1-wr-XiP" id="0Ez-Fd-C7v"/>
-                                    <outlet property="subscriptionOverlay" destination="T35-Y3-Jif" id="dxN-ev-MGO"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -178,7 +181,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theFooter" id="tdf-1y-K1b">
-                            <rect key="frame" x="0.0" y="222" width="320" height="341"/>
+                            <rect key="frame" x="0.0" y="222" width="320" height="342"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <connections>
@@ -386,6 +389,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="tCA-Ak-xzq"/>
+        <segue reference="GlR-aQ-ywY"/>
     </inferredMetricsTieBreakers>
 </document>

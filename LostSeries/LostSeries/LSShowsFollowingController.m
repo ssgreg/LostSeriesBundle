@@ -10,7 +10,7 @@
 #import "LSControllerShowDetails.h"
 #import "LSModelBase.h"
 #import "Logic/LSApplication.h"
-
+#import "Jet/Controls/JetBadge.h"
 
 
 //
@@ -18,9 +18,8 @@
 //
 
 @interface LSCellFollowingShows : UICollectionViewCell
-@property IBOutlet UIImageView* overlay;
 @property IBOutlet UIImageView* image;
-@property IBOutlet UIImageView* subscriptionOverlay;
+@property IBOutlet JetBadge* badgeUnwatchedSeriesCount;
 @property IBOutlet UILabel* detail;
 @end
 
@@ -137,7 +136,9 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   [self updateView];
 }
 
+
 #pragma mark - LSBatchArtworkGetterDelegate implementation
+
 
 - (LSServiceArtworkGetterPriority) priorityForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
@@ -206,8 +207,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   }
   //
   cell.image.alpha = 1;
-  cell.overlay.hidden = YES;
-  cell.subscriptionOverlay.hidden = YES;
+  cell.badgeUnwatchedSeriesCount.textBadge = @"1";
 }
 
 - (void)viewDidLoad
