@@ -115,11 +115,72 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModelShowForDatails);
 
 
 //
+// LSWLinkButtonChangeFollowing
+//
+
+@interface LSWLinkButtonChangeFollowing : WFWorkflowLink
+- (void) clicked;
+@end
+
+@implementation LSWLinkButtonChangeFollowing
+
+SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
+
+- (void) input
+{
+  [self update];
+}
+
+- (void) update
+{
+  [self.view setTextButtonChangeFollowing:self.isShowFollowing ? @"Unfollow" : @"Follow"];
+}
+
+- (void) clicked
+{
+  self.data.followingModeFollow = !self.isShowFollowing;
+  [self addShowToListChangeFollowing];
+  //
+  [self output];
+}
+
+- (BOOL) isShowFollowing
+{
+  for (LSShowAlbumCellModel* show in self.data.showsFollowing)
+  {
+    if (show.showInfo.showID == self.data.showForDetails.showInfo.showID)
+    {
+      return YES;
+    }
+  }
+  return NO;
+}
+
+- (void) addShowToListChangeFollowing
+{
+  [self.data.modelShowsLists.showsToChangeFollowing removeAllObjectes];
+  //
+  for (NSInteger i = 0; i < self.data.modelShowsLists.shows.count; ++i)
+  {
+    LSShowAlbumCellModel* show = self.data.modelShowsLists.shows[i];
+    if (show.showInfo.showID == self.data.showForDetails.showInfo.showID)
+    {
+      [self.data.modelShowsLists.showsToChangeFollowing addObjectByIndexSource:i];
+      break;
+    }
+  }
+}
+
+@end
+
+
+//
 // LSControllerShowDetails
 //
 
 @implementation LSControllerShowDetails
 {
+  IBOutlet UIBarButtonItem* theButtonChangeFollowing;
   IBOutlet UIImageView* theImageShow;
   IBOutlet UILabel* theLabelShowTitle;
   IBOutlet UILabel* theLabelShowTitleOriginal;
@@ -131,6 +192,14 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModelShowForDatails);
   WFWorkflow* theWorkflow;
   WFLinkLockerDisposable* theWLinkLockWaitForViewDidLoad;
   LSWLinkCollectionEpisodes* theWLinkCollectionEpisodes;
+  LSWLinkButtonChangeFollowing* theWLinkButtonChangeFollowing;
+  //
+  LSMessageMBH* theMessageChangeFollowing;
+}
+
+- (IBAction) clickedButtonChangeFollowing:(id)sender;
+{
+  [theWLinkButtonChangeFollowing clicked];
 }
  
 - (void) setIdController:(NSString*)id
@@ -149,17 +218,20 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModelShowForDatails);
   LSModelBase* model = [LSApplication singleInstance].modelBase;
   theWLinkLockWaitForViewDidLoad = [[WFLinkLockerDisposable alloc] init];
   theWLinkCollectionEpisodes = [[LSWLinkCollectionEpisodes alloc] initWithData:model];
+  theWLinkButtonChangeFollowing = [[LSWLinkButtonChangeFollowing alloc] initWithData:model view:self];
   //
   theWorkflow = WFLinkWorkflow(
       theWLinkLockWaitForViewDidLoad
     , [[LSWLinkShowDescription alloc] initWithData:model view:self]
     , [[LSWLinkActionGetFullSizeArtwork alloc] initWithData:model view:self]
     , theWLinkCollectionEpisodes
+    , theWLinkButtonChangeFollowing
+    , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
     , nil);
   return theWorkflow;
 }
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
   [super viewDidLoad];
   //
@@ -252,6 +324,23 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModelShowForDatails);
   theLabelShowTitle.text = [self formatSeasonTitle:info];
   theLabelShowTitleOriginal.text = [self formatSeasonTitleOriginal:info];
   theLabelShowDetails.text = [self formatSeasonDetails:info];
+}
+
+- (void) setTextButtonChangeFollowing:(NSString*)text
+{
+  theButtonChangeFollowing.title = text;
+}
+
+- (void) updateActionIndicatorChangeFollowing:(BOOL)flag
+{
+  if (flag)
+  {
+    theMessageChangeFollowing = [[LSApplication singleInstance].messageBlackHole queueManagedNotification:@"Following new shows..." delay:1.];
+  }
+  else
+  {
+    [[LSApplication singleInstance].messageBlackHole closeMessage:theMessageChangeFollowing];
+  }  
 }
 
 @end

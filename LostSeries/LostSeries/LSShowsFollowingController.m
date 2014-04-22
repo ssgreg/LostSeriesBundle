@@ -43,7 +43,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsFollowingSwitchToDetails, LSViewFollowingSwit
 
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
 {
-  self.data.showForDetails = self.data.showsFollowingSorted[indexPath.row];
+  self.data.showForDetails = self.data.showsFollowingFiltered[indexPath.row];
   //
   [self.view switchToController:@"LSShowsFollowingController.ShowDetails"];
   [self input];
@@ -82,12 +82,12 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
 {
-  return self.data.modelShowsLists.showsFollowingSorted[indexPath.row];
+  return self.data.modelShowsLists.showsFollowingFiltered[indexPath.row];
 }
 
 - (NSUInteger) itemsCount
 {
-  return self.data.modelShowsLists.showsFollowingSorted.count;
+  return self.data.modelShowsLists.showsFollowingFiltered.count;
 }
 
 - (void) update
@@ -111,22 +111,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 
 - (void) filterByString:(NSString*)text
 {
-  if (text.length)
+  [self.data.modelShowsLists.showsFollowingFiltered removeAllObjectes];
+  for (NSInteger index = 0; index < self.data.modelShowsLists.showsFollowing.count; ++index)
   {
-    self.data.modelShowsLists.showsFollowingSorted = [self.data.modelShowsLists makeEmptyArrayPartial];
-    for (NSInteger index = 0; index < self.data.modelShowsLists.showsFollowing.count; ++index)
+    LSShowAlbumCellModel* show = self.data.modelShowsLists.showsFollowing[index];
+    if (
+      !text.length ||
+      [show.showInfo.title rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound ||
+      [show.showInfo.originalTitle rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound)
     {
-      LSShowAlbumCellModel* show = self.data.modelShowsLists.showsFollowing[index];
-      if ([show.showInfo.title rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound ||
-        [show.showInfo.originalTitle rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound)
-      {
-        [self.data.modelShowsLists.showsFollowingSorted addObjectByIndexSource:[self.data.modelShowsLists.showsFollowing indexTargetToSource:index]];
-      }
+      [self.data.modelShowsLists.showsFollowingFiltered addObjectByIndexSource:[self.data.modelShowsLists.showsFollowing indexTargetToSource:index]];
     }
-  }
-  else
-  {
-    self.data.modelShowsLists.showsFollowingSorted = self.data.modelShowsLists.showsFollowing;
   }
   theTextFilter = text;
   // reset range to renew artwork download
@@ -152,13 +147,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
     theIndexNext = theRangeVisibleItems.location;
   }
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
-    ? [self.data.modelShowsLists.showsFollowingSorted indexTargetToSource:theIndexNext++]
+    ? [self.data.modelShowsLists.showsFollowingFiltered indexTargetToSource:theIndexNext++]
     : NSNotFound;
 }
 
 - (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
 {
-  NSInteger indexTarget = [self.data.modelShowsLists.showsFollowingSorted indexSourceToTarget:index];
+  NSInteger indexTarget = [self.data.modelShowsLists.showsFollowingFiltered indexSourceToTarget:index];
   if (indexTarget != NSNotFound)
   {
     [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
@@ -184,6 +179,20 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 
 - (WFWorkflow*) workflow
 {
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }  
+  //
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  //
+  theWLinkCollection = [[LSWLinkFollowingShowsCollection alloc] initWithData:model view:self];
+  theWLinkSwitchToDetails = [[LSWLinkShowsFollowingSwitchToDetails alloc] initWithData:model view:self];
+  //
+  theWorkflow = WFLinkWorkflow(
+      theWLinkCollection
+    , theWLinkSwitchToDetails
+    , nil);
   return theWorkflow;
 }
 
@@ -211,17 +220,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
   //
-  theWLinkCollection = [[LSWLinkFollowingShowsCollection alloc] initWithData:model view:self];
-  theWLinkSwitchToDetails = [[LSWLinkShowsFollowingSwitchToDetails alloc] initWithData:model view:self];
-  //
-  theWorkflow = WFLinkWorkflow(
-      theWLinkCollection
-    , theWLinkSwitchToDetails
-    , nil);
-  
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsFollowingControllerDidLoadNotification object:self];
 }
 

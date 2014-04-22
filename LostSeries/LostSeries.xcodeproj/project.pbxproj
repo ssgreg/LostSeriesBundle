@@ -38,6 +38,7 @@
 		EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11838187F1ABC00337023 /* libprotobuf.a */; };
 		EECD4CFC1900EC200092ECA7 /* JetBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFB1900EC200092ECA7 /* JetBadge.m */; };
 		EECD4D00190151E40092ECA7 /* LSWLinkActionChangeFollowing.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFF190151E40092ECA7 /* LSWLinkActionChangeFollowing.m */; };
+		EECD4D031906255E0092ECA7 /* JetPartialArray.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D021906255E0092ECA7 /* JetPartialArray.m */; };
 		EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FDD18B0CA0900CF68E3 /* LSMainController.m */; };
 		EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */; };
 		EED97FEA18B0DE3C00CF68E3 /* LSModelBase.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */; };
@@ -146,6 +147,8 @@
 		EECD4CFB1900EC200092ECA7 /* JetBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetBadge.m; path = Jet/Controls/JetBadge.m; sourceTree = "<group>"; };
 		EECD4CFE190151E40092ECA7 /* LSWLinkActionChangeFollowing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSWLinkActionChangeFollowing.h; sourceTree = "<group>"; };
 		EECD4CFF190151E40092ECA7 /* LSWLinkActionChangeFollowing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSWLinkActionChangeFollowing.m; sourceTree = "<group>"; };
+		EECD4D011906255E0092ECA7 /* JetPartialArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JetPartialArray.h; path = Jet/JetPartialArray.h; sourceTree = "<group>"; };
+		EECD4D021906255E0092ECA7 /* JetPartialArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetPartialArray.m; path = Jet/JetPartialArray.m; sourceTree = "<group>"; };
 		EED97FDC18B0CA0900CF68E3 /* LSMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSMainController.h; path = LostSeries/LSMainController.h; sourceTree = "<group>"; };
 		EED97FDD18B0CA0900CF68E3 /* LSMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSMainController.m; path = LostSeries/LSMainController.m; sourceTree = "<group>"; };
 		EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSShowsFollowingController.h; path = LostSeries/LSShowsFollowingController.h; sourceTree = "<group>"; };
@@ -358,6 +361,8 @@
 			isa = PBXGroup;
 			children = (
 				EECD4CF91900EC130092ECA7 /* Controls */,
+				EECD4D011906255E0092ECA7 /* JetPartialArray.h */,
+				EECD4D021906255E0092ECA7 /* JetPartialArray.m */,
 			);
 			name = Jet;
 			sourceTree = "<group>";
@@ -548,6 +553,7 @@
 				EE61FA1A18B9C6F10044CB80 /* LSServiceArtworkGetter.m in Sources */,
 				EE1A250B189A8D8000DBA78B /* LSShowInfoCollectionViewController.m in Sources */,
 				EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */,
+				EECD4D031906255E0092ECA7 /* JetPartialArray.m in Sources */,
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
 				EEB0166A18E18C1400B25965 /* LSControllerShowDetails.m in Sources */,
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,

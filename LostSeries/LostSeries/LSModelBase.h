@@ -8,41 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Remote/LSAsyncBackendFacade.h"
-
-
-@class LSArrayPartial;
-
-
-//
-// LSArrayPartial
-//
-
-@interface LSArrayPartial : NSObject <NSFastEnumeration>
-
-+ (LSArrayPartial*) arrayPartialWithArraySource:(NSArray*)arraySource ;
-- (id) initWithArraySource:(NSArray*)arraySource;
-
-- (NSInteger) indexSourceToTarget:(NSInteger)indexSource;
-- (NSInteger) indexTargetToSource:(NSInteger)indexTarget;
-
-- (BOOL) hasIndexSource:(NSInteger)indexSource;
-
-- (void) addObjectByIndexSource:(NSInteger)indexSource;
-- (void) mergeObjectsFromArrayPartial:(LSArrayPartial*)array;
-- (void) subtractObjectsFromArrayPartial:(LSArrayPartial*)array;
-
-- (void) removeObjectByIndexSource:(NSInteger)indexSource;
-- (void) removeObjectByIndexTarget:(NSInteger)indexTarget;
-
-- (NSInteger) count;
-- (void) removeAllObjectes;
-- (void) addAllObjects;
-
-// operator []
-- (id) objectAtIndexedSubscript:(NSUInteger)index;
-- (void) setObject:(id)obj atIndexedSubscript:(NSUInteger)index;
-
-@end
+#import "Jet/JetPartialArray.h"
 
 
 //
@@ -53,14 +19,14 @@
 
 - (id) initWithShows:(NSArray*)shows;
 
-@property (readonly) LSArrayPartial* shows;
-@property (readonly) LSArrayPartial* showsFollowing;
-@property (readonly) LSArrayPartial* showsSelected;
+@property (readonly) JetArrayPartial* shows;
+@property (readonly) JetArrayPartial* showsFiltered;
 
-@property LSArrayPartial* showsSorted;
-@property LSArrayPartial* showsFollowingSorted;
+@property (readonly) JetArrayPartial* showsFollowing;
+@property (readonly) JetArrayPartial* showsFollowingFiltered;
 
-- (LSArrayPartial*) makeEmptyArrayPartial;
+@property (readonly) JetArrayPartial* showsSelected;
+@property (readonly) JetArrayPartial* showsToChangeFollowing;
 
 @end
 
@@ -93,16 +59,16 @@
 
 @protocol LSDataBaseShows
 @property (readonly) NSArray* shows;
-@property NSArray* showsSorted;
+@property NSArray* showsFiltered;
 @end
 
 @protocol LSDataBaseShowsSelected
-@property (readonly) LSArrayPartial* showsSelected;
+@property (readonly) JetArrayPartial* showsSelected;
 @end
 
 @protocol LSDataBaseShowsFollowing
-@property (readonly) LSArrayPartial* showsFollowing;
-@property LSArrayPartial* showsFollowingSorted;
+@property (readonly) JetArrayPartial* showsFollowing;
+@property JetArrayPartial* showsFollowingFiltered;
 @end
 
 @protocol LSDataBaseShowsRaw
@@ -142,4 +108,13 @@
 
 - (id) init;
 
+- (void) modelDidChange;
+
 @end
+
+
+//
+// Notifications
+//
+
+extern NSString* LSModelBaseDidChange;

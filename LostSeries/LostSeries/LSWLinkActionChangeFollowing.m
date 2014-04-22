@@ -15,30 +15,20 @@
 // LSWLinkActionChangeFollowing
 //
 
-@protocol LSDataActionChangeFollowing <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFollowing, LSDataBaseShowsSelected, LSDataBaseModeFollowing>
-@end
-
-
 @implementation LSWLinkActionChangeFollowing
 
-SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowing, LSViewActionChangeFollowing);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionChangeFollowing);
 
 - (void) input
 {
-  if (self.data.followingModeFollow)
-  {
-    [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.showsSelected];
-  }
-  else
-  {
-    [self.data.showsFollowing subtractObjectsFromArrayPartial:self.data.showsSelected];
-  }
-  //
   [self.view updateActionIndicatorChangeFollowing:YES];
+  //
+  [self changeModel];
+  //
   [self.data.backendFacade
-   subscribeByCDID:[LSApplication singleInstance].cdid
-   subscriptionInfo:self.makeSubscriptions
-   flagUnsubscribe:!self.data.followingModeFollow
+    subscribeByCDID:[LSApplication singleInstance].cdid
+    subscriptionInfo:[self transformToSubscription:self.data.modelShowsLists.showsToChangeFollowing]
+    flagUnsubscribe:!self.data.followingModeFollow
    replyHandler:^(BOOL result)
   {
     [self.view updateActionIndicatorChangeFollowing:NO];
@@ -48,20 +38,35 @@ SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowing, LSViewActionChangeFollowing
     }
   }];
   //
+  [self.data.modelShowsLists.showsToChangeFollowing removeAllObjectes];
   [self forwardBlock];
 }
 
-- (NSArray*) makeSubscriptions
+- (NSArray*) transformToSubscription:(JetArrayPartial*)shows
 {
   NSMutableArray* subscriptions = [NSMutableArray array];
-  for (LSShowAlbumCellModel* model in self.data.showsSelected)
+  for (LSShowAlbumCellModel* show in shows)
   {
     LSSubscriptionInfo* subscription = [[LSSubscriptionInfo alloc] init];
-    subscription.showID = model.showInfo.showID;
+    subscription.showID = show.showInfo.showID;
     //
     [subscriptions addObject:subscription];
   }
   return subscriptions;
+}
+
+- (void) changeModel
+{
+  if (self.data.followingModeFollow)
+  {
+    [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.modelShowsLists.showsToChangeFollowing];
+  }
+  else
+  {
+    [self.data.showsFollowing subtractObjectsFromArrayPartial:self.data.modelShowsLists.showsToChangeFollowing];
+  }
+  //
+  [self.data modelDidChange];
 }
 
 @end

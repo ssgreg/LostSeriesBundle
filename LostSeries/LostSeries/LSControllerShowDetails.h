@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-// WL
-#import <WorkflowLink/WorkflowLink.h>
 // LS
 #import "LSAsyncBackendFacade.h"
+#import "LSWLinkActionChangeFollowing.h"
 
 
 @protocol LSViewActionGetFullSizeArtwork <NSObject>
@@ -21,6 +20,9 @@
 - (void) setShowInfo:(LSShowInfo*)info;
 @end
 
+@protocol LSViewButtonChangeFollowing <NSObject>
+- (void) setTextButtonChangeFollowing:(NSString*)text;
+@end
 
 //
 // LSControllerShowDetails
@@ -31,10 +33,13 @@
     UITableViewDataSource,
     UITableViewDelegate,
     LSViewActionGetFullSizeArtwork,
-    LSViewShowDescription
+    LSViewShowDescription,
+    LSViewButtonChangeFollowing,
+    LSViewActionChangeFollowing
   >
 //@property NSString* idController;
 - (void) setIdController:(NSString*)idController;
 
 @property (readonly) WFWorkflow* workflow;
+
 @end

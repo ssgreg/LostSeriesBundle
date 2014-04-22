@@ -66,7 +66,7 @@
 - (IBAction) selectButtonClicked:(id)sender;
 - (IBAction) subscribeButtonClicked:(id)sender;
 
-- (WFWorkflow*) workflow;
+@property (readonly) WFWorkflow* workflow;
 
 @end
 

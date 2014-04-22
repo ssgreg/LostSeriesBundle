@@ -45,7 +45,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
 
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
 {
-  self.data.showForDetails = self.data.showsSorted[indexPath.row];
+  self.data.showForDetails = self.data.showsFiltered[indexPath.row];
   //
   [self.view switchToController:@"LSShowInfoCollectionViewController.ShowDetails"];
   [self input];
@@ -65,17 +65,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
 // LSSelectButtonData
 //
 
-@protocol LSSelectButtonData <LSDataBaseModeSelection>
-@end
-
-
 @interface LSSelectButtonWL : WFWorkflowLink
 - (void) clicked;
 @end
 
 @implementation LSSelectButtonWL
 
-SYNTHESIZE_WL_ACCESSORS(LSSelectButtonData, LSSelectButtonView);
+SYNTHESIZE_WL_ACCESSORS(LSDataBaseModeSelection, LSSelectButtonView);
 
 - (void) update
 {
@@ -106,12 +102,16 @@ SYNTHESIZE_WL_ACCESSORS(LSSelectButtonData, LSSelectButtonView);
 @end
 
 
+//
+// LSCancelSelectionModeWL
+//
+
 @interface LSCancelSelectionModeWL : WFWorkflowLink
 @end
 
 @implementation LSCancelSelectionModeWL
 
-SYNTHESIZE_WL_DATA_ACCESSOR(LSSelectButtonData);
+SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModeSelection);
 
 - (void) input
 {
@@ -126,18 +126,13 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSSelectButtonData);
 // LSSubscribeButtonData
 //
 
-@protocol LSSubscribeButtonData <LSDataBaseModeSelection, LSDataBaseShowsSelected, LSDataBaseModeFollowing>
-@end
-
-
 @interface LSSubscribeButtonWL : WFWorkflowLink
-- (void) follow;
-- (void) unfollow;
+- (void) changeFollowing:(BOOL)flag;
 @end
 
 @implementation LSSubscribeButtonWL
 
-SYNTHESIZE_WL_ACCESSORS(LSSubscribeButtonData, LSShowSubscribeButtonView);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSShowSubscribeButtonView);
 
 - (void) update
 {
@@ -148,19 +143,14 @@ SYNTHESIZE_WL_ACCESSORS(LSSubscribeButtonData, LSShowSubscribeButtonView);
 - (void) input
 {
   [self update];
-  [self forwardBlock];
 }
 
-- (void) follow
+- (void) changeFollowing:(BOOL)flag
 {
-  self.data.followingModeFollow = YES;
-  [self update];
-  [self output];
-}
-
-- (void) unfollow
-{
-  self.data.followingModeFollow = NO;
+  self.data.followingModeFollow = flag;
+  [self.data.modelShowsLists.showsToChangeFollowing removeAllObjectes];
+  [self.data.modelShowsLists.showsToChangeFollowing mergeObjectsFromArrayPartial:self.data.modelShowsLists.showsSelected];
+  //
   [self update];
   [self output];
 }
@@ -236,12 +226,12 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
 
 - (LSShowAlbumCellModel*) itemAtIndex:(NSIndexPath*)indexPath
 {
-  return self.data.modelShowsLists.showsSorted[indexPath.row];
+  return self.data.modelShowsLists.showsFiltered[indexPath.row];
 }
 
 - (NSUInteger) itemsCount
 {
-  return self.data.modelShowsLists.showsSorted.count;
+  return self.data.modelShowsLists.showsFiltered.count;
 }
 
 - (void) update
@@ -264,22 +254,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
 
 - (void) filterByString:(NSString*)text
 {
-  if (text.length)
+  [self.data.modelShowsLists.showsFiltered removeAllObjectes];
+  for (NSInteger index = 0; index < self.data.modelShowsLists.shows.count; ++index)
   {
-    self.data.modelShowsLists.showsSorted = [self.data.modelShowsLists makeEmptyArrayPartial];
-    for (NSInteger index = 0; index < self.data.modelShowsLists.shows.count; ++index)
+    LSShowAlbumCellModel* show = self.data.modelShowsLists.shows[index];
+    if (
+      !text.length ||
+      [show.showInfo.title rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound ||
+      [show.showInfo.originalTitle rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound)
     {
-      LSShowAlbumCellModel* show = self.data.modelShowsLists.shows[index];
-      if ([show.showInfo.title rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound ||
-        [show.showInfo.originalTitle rangeOfString:text options:NSCaseInsensitiveSearch].location != NSNotFound)
-      {
-        [self.data.modelShowsLists.showsSorted addObjectByIndexSource:index];
-      }
+      [self.data.modelShowsLists.showsFiltered addObjectByIndexSource:index];
     }
-  }
-  else
-  {
-    self.data.modelShowsLists.showsSorted = self.data.modelShowsLists.shows;
   }
   theTextFilter = text;
   // reset range to renew artwork download
@@ -305,13 +290,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewShowsCollection);
     theIndexNext = theRangeVisibleItems.location;
   }
   return NSLocationInRange(theIndexNext, theRangeVisibleItems)
-    ? [self.data.modelShowsLists.showsSorted indexTargetToSource:theIndexNext++]
+    ? [self.data.modelShowsLists.showsFiltered indexTargetToSource:theIndexNext++]
     : NSNotFound;
 }
 
 - (void) serviceArtworkGetter:(LSServiceArtworkGetter*)service didGetArtworkAtIndex:(NSInteger)index
 {
-  NSInteger indexTarget = [self.data.modelShowsLists.showsSorted indexSourceToTarget:index];
+  NSInteger indexTarget = [self.data.modelShowsLists.showsFiltered indexSourceToTarget:index];
   if (indexTarget != NSNotFound)
   {
     [self.view showCollectionUpdateItemAtIndex:[NSIndexPath indexPathForRow:indexTarget inSection:0]];
@@ -430,22 +415,10 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (WFWorkflow*) workflow
 {
-  return theWorkflow;
-}
-
-- (void)viewDidLoad
-{
-  [super viewDidLoad];
-//  self.edgesForExtendedLayout = UIRectEdgeNone;
-  
-  
-  UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
-  item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
-  UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
-  item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
-
-  //
-  [self createSubscribeToolbar];
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }
   //
   LSModelBase* model = [LSApplication singleInstance].modelBase;
   //
@@ -456,7 +429,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:model view:self];
   theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:model];
   //
-  
   theWorkflow = WFSplitWorkflowWithOutputUsingOr(
       WFLinkWorkflow(
           theShowCollectionWL
@@ -477,7 +449,20 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
         , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
         , nil)
     , nil);
-  
+  return theWorkflow;
+}
+
+- (void)viewDidLoad
+{
+  [super viewDidLoad];
+  //
+  UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
+  item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
+  UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
+  item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
+  //
+  [self createSubscribeToolbar];
+  //
   [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsControllerDidLoadNotification object:self];
 }
 
@@ -606,14 +591,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-  if (buttonIndex == 1)
-  {
-    [theSubscribeButtonWL follow];
-  }
-  else if (buttonIndex == 0)
-  {
-    [theSubscribeButtonWL unfollow];
-  }
+  [theSubscribeButtonWL changeFollowing: buttonIndex == 1];
 }
 
 

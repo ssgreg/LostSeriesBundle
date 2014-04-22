@@ -340,9 +340,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="DAp-gv-Vdz"/>
+                    <navigationItem key="navigationItem" id="DAp-gv-Vdz">
+                        <barButtonItem key="rightBarButtonItem" title="Follow/Unfollow" id="3Ph-kr-caN">
+                            <color key="tintColor" red="0.53115549395161288" green="0.0" blue="0.053595288099939936" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="clickedButtonChangeFollowing:" destination="RlL-ld-aZF" id="ccX-ah-19c"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="theButtonChangeFollowing" destination="3Ph-kr-caN" id="rLC-aT-9wD"/>
                         <outlet property="theImageShow" destination="vpo-WL-qbX" id="jfd-yC-NJ9"/>
                         <outlet property="theLabelShowDetails" destination="oM6-cz-dCE" id="ocI-Kz-jcT"/>
                         <outlet property="theLabelShowTitle" destination="464-Fr-ibw" id="zLb-3I-rtb"/>
@@ -389,6 +397,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="GlR-aQ-ywY"/>
+        <segue reference="tCA-Ak-xzq"/>
     </inferredMetricsTieBreakers>
 </document>

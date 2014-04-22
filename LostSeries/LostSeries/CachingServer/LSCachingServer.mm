@@ -129,7 +129,7 @@
 //        idToRequestMap.erase(requestByID);
 //        //
 //        multipartReply.push_front(header);
-            [NSThread sleepForTimeInterval:0.5];
+//            [NSThread sleepForTimeInterval:0.5];
         ZmqSendMultipartMessage(theFrontendSocket, multipartReply);
       }
     }

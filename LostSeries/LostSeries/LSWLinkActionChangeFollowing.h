@@ -24,6 +24,6 @@
 // LSViewActionChangeFollowing
 //
 
-@protocol LSViewActionChangeFollowing
+@protocol LSViewActionChangeFollowing <NSObject>
 - (void) updateActionIndicatorChangeFollowing:(BOOL)flag;
 @end

@@ -38,7 +38,7 @@
     LSViewFollowingSwitcherShowDetails
   >
 
-- (WFWorkflow*) workflow;
+@property (readonly) WFWorkflow* workflow;
 
 @end
 

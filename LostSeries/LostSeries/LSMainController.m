@@ -350,6 +350,12 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
   [self tryToStartWorkflow];
 }
 
+- (void) onLSModelBaseDidChange:(NSNotification*)notification
+{
+  NSLog(@"Starting workflow due to model changing...");
+  [self tryToStartWorkflow];
+}
+
 - (void) listenForControllers
 {
   [[NSNotificationCenter defaultCenter] addObserver:self
@@ -361,6 +367,15 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
     selector:@selector(onLSShowFollowingControllerDidLoadNotification:)
     name:LSShowsFollowingControllerDidLoadNotification
     object:nil];
+  //
+  [[NSNotificationCenter defaultCenter]
+    addObserverForName:LSModelBaseDidChange
+    object:nil
+    queue:[NSOperationQueue mainQueue]
+    usingBlock:^(NSNotification* notification)
+  {
+    [self onLSModelBaseDidChange:notification];
+  }];
 }
 
 - (void) tryToStartWorkflow
