@@ -338,7 +338,7 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
 
 - (void) update
 {
-  [self listenForControllers];
+  [self listenToChangesInModel];
 }
 
 - (void) input
@@ -360,7 +360,7 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
   [self tryToStartWorkflow];
 }
 
-- (void) listenForControllers
+- (void) listenToChangesInModel
 {
   [[NSNotificationCenter defaultCenter]
     addObserverForName:LSModelBaseDidChange
