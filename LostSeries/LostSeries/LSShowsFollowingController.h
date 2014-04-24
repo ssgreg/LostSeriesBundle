@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 // LS
+#import "Logic/LSBaseController.h"
 #import "LSControllerCollectionBase.h"
 #import <WorkflowLink/WorkflowLink.h>
 
@@ -31,6 +32,7 @@
 
 @interface LSShowsFollowingController : LSControllerCollectionBase
   <
+    LSBaseController,
     UICollectionViewDataSource,
     UICollectionViewDelegate,
     UIActionSheetDelegate,
@@ -43,8 +45,4 @@
 @end
 
 
-//
-// Notifications
-//
-
-extern NSString* LSShowsFollowingControllerDidLoadNotification; // device token has been recieved
+extern NSString* LSShowsFollowingControllerShortID;

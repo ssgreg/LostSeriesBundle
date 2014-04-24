@@ -6,7 +6,11 @@
 //  Copyright (c) 2014 Grigory Zubankov. All rights reserved.
 //
 
+// UI
 #import <UIKit/UIKit.h>
+// LS
+#import "Logic/LSBaseController.h"
+
 
 typedef enum
 {
@@ -27,5 +31,8 @@ typedef enum
 // LSMainController
 //
 
-@interface LSMainController : UITabBarController <UITabBarControllerDelegate, LSViewRouterNavigation>
+@interface LSMainController : UITabBarController <LSBaseController, UITabBarControllerDelegate, LSViewRouterNavigation>
 @end
+
+
+extern NSString* LSMainControllerShortID;

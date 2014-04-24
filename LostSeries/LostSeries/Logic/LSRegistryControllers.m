@@ -36,6 +36,7 @@
   NSAssert(identifier.length, @"Bad identifier");
   NSAssert(![theControllersByIdentifiers objectForKey:identifier], @"Bad invariant.");
   theControllersByIdentifiers[identifier] = controller;
+  [[NSNotificationCenter defaultCenter] postNotificationName:identifier object:controller];
 }
 
 - (void) removeController:(NSString*)identifier

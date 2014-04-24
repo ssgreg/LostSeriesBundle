@@ -402,6 +402,18 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   LSMessageMBH* theMessageSubscribing;
 }
 
+//- (id) initWithCoder:(NSCoder *)aDecoder
+//{
+//  if (!(self = [super initWithCoder:aDecoder]))
+//  {
+//    return nil;
+//  }
+//  //
+//
+//  //
+//  return self;
+//}
+
 - (IBAction) selectButtonClicked:(id)sender;
 {
   [theSelectButtonWL clicked];
@@ -413,57 +425,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   [actionSheet showInView:self.tabBarController.view];
 }
 
-- (WFWorkflow*) workflow
-{
-  if (theWorkflow)
-  {
-    return theWorkflow;
-  }
-  //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
-  //
-  theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:model view:self];
-  theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:model view:self];
-  theWLinkShowsSelection = [[LSWLinkShowsSelection alloc] initWithData:model view:self];
-  theWLinkProxyController = [[LSWLinkProxyController alloc] initWithData:model view:self];
-  theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:model view:self];
-  theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:model];
-  //
-  theWorkflow = WFSplitWorkflowWithOutputUsingOr(
-      WFLinkWorkflow(
-          theShowCollectionWL
-        , nil)
-    , WFLinkWorkflow(
-          WFLinkRingWorkflow(
-              theSelectButtonWL
-            , theWLinkShowsSelection
-            , WFSplitWorkflowWithOutputUsingOr(
-                  theWLinkProxyController
-                , WFLinkWorkflow(
-                      [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-                    , theSubscribeButtonWL
-                    , theCancelSelectionModeWL
-                    , nil)
-                , nil)
-            , nil)
-        , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-        , nil)
-    , nil);
-  return theWorkflow;
-}
-
 - (void)viewDidLoad
 {
   [super viewDidLoad];
   //
-  UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
-  item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
-  UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
-  item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
-  //
+  [self setupTabbar];
   [self createSubscribeToolbar];
   //
-  [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsControllerDidLoadNotification object:self];
+  [self registerYourself];
 }
 
 - (void) searchBarTextDidChange:(NSString*)text
@@ -471,13 +440,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   [theShowCollectionWL filterByString:text];
 }
 
-- (void) viewDidAppear:(BOOL)animated
-{
-//  [UIApplication sharedApplication].keyWindow.backgroundColor = [UIColor colorWithRed:(245/255.0) green:(245/255.0) blue:(245/255.0) alpha:1.f];
-  [super viewDidAppear:animated];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
+- (void) prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
 {
   LSControllerShowDetails* controller = segue.destinationViewController;
   controller.idController = segue.identifier;
@@ -527,17 +490,26 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   theSubscribeButton = [[UIBarButtonItem alloc] initWithTitle:@"Subscribe" style:UIBarButtonItemStylePlain target:self action:@selector(subscribeButtonClicked:)];
   NSArray *buttons = [NSArray arrayWithObjects:flexibleItem, theSubscribeButton, flexibleItem, nil];
   //
-  CGRect optimalRect = self.tabBarController.tabBar.frame;
-//  optimalRect.size.height -= 5;
-//  optimalRect.origin.y += 5;
-  //
-//  optimalRect = CGRectMake(0, 0, 320, 40);
-  theSubscribeToolbar = [[UIToolbar alloc] initWithFrame:optimalRect];
+  theSubscribeToolbar = [[UIToolbar alloc] initWithFrame:self.tabBarController.tabBar.frame];
   [theSubscribeToolbar setItems:buttons animated:NO];
   theSubscribeToolbar.hidden = YES;
-//  [self.view addSubview:theSubscribeToolbar];
-    [self.tabBarController.tabBar.window.viewForBaselineLayout addSubview:theSubscribeToolbar];
+  [self.tabBarController.tabBar.window.viewForBaselineLayout addSubview:theSubscribeToolbar];
+}
 
+- (void) setupTabbar
+{
+  UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
+  item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
+  UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
+  item1.selectedImage = [UIImage imageNamed:@"FavTVShowsSelectedTabItem"];
+}
+
+- (void) registerYourself
+{
+  id<LSBaseController> parent = ((id<LSBaseController>)self.parentViewController.parentViewController);
+  idController = MakeIdController(parent.idController, self.idControllerShort);
+  //
+  [[LSApplication singleInstance].registryControllers registerController:self withIdentifier:idController];
 }
 
 
@@ -592,6 +564,56 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
   [theSubscribeButtonWL changeFollowing: buttonIndex == 1];
+}
+
+
+#pragma mark - LSBaseController
+
+
+@synthesize idController;
+
+- (NSString*) idControllerShort
+{
+  return NSStringFromClass([self class]);
+}
+
+- (WFWorkflow*) workflow
+{
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }
+  //
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  //
+  theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:model view:self];
+  theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:model view:self];
+  theWLinkShowsSelection = [[LSWLinkShowsSelection alloc] initWithData:model view:self];
+  theWLinkProxyController = [[LSWLinkProxyController alloc] initWithData:model view:self];
+  theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:model view:self];
+  theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:model];
+  //
+  theWorkflow = WFSplitWorkflowWithOutputUsingOr(
+      WFLinkWorkflow(
+          theShowCollectionWL
+        , nil)
+    , WFLinkWorkflow(
+          WFLinkRingWorkflow(
+              theSelectButtonWL
+            , theWLinkShowsSelection
+            , WFSplitWorkflowWithOutputUsingOr(
+                  theWLinkProxyController
+                , WFLinkWorkflow(
+                      [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+                    , theSubscribeButtonWL
+                    , theCancelSelectionModeWL
+                    , nil)
+                , nil)
+            , nil)
+        , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+        , nil)
+    , nil);
+  return theWorkflow;
 }
 
 
@@ -661,10 +683,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 {
   theSubscribeToolbar.hidden = !flag;
   self.tabBarController.tabBar.hidden = flag;
-  
-//  CGRect collectionViewFrame = theCollectionView.frame;
-//  collectionViewFrame.size.height = flag ? theSubscribeToolbar.frame.origin.y - collectionViewFrame.origin.y : self.tabBarController.tabBar.frame.origin.y - collectionViewFrame.origin.y;
-//  theCollectionView.frame = collectionViewFrame;
 }
 
 - (void) updateActionIndicatorChangeFollowing:(BOOL)flag
@@ -687,8 +705,4 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 @end
 
 
-//
-// Notifications
-//
-
-NSString* LSShowsControllerDidLoadNotification = @"LSShowsControllerDidLoadNotification";
+NSString* LSShowInfoCollectionViewControllerShortID = @"LSShowInfoCollectionViewController";

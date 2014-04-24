@@ -39,6 +39,7 @@
 		EECD4CFC1900EC200092ECA7 /* JetBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFB1900EC200092ECA7 /* JetBadge.m */; };
 		EECD4D00190151E40092ECA7 /* LSWLinkActionChangeFollowing.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFF190151E40092ECA7 /* LSWLinkActionChangeFollowing.m */; };
 		EECD4D031906255E0092ECA7 /* JetPartialArray.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D021906255E0092ECA7 /* JetPartialArray.m */; };
+		EECD4D061908D96E0092ECA7 /* LSBaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D051908D96E0092ECA7 /* LSBaseController.m */; };
 		EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FDD18B0CA0900CF68E3 /* LSMainController.m */; };
 		EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */; };
 		EED97FEA18B0DE3C00CF68E3 /* LSModelBase.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */; };
@@ -149,6 +150,8 @@
 		EECD4CFF190151E40092ECA7 /* LSWLinkActionChangeFollowing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSWLinkActionChangeFollowing.m; sourceTree = "<group>"; };
 		EECD4D011906255E0092ECA7 /* JetPartialArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JetPartialArray.h; path = Jet/JetPartialArray.h; sourceTree = "<group>"; };
 		EECD4D021906255E0092ECA7 /* JetPartialArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetPartialArray.m; path = Jet/JetPartialArray.m; sourceTree = "<group>"; };
+		EECD4D041907EF8B0092ECA7 /* LSBaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSBaseController.h; path = Logic/LSBaseController.h; sourceTree = "<group>"; };
+		EECD4D051908D96E0092ECA7 /* LSBaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSBaseController.m; sourceTree = "<group>"; };
 		EED97FDC18B0CA0900CF68E3 /* LSMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSMainController.h; path = LostSeries/LSMainController.h; sourceTree = "<group>"; };
 		EED97FDD18B0CA0900CF68E3 /* LSMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSMainController.m; path = LostSeries/LSMainController.m; sourceTree = "<group>"; };
 		EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSShowsFollowingController.h; path = LostSeries/LSShowsFollowingController.h; sourceTree = "<group>"; };
@@ -257,6 +260,8 @@
 				EEF8749A18A95D2900F74CB6 /* LSApplication.m */,
 				EE8A964718EED7AE00C24E06 /* LSRegistryControllers.h */,
 				EE8A964818EED7AE00C24E06 /* LSRegistryControllers.m */,
+				EECD4D041907EF8B0092ECA7 /* LSBaseController.h */,
+				EECD4D051908D96E0092ECA7 /* LSBaseController.m */,
 			);
 			name = Logic;
 			sourceTree = "<group>";
@@ -563,6 +568,7 @@
 				EEF8749B18A95D2900F74CB6 /* LSApplication.m in Sources */,
 				EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */,
 				EE1AA5A61888F2ED004B6E7D /* LSAsyncBackendFacade.mm in Sources */,
+				EECD4D061908D96E0092ECA7 /* LSBaseController.m in Sources */,
 				EED97FEA18B0DE3C00CF68E3 /* LSModelBase.m in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */,

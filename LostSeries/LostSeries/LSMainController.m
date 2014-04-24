@@ -275,7 +275,9 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
   [self output];
 }
 
+
 #pragma mark - LSClientServiceArtworkGetters implementation
+
 
 - (LSServiceArtworkGetterPriority) priorityForServiceArtworkGetter:(LSServiceArtworkGetter*)service
 {
@@ -303,6 +305,8 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseArtworkGetter);
 
 @interface LSWLinkRouterNavigation : WFWorkflowLink
 - (void) didChangeRouterNavigationWay;
+- (void) didRegisterWorkflowShows:(WFWorkflow*)workflow;
+- (void) didRegisterWorkflowShowsFollowing:(WFWorkflow*)workflow;
 @end
 
 @implementation LSWLinkRouterNavigation
@@ -315,6 +319,20 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
 
 - (void) didChangeRouterNavigationWay
 {
+  [self tryToStartWorkflow];
+}
+
+- (void) didRegisterWorkflowShows:(WFWorkflow*)workflow
+{
+  theWorkflowShows = workflow;
+  theWorkflowShows.nextLink = WFLinkToSelfForward(self);
+  [self tryToStartWorkflow];
+}
+
+- (void) didRegisterWorkflowShowsFollowing:(WFWorkflow*)workflow
+{
+  theWorkflowShowsFollowing = workflow;
+  theWorkflowShowsFollowing.nextLink = WFLinkToSelfForward(self);
   [self tryToStartWorkflow];
 }
 
@@ -336,38 +354,14 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
   [theWorkflowShowsFollowing forwardBlock];
 }
 
-- (void) onLSShowControllerDidLoadNotification:(NSNotification*)notification
-{
-  theWorkflowShows = ((LSShowInfoCollectionViewController*)notification.object).workflow;
-  theWorkflowShows.nextLink = WFLinkToSelfForward(self);
-  [self tryToStartWorkflow];
-}
-
-- (void) onLSShowFollowingControllerDidLoadNotification:(NSNotification*)notification
-{
-  theWorkflowShowsFollowing = ((LSShowsFollowingController*)notification.object).workflow;
-  theWorkflowShowsFollowing.nextLink = WFLinkToSelfForward(self);
-  [self tryToStartWorkflow];
-}
-
 - (void) onLSModelBaseDidChange:(NSNotification*)notification
 {
-  NSLog(@"Starting workflow due to model changing...");
+  NSLog(@"Starting workflow due to the model changing...");
   [self tryToStartWorkflow];
 }
 
 - (void) listenForControllers
 {
-  [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(onLSShowControllerDidLoadNotification:)
-    name:LSShowsControllerDidLoadNotification
-    object:nil];
-  //
-  [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(onLSShowFollowingControllerDidLoadNotification:)
-    name:LSShowsFollowingControllerDidLoadNotification
-    object:nil];
-  //
   [[NSNotificationCenter defaultCenter]
     addObserverForName:LSModelBaseDidChange
     object:nil
@@ -404,6 +398,85 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
   // set delegate to self to catch tab changing (can't do it in IB)
   self.delegate = self;
   //
+  [self listenToControllers];
+  [self.workflow input];
+}
+
+- (void) viewDidLoad
+{
+  [super viewDidLoad];
+  [self initInternal];
+}
+
+- (void) listenToControllers
+{
+  [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(onLSShowInfoCollectionViewControllerDidRegister:)
+    name:MakeIdController(self.idController, LSShowInfoCollectionViewControllerShortID)
+    object:nil];
+  //
+  [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(onLSShowsFollowingController:)
+    name:MakeIdController(self.idController, LSShowsFollowingControllerShortID)
+    object:nil];
+}
+
+- (void) onLSShowInfoCollectionViewControllerDidRegister:(NSNotification*)notification
+{
+  [theWLinkRouterNavigation didRegisterWorkflowShows:((id<LSBaseController>)notification.object).workflow];
+}
+
+- (void) onLSShowsFollowingController:(NSNotification*)notification
+{
+  [theWLinkRouterNavigation didRegisterWorkflowShowsFollowing:((id<LSBaseController>)notification.object).workflow];
+}
+
+
+#pragma mark - LSViewRouterNavigation
+
+
+- (LSRouterNavigationWay) routerNavigationWay
+{
+  return self.selectedIndex == 0
+    ? LSRouterNavigationWayShows
+    : LSRouterNavigationWayShowsFollowing;
+}
+
+
+#pragma mark - UITabBarControllerDelegate
+
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+  // we should start workflow each time user changes view controller
+  [theWLinkRouterNavigation didChangeRouterNavigationWay];
+}
+
+
+#pragma mark - LSBaseController
+
+
+- (NSString*) idController
+{
+  return self.idControllerShort;
+}
+
+- (void) setIdController:(NSString*)idController
+{
+}
+
+- (NSString*) idControllerShort
+{
+  return LSMainControllerShortID;
+}
+
+- (WFWorkflow*) workflow
+{
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }
+  //
   LSModelBase* model = [LSApplication singleInstance].modelBase;
   theWLinkRouterNavigation = [[LSWLinkRouterNavigation alloc] initWithView:self];
   //
@@ -421,30 +494,10 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
     , theWLinkRouterNavigation
     , nil);
    //
-  [theWorkflow input];
-}
-
-- (void) viewDidLoad
-{
-  [super viewDidLoad];
-  [self initInternal];
-}
-
-#pragma mark - LSViewRouterNavigation
-
-- (LSRouterNavigationWay) routerNavigationWay
-{
-  return self.selectedIndex == 0
-    ? LSRouterNavigationWayShows
-    : LSRouterNavigationWayShowsFollowing;
-}
-
-#pragma mark - UITabBarControllerDelegate
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-  // we should start workflow each time user changes view controller
-  [theWLinkRouterNavigation didChangeRouterNavigationWay];
+  return theWorkflow;
 }
 
 @end
+
+
+NSString* LSMainControllerShortID = @"LSMainController";

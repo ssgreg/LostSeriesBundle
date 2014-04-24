@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 // LS
+#import "Logic/LSBaseController.h"
 #import "LSControllerCollectionBase.h"
 #import "LSWLinkActionChangeFollowing.h"
 
@@ -51,6 +52,7 @@
 
 @interface LSShowInfoCollectionViewController : LSControllerCollectionBase
   <
+    LSBaseController,
     UICollectionViewDataSource,
     UICollectionViewDelegate,
     UIActionSheetDelegate,
@@ -66,13 +68,7 @@
 - (IBAction) selectButtonClicked:(id)sender;
 - (IBAction) subscribeButtonClicked:(id)sender;
 
-@property (readonly) WFWorkflow* workflow;
-
 @end
 
 
-//
-// Notifications
-//
-
-extern NSString* LSShowsControllerDidLoadNotification; // device token has been recieved
+extern NSString* LSShowInfoCollectionViewControllerShortID;

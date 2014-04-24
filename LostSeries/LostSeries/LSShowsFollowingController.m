@@ -177,25 +177,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   LSWLinkShowsFollowingSwitchToDetails* theWLinkSwitchToDetails;
 }
 
-- (WFWorkflow*) workflow
-{
-  if (theWorkflow)
-  {
-    return theWorkflow;
-  }  
-  //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
-  //
-  theWLinkCollection = [[LSWLinkFollowingShowsCollection alloc] initWithData:model view:self];
-  theWLinkSwitchToDetails = [[LSWLinkShowsFollowingSwitchToDetails alloc] initWithData:model view:self];
-  //
-  theWorkflow = WFLinkWorkflow(
-      theWLinkCollection
-    , theWLinkSwitchToDetails
-    , nil);
-  return theWorkflow;
-}
-
 - (void) updateCell:(LSCellFollowingShows*)cell forIndexPath:(NSIndexPath*)indexPath
 {
   LSShowAlbumCellModel* model = [theWLinkCollection itemAtIndex:indexPath];
@@ -221,7 +202,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 {
   [super viewDidLoad];
   //
-  [[NSNotificationCenter defaultCenter] postNotificationName:LSShowsFollowingControllerDidLoadNotification object:self];
+  [self registerYourself];
 }
 
 - (void) searchBarTextDidChange:(NSString*)text
@@ -239,6 +220,75 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 {
   [super didReceiveMemoryWarning];
 }
+
+- (void) registerYourself
+{
+  id<LSBaseController> parent = ((id<LSBaseController>)self.parentViewController.parentViewController);
+  idController = MakeIdController(parent.idController, self.idControllerShort);
+  //
+  [[LSApplication singleInstance].registryControllers registerController:self withIdentifier:idController];
+}
+
+
+#pragma mark - UICollectionViewDataSource implementation
+
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+  NSUInteger itemCount = [theWLinkCollection itemsCount];
+//  theCollectionViewLoadingStub.hidden = itemCount > 0;
+  return itemCount;
+}
+
+- (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+  LSCellFollowingShows* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"theCellFollowingShows" forIndexPath:indexPath];
+  [self updateCell:cell forIndexPath:indexPath];
+  return cell;
+}
+
+
+#pragma mark - UICollectionViewDelegate implementation
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
+{
+  [theWLinkSwitchToDetails didSelectItemAtIndex:indexPath];
+}
+
+
+#pragma mark - LSBaseController implementation
+
+
+@synthesize idController;
+
+- (NSString*) idControllerShort
+{
+  return LSShowsFollowingControllerShortID;
+}
+
+- (WFWorkflow*) workflow
+{
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }  
+  //
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  //
+  theWLinkCollection = [[LSWLinkFollowingShowsCollection alloc] initWithData:model view:self];
+  theWLinkSwitchToDetails = [[LSWLinkShowsFollowingSwitchToDetails alloc] initWithData:model view:self];
+  //
+  theWorkflow = WFLinkWorkflow(
+      theWLinkCollection
+    , theWLinkSwitchToDetails
+    , nil);
+  return theWorkflow;
+}
+
+
+#pragma mark - Views implementation
+
 
 - (void) showCollectionReloadData
 {
@@ -270,38 +320,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   [self performSegueWithIdentifier:identifier sender:self];
 }
 
-
-#pragma mark - UICollectionViewDataSource implementation
-
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-  NSUInteger itemCount = [theWLinkCollection itemsCount];
-//  theCollectionViewLoadingStub.hidden = itemCount > 0;
-  return itemCount;
-}
-
-- (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-  LSCellFollowingShows* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"theCellFollowingShows" forIndexPath:indexPath];
-  [self updateCell:cell forIndexPath:indexPath];
-  return cell;
-}
-
-
-#pragma mark - UICollectionViewDelegate implementation
-
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
-{
-  [theWLinkSwitchToDetails didSelectItemAtIndex:indexPath];
-}
-
 @end
 
 
-//
-// Notifications
-//
-
-NSString* LSShowsFollowingControllerDidLoadNotification = @"LSShowsFollowingControllerDidLoadNotification";
+NSString* LSShowsFollowingControllerShortID = @"NSString* LSShowsFollowingController";

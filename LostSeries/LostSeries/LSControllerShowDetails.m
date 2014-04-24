@@ -31,11 +31,10 @@
 @end
 @implementation LSWLinkShowDescription
 
-SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowForDatails, LSViewShowDescription);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewShowDescription);
 
 - (void) input
 {
-  //
   [self.view setShowInfo:self.data.showForDetails.showInfo];
   [self output];
 }
@@ -47,14 +46,11 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowForDatails, LSViewShowDescription);
 // LSWLinkActionGetFullSizeArtwork
 //
 
-@protocol LSDataActionGetFullSizeArtwork <LSDataBaseFacadeAsyncBackend, LSDataBaseModelShowForDatails> @end
-
 @interface LSWLinkActionGetFullSizeArtwork : WFWorkflowLink
 @end
-
 @implementation LSWLinkActionGetFullSizeArtwork
 
-SYNTHESIZE_WL_ACCESSORS(LSDataActionGetFullSizeArtwork, LSViewActionGetFullSizeArtwork);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionGetFullSizeArtwork);
 
 - (void) input
 {
@@ -195,6 +191,15 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   LSWLinkButtonChangeFollowing* theWLinkButtonChangeFollowing;
   //
   LSMessageMBH* theMessageChangeFollowing;
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder
+{
+  if (!(self = [super initWithCoder:aDecoder]))
+  {
+    return nil;
+  }
+  return self;
 }
 
 - (IBAction) clickedButtonChangeFollowing:(id)sender;
