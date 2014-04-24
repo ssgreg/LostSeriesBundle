@@ -40,6 +40,9 @@
 @end
 
 @implementation LSWLinkProxyController
+{
+  __weak WFWorkflow* theWorkflowShowDetails;
+}
 
 SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
 
@@ -47,15 +50,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
 {
   self.data.showForDetails = self.data.showsFiltered[indexPath.row];
   //
-  [self.view switchToController:@"LSShowInfoCollectionViewController.ShowDetails"];
+  theWorkflowShowDetails = [self.view switchToShowDetails];
   [self input];
 }
 
 - (void) input
 {
-  LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
-  LSControllerShowDetails* controller = [registry findControllerByIdentifier:@"LSShowInfoCollectionViewController.ShowDetails"];
-  [controller.workflow input];
+  [theWorkflowShowDetails input];
 }
 
 @end
@@ -443,7 +444,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 - (void) prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
 {
   LSControllerShowDetails* controller = segue.destinationViewController;
-  controller.idController = segue.identifier;
+  controller.idController = MakeIdController(self.idController, LSControllerShowDetailsShortID);
 }
 
 - (void) updateCell:(LSShowAlbumCell*)cell forIndexPath:(NSIndexPath*)indexPath
@@ -697,9 +698,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   }
 }
 
-- (void) switchToController:(NSString*)identifier
+- (WFWorkflow*) switchToShowDetails
 {
-  [self performSegueWithIdentifier:identifier sender:self];
+  [self performSegueWithIdentifier:@"ShowDetails" sender:self];
+  //
+  LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
+  NSString* idControllerShowDetails = MakeIdController(self.idController, LSControllerShowDetailsShortID);
+  LSControllerShowDetails* controller = [registry findControllerByIdentifier:idControllerShowDetails];
+  return controller.workflow;
 }
 
 @end

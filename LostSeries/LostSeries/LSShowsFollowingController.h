@@ -22,7 +22,7 @@
 
 
 @protocol LSViewFollowingSwitcherShowDetails <NSObject>
-- (void) switchToController:(NSString*)identifier;
+- (WFWorkflow*) switchToShowDetails;
 @end
 
 

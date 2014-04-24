@@ -193,47 +193,9 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   LSMessageMBH* theMessageChangeFollowing;
 }
 
-- (id) initWithCoder:(NSCoder *)aDecoder
-{
-  if (!(self = [super initWithCoder:aDecoder]))
-  {
-    return nil;
-  }
-  return self;
-}
-
 - (IBAction) clickedButtonChangeFollowing:(id)sender;
 {
   [theWLinkButtonChangeFollowing clicked];
-}
- 
-- (void) setIdController:(NSString*)id
-{
-  theIdController = id;
-  [[LSApplication singleInstance].registryControllers registerController:self withIdentifier:id];
-}
-
-- (WFWorkflow*) workflow
-{
-  if (theWorkflow)
-  {
-    return theWorkflow;
-  }
-  //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
-  theWLinkLockWaitForViewDidLoad = [[WFLinkLockerDisposable alloc] init];
-  theWLinkCollectionEpisodes = [[LSWLinkCollectionEpisodes alloc] initWithData:model];
-  theWLinkButtonChangeFollowing = [[LSWLinkButtonChangeFollowing alloc] initWithData:model view:self];
-  //
-  theWorkflow = WFLinkWorkflow(
-      theWLinkLockWaitForViewDidLoad
-    , [[LSWLinkShowDescription alloc] initWithData:model view:self]
-    , [[LSWLinkActionGetFullSizeArtwork alloc] initWithData:model view:self]
-    , theWLinkCollectionEpisodes
-    , theWLinkButtonChangeFollowing
-    , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-    , nil);
-  return theWorkflow;
 }
 
 - (void) viewDidLoad
@@ -294,12 +256,12 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   return [NSString stringWithFormat:@"Episode %ld | %@", info.number, date];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
   return [theWLinkCollectionEpisodes numberOfItems];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   LSTableViewCellEpisodeInfo* cell = (LSTableViewCellEpisodeInfo*)[tableView dequeueReusableCellWithIdentifier:@"theEpisodeCell"];
   if (cell)
@@ -348,4 +310,50 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   }  
 }
 
+
+#pragma mark - LSBaseController implementation
+
+
+- (NSString*) idController
+{
+  return theIdController;
+}
+
+- (void) setIdController:(NSString*)id
+{
+  theIdController = id;
+  [[LSApplication singleInstance].registryControllers registerController:self withIdentifier:id];
+}
+
+- (NSString*) idControllerShort
+{
+  return LSControllerShowDetailsShortID;
+}
+
+- (WFWorkflow*) workflow
+{
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }
+  //
+  LSModelBase* model = [LSApplication singleInstance].modelBase;
+  theWLinkLockWaitForViewDidLoad = [[WFLinkLockerDisposable alloc] init];
+  theWLinkCollectionEpisodes = [[LSWLinkCollectionEpisodes alloc] initWithData:model];
+  theWLinkButtonChangeFollowing = [[LSWLinkButtonChangeFollowing alloc] initWithData:model view:self];
+  //
+  theWorkflow = WFLinkWorkflow(
+      theWLinkLockWaitForViewDidLoad
+    , [[LSWLinkShowDescription alloc] initWithData:model view:self]
+    , [[LSWLinkActionGetFullSizeArtwork alloc] initWithData:model view:self]
+    , theWLinkCollectionEpisodes
+    , theWLinkButtonChangeFollowing
+    , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+    , nil);
+  return theWorkflow;
+}
+
 @end
+
+
+NSString* LSControllerShowDetailsShortID = @"LSControllerShowDetails";

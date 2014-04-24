@@ -113,7 +113,7 @@
                         <outlet property="theCollectionView" destination="9gu-94-guR" id="dqw-70-uDa"/>
                         <outlet property="theNavigationItem" destination="1Wj-ae-dLs" id="KOm-bf-QeC"/>
                         <outlet property="theSelectButton" destination="XK4-8I-mlJ" id="xZr-e1-dIA"/>
-                        <segue destination="RlL-ld-aZF" kind="push" identifier="LSShowInfoCollectionViewController.ShowDetails" id="tCA-Ak-xzq"/>
+                        <segue destination="RlL-ld-aZF" kind="push" identifier="ShowDetails" id="tCA-Ak-xzq"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2lR-3N-mXi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -193,7 +193,7 @@
                     <connections>
                         <outlet property="theCollectionView" destination="WZa-jc-AA3" id="stQ-bj-FpR"/>
                         <outlet property="theNavigationItem" destination="yeE-U5-JF8" id="GS2-WF-SDQ"/>
-                        <segue destination="RlL-ld-aZF" kind="push" identifier="LSShowsFollowingController.ShowDetails" id="GlR-aQ-ywY"/>
+                        <segue destination="RlL-ld-aZF" kind="push" identifier="ShowDetails" id="GlR-aQ-ywY"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="khj-v6-NMI" userLabel="First Responder" sceneMemberID="firstResponder"/>

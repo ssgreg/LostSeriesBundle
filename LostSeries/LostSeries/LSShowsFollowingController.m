@@ -38,6 +38,9 @@
 @end
 
 @implementation LSWLinkShowsFollowingSwitchToDetails
+{
+  __weak WFWorkflow* theWorkflowShowDetails;
+}
 
 SYNTHESIZE_WL_ACCESSORS(LSDataShowsFollowingSwitchToDetails, LSViewFollowingSwitcherShowDetails);
 
@@ -45,15 +48,13 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsFollowingSwitchToDetails, LSViewFollowingSwit
 {
   self.data.showForDetails = self.data.showsFollowingFiltered[indexPath.row];
   //
-  [self.view switchToController:@"LSShowsFollowingController.ShowDetails"];
+  theWorkflowShowDetails = [self.view switchToShowDetails];
   [self input];
 }
 
 - (void) input
 {
-  LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
-  LSControllerShowDetails* controller = [registry findControllerByIdentifier:@"LSShowsFollowingController.ShowDetails"];
-  [controller.workflow input];
+  [theWorkflowShowDetails input];
 }
 
 @end
@@ -213,7 +214,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
 - (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
 {
   LSControllerShowDetails* controller = segue.destinationViewController;
-  controller.idController = segue.identifier;
+  controller.idController = MakeIdController(self.idController, LSControllerShowDetailsShortID);
 }
 
 - (void)didReceiveMemoryWarning
@@ -315,12 +316,17 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   }
 }
 
-- (void) switchToController:(NSString*)identifier
+- (WFWorkflow*) switchToShowDetails
 {
-  [self performSegueWithIdentifier:identifier sender:self];
+  [self performSegueWithIdentifier:@"ShowDetails" sender:self];
+  //
+  LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
+  NSString* idControllerShowDetails = MakeIdController(self.idController, LSControllerShowDetailsShortID);
+  LSControllerShowDetails* controller = [registry findControllerByIdentifier:idControllerShowDetails];
+  return controller.workflow;
 }
 
 @end
 
 
-NSString* LSShowsFollowingControllerShortID = @"NSString* LSShowsFollowingController";
+NSString* LSShowsFollowingControllerShortID = @"LSShowsFollowingController";

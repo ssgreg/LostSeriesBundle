@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 // LS
+#import "Logic/LSBaseController.h"
 #import "LSAsyncBackendFacade.h"
 #import "LSWLinkActionChangeFollowing.h"
 
@@ -30,6 +31,7 @@
 
 @interface LSControllerShowDetails : UIViewController
   <
+    LSBaseController,
     UITableViewDataSource,
     UITableViewDelegate,
     LSViewActionGetFullSizeArtwork,
@@ -37,9 +39,8 @@
     LSViewButtonChangeFollowing,
     LSViewActionChangeFollowing
   >
-//@property NSString* idController;
-- (void) setIdController:(NSString*)idController;
-
-@property (readonly) WFWorkflow* workflow;
 
 @end
+
+
+extern NSString* LSControllerShowDetailsShortID;
