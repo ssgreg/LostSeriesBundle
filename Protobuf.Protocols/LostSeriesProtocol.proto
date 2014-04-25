@@ -14,12 +14,14 @@ message Message
   optional ArtworkRequest artworkRequest = 1001;
   optional SetSubscriptionRequest setSubscriptionRequest = 1002;
   optional GetSubscriptionRequest getSubscriptionRequest = 1003;
+  optional GetUnwatchedSeriesRequest getUnwatchedSeriesRequest = 1004;
 
   // responses
   optional SeriesResponse seriesResponse = 2000;
   optional ArtworkResponse artworkResponse = 2001;
   optional SetSubscriptionResponse setSubscriptionResponse = 2002;
   optional GetSubscriptionResponse getSubscriptionResponse = 2003;
+  optional GetUnwatchedSeriesResponse getUnwatchedSeriesResponse = 2004;
 }
 
 
@@ -98,4 +100,22 @@ message GetSubscriptionRequest
 message GetSubscriptionResponse
 {
   repeated SubscriptionRecord subscriptions = 1;
+}
+
+
+message GetUnwatchedSeriesRequest
+{
+}
+
+
+message GetUnwatchedSeriesResponse
+{
+  message Episode
+  {
+    required string idShow = 1;
+    required int32 numberSeason = 2;
+    required int32 numberEpisode = 3;
+  }
+  required string idClient = 1;
+  repeated Episode episodes = 2;
 }

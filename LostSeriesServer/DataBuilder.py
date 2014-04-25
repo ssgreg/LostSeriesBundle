@@ -18,6 +18,7 @@ import Tools
 import logging
 import logging.config
 import Database
+import Subscriptions
 
 
 def logger():
@@ -282,6 +283,7 @@ def UpdateData(records, checkCancel = True):
   Database.makeSnapshotCollection(db.shows_full, "shows", snapshotIDNew)
   Database.updateCurrentSnapshotID(snapshotIDNew)
   logger().info("Series updated. Total shows: {0}, episodes {1}".format(len(list(db.shows.find())), len(list(db.episodes.find()))))
+  return episodesNew
 
 
 def UpdateShowsCancelStatus(db):
@@ -307,20 +309,29 @@ db = Database.instance()
 # UpdateFixedCancelStatus("150", True)
 # UpdateFixedCancelStatus("152", True)
 
-episodesPage1 = LoadInfoLastSeries(2)
-UpdateData(episodesPage1)
+episodesPage1 = LoadInfoLastSeries(1)
+episodes = UpdateData(episodesPage1)
 
-for show in list(db.shows_full.find()):
-  print len(show[Database.DATA_HISTORY]), show[Database.DATA_ID]
-  if len(show[Database.DATA_HISTORY]) > 1:
-    for rec in show[Database.DATA_HISTORY]:
-      print rec
+Subscriptions.AddUnwatchedEpisodes(episodes)
+
+UpdateArtworks(db)
+
+
+
+# for show in list(db.shows_full.find()):
+#   print len(show[Database.DATA_HISTORY]), show[Database.DATA_ID]
+#   if len(show[Database.DATA_HISTORY]) > 1:
+#     for rec in show[Database.DATA_HISTORY]:
+#       print rec
+
+
 
 # for episode in list(db.episodes_full.find()):
 #   print len(episode[Database.DATA_HISTORY]), episode[Database.DATA_ID]
 #   for rec in episode[Database.DATA_HISTORY]:
 #     print rec
 
-UpdateArtworks(db)
+
+
 
 

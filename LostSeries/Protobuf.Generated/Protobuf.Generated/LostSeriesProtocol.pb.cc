@@ -59,6 +59,15 @@ const ::google_public::protobuf::internal::GeneratedMessageReflection*
 const ::google_public::protobuf::Descriptor* GetSubscriptionResponse_descriptor_ = NULL;
 const ::google_public::protobuf::internal::GeneratedMessageReflection*
   GetSubscriptionResponse_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* GetUnwatchedSeriesRequest_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  GetUnwatchedSeriesRequest_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* GetUnwatchedSeriesResponse_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  GetUnwatchedSeriesResponse_reflection_ = NULL;
+const ::google_public::protobuf::Descriptor* GetUnwatchedSeriesResponse_Episode_descriptor_ = NULL;
+const ::google_public::protobuf::internal::GeneratedMessageReflection*
+  GetUnwatchedSeriesResponse_Episode_reflection_ = NULL;
 
 }  // namespace
 
@@ -85,15 +94,17 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(Header));
   Message_descriptor_ = file->message_type(1);
-  static const int Message_offsets_[8] = {
+  static const int Message_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, artworkrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, setsubscriptionrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, getsubscriptionrequest_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, getunwatchedseriesrequest_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, seriesresponse_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, artworkresponse_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, setsubscriptionresponse_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, getsubscriptionresponse_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, getunwatchedseriesresponse_),
   };
   Message_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -284,6 +295,53 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::DescriptorPool::generated_pool(),
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(GetSubscriptionResponse));
+  GetUnwatchedSeriesRequest_descriptor_ = file->message_type(11);
+  static const int GetUnwatchedSeriesRequest_offsets_[1] = {
+  };
+  GetUnwatchedSeriesRequest_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      GetUnwatchedSeriesRequest_descriptor_,
+      GetUnwatchedSeriesRequest::default_instance_,
+      GetUnwatchedSeriesRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesRequest, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(GetUnwatchedSeriesRequest));
+  GetUnwatchedSeriesResponse_descriptor_ = file->message_type(12);
+  static const int GetUnwatchedSeriesResponse_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse, idclient_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse, episodes_),
+  };
+  GetUnwatchedSeriesResponse_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      GetUnwatchedSeriesResponse_descriptor_,
+      GetUnwatchedSeriesResponse::default_instance_,
+      GetUnwatchedSeriesResponse_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(GetUnwatchedSeriesResponse));
+  GetUnwatchedSeriesResponse_Episode_descriptor_ = GetUnwatchedSeriesResponse_descriptor_->nested_type(0);
+  static const int GetUnwatchedSeriesResponse_Episode_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse_Episode, idshow_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse_Episode, numberseason_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse_Episode, numberepisode_),
+  };
+  GetUnwatchedSeriesResponse_Episode_reflection_ =
+    new ::google_public::protobuf::internal::GeneratedMessageReflection(
+      GetUnwatchedSeriesResponse_Episode_descriptor_,
+      GetUnwatchedSeriesResponse_Episode::default_instance_,
+      GetUnwatchedSeriesResponse_Episode_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse_Episode, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse_Episode, _unknown_fields_),
+      -1,
+      ::google_public::protobuf::DescriptorPool::generated_pool(),
+      ::google_public::protobuf::MessageFactory::generated_factory(),
+      sizeof(GetUnwatchedSeriesResponse_Episode));
 }
 
 namespace {
@@ -322,6 +380,12 @@ void protobuf_RegisterTypes(const ::std::string&) {
     GetSubscriptionRequest_descriptor_, &GetSubscriptionRequest::default_instance());
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     GetSubscriptionResponse_descriptor_, &GetSubscriptionResponse::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    GetUnwatchedSeriesRequest_descriptor_, &GetUnwatchedSeriesRequest::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    GetUnwatchedSeriesResponse_descriptor_, &GetUnwatchedSeriesResponse::default_instance());
+  ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    GetUnwatchedSeriesResponse_Episode_descriptor_, &GetUnwatchedSeriesResponse_Episode::default_instance());
 }
 
 }  // namespace
@@ -353,6 +417,12 @@ void protobuf_ShutdownFile_LostSeriesProtocol_2eproto() {
   delete GetSubscriptionRequest_reflection_;
   delete GetSubscriptionResponse::default_instance_;
   delete GetSubscriptionResponse_reflection_;
+  delete GetUnwatchedSeriesRequest::default_instance_;
+  delete GetUnwatchedSeriesRequest_reflection_;
+  delete GetUnwatchedSeriesResponse::default_instance_;
+  delete GetUnwatchedSeriesResponse_reflection_;
+  delete GetUnwatchedSeriesResponse_Episode::default_instance_;
+  delete GetUnwatchedSeriesResponse_Episode_reflection_;
 }
 
 void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
@@ -363,37 +433,46 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
 
   ::google_public::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\030LostSeriesProtocol.proto\022\002LS\"\033\n\006Header"
-    "\022\021\n\tmessageID\030\001 \002(\003\"\265\003\n\007Message\022)\n\rserie"
+    "\022\021\n\tmessageID\030\001 \002(\003\"\275\004\n\007Message\022)\n\rserie"
     "sRequest\030\350\007 \001(\0132\021.LS.SeriesRequest\022+\n\016ar"
     "tworkRequest\030\351\007 \001(\0132\022.LS.ArtworkRequest\022"
     ";\n\026setSubscriptionRequest\030\352\007 \001(\0132\032.LS.Se"
     "tSubscriptionRequest\022;\n\026getSubscriptionR"
     "equest\030\353\007 \001(\0132\032.LS.GetSubscriptionReques"
-    "t\022+\n\016seriesResponse\030\320\017 \001(\0132\022.LS.SeriesRe"
-    "sponse\022-\n\017artworkResponse\030\321\017 \001(\0132\023.LS.Ar"
-    "tworkResponse\022=\n\027setSubscriptionResponse"
-    "\030\322\017 \001(\0132\033.LS.SetSubscriptionResponse\022=\n\027"
-    "getSubscriptionResponse\030\323\017 \001(\0132\033.LS.GetS"
-    "ubscriptionResponse\" \n\022SubscriptionRecor"
-    "d\022\n\n\002id\030\001 \002(\t\"\017\n\rSeriesRequest\"\272\002\n\016Serie"
-    "sResponse\022(\n\005shows\030\001 \003(\0132\031.LS.SeriesResp"
-    "onse.TVShow\032T\n\007Episode\022\014\n\004name\030\001 \002(\t\022\024\n\014"
-    "originalName\030\002 \002(\t\022\016\n\006number\030\003 \002(\005\022\025\n\rda"
-    "teTranslate\030\004 \002(\t\032\247\001\n\006TVShow\022\r\n\005title\030\001 "
-    "\002(\t\022\025\n\roriginalTitle\030\002 \002(\t\022\024\n\014seasonNumb"
-    "er\030\003 \002(\005\022\025\n\repisodeNumber\030\004 \002(\005\022\n\n\002id\030c "
-    "\002(\t\022\020\n\010snapshot\030d \002(\t\022,\n\010episodes\030e \003(\0132"
-    "\032.LS.SeriesResponse.Episode\"[\n\016ArtworkRe"
-    "quest\022\016\n\006idShow\030\001 \002(\t\022\024\n\014seasonNumber\030\002 "
-    "\002(\005\022\021\n\tthumbnail\030\003 \002(\010\022\020\n\010snapshot\030d \002(\t"
-    "\"\021\n\017ArtworkResponse\"\201\001\n\026SetSubscriptionR"
-    "equest\022\020\n\010idClient\030\001 \002(\t\022\r\n\005token\030\002 \002(\t\022"
-    "-\n\rsubscriptions\030\003 \003(\0132\026.LS.Subscription"
-    "Record\022\027\n\017flagUnsubscribe\030\004 \002(\010\")\n\027SetSu"
-    "bscriptionResponse\022\016\n\006result\030\001 \002(\010\"*\n\026Ge"
-    "tSubscriptionRequest\022\020\n\010idClient\030\001 \002(\t\"H"
-    "\n\027GetSubscriptionResponse\022-\n\rsubscriptio"
-    "ns\030\001 \003(\0132\026.LS.SubscriptionRecord", 1272);
+    "t\022A\n\031getUnwatchedSeriesRequest\030\354\007 \001(\0132\035."
+    "LS.GetUnwatchedSeriesRequest\022+\n\016seriesRe"
+    "sponse\030\320\017 \001(\0132\022.LS.SeriesResponse\022-\n\017art"
+    "workResponse\030\321\017 \001(\0132\023.LS.ArtworkResponse"
+    "\022=\n\027setSubscriptionResponse\030\322\017 \001(\0132\033.LS."
+    "SetSubscriptionResponse\022=\n\027getSubscripti"
+    "onResponse\030\323\017 \001(\0132\033.LS.GetSubscriptionRe"
+    "sponse\022C\n\032getUnwatchedSeriesResponse\030\324\017 "
+    "\001(\0132\036.LS.GetUnwatchedSeriesResponse\" \n\022S"
+    "ubscriptionRecord\022\n\n\002id\030\001 \002(\t\"\017\n\rSeriesR"
+    "equest\"\272\002\n\016SeriesResponse\022(\n\005shows\030\001 \003(\013"
+    "2\031.LS.SeriesResponse.TVShow\032T\n\007Episode\022\014"
+    "\n\004name\030\001 \002(\t\022\024\n\014originalName\030\002 \002(\t\022\016\n\006nu"
+    "mber\030\003 \002(\005\022\025\n\rdateTranslate\030\004 \002(\t\032\247\001\n\006TV"
+    "Show\022\r\n\005title\030\001 \002(\t\022\025\n\roriginalTitle\030\002 \002"
+    "(\t\022\024\n\014seasonNumber\030\003 \002(\005\022\025\n\repisodeNumbe"
+    "r\030\004 \002(\005\022\n\n\002id\030c \002(\t\022\020\n\010snapshot\030d \002(\t\022,\n"
+    "\010episodes\030e \003(\0132\032.LS.SeriesResponse.Epis"
+    "ode\"[\n\016ArtworkRequest\022\016\n\006idShow\030\001 \002(\t\022\024\n"
+    "\014seasonNumber\030\002 \002(\005\022\021\n\tthumbnail\030\003 \002(\010\022\020"
+    "\n\010snapshot\030d \002(\t\"\021\n\017ArtworkResponse\"\201\001\n\026"
+    "SetSubscriptionRequest\022\020\n\010idClient\030\001 \002(\t"
+    "\022\r\n\005token\030\002 \002(\t\022-\n\rsubscriptions\030\003 \003(\0132\026"
+    ".LS.SubscriptionRecord\022\027\n\017flagUnsubscrib"
+    "e\030\004 \002(\010\")\n\027SetSubscriptionResponse\022\016\n\006re"
+    "sult\030\001 \002(\010\"*\n\026GetSubscriptionRequest\022\020\n\010"
+    "idClient\030\001 \002(\t\"H\n\027GetSubscriptionRespons"
+    "e\022-\n\rsubscriptions\030\001 \003(\0132\026.LS.Subscripti"
+    "onRecord\"\033\n\031GetUnwatchedSeriesRequest\"\260\001"
+    "\n\032GetUnwatchedSeriesResponse\022\020\n\010idClient"
+    "\030\001 \002(\t\0228\n\010episodes\030\002 \003(\0132&.LS.GetUnwatch"
+    "edSeriesResponse.Episode\032F\n\007Episode\022\016\n\006i"
+    "dShow\030\001 \002(\t\022\024\n\014numberSeason\030\002 \002(\005\022\025\n\rnum"
+    "berEpisode\030\003 \002(\005", 1616);
   ::google_public::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "LostSeriesProtocol.proto", &protobuf_RegisterTypes);
   Header::default_instance_ = new Header();
@@ -409,6 +488,9 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
   SetSubscriptionResponse::default_instance_ = new SetSubscriptionResponse();
   GetSubscriptionRequest::default_instance_ = new GetSubscriptionRequest();
   GetSubscriptionResponse::default_instance_ = new GetSubscriptionResponse();
+  GetUnwatchedSeriesRequest::default_instance_ = new GetUnwatchedSeriesRequest();
+  GetUnwatchedSeriesResponse::default_instance_ = new GetUnwatchedSeriesResponse();
+  GetUnwatchedSeriesResponse_Episode::default_instance_ = new GetUnwatchedSeriesResponse_Episode();
   Header::default_instance_->InitAsDefaultInstance();
   Message::default_instance_->InitAsDefaultInstance();
   SubscriptionRecord::default_instance_->InitAsDefaultInstance();
@@ -422,6 +504,9 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
   SetSubscriptionResponse::default_instance_->InitAsDefaultInstance();
   GetSubscriptionRequest::default_instance_->InitAsDefaultInstance();
   GetSubscriptionResponse::default_instance_->InitAsDefaultInstance();
+  GetUnwatchedSeriesRequest::default_instance_->InitAsDefaultInstance();
+  GetUnwatchedSeriesResponse::default_instance_->InitAsDefaultInstance();
+  GetUnwatchedSeriesResponse_Episode::default_instance_->InitAsDefaultInstance();
   ::google_public::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_LostSeriesProtocol_2eproto);
 }
 
@@ -648,10 +733,12 @@ const int Message::kSeriesRequestFieldNumber;
 const int Message::kArtworkRequestFieldNumber;
 const int Message::kSetSubscriptionRequestFieldNumber;
 const int Message::kGetSubscriptionRequestFieldNumber;
+const int Message::kGetUnwatchedSeriesRequestFieldNumber;
 const int Message::kSeriesResponseFieldNumber;
 const int Message::kArtworkResponseFieldNumber;
 const int Message::kSetSubscriptionResponseFieldNumber;
 const int Message::kGetSubscriptionResponseFieldNumber;
+const int Message::kGetUnwatchedSeriesResponseFieldNumber;
 #endif  // !_MSC_VER
 
 Message::Message()
@@ -664,10 +751,12 @@ void Message::InitAsDefaultInstance() {
   artworkrequest_ = const_cast< ::LS::ArtworkRequest*>(&::LS::ArtworkRequest::default_instance());
   setsubscriptionrequest_ = const_cast< ::LS::SetSubscriptionRequest*>(&::LS::SetSubscriptionRequest::default_instance());
   getsubscriptionrequest_ = const_cast< ::LS::GetSubscriptionRequest*>(&::LS::GetSubscriptionRequest::default_instance());
+  getunwatchedseriesrequest_ = const_cast< ::LS::GetUnwatchedSeriesRequest*>(&::LS::GetUnwatchedSeriesRequest::default_instance());
   seriesresponse_ = const_cast< ::LS::SeriesResponse*>(&::LS::SeriesResponse::default_instance());
   artworkresponse_ = const_cast< ::LS::ArtworkResponse*>(&::LS::ArtworkResponse::default_instance());
   setsubscriptionresponse_ = const_cast< ::LS::SetSubscriptionResponse*>(&::LS::SetSubscriptionResponse::default_instance());
   getsubscriptionresponse_ = const_cast< ::LS::GetSubscriptionResponse*>(&::LS::GetSubscriptionResponse::default_instance());
+  getunwatchedseriesresponse_ = const_cast< ::LS::GetUnwatchedSeriesResponse*>(&::LS::GetUnwatchedSeriesResponse::default_instance());
 }
 
 Message::Message(const Message& from)
@@ -682,10 +771,12 @@ void Message::SharedCtor() {
   artworkrequest_ = NULL;
   setsubscriptionrequest_ = NULL;
   getsubscriptionrequest_ = NULL;
+  getunwatchedseriesrequest_ = NULL;
   seriesresponse_ = NULL;
   artworkresponse_ = NULL;
   setsubscriptionresponse_ = NULL;
   getsubscriptionresponse_ = NULL;
+  getunwatchedseriesresponse_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -699,10 +790,12 @@ void Message::SharedDtor() {
     delete artworkrequest_;
     delete setsubscriptionrequest_;
     delete getsubscriptionrequest_;
+    delete getunwatchedseriesrequest_;
     delete seriesresponse_;
     delete artworkresponse_;
     delete setsubscriptionresponse_;
     delete getsubscriptionresponse_;
+    delete getunwatchedseriesresponse_;
   }
 }
 
@@ -741,6 +834,9 @@ void Message::Clear() {
     if (has_getsubscriptionrequest()) {
       if (getsubscriptionrequest_ != NULL) getsubscriptionrequest_->::LS::GetSubscriptionRequest::Clear();
     }
+    if (has_getunwatchedseriesrequest()) {
+      if (getunwatchedseriesrequest_ != NULL) getunwatchedseriesrequest_->::LS::GetUnwatchedSeriesRequest::Clear();
+    }
     if (has_seriesresponse()) {
       if (seriesresponse_ != NULL) seriesresponse_->::LS::SeriesResponse::Clear();
     }
@@ -750,8 +846,13 @@ void Message::Clear() {
     if (has_setsubscriptionresponse()) {
       if (setsubscriptionresponse_ != NULL) setsubscriptionresponse_->::LS::SetSubscriptionResponse::Clear();
     }
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (has_getsubscriptionresponse()) {
       if (getsubscriptionresponse_ != NULL) getsubscriptionresponse_->::LS::GetSubscriptionResponse::Clear();
+    }
+    if (has_getunwatchedseriesresponse()) {
+      if (getunwatchedseriesresponse_ != NULL) getunwatchedseriesresponse_->::LS::GetUnwatchedSeriesResponse::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -815,6 +916,20 @@ bool Message::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(8034)) goto parse_getUnwatchedSeriesRequest;
+        break;
+      }
+
+      // optional .LS.GetUnwatchedSeriesRequest getUnwatchedSeriesRequest = 1004;
+      case 1004: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_getUnwatchedSeriesRequest:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_getunwatchedseriesrequest()));
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectTag(16002)) goto parse_seriesResponse;
         break;
       }
@@ -871,6 +986,20 @@ bool Message::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(16034)) goto parse_getUnwatchedSeriesResponse;
+        break;
+      }
+
+      // optional .LS.GetUnwatchedSeriesResponse getUnwatchedSeriesResponse = 2004;
+      case 2004: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_getUnwatchedSeriesResponse:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_getunwatchedseriesresponse()));
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -917,6 +1046,12 @@ void Message::SerializeWithCachedSizes(
       1003, this->getsubscriptionrequest(), output);
   }
 
+  // optional .LS.GetUnwatchedSeriesRequest getUnwatchedSeriesRequest = 1004;
+  if (has_getunwatchedseriesrequest()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1004, this->getunwatchedseriesrequest(), output);
+  }
+
   // optional .LS.SeriesResponse seriesResponse = 2000;
   if (has_seriesresponse()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -939,6 +1074,12 @@ void Message::SerializeWithCachedSizes(
   if (has_getsubscriptionresponse()) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2003, this->getsubscriptionresponse(), output);
+  }
+
+  // optional .LS.GetUnwatchedSeriesResponse getUnwatchedSeriesResponse = 2004;
+  if (has_getunwatchedseriesresponse()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2004, this->getunwatchedseriesresponse(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -977,6 +1118,13 @@ void Message::SerializeWithCachedSizes(
         1003, this->getsubscriptionrequest(), target);
   }
 
+  // optional .LS.GetUnwatchedSeriesRequest getUnwatchedSeriesRequest = 1004;
+  if (has_getunwatchedseriesrequest()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1004, this->getunwatchedseriesrequest(), target);
+  }
+
   // optional .LS.SeriesResponse seriesResponse = 2000;
   if (has_seriesresponse()) {
     target = ::google_public::protobuf::internal::WireFormatLite::
@@ -1003,6 +1151,13 @@ void Message::SerializeWithCachedSizes(
     target = ::google_public::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         2003, this->getsubscriptionresponse(), target);
+  }
+
+  // optional .LS.GetUnwatchedSeriesResponse getUnwatchedSeriesResponse = 2004;
+  if (has_getunwatchedseriesresponse()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2004, this->getunwatchedseriesresponse(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1044,6 +1199,13 @@ int Message::ByteSize() const {
           this->getsubscriptionrequest());
     }
 
+    // optional .LS.GetUnwatchedSeriesRequest getUnwatchedSeriesRequest = 1004;
+    if (has_getunwatchedseriesrequest()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->getunwatchedseriesrequest());
+    }
+
     // optional .LS.SeriesResponse seriesResponse = 2000;
     if (has_seriesresponse()) {
       total_size += 2 +
@@ -1065,11 +1227,20 @@ int Message::ByteSize() const {
           this->setsubscriptionresponse());
     }
 
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     // optional .LS.GetSubscriptionResponse getSubscriptionResponse = 2003;
     if (has_getsubscriptionresponse()) {
       total_size += 2 +
         ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->getsubscriptionresponse());
+    }
+
+    // optional .LS.GetUnwatchedSeriesResponse getUnwatchedSeriesResponse = 2004;
+    if (has_getunwatchedseriesresponse()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->getunwatchedseriesresponse());
     }
 
   }
@@ -1111,6 +1282,9 @@ void Message::MergeFrom(const Message& from) {
     if (from.has_getsubscriptionrequest()) {
       mutable_getsubscriptionrequest()->::LS::GetSubscriptionRequest::MergeFrom(from.getsubscriptionrequest());
     }
+    if (from.has_getunwatchedseriesrequest()) {
+      mutable_getunwatchedseriesrequest()->::LS::GetUnwatchedSeriesRequest::MergeFrom(from.getunwatchedseriesrequest());
+    }
     if (from.has_seriesresponse()) {
       mutable_seriesresponse()->::LS::SeriesResponse::MergeFrom(from.seriesresponse());
     }
@@ -1120,8 +1294,13 @@ void Message::MergeFrom(const Message& from) {
     if (from.has_setsubscriptionresponse()) {
       mutable_setsubscriptionresponse()->::LS::SetSubscriptionResponse::MergeFrom(from.setsubscriptionresponse());
     }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_getsubscriptionresponse()) {
       mutable_getsubscriptionresponse()->::LS::GetSubscriptionResponse::MergeFrom(from.getsubscriptionresponse());
+    }
+    if (from.has_getunwatchedseriesresponse()) {
+      mutable_getunwatchedseriesresponse()->::LS::GetUnwatchedSeriesResponse::MergeFrom(from.getunwatchedseriesresponse());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1159,6 +1338,9 @@ bool Message::IsInitialized() const {
   if (has_getsubscriptionresponse()) {
     if (!this->getsubscriptionresponse().IsInitialized()) return false;
   }
+  if (has_getunwatchedseriesresponse()) {
+    if (!this->getunwatchedseriesresponse().IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -1168,10 +1350,12 @@ void Message::Swap(Message* other) {
     std::swap(artworkrequest_, other->artworkrequest_);
     std::swap(setsubscriptionrequest_, other->setsubscriptionrequest_);
     std::swap(getsubscriptionrequest_, other->getsubscriptionrequest_);
+    std::swap(getunwatchedseriesrequest_, other->getunwatchedseriesrequest_);
     std::swap(seriesresponse_, other->seriesresponse_);
     std::swap(artworkresponse_, other->artworkresponse_);
     std::swap(setsubscriptionresponse_, other->setsubscriptionresponse_);
     std::swap(getsubscriptionresponse_, other->getsubscriptionresponse_);
+    std::swap(getunwatchedseriesresponse_, other->getunwatchedseriesresponse_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -4191,6 +4375,737 @@ void GetSubscriptionResponse::Swap(GetSubscriptionResponse* other) {
   ::google_public::protobuf::Metadata metadata;
   metadata.descriptor = GetSubscriptionResponse_descriptor_;
   metadata.reflection = GetSubscriptionResponse_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+GetUnwatchedSeriesRequest::GetUnwatchedSeriesRequest()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void GetUnwatchedSeriesRequest::InitAsDefaultInstance() {
+}
+
+GetUnwatchedSeriesRequest::GetUnwatchedSeriesRequest(const GetUnwatchedSeriesRequest& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void GetUnwatchedSeriesRequest::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+GetUnwatchedSeriesRequest::~GetUnwatchedSeriesRequest() {
+  SharedDtor();
+}
+
+void GetUnwatchedSeriesRequest::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void GetUnwatchedSeriesRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* GetUnwatchedSeriesRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return GetUnwatchedSeriesRequest_descriptor_;
+}
+
+const GetUnwatchedSeriesRequest& GetUnwatchedSeriesRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+GetUnwatchedSeriesRequest* GetUnwatchedSeriesRequest::default_instance_ = NULL;
+
+GetUnwatchedSeriesRequest* GetUnwatchedSeriesRequest::New() const {
+  return new GetUnwatchedSeriesRequest;
+}
+
+void GetUnwatchedSeriesRequest::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool GetUnwatchedSeriesRequest::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void GetUnwatchedSeriesRequest::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* GetUnwatchedSeriesRequest::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int GetUnwatchedSeriesRequest::ByteSize() const {
+  int total_size = 0;
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void GetUnwatchedSeriesRequest::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const GetUnwatchedSeriesRequest* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const GetUnwatchedSeriesRequest*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void GetUnwatchedSeriesRequest::MergeFrom(const GetUnwatchedSeriesRequest& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void GetUnwatchedSeriesRequest::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetUnwatchedSeriesRequest::CopyFrom(const GetUnwatchedSeriesRequest& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetUnwatchedSeriesRequest::IsInitialized() const {
+
+  return true;
+}
+
+void GetUnwatchedSeriesRequest::Swap(GetUnwatchedSeriesRequest* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata GetUnwatchedSeriesRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = GetUnwatchedSeriesRequest_descriptor_;
+  metadata.reflection = GetUnwatchedSeriesRequest_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int GetUnwatchedSeriesResponse_Episode::kIdShowFieldNumber;
+const int GetUnwatchedSeriesResponse_Episode::kNumberSeasonFieldNumber;
+const int GetUnwatchedSeriesResponse_Episode::kNumberEpisodeFieldNumber;
+#endif  // !_MSC_VER
+
+GetUnwatchedSeriesResponse_Episode::GetUnwatchedSeriesResponse_Episode()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void GetUnwatchedSeriesResponse_Episode::InitAsDefaultInstance() {
+}
+
+GetUnwatchedSeriesResponse_Episode::GetUnwatchedSeriesResponse_Episode(const GetUnwatchedSeriesResponse_Episode& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void GetUnwatchedSeriesResponse_Episode::SharedCtor() {
+  _cached_size_ = 0;
+  idshow_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  numberseason_ = 0;
+  numberepisode_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+GetUnwatchedSeriesResponse_Episode::~GetUnwatchedSeriesResponse_Episode() {
+  SharedDtor();
+}
+
+void GetUnwatchedSeriesResponse_Episode::SharedDtor() {
+  if (idshow_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idshow_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void GetUnwatchedSeriesResponse_Episode::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* GetUnwatchedSeriesResponse_Episode::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return GetUnwatchedSeriesResponse_Episode_descriptor_;
+}
+
+const GetUnwatchedSeriesResponse_Episode& GetUnwatchedSeriesResponse_Episode::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+GetUnwatchedSeriesResponse_Episode* GetUnwatchedSeriesResponse_Episode::default_instance_ = NULL;
+
+GetUnwatchedSeriesResponse_Episode* GetUnwatchedSeriesResponse_Episode::New() const {
+  return new GetUnwatchedSeriesResponse_Episode;
+}
+
+void GetUnwatchedSeriesResponse_Episode::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_idshow()) {
+      if (idshow_ != &::google_public::protobuf::internal::kEmptyString) {
+        idshow_->clear();
+      }
+    }
+    numberseason_ = 0;
+    numberepisode_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool GetUnwatchedSeriesResponse_Episode::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string idShow = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_idshow()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->idshow().data(), this->idshow().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_numberSeason;
+        break;
+      }
+
+      // required int32 numberSeason = 2;
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_numberSeason:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google_public::protobuf::int32, ::google_public::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &numberseason_)));
+          set_has_numberseason();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_numberEpisode;
+        break;
+      }
+
+      // required int32 numberEpisode = 3;
+      case 3: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_numberEpisode:
+          DO_((::google_public::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google_public::protobuf::int32, ::google_public::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &numberepisode_)));
+          set_has_numberepisode();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void GetUnwatchedSeriesResponse_Episode::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string idShow = 1;
+  if (has_idshow()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idshow().data(), this->idshow().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->idshow(), output);
+  }
+
+  // required int32 numberSeason = 2;
+  if (has_numberseason()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteInt32(2, this->numberseason(), output);
+  }
+
+  // required int32 numberEpisode = 3;
+  if (has_numberepisode()) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteInt32(3, this->numberepisode(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* GetUnwatchedSeriesResponse_Episode::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required string idShow = 1;
+  if (has_idshow()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idshow().data(), this->idshow().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->idshow(), target);
+  }
+
+  // required int32 numberSeason = 2;
+  if (has_numberseason()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->numberseason(), target);
+  }
+
+  // required int32 numberEpisode = 3;
+  if (has_numberepisode()) {
+    target = ::google_public::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->numberepisode(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int GetUnwatchedSeriesResponse_Episode::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string idShow = 1;
+    if (has_idshow()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->idshow());
+    }
+
+    // required int32 numberSeason = 2;
+    if (has_numberseason()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::Int32Size(
+          this->numberseason());
+    }
+
+    // required int32 numberEpisode = 3;
+    if (has_numberepisode()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::Int32Size(
+          this->numberepisode());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void GetUnwatchedSeriesResponse_Episode::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const GetUnwatchedSeriesResponse_Episode* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const GetUnwatchedSeriesResponse_Episode*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void GetUnwatchedSeriesResponse_Episode::MergeFrom(const GetUnwatchedSeriesResponse_Episode& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_idshow()) {
+      set_idshow(from.idshow());
+    }
+    if (from.has_numberseason()) {
+      set_numberseason(from.numberseason());
+    }
+    if (from.has_numberepisode()) {
+      set_numberepisode(from.numberepisode());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void GetUnwatchedSeriesResponse_Episode::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetUnwatchedSeriesResponse_Episode::CopyFrom(const GetUnwatchedSeriesResponse_Episode& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetUnwatchedSeriesResponse_Episode::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+
+  return true;
+}
+
+void GetUnwatchedSeriesResponse_Episode::Swap(GetUnwatchedSeriesResponse_Episode* other) {
+  if (other != this) {
+    std::swap(idshow_, other->idshow_);
+    std::swap(numberseason_, other->numberseason_);
+    std::swap(numberepisode_, other->numberepisode_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata GetUnwatchedSeriesResponse_Episode::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = GetUnwatchedSeriesResponse_Episode_descriptor_;
+  metadata.reflection = GetUnwatchedSeriesResponse_Episode_reflection_;
+  return metadata;
+}
+
+
+// -------------------------------------------------------------------
+
+#ifndef _MSC_VER
+const int GetUnwatchedSeriesResponse::kIdClientFieldNumber;
+const int GetUnwatchedSeriesResponse::kEpisodesFieldNumber;
+#endif  // !_MSC_VER
+
+GetUnwatchedSeriesResponse::GetUnwatchedSeriesResponse()
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+}
+
+void GetUnwatchedSeriesResponse::InitAsDefaultInstance() {
+}
+
+GetUnwatchedSeriesResponse::GetUnwatchedSeriesResponse(const GetUnwatchedSeriesResponse& from)
+  : ::google_public::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void GetUnwatchedSeriesResponse::SharedCtor() {
+  _cached_size_ = 0;
+  idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+GetUnwatchedSeriesResponse::~GetUnwatchedSeriesResponse() {
+  SharedDtor();
+}
+
+void GetUnwatchedSeriesResponse::SharedDtor() {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idclient_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void GetUnwatchedSeriesResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google_public::protobuf::Descriptor* GetUnwatchedSeriesResponse::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return GetUnwatchedSeriesResponse_descriptor_;
+}
+
+const GetUnwatchedSeriesResponse& GetUnwatchedSeriesResponse::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_LostSeriesProtocol_2eproto();
+  return *default_instance_;
+}
+
+GetUnwatchedSeriesResponse* GetUnwatchedSeriesResponse::default_instance_ = NULL;
+
+GetUnwatchedSeriesResponse* GetUnwatchedSeriesResponse::New() const {
+  return new GetUnwatchedSeriesResponse;
+}
+
+void GetUnwatchedSeriesResponse::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_idclient()) {
+      if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+        idclient_->clear();
+      }
+    }
+  }
+  episodes_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool GetUnwatchedSeriesResponse::MergePartialFromCodedStream(
+    ::google_public::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google_public::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string idClient = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_idclient()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->idclient().data(), this->idclient().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_episodes;
+        break;
+      }
+
+      // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
+      case 2: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_episodes:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_episodes()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_episodes;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void GetUnwatchedSeriesResponse::SerializeWithCachedSizes(
+    ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string idClient = 1;
+  if (has_idclient()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idclient().data(), this->idclient().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->idclient(), output);
+  }
+
+  // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
+  for (int i = 0; i < this->episodes_size(); i++) {
+    ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->episodes(i), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google_public::protobuf::uint8* GetUnwatchedSeriesResponse::SerializeWithCachedSizesToArray(
+    ::google_public::protobuf::uint8* target) const {
+  // required string idClient = 1;
+  if (has_idclient()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idclient().data(), this->idclient().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->idclient(), target);
+  }
+
+  // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
+  for (int i = 0; i < this->episodes_size(); i++) {
+    target = ::google_public::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->episodes(i), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int GetUnwatchedSeriesResponse::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string idClient = 1;
+    if (has_idclient()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->idclient());
+    }
+
+  }
+  // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
+  total_size += 1 * this->episodes_size();
+  for (int i = 0; i < this->episodes_size(); i++) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->episodes(i));
+  }
+
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void GetUnwatchedSeriesResponse::MergeFrom(const ::google_public::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const GetUnwatchedSeriesResponse* source =
+    ::google_public::protobuf::internal::dynamic_cast_if_available<const GetUnwatchedSeriesResponse*>(
+      &from);
+  if (source == NULL) {
+    ::google_public::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void GetUnwatchedSeriesResponse::MergeFrom(const GetUnwatchedSeriesResponse& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  episodes_.MergeFrom(from.episodes_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_idclient()) {
+      set_idclient(from.idclient());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void GetUnwatchedSeriesResponse::CopyFrom(const ::google_public::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void GetUnwatchedSeriesResponse::CopyFrom(const GetUnwatchedSeriesResponse& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool GetUnwatchedSeriesResponse::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+
+  for (int i = 0; i < episodes_size(); i++) {
+    if (!this->episodes(i).IsInitialized()) return false;
+  }
+  return true;
+}
+
+void GetUnwatchedSeriesResponse::Swap(GetUnwatchedSeriesResponse* other) {
+  if (other != this) {
+    std::swap(idclient_, other->idclient_);
+    episodes_.Swap(&other->episodes_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google_public::protobuf::Metadata GetUnwatchedSeriesResponse::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google_public::protobuf::Metadata metadata;
+  metadata.descriptor = GetUnwatchedSeriesResponse_descriptor_;
+  metadata.reflection = GetUnwatchedSeriesResponse_reflection_;
   return metadata;
 }
 

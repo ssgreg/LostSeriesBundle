@@ -13,7 +13,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='LostSeriesProtocol.proto',
   package='LS',
-  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xb5\x03\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12;\n\x16setSubscriptionRequest\x18\xea\x07 \x01(\x0b\x32\x1a.LS.SetSubscriptionRequest\x12;\n\x16getSubscriptionRequest\x18\xeb\x07 \x01(\x0b\x32\x1a.LS.GetSubscriptionRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\x12=\n\x17setSubscriptionResponse\x18\xd2\x0f \x01(\x0b\x32\x1b.LS.SetSubscriptionResponse\x12=\n\x17getSubscriptionResponse\x18\xd3\x0f \x01(\x0b\x32\x1b.LS.GetSubscriptionResponse\" \n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\"\x0f\n\rSeriesRequest\"\xba\x02\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aT\n\x07\x45pisode\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x14\n\x0coriginalName\x18\x02 \x02(\t\x12\x0e\n\x06number\x18\x03 \x02(\x05\x12\x15\n\rdateTranslate\x18\x04 \x02(\t\x1a\xa7\x01\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x15\n\repisodeNumber\x18\x04 \x02(\x05\x12\n\n\x02id\x18\x63 \x02(\t\x12\x10\n\x08snapshot\x18\x64 \x02(\t\x12,\n\x08\x65pisodes\x18\x65 \x03(\x0b\x32\x1a.LS.SeriesResponse.Episode\"[\n\x0e\x41rtworkRequest\x12\x0e\n\x06idShow\x18\x01 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x02 \x02(\x05\x12\x11\n\tthumbnail\x18\x03 \x02(\x08\x12\x10\n\x08snapshot\x18\x64 \x02(\t\"\x11\n\x0f\x41rtworkResponse\"\x81\x01\n\x16SetSubscriptionRequest\x12\x10\n\x08idClient\x18\x01 \x02(\t\x12\r\n\x05token\x18\x02 \x02(\t\x12-\n\rsubscriptions\x18\x03 \x03(\x0b\x32\x16.LS.SubscriptionRecord\x12\x17\n\x0f\x66lagUnsubscribe\x18\x04 \x02(\x08\")\n\x17SetSubscriptionResponse\x12\x0e\n\x06result\x18\x01 \x02(\x08\"*\n\x16GetSubscriptionRequest\x12\x10\n\x08idClient\x18\x01 \x02(\t\"H\n\x17GetSubscriptionResponse\x12-\n\rsubscriptions\x18\x01 \x03(\x0b\x32\x16.LS.SubscriptionRecord')
+  serialized_pb='\n\x18LostSeriesProtocol.proto\x12\x02LS\"\x1b\n\x06Header\x12\x11\n\tmessageID\x18\x01 \x02(\x03\"\xbd\x04\n\x07Message\x12)\n\rseriesRequest\x18\xe8\x07 \x01(\x0b\x32\x11.LS.SeriesRequest\x12+\n\x0e\x61rtworkRequest\x18\xe9\x07 \x01(\x0b\x32\x12.LS.ArtworkRequest\x12;\n\x16setSubscriptionRequest\x18\xea\x07 \x01(\x0b\x32\x1a.LS.SetSubscriptionRequest\x12;\n\x16getSubscriptionRequest\x18\xeb\x07 \x01(\x0b\x32\x1a.LS.GetSubscriptionRequest\x12\x41\n\x19getUnwatchedSeriesRequest\x18\xec\x07 \x01(\x0b\x32\x1d.LS.GetUnwatchedSeriesRequest\x12+\n\x0eseriesResponse\x18\xd0\x0f \x01(\x0b\x32\x12.LS.SeriesResponse\x12-\n\x0f\x61rtworkResponse\x18\xd1\x0f \x01(\x0b\x32\x13.LS.ArtworkResponse\x12=\n\x17setSubscriptionResponse\x18\xd2\x0f \x01(\x0b\x32\x1b.LS.SetSubscriptionResponse\x12=\n\x17getSubscriptionResponse\x18\xd3\x0f \x01(\x0b\x32\x1b.LS.GetSubscriptionResponse\x12\x43\n\x1agetUnwatchedSeriesResponse\x18\xd4\x0f \x01(\x0b\x32\x1e.LS.GetUnwatchedSeriesResponse\" \n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\"\x0f\n\rSeriesRequest\"\xba\x02\n\x0eSeriesResponse\x12(\n\x05shows\x18\x01 \x03(\x0b\x32\x19.LS.SeriesResponse.TVShow\x1aT\n\x07\x45pisode\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x14\n\x0coriginalName\x18\x02 \x02(\t\x12\x0e\n\x06number\x18\x03 \x02(\x05\x12\x15\n\rdateTranslate\x18\x04 \x02(\t\x1a\xa7\x01\n\x06TVShow\x12\r\n\x05title\x18\x01 \x02(\t\x12\x15\n\roriginalTitle\x18\x02 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x03 \x02(\x05\x12\x15\n\repisodeNumber\x18\x04 \x02(\x05\x12\n\n\x02id\x18\x63 \x02(\t\x12\x10\n\x08snapshot\x18\x64 \x02(\t\x12,\n\x08\x65pisodes\x18\x65 \x03(\x0b\x32\x1a.LS.SeriesResponse.Episode\"[\n\x0e\x41rtworkRequest\x12\x0e\n\x06idShow\x18\x01 \x02(\t\x12\x14\n\x0cseasonNumber\x18\x02 \x02(\x05\x12\x11\n\tthumbnail\x18\x03 \x02(\x08\x12\x10\n\x08snapshot\x18\x64 \x02(\t\"\x11\n\x0f\x41rtworkResponse\"\x81\x01\n\x16SetSubscriptionRequest\x12\x10\n\x08idClient\x18\x01 \x02(\t\x12\r\n\x05token\x18\x02 \x02(\t\x12-\n\rsubscriptions\x18\x03 \x03(\x0b\x32\x16.LS.SubscriptionRecord\x12\x17\n\x0f\x66lagUnsubscribe\x18\x04 \x02(\x08\")\n\x17SetSubscriptionResponse\x12\x0e\n\x06result\x18\x01 \x02(\x08\"*\n\x16GetSubscriptionRequest\x12\x10\n\x08idClient\x18\x01 \x02(\t\"H\n\x17GetSubscriptionResponse\x12-\n\rsubscriptions\x18\x01 \x03(\x0b\x32\x16.LS.SubscriptionRecord\"\x1b\n\x19GetUnwatchedSeriesRequest\"\xb0\x01\n\x1aGetUnwatchedSeriesResponse\x12\x10\n\x08idClient\x18\x01 \x02(\t\x12\x38\n\x08\x65pisodes\x18\x02 \x03(\x0b\x32&.LS.GetUnwatchedSeriesResponse.Episode\x1a\x46\n\x07\x45pisode\x12\x0e\n\x06idShow\x18\x01 \x02(\t\x12\x14\n\x0cnumberSeason\x18\x02 \x02(\x05\x12\x15\n\rnumberEpisode\x18\x03 \x02(\x05')
 
 
 
@@ -82,29 +82,43 @@ _MESSAGE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='seriesResponse', full_name='LS.Message.seriesResponse', index=4,
+      name='getUnwatchedSeriesRequest', full_name='LS.Message.getUnwatchedSeriesRequest', index=4,
+      number=1004, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='seriesResponse', full_name='LS.Message.seriesResponse', index=5,
       number=2000, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='artworkResponse', full_name='LS.Message.artworkResponse', index=5,
+      name='artworkResponse', full_name='LS.Message.artworkResponse', index=6,
       number=2001, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='setSubscriptionResponse', full_name='LS.Message.setSubscriptionResponse', index=6,
+      name='setSubscriptionResponse', full_name='LS.Message.setSubscriptionResponse', index=7,
       number=2002, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='getSubscriptionResponse', full_name='LS.Message.getSubscriptionResponse', index=7,
+      name='getSubscriptionResponse', full_name='LS.Message.getSubscriptionResponse', index=8,
       number=2003, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='getUnwatchedSeriesResponse', full_name='LS.Message.getUnwatchedSeriesResponse', index=9,
+      number=2004, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -119,7 +133,7 @@ _MESSAGE = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=62,
-  serialized_end=499,
+  serialized_end=635,
 )
 
 
@@ -146,8 +160,8 @@ _SUBSCRIPTIONRECORD = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=501,
-  serialized_end=533,
+  serialized_start=637,
+  serialized_end=669,
 )
 
 
@@ -167,8 +181,8 @@ _SERIESREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=535,
-  serialized_end=550,
+  serialized_start=671,
+  serialized_end=686,
 )
 
 
@@ -216,8 +230,8 @@ _SERIESRESPONSE_EPISODE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=613,
-  serialized_end=697,
+  serialized_start=749,
+  serialized_end=833,
 )
 
 _SERIESRESPONSE_TVSHOW = _descriptor.Descriptor(
@@ -285,8 +299,8 @@ _SERIESRESPONSE_TVSHOW = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=700,
-  serialized_end=867,
+  serialized_start=836,
+  serialized_end=1003,
 )
 
 _SERIESRESPONSE = _descriptor.Descriptor(
@@ -312,8 +326,8 @@ _SERIESRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=553,
-  serialized_end=867,
+  serialized_start=689,
+  serialized_end=1003,
 )
 
 
@@ -361,8 +375,8 @@ _ARTWORKREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=869,
-  serialized_end=960,
+  serialized_start=1005,
+  serialized_end=1096,
 )
 
 
@@ -382,8 +396,8 @@ _ARTWORKRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=962,
-  serialized_end=979,
+  serialized_start=1098,
+  serialized_end=1115,
 )
 
 
@@ -431,8 +445,8 @@ _SETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=982,
-  serialized_end=1111,
+  serialized_start=1118,
+  serialized_end=1247,
 )
 
 
@@ -459,8 +473,8 @@ _SETSUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1113,
-  serialized_end=1154,
+  serialized_start=1249,
+  serialized_end=1290,
 )
 
 
@@ -487,8 +501,8 @@ _GETSUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1156,
-  serialized_end=1198,
+  serialized_start=1292,
+  serialized_end=1334,
 )
 
 
@@ -515,24 +529,125 @@ _GETSUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1200,
-  serialized_end=1272,
+  serialized_start=1336,
+  serialized_end=1408,
+)
+
+
+_GETUNWATCHEDSERIESREQUEST = _descriptor.Descriptor(
+  name='GetUnwatchedSeriesRequest',
+  full_name='LS.GetUnwatchedSeriesRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1410,
+  serialized_end=1437,
+)
+
+
+_GETUNWATCHEDSERIESRESPONSE_EPISODE = _descriptor.Descriptor(
+  name='Episode',
+  full_name='LS.GetUnwatchedSeriesResponse.Episode',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='idShow', full_name='LS.GetUnwatchedSeriesResponse.Episode.idShow', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='numberSeason', full_name='LS.GetUnwatchedSeriesResponse.Episode.numberSeason', index=1,
+      number=2, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='numberEpisode', full_name='LS.GetUnwatchedSeriesResponse.Episode.numberEpisode', index=2,
+      number=3, type=5, cpp_type=1, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1546,
+  serialized_end=1616,
+)
+
+_GETUNWATCHEDSERIESRESPONSE = _descriptor.Descriptor(
+  name='GetUnwatchedSeriesResponse',
+  full_name='LS.GetUnwatchedSeriesResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='idClient', full_name='LS.GetUnwatchedSeriesResponse.idClient', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='episodes', full_name='LS.GetUnwatchedSeriesResponse.episodes', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_GETUNWATCHEDSERIESRESPONSE_EPISODE, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1440,
+  serialized_end=1616,
 )
 
 _MESSAGE.fields_by_name['seriesRequest'].message_type = _SERIESREQUEST
 _MESSAGE.fields_by_name['artworkRequest'].message_type = _ARTWORKREQUEST
 _MESSAGE.fields_by_name['setSubscriptionRequest'].message_type = _SETSUBSCRIPTIONREQUEST
 _MESSAGE.fields_by_name['getSubscriptionRequest'].message_type = _GETSUBSCRIPTIONREQUEST
+_MESSAGE.fields_by_name['getUnwatchedSeriesRequest'].message_type = _GETUNWATCHEDSERIESREQUEST
 _MESSAGE.fields_by_name['seriesResponse'].message_type = _SERIESRESPONSE
 _MESSAGE.fields_by_name['artworkResponse'].message_type = _ARTWORKRESPONSE
 _MESSAGE.fields_by_name['setSubscriptionResponse'].message_type = _SETSUBSCRIPTIONRESPONSE
 _MESSAGE.fields_by_name['getSubscriptionResponse'].message_type = _GETSUBSCRIPTIONRESPONSE
+_MESSAGE.fields_by_name['getUnwatchedSeriesResponse'].message_type = _GETUNWATCHEDSERIESRESPONSE
 _SERIESRESPONSE_EPISODE.containing_type = _SERIESRESPONSE;
 _SERIESRESPONSE_TVSHOW.fields_by_name['episodes'].message_type = _SERIESRESPONSE_EPISODE
 _SERIESRESPONSE_TVSHOW.containing_type = _SERIESRESPONSE;
 _SERIESRESPONSE.fields_by_name['shows'].message_type = _SERIESRESPONSE_TVSHOW
 _SETSUBSCRIPTIONREQUEST.fields_by_name['subscriptions'].message_type = _SUBSCRIPTIONRECORD
 _GETSUBSCRIPTIONRESPONSE.fields_by_name['subscriptions'].message_type = _SUBSCRIPTIONRECORD
+_GETUNWATCHEDSERIESRESPONSE_EPISODE.containing_type = _GETUNWATCHEDSERIESRESPONSE;
+_GETUNWATCHEDSERIESRESPONSE.fields_by_name['episodes'].message_type = _GETUNWATCHEDSERIESRESPONSE_EPISODE
 DESCRIPTOR.message_types_by_name['Header'] = _HEADER
 DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
 DESCRIPTOR.message_types_by_name['SubscriptionRecord'] = _SUBSCRIPTIONRECORD
@@ -544,6 +659,8 @@ DESCRIPTOR.message_types_by_name['SetSubscriptionRequest'] = _SETSUBSCRIPTIONREQ
 DESCRIPTOR.message_types_by_name['SetSubscriptionResponse'] = _SETSUBSCRIPTIONRESPONSE
 DESCRIPTOR.message_types_by_name['GetSubscriptionRequest'] = _GETSUBSCRIPTIONREQUEST
 DESCRIPTOR.message_types_by_name['GetSubscriptionResponse'] = _GETSUBSCRIPTIONRESPONSE
+DESCRIPTOR.message_types_by_name['GetUnwatchedSeriesRequest'] = _GETUNWATCHEDSERIESREQUEST
+DESCRIPTOR.message_types_by_name['GetUnwatchedSeriesResponse'] = _GETUNWATCHEDSERIESRESPONSE
 
 class Header(_message.Message):
   __metaclass__ = _reflection.GeneratedProtocolMessageType
@@ -622,6 +739,24 @@ class GetSubscriptionResponse(_message.Message):
   DESCRIPTOR = _GETSUBSCRIPTIONRESPONSE
 
   # @@protoc_insertion_point(class_scope:LS.GetSubscriptionResponse)
+
+class GetUnwatchedSeriesRequest(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _GETUNWATCHEDSERIESREQUEST
+
+  # @@protoc_insertion_point(class_scope:LS.GetUnwatchedSeriesRequest)
+
+class GetUnwatchedSeriesResponse(_message.Message):
+  __metaclass__ = _reflection.GeneratedProtocolMessageType
+
+  class Episode(_message.Message):
+    __metaclass__ = _reflection.GeneratedProtocolMessageType
+    DESCRIPTOR = _GETUNWATCHEDSERIESRESPONSE_EPISODE
+
+    # @@protoc_insertion_point(class_scope:LS.GetUnwatchedSeriesResponse.Episode)
+  DESCRIPTOR = _GETUNWATCHEDSERIESRESPONSE
+
+  # @@protoc_insertion_point(class_scope:LS.GetUnwatchedSeriesResponse)
 
 
 # @@protoc_insertion_point(module_scope)
