@@ -192,15 +192,12 @@ SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSModelBase);
 // LSWLinkBaseConverterRaw
 //
 
-@protocol LSDataBaseConverterRaw <LSDataBaseShowsRaw, LSDataBaseShowsFavoriteRaw, LSDataBaseModelShowsLists>
-@end
-
 @interface LSWLinkBaseConverterRaw : WFWorkflowLink
 @end
 
 @implementation LSWLinkBaseConverterRaw
 
-SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
+SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSModelBase);
 
 - (NSArray*) sortByLastEpisodeTime:(NSArray*)source
 {
@@ -234,22 +231,45 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseConverterRaw);
 {
   __block NSArray* showsRaw = self.data.showsRaw;
   __block NSArray* showsFavoriteRaw = self.data.showsFavoriteRaw;
+  __block NSArray* episodesUnwatchedRaw = self.data.episodesUnwatchedRaw;
   //
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
   {
     NSArray* models = [self sortByLastEpisodeTime:[self convertToModels:showsRaw]];
     //
     LSModelShowsLists* modelShowsLists = [[LSModelShowsLists alloc] initWithShows:models];
-    for (LSSubscriptionInfo* info in showsFavoriteRaw)
+    for (NSInteger index = 0; index < models.count; ++index)
     {
-      NSUInteger index = [models indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
+      LSShowAlbumCellModel* model = models[index];
+      BOOL isInFollowing = [showsFavoriteRaw indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
       {
-        return [((LSShowAlbumCellModel*)object).showInfo.showID isEqualToString:info.showID];
-      }];
-      if (index != NSNotFound)
+        return [((LSSubscriptionInfo*)object).showID isEqualToString:model.showInfo.showID];
+      }] != NSNotFound;
+      //
+      if (isInFollowing)
       {
         [modelShowsLists.showsFollowing addObjectByIndexSource:index];
       }
+    }
+    //
+    for (LSShowAlbumCellModel* info in modelShowsLists.showsFollowing)
+    {
+      NSMutableArray* episodesUnwatched = [NSMutableArray array];
+      for (LSEpisodeUnwatchedInfo* infoEpisodeUnwatched in episodesUnwatchedRaw)
+      {
+        if (![info.showInfo.showID isEqualToString: infoEpisodeUnwatched.idShow] || info.showInfo.seasonNumber != infoEpisodeUnwatched.numberSeason)
+        {
+          continue;
+        }
+        for (LSEpisodeInfo* infoEpisode in info.showInfo.episodes)
+        {
+          if (infoEpisodeUnwatched.numberEpisode == infoEpisode.number)
+          {
+            [episodesUnwatched addObject:infoEpisode];
+          }
+        }
+      }
+      info.showInfo.episodesUnwatched = episodesUnwatched;
     }
     //
     dispatch_async(dispatch_get_main_queue(), ^

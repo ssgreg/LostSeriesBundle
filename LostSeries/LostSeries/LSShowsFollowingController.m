@@ -196,7 +196,8 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   }
   //
   cell.image.alpha = 1;
-  cell.badgeUnwatchedSeriesCount.textBadge = @"1";
+  cell.badgeUnwatchedSeriesCount.hidden = !model.showInfo.episodesUnwatched.count;
+  cell.badgeUnwatchedSeriesCount.textBadge = [NSString stringWithFormat:@"%ld", model.showInfo.episodesUnwatched.count];
 }
 
 - (void)viewDidLoad
