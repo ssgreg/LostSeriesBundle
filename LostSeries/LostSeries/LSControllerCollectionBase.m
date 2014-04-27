@@ -128,7 +128,7 @@
   {
     return;
   }
-  if (self.collectionView.contentOffset.y <= -64 || self.collectionView.contentOffset.y > -20)
+  if (self.collectionView.contentOffset.y <= -64 || self.collectionView.contentOffset.y >= -20)
   {
     return;
   }
@@ -140,6 +140,29 @@
 }
 
 
+#pragma mark - UICollectionViewDelegateFlowLayout implementation
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+  // depends on items in row
+  NSInteger const count = ([self.collectionView numberOfItemsInSection:0] + 2) / 3;
+  // depends on collection height
+  NSInteger const height = 444;
+  // depends on row height
+  NSInteger const heightRow = 103;
+  //
+  if (count * heightRow > height)
+  {
+    return CGSizeMake(0, 0);
+  }
+  else
+  {
+    return CGSizeMake(0, height - count * heightRow);
+  }
+}
+
+
 #pragma mark - UISearchBarDelegate implementation
 
 
@@ -148,7 +171,6 @@
   [self searchBarTextDidChange:searchText];
   [searchBar becomeFirstResponder];
 }
-
 
 - (void) searchBarTextDidBeginEditing:(UISearchBar*)searchBar
 {
@@ -167,9 +189,9 @@
 #pragma mark - UICollectionViewDataSource implementation
 
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionReusableView*) collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-  id cell = nil;
+  UICollectionReusableView* cell = nil;
   if ([kind isEqual:UICollectionElementKindSectionHeader])
   {
     cell = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"MyHeader" forIndexPath:indexPath];

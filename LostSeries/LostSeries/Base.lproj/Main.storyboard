@@ -47,7 +47,7 @@
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="9" minimumInteritemSpacing="9" id="mIB-AE-9Dp">
                             <size key="itemSize" width="94" height="94"/>
                             <size key="headerReferenceSize" width="50" height="44"/>
-                            <size key="footerReferenceSize" width="50" height="342"/>
+                            <size key="footerReferenceSize" width="50" height="0.0"/>
                             <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
@@ -94,7 +94,6 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theFooter" id="SXP-Ry-ObK">
-                            <rect key="frame" x="0.0" y="222" width="320" height="342"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <connections>
@@ -131,7 +130,7 @@
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="3" minimumInteritemSpacing="0.0" id="qec-mS-SNa">
                             <size key="itemSize" width="100" height="100"/>
                             <size key="headerReferenceSize" width="50" height="44"/>
-                            <size key="footerReferenceSize" width="50" height="342"/>
+                            <size key="footerReferenceSize" width="50" height="0.0"/>
                             <inset key="sectionInset" minX="10" minY="4" maxX="4" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
@@ -181,7 +180,6 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="theFooter" id="tdf-1y-K1b">
-                            <rect key="frame" x="0.0" y="222" width="320" height="342"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </collectionReusableView>
                         <connections>
