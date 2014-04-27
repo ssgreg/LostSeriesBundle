@@ -14,6 +14,7 @@ import logging
 import logging.config
 #
 import Database
+import PushNotifications
 
 
 def logger():
@@ -52,6 +53,31 @@ def AddUnwatchedEpisodes(episodes):
   #
   for record in list(Database.instance().subscriptions.find()):
     ChangeUnwatchedEpisodes(record['cdid'], episodes)
+  #
+  for record in list(Database.instance().subscriptions.find()):
+    PushNotification(record['cdid'], episodes)
+
+
+def PushNotification(idClient, episodes):
+  logger().info('Pushing notifications for client {}...'.format(idClient))
+  #
+  record = FindSubscriptionsRecord(idClient)
+  if not record:
+    return
+  #
+  for episode in episodes:
+    # skip episode not in client subscription
+    if not episode['ID'] in record['ids_show']:
+      continue
+    #
+    episodeInfo = Database.instance().episodes.find_one({"$and": [{'value.ID':episode['ID']}, {'value.SeasonNumber':episode['SeasonNumber']}, {'value.EpisodeNumber':episode['EpisodeNumber']},]})
+    showInfo = Database.instance().shows.find_one({"$and": [{'value.ID':episode['ID']}]})
+    #
+    if episodeInfo and showInfo:
+      textToPush = u'{} - {}: {}'.format(showInfo['value']['Title'], episodeInfo['value']['EpisodeNumber'], episodeInfo['value']['EpisodeName'])
+      for token in record['tokens']:
+        logger().info('Pushing notification: {}'.format(textToPush.encode('utf-8')))
+        PushNotifications.Do(token, textToPush)
 
 
 def ChangeUnwatchedEpisodes(idClient, episodes, remove = False):

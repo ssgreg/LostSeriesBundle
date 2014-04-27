@@ -125,3 +125,10 @@ WFWorkflow* WFLinkToSelfForward(WFWorkflowLink* wlSelf);
 
 #define SYNTHESIZE_WL_VIEW_ACCESSOR(viewType) \
 - (id<viewType>) view { return self.workflowView; }
+
+#define SYNTHESIZE_WL_ACCESSORS_NEW(model, viewType) \
+- (model*) data { return self.workflowData; } \
+- (id<viewType>) view { return self.workflowView; }
+
+#define SYNTHESIZE_WL_DATA_ACCESSOR_NEW(model) \
+- (model*) data { return self.workflowData; }
