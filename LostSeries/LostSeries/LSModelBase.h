@@ -106,8 +106,9 @@
     , LSDataBaseModelShowForDatails
     >
 
-- (id) init;
+@property NSArray* episodesUnwatchedRaw;
 
+- (id) init;
 - (void) modelDidChange;
 
 @end

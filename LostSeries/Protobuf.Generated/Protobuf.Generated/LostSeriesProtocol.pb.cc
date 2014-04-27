@@ -297,6 +297,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       sizeof(GetSubscriptionResponse));
   GetUnwatchedSeriesRequest_descriptor_ = file->message_type(11);
   static const int GetUnwatchedSeriesRequest_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesRequest, idclient_),
   };
   GetUnwatchedSeriesRequest_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -310,8 +311,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(GetUnwatchedSeriesRequest));
   GetUnwatchedSeriesResponse_descriptor_ = file->message_type(12);
-  static const int GetUnwatchedSeriesResponse_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse, idclient_),
+  static const int GetUnwatchedSeriesResponse_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetUnwatchedSeriesResponse, episodes_),
   };
   GetUnwatchedSeriesResponse_reflection_ =
@@ -467,9 +467,9 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
     "sult\030\001 \002(\010\"*\n\026GetSubscriptionRequest\022\020\n\010"
     "idClient\030\001 \002(\t\"H\n\027GetSubscriptionRespons"
     "e\022-\n\rsubscriptions\030\001 \003(\0132\026.LS.Subscripti"
-    "onRecord\"\033\n\031GetUnwatchedSeriesRequest\"\260\001"
-    "\n\032GetUnwatchedSeriesResponse\022\020\n\010idClient"
-    "\030\001 \002(\t\0228\n\010episodes\030\002 \003(\0132&.LS.GetUnwatch"
+    "onRecord\"-\n\031GetUnwatchedSeriesRequest\022\020\n"
+    "\010idClient\030\001 \002(\t\"\236\001\n\032GetUnwatchedSeriesRe"
+    "sponse\0228\n\010episodes\030\002 \003(\0132&.LS.GetUnwatch"
     "edSeriesResponse.Episode\032F\n\007Episode\022\016\n\006i"
     "dShow\030\001 \002(\t\022\024\n\014numberSeason\030\002 \002(\005\022\025\n\rnum"
     "berEpisode\030\003 \002(\005", 1616);
@@ -1328,6 +1328,9 @@ bool Message::IsInitialized() const {
   }
   if (has_getsubscriptionrequest()) {
     if (!this->getsubscriptionrequest().IsInitialized()) return false;
+  }
+  if (has_getunwatchedseriesrequest()) {
+    if (!this->getunwatchedseriesrequest().IsInitialized()) return false;
   }
   if (has_seriesresponse()) {
     if (!this->seriesresponse().IsInitialized()) return false;
@@ -4382,6 +4385,7 @@ void GetSubscriptionResponse::Swap(GetSubscriptionResponse* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int GetUnwatchedSeriesRequest::kIdClientFieldNumber;
 #endif  // !_MSC_VER
 
 GetUnwatchedSeriesRequest::GetUnwatchedSeriesRequest()
@@ -4400,6 +4404,7 @@ GetUnwatchedSeriesRequest::GetUnwatchedSeriesRequest(const GetUnwatchedSeriesReq
 
 void GetUnwatchedSeriesRequest::SharedCtor() {
   _cached_size_ = 0;
+  idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4408,6 +4413,9 @@ GetUnwatchedSeriesRequest::~GetUnwatchedSeriesRequest() {
 }
 
 void GetUnwatchedSeriesRequest::SharedDtor() {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idclient_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -4434,6 +4442,13 @@ GetUnwatchedSeriesRequest* GetUnwatchedSeriesRequest::New() const {
 }
 
 void GetUnwatchedSeriesRequest::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_idclient()) {
+      if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+        idclient_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -4443,12 +4458,34 @@ bool GetUnwatchedSeriesRequest::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string idClient = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_idclient()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->idclient().data(), this->idclient().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google_public::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -4456,6 +4493,15 @@ bool GetUnwatchedSeriesRequest::MergePartialFromCodedStream(
 
 void GetUnwatchedSeriesRequest::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string idClient = 1;
+  if (has_idclient()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idclient().data(), this->idclient().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->idclient(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -4464,6 +4510,16 @@ void GetUnwatchedSeriesRequest::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* GetUnwatchedSeriesRequest::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
+  // required string idClient = 1;
+  if (has_idclient()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->idclient().data(), this->idclient().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->idclient(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -4474,6 +4530,15 @@ void GetUnwatchedSeriesRequest::SerializeWithCachedSizes(
 int GetUnwatchedSeriesRequest::ByteSize() const {
   int total_size = 0;
 
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string idClient = 1;
+    if (has_idclient()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->idclient());
+    }
+
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -4499,6 +4564,11 @@ void GetUnwatchedSeriesRequest::MergeFrom(const ::google_public::protobuf::Messa
 
 void GetUnwatchedSeriesRequest::MergeFrom(const GetUnwatchedSeriesRequest& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_idclient()) {
+      set_idclient(from.idclient());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -4515,12 +4585,15 @@ void GetUnwatchedSeriesRequest::CopyFrom(const GetUnwatchedSeriesRequest& from) 
 }
 
 bool GetUnwatchedSeriesRequest::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   return true;
 }
 
 void GetUnwatchedSeriesRequest::Swap(GetUnwatchedSeriesRequest* other) {
   if (other != this) {
+    std::swap(idclient_, other->idclient_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -4844,7 +4917,6 @@ void GetUnwatchedSeriesResponse_Episode::Swap(GetUnwatchedSeriesResponse_Episode
 // -------------------------------------------------------------------
 
 #ifndef _MSC_VER
-const int GetUnwatchedSeriesResponse::kIdClientFieldNumber;
 const int GetUnwatchedSeriesResponse::kEpisodesFieldNumber;
 #endif  // !_MSC_VER
 
@@ -4864,7 +4936,6 @@ GetUnwatchedSeriesResponse::GetUnwatchedSeriesResponse(const GetUnwatchedSeriesR
 
 void GetUnwatchedSeriesResponse::SharedCtor() {
   _cached_size_ = 0;
-  idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4873,9 +4944,6 @@ GetUnwatchedSeriesResponse::~GetUnwatchedSeriesResponse() {
 }
 
 void GetUnwatchedSeriesResponse::SharedDtor() {
-  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete idclient_;
-  }
   if (this != default_instance_) {
   }
 }
@@ -4902,13 +4970,6 @@ GetUnwatchedSeriesResponse* GetUnwatchedSeriesResponse::New() const {
 }
 
 void GetUnwatchedSeriesResponse::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_idclient()) {
-      if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
-        idclient_->clear();
-      }
-    }
-  }
   episodes_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -4920,22 +4981,6 @@ bool GetUnwatchedSeriesResponse::MergePartialFromCodedStream(
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required string idClient = 1;
-      case 1: {
-        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_idclient()));
-          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->idclient().data(), this->idclient().length(),
-            ::google_public::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_episodes;
-        break;
-      }
-
       // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
       case 2: {
         if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
@@ -4969,15 +5014,6 @@ bool GetUnwatchedSeriesResponse::MergePartialFromCodedStream(
 
 void GetUnwatchedSeriesResponse::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
-  // required string idClient = 1;
-  if (has_idclient()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->idclient().data(), this->idclient().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      1, this->idclient(), output);
-  }
-
   // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
   for (int i = 0; i < this->episodes_size(); i++) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -4992,16 +5028,6 @@ void GetUnwatchedSeriesResponse::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* GetUnwatchedSeriesResponse::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
-  // required string idClient = 1;
-  if (has_idclient()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->idclient().data(), this->idclient().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->idclient(), target);
-  }
-
   // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
   for (int i = 0; i < this->episodes_size(); i++) {
     target = ::google_public::protobuf::internal::WireFormatLite::
@@ -5019,15 +5045,6 @@ void GetUnwatchedSeriesResponse::SerializeWithCachedSizes(
 int GetUnwatchedSeriesResponse::ByteSize() const {
   int total_size = 0;
 
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required string idClient = 1;
-    if (has_idclient()) {
-      total_size += 1 +
-        ::google_public::protobuf::internal::WireFormatLite::StringSize(
-          this->idclient());
-    }
-
-  }
   // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
   total_size += 1 * this->episodes_size();
   for (int i = 0; i < this->episodes_size(); i++) {
@@ -5062,11 +5079,6 @@ void GetUnwatchedSeriesResponse::MergeFrom(const ::google_public::protobuf::Mess
 void GetUnwatchedSeriesResponse::MergeFrom(const GetUnwatchedSeriesResponse& from) {
   GOOGLE_CHECK_NE(&from, this);
   episodes_.MergeFrom(from.episodes_);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_idclient()) {
-      set_idclient(from.idclient());
-    }
-  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -5083,7 +5095,6 @@ void GetUnwatchedSeriesResponse::CopyFrom(const GetUnwatchedSeriesResponse& from
 }
 
 bool GetUnwatchedSeriesResponse::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   for (int i = 0; i < episodes_size(); i++) {
     if (!this->episodes(i).IsInitialized()) return false;
@@ -5093,7 +5104,6 @@ bool GetUnwatchedSeriesResponse::IsInitialized() const {
 
 void GetUnwatchedSeriesResponse::Swap(GetUnwatchedSeriesResponse* other) {
   if (other != this) {
-    std::swap(idclient_, other->idclient_);
     episodes_.Swap(&other->episodes_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

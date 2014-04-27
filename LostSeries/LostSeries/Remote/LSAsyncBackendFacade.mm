@@ -160,7 +160,7 @@
   //
   [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
   {
-    NSAssert(reply->mutable_getsubscriptionrequest(), @"Bad response!");
+    NSAssert(reply->mutable_getsubscriptionresponse(), @"Bad response!");
     LS::GetSubscriptionResponse const& message = reply->getsubscriptionresponse();
     //
     NSMutableArray* subscriptions = [NSMutableArray array];
@@ -176,6 +176,38 @@
     dispatch_async(dispatch_get_main_queue(),
     ^{
       handler(subscriptions);
+    });
+  }];
+}
+
+- (void) getUnwatchedEpisodesInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler
+{
+  LS::GetUnwatchedSeriesRequest unwatchedSeriesRequest;
+  unwatchedSeriesRequest.set_idclient([cdid toString].UTF8String);
+  //
+  LSMessagePtr request(new LS::Message);
+  *request->mutable_getunwatchedseriesrequest() = unwatchedSeriesRequest;
+  //
+  [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
+  {
+    NSAssert(reply->mutable_getunwatchedseriesresponse(), @"Bad response!");
+    LS::GetUnwatchedSeriesResponse const& message = reply->getunwatchedseriesresponse();
+    //
+    NSMutableArray* episodes = [NSMutableArray array];
+    int episodeCount = message.episodes_size();
+    for (int i = 0; i < episodeCount; ++i)
+    {
+      LS::GetUnwatchedSeriesResponse::Episode record = message.episodes(i);
+      LSEpisodeUnwatchedInfo* info = [[LSEpisodeUnwatchedInfo alloc] init];
+      info.idShow = [NSString stringWithCString:record.idshow().c_str() encoding:NSASCIIStringEncoding];
+      info.numberSeason = record.numberseason();
+      info.numberEpisode = record.numberepisode();
+      //
+      [episodes addObject:info];
+    }
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      handler(episodes);
     });
   }];
 }
@@ -225,4 +257,16 @@
 @implementation LSSubscriptionInfo
 // properties
 @synthesize showID = theShowID;
+@end
+
+
+//
+// LSEpisodeUnwatchedInfo
+//
+
+@implementation LSEpisodeUnwatchedInfo
+// properties
+@synthesize idShow;
+@synthesize numberSeason;
+@synthesize numberEpisode;
 @end

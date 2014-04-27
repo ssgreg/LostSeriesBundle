@@ -140,15 +140,11 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterShows);
 // LSWLinkBaseGetterShowsFavorite
 //
 
-@protocol LSDataBaseGetterFavoriteShows <LSDataBaseFacadeAsyncBackend, LSDataBaseShowsFavoriteRaw>
-@end
-
 @interface LSWLinkBaseGetterShowsFavorite : WFWorkflowLink
 @end
-
 @implementation LSWLinkBaseGetterShowsFavorite
 
-SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterFavoriteShows);
+SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSModelBase);
 
 - (void) input
 {
@@ -157,6 +153,32 @@ SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseGetterFavoriteShows);
     if (!self.isBlocked)
     {
       self.data.showsFavoriteRaw = infos;
+      [self output];
+    }
+  }];
+  [self forwardBlock];
+}
+
+@end
+
+
+//
+// LSWLinkBaseGetterUnwatchedEpisodes
+//
+
+@interface LSWLinkBaseGetterUnwatchedEpisodes : WFWorkflowLink
+@end
+@implementation LSWLinkBaseGetterUnwatchedEpisodes
+
+SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSModelBase);
+
+- (void) input
+{
+  [self.data.backendFacade getUnwatchedEpisodesInfoArrayByCDID:[LSApplication singleInstance].cdid replyHandler:^(NSArray* infos)
+  {
+    if (!self.isBlocked)
+    {
+      self.data.episodesUnwatchedRaw = infos;
       [self output];
     }
   }];
@@ -486,6 +508,7 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
           WFLinkWorkflow(
               [[LSWLinkBaseWaitForDeviceToken alloc] init]
             , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:model]
+            , [[LSWLinkBaseGetterUnwatchedEpisodes alloc] initWithData:model]
             , nil)
         , [[LSWLinkBaseGetterShows alloc] initWithData:model]
         , nil)

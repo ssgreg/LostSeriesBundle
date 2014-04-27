@@ -105,6 +105,7 @@ message GetSubscriptionResponse
 
 message GetUnwatchedSeriesRequest
 {
+  required string idClient = 1;
 }
 
 
@@ -116,6 +117,5 @@ message GetUnwatchedSeriesResponse
     required int32 numberSeason = 2;
     required int32 numberEpisode = 3;
   }
-  required string idClient = 1;
   repeated Episode episodes = 2;
 }

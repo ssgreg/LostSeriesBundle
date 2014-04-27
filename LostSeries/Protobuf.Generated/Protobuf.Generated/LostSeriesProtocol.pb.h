@@ -1492,14 +1492,29 @@ class GetUnwatchedSeriesRequest : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
+  // required string idClient = 1;
+  inline bool has_idclient() const;
+  inline void clear_idclient();
+  static const int kIdClientFieldNumber = 1;
+  inline const ::std::string& idclient() const;
+  inline void set_idclient(const ::std::string& value);
+  inline void set_idclient(const char* value);
+  inline void set_idclient(const char* value, size_t size);
+  inline ::std::string* mutable_idclient();
+  inline ::std::string* release_idclient();
+  inline void set_allocated_idclient(::std::string* idclient);
+
   // @@protoc_insertion_point(class_scope:LS.GetUnwatchedSeriesRequest)
  private:
+  inline void set_has_idclient();
+  inline void clear_has_idclient();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
+  ::std::string* idclient_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[1];
+  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -1673,18 +1688,6 @@ class GetUnwatchedSeriesResponse : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required string idClient = 1;
-  inline bool has_idclient() const;
-  inline void clear_idclient();
-  static const int kIdClientFieldNumber = 1;
-  inline const ::std::string& idclient() const;
-  inline void set_idclient(const ::std::string& value);
-  inline void set_idclient(const char* value);
-  inline void set_idclient(const char* value, size_t size);
-  inline ::std::string* mutable_idclient();
-  inline ::std::string* release_idclient();
-  inline void set_allocated_idclient(::std::string* idclient);
-
   // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
   inline int episodes_size() const;
   inline void clear_episodes();
@@ -1699,16 +1702,13 @@ class GetUnwatchedSeriesResponse : public ::google_public::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:LS.GetUnwatchedSeriesResponse)
  private:
-  inline void set_has_idclient();
-  inline void clear_has_idclient();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::std::string* idclient_;
   ::google_public::protobuf::RepeatedPtrField< ::LS::GetUnwatchedSeriesResponse_Episode > episodes_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -3342,6 +3342,76 @@ GetSubscriptionResponse::mutable_subscriptions() {
 
 // GetUnwatchedSeriesRequest
 
+// required string idClient = 1;
+inline bool GetUnwatchedSeriesRequest::has_idclient() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void GetUnwatchedSeriesRequest::set_has_idclient() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void GetUnwatchedSeriesRequest::clear_has_idclient() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void GetUnwatchedSeriesRequest::clear_idclient() {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    idclient_->clear();
+  }
+  clear_has_idclient();
+}
+inline const ::std::string& GetUnwatchedSeriesRequest::idclient() const {
+  return *idclient_;
+}
+inline void GetUnwatchedSeriesRequest::set_idclient(const ::std::string& value) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  idclient_->assign(value);
+}
+inline void GetUnwatchedSeriesRequest::set_idclient(const char* value) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  idclient_->assign(value);
+}
+inline void GetUnwatchedSeriesRequest::set_idclient(const char* value, size_t size) {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  idclient_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* GetUnwatchedSeriesRequest::mutable_idclient() {
+  set_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    idclient_ = new ::std::string;
+  }
+  return idclient_;
+}
+inline ::std::string* GetUnwatchedSeriesRequest::release_idclient() {
+  clear_has_idclient();
+  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = idclient_;
+    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void GetUnwatchedSeriesRequest::set_allocated_idclient(::std::string* idclient) {
+  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete idclient_;
+  }
+  if (idclient) {
+    set_has_idclient();
+    idclient_ = idclient;
+  } else {
+    clear_has_idclient();
+    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
+}
+
 // -------------------------------------------------------------------
 
 // GetUnwatchedSeriesResponse_Episode
@@ -3463,76 +3533,6 @@ inline void GetUnwatchedSeriesResponse_Episode::set_numberepisode(::google_publi
 // -------------------------------------------------------------------
 
 // GetUnwatchedSeriesResponse
-
-// required string idClient = 1;
-inline bool GetUnwatchedSeriesResponse::has_idclient() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void GetUnwatchedSeriesResponse::set_has_idclient() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void GetUnwatchedSeriesResponse::clear_has_idclient() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void GetUnwatchedSeriesResponse::clear_idclient() {
-  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
-    idclient_->clear();
-  }
-  clear_has_idclient();
-}
-inline const ::std::string& GetUnwatchedSeriesResponse::idclient() const {
-  return *idclient_;
-}
-inline void GetUnwatchedSeriesResponse::set_idclient(const ::std::string& value) {
-  set_has_idclient();
-  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
-    idclient_ = new ::std::string;
-  }
-  idclient_->assign(value);
-}
-inline void GetUnwatchedSeriesResponse::set_idclient(const char* value) {
-  set_has_idclient();
-  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
-    idclient_ = new ::std::string;
-  }
-  idclient_->assign(value);
-}
-inline void GetUnwatchedSeriesResponse::set_idclient(const char* value, size_t size) {
-  set_has_idclient();
-  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
-    idclient_ = new ::std::string;
-  }
-  idclient_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* GetUnwatchedSeriesResponse::mutable_idclient() {
-  set_has_idclient();
-  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
-    idclient_ = new ::std::string;
-  }
-  return idclient_;
-}
-inline ::std::string* GetUnwatchedSeriesResponse::release_idclient() {
-  clear_has_idclient();
-  if (idclient_ == &::google_public::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = idclient_;
-    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void GetUnwatchedSeriesResponse::set_allocated_idclient(::std::string* idclient) {
-  if (idclient_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete idclient_;
-  }
-  if (idclient) {
-    set_has_idclient();
-    idclient_ = idclient;
-  } else {
-    clear_has_idclient();
-    idclient_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  }
-}
 
 // repeated .LS.GetUnwatchedSeriesResponse.Episode episodes = 2;
 inline int GetUnwatchedSeriesResponse::episodes_size() const {

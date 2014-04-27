@@ -146,6 +146,7 @@
 @synthesize selectionModeActivated = theSelectionModeFlag;
 @synthesize followingModeFollow = theFollowingModeFlag;
 @synthesize backendFacade = theBackendFacade;
+@synthesize episodesUnwatchedRaw;
 
 @end
 

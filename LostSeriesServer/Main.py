@@ -95,11 +95,14 @@ def HandleGetSubscriptionRequest(message):
 def HandleGetUnwatchedSeriesRequest(message):
   print "Handling HandleGetUnwatchedSeriesRequest..."
   #
+  episodes = Subscriptions.GetUnwatchedEpisodes(message.idClient)
   #
   response = LostSeriesProtocol_pb2.GetUnwatchedSeriesResponse()
-  for subscription in subscriptions:
-    record = response.subscriptions.add()
-    record.id = subscription
+  for episode in episodes:
+    record = response.episodes.add()
+    record.idShow = episode['idShow']
+    record.numberSeason = episode['numberSeason']
+    record.numberEpisode = episode['numberEpisode']
   #
   return {"message": response, "data": None}
 

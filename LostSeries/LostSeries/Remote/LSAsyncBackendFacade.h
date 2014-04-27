@@ -33,6 +33,7 @@
 - (void) getArtworkByShowInfo:(LSShowInfo*)showInfo thumbnail:(BOOL)thumbnail replyHandler:(void (^)(NSData*))handler;
 - (void) subscribeByCDID:(LSCDID*)cdid subscriptionInfo:(NSArray*)subscriptions flagUnsubscribe:(BOOL)flagUnsibscribe replyHandler:(void (^)(BOOL result))handler;
 - (void) getSubscriptionInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler;
+- (void) getUnwatchedEpisodesInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler;
 
 @end
 
@@ -62,6 +63,7 @@
 @property NSString* showID;
 @property NSString* snapshot;
 @property NSArray* episodes;
+@property NSArray* episodesUnwatched;
 @end
 
 
@@ -72,4 +74,15 @@
 @interface LSSubscriptionInfo : NSObject
 // properties
 @property NSString* showID;
+@end
+
+
+//
+// LSEpisodeUnwatchedInfo
+//
+
+@interface LSEpisodeUnwatchedInfo : NSObject
+@property NSString* idShow;
+@property NSInteger numberSeason;
+@property NSInteger numberEpisode;
 @end
