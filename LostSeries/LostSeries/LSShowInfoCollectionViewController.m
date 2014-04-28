@@ -499,6 +499,7 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 
 - (void) setupTabbar
 {
+  [self.tabBarController.tabBar setSelectedImageTintColor:[UIColor colorWithRed:(60/255.0) green:(171/255.0) blue:(218/255.0) alpha:1.]];
   UITabBarItem *item0 = [self.tabBarController.tabBar.items objectAtIndex:0];
   item0.selectedImage = [UIImage imageNamed:@"TVShowsSelectedTabItem"];
   UITabBarItem *item1 = [self.tabBarController.tabBar.items objectAtIndex:1];
