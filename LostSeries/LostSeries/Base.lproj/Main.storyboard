@@ -275,15 +275,23 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="theEpisodeCell" rowHeight="70" id="slZ-XF-wNn" customClass="LSTableViewCellEpisodeInfo">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="theEpisodeCell" rowHeight="70" id="slZ-XF-wNn" customClass="LSTableViewCellEpisodeInfo">
                                         <rect key="frame" x="0.0" y="486" width="320" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="slZ-XF-wNn" id="Vym-sE-NxS">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MarkWatched" translatesAutoresizingMaskIntoConstraints="NO" id="7FV-OQ-87w">
+                                                    <rect key="frame" x="10" y="9" width="12" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="12" id="Na3-9P-9Xv"/>
+                                                        <constraint firstAttribute="width" constant="12" id="o2c-Y6-k9k"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Name" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="NER-Wi-unY">
-                                                    <rect key="frame" x="35" y="5" width="280" height="20"/>
+                                                    <rect key="frame" x="30" y="5" width="280" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="6kL-p1-6l4"/>
@@ -294,7 +302,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Original Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eSq-cP-b38">
-                                                    <rect key="frame" x="35" y="25" width="280" height="20"/>
+                                                    <rect key="frame" x="30" y="25" width="280" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="4PE-NN-lEH"/>
@@ -305,7 +313,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Details" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="eM7-oZ-Nvt">
-                                                    <rect key="frame" x="35" y="45" width="280" height="20"/>
+                                                    <rect key="frame" x="30" y="45" width="280" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="bG7-jc-ROp"/>
@@ -318,10 +326,12 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="eSq-cP-b38" firstAttribute="top" secondItem="NER-Wi-unY" secondAttribute="bottom" id="HGr-h5-p32"/>
-                                                <constraint firstItem="NER-Wi-unY" firstAttribute="leading" secondItem="Vym-sE-NxS" secondAttribute="leading" constant="35" id="duu-qX-iEC"/>
-                                                <constraint firstItem="eM7-oZ-Nvt" firstAttribute="leading" secondItem="Vym-sE-NxS" secondAttribute="leading" constant="35" id="eaV-aM-uxU"/>
-                                                <constraint firstItem="eSq-cP-b38" firstAttribute="leading" secondItem="Vym-sE-NxS" secondAttribute="leading" constant="35" id="mzC-gt-tfD"/>
+                                                <constraint firstItem="7FV-OQ-87w" firstAttribute="leading" secondItem="Vym-sE-NxS" secondAttribute="leading" constant="10" id="Jwa-Ty-vce"/>
+                                                <constraint firstItem="NER-Wi-unY" firstAttribute="leading" secondItem="Vym-sE-NxS" secondAttribute="leading" constant="30" id="duu-qX-iEC"/>
+                                                <constraint firstItem="eM7-oZ-Nvt" firstAttribute="leading" secondItem="Vym-sE-NxS" secondAttribute="leading" constant="30" id="eaV-aM-uxU"/>
+                                                <constraint firstItem="eSq-cP-b38" firstAttribute="leading" secondItem="Vym-sE-NxS" secondAttribute="leading" constant="30" id="mzC-gt-tfD"/>
                                                 <constraint firstItem="NER-Wi-unY" firstAttribute="top" secondItem="Vym-sE-NxS" secondAttribute="top" constant="5" id="pCu-qH-jaQ"/>
+                                                <constraint firstItem="7FV-OQ-87w" firstAttribute="top" secondItem="Vym-sE-NxS" secondAttribute="top" constant="9" id="scj-hf-7X9"/>
                                                 <constraint firstItem="eM7-oZ-Nvt" firstAttribute="top" secondItem="eSq-cP-b38" secondAttribute="bottom" id="zFF-qO-cfs"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -329,6 +339,7 @@
                                             <outlet property="theEpisodeDetails" destination="eM7-oZ-Nvt" id="SrR-OK-JT1"/>
                                             <outlet property="theEpisodeName" destination="NER-Wi-unY" id="rkA-ou-S7f"/>
                                             <outlet property="theEpisodeNameOriginal" destination="eSq-cP-b38" id="HpA-B6-WW5"/>
+                                            <outlet property="theImageMarkWatchingInfo" destination="7FV-OQ-87w" id="fUx-am-xrJ"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -388,6 +399,7 @@
     <resources>
         <image name="FavTVShowsTabItem" width="29" height="25"/>
         <image name="FollowOverlayForTVShow" width="31" height="31"/>
+        <image name="MarkWatched" width="12" height="12"/>
         <image name="SelectionChecked" width="46" height="46"/>
         <image name="StubTVShowImage" width="94" height="94"/>
         <image name="TVShowsTabItem" width="29" height="20"/>

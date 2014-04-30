@@ -18,6 +18,7 @@
 @property IBOutlet UILabel* theEpisodeName;
 @property IBOutlet UILabel* theEpisodeNameOriginal;
 @property IBOutlet UILabel* theEpisodeDetails;
+@property IBOutlet UIImageView* theImageMarkWatchingInfo;
 @end
 @implementation LSTableViewCellEpisodeInfo
 @end
@@ -76,6 +77,7 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionGetFullSizeArtwork);
 
 @interface LSWLinkCollectionEpisodes : WFWorkflowLink
 
+- (BOOL) isUnwatchedItemAtIndex:(NSIndexPath*)indexPath;
 - (LSEpisodeInfo*) itemAtIndex:(NSIndexPath*)indexPath;
 - (NSUInteger) numberOfItems;
 
@@ -86,7 +88,20 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionGetFullSizeArtwork);
   NSArray* theEpisodesSorted;
 }
 
-SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseModelShowForDatails);
+SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSModelBase)
+
+- (BOOL) isUnwatchedItemAtIndex:(NSIndexPath*)indexPath
+{
+  NSInteger numberEpisode = [self itemAtIndex:indexPath].number;
+  if (!self.data.showForDetails.showInfo.episodesUnwatched)
+  {
+    return NO;
+  }
+  return [self.data.showForDetails.showInfo.episodesUnwatched indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
+  {
+    return ((LSEpisodeInfo*)object).number == numberEpisode;
+  }] != NSNotFound;
+}
 
 - (LSEpisodeInfo*) itemAtIndex:(NSIndexPath*)indexPath
 {
@@ -198,11 +213,30 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   [theWLinkButtonChangeFollowing clicked];
 }
 
+-(void) didSingleTap:(UIGestureRecognizer *)gestureRecognizer
+{
+  if (gestureRecognizer.state == UIGestureRecognizerStateEnded)
+  {
+    CGPoint tapLocation = [gestureRecognizer locationInView:theTableEpisodes];
+    NSIndexPath *indexPathTapped = [theTableEpisodes indexPathForRowAtPoint:tapLocation];
+//    LSTableViewCellEpisodeInfo* cellTapped = (LSTableViewCellEpisodeInfo*)[theTableEpisodes cellForRowAtIndexPath:indexPathTapped];
+//    //
+//    if (cellTapped)
+//    {
+//      cellTapped.theImageMarkWatchingInfo.image = [UIImage imageNamed:@"MarkUnwatched"];
+//    }
+  }
+}
 - (void) viewDidLoad
 {
   [super viewDidLoad];
   //
   [theWLinkLockWaitForViewDidLoad use];
+  //
+  UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSingleTap:)];
+  singleTap.numberOfTapsRequired = 1;
+  singleTap.numberOfTouchesRequired = 1;
+  [theTableEpisodes addGestureRecognizer:singleTap];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -261,20 +295,23 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   return [theWLinkCollectionEpisodes numberOfItems];
 }
 
-- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*) tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   LSTableViewCellEpisodeInfo* cell = (LSTableViewCellEpisodeInfo*)[tableView dequeueReusableCellWithIdentifier:@"theEpisodeCell"];
   if (cell)
   {
     LSEpisodeInfo* info = [theWLinkCollectionEpisodes itemAtIndex:indexPath];
+    BOOL isEpisodeUnwatched = [theWLinkCollectionEpisodes isUnwatchedItemAtIndex:indexPath];
+    //
     cell.theEpisodeName.text = [self formatEpisodeName:info];
     cell.theEpisodeNameOriginal.text = [self formatEpisodeNameOriginal:info];
     cell.theEpisodeDetails.text = [self formatEpisodeDetails:info];
+    cell.theImageMarkWatchingInfo.image = [UIImage imageNamed:isEpisodeUnwatched ? @"MarkUnwatched" : @"MarkWatched"];
   }
   return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   // fix size from IB
   LSTableViewCellEpisodeInfo* cell = (LSTableViewCellEpisodeInfo*)[tableView dequeueReusableCellWithIdentifier:@"theEpisodeCell"];
