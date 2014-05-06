@@ -9,10 +9,110 @@
 // LS
 #import "LSControllerShowDetails.h"
 #import "LSApplication.h"
+// Jet
+#import "Jet/JetGuard.h"
 // WF
 #import <WorkflowLink/WorkflowLink.h>
 #import <WorkflowLink/WFLinkLockerDisposable.h>
 
+
+//
+// LSDataControllerShowDetails
+//
+
+@implementation LSDataControllerShowDetails
+{
+  LSModelBase* theModel;
+  LSShowAlbumCellModel* theShow;
+}
+
+@synthesize show = theShow;
+@synthesize episodesSorted;
+@synthesize flagUnfollow;
+@synthesize flagRemove;
+@synthesize episodesToChange;
+
+- initWithModel:(LSModelBase*)model show:(LSShowAlbumCellModel*)show
+{
+  if (!(self = [super init]))
+  {
+    return nil;
+  }
+  //
+  theModel = model;
+  theShow = show;
+  //
+  return self;
+}
+
+- (NSArray*) shows
+{
+  return theModel.shows;
+}
+
+- (LSAsyncBackendFacade*) backendFacade
+{
+  return theModel.backendFacade;
+}
+
+- (JetArrayPartial*) showsToChange
+{
+  return theModel.modelShowsLists.showsToChangeFollowing;
+}
+
+- (JetArrayPartial*) showsFollowing
+{
+  return theModel.showsFollowing;
+}
+
+- (void) modelDidChange
+{
+  [theModel modelDidChange];
+}
+
+- (BOOL) isShowFollowedByUser
+{
+  for (LSShowAlbumCellModel* show in self.showsFollowing)
+  {
+    if (show.showInfo.showID == self.show.showInfo.showID)
+    {
+      return YES;
+    }
+  }
+  return NO;
+}
+
+- (NSInteger) indexOfShow
+{
+  for (NSInteger i = 0; i < self.shows.count; ++i)
+  {
+    LSShowAlbumCellModel* show = self.shows[i];
+    if (show.showInfo.showID == self.show.showInfo.showID)
+    {
+      return i;
+    }
+  }
+  return NSNotFound;
+}
+
+- (BOOL) isEpisodeUnwatchedWithNumber:(NSInteger)number
+{
+  if (!self.show.showInfo.episodesUnwatched)
+  {
+    return NO;
+  }
+  return [self.show.showInfo.episodesUnwatched indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
+  {
+    return ((LSEpisodeInfo*)object).number == number;
+  }] != NSNotFound;
+}
+
+@end
+
+
+//
+// LSTableViewCellEpisodeInfo
+//
 
 @interface LSTableViewCellEpisodeInfo : UITableViewCell
 @property IBOutlet UILabel* theEpisodeName;
@@ -32,11 +132,11 @@
 @end
 @implementation LSWLinkShowDescription
 
-SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewShowDescription);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSDataControllerShowDetails, LSViewShowDescription);
 
 - (void) input
 {
-  [self.view setShowInfo:self.data.showForDetails.showInfo];
+  [self.view setShowInfo:self.data.show.showInfo];
   [self output];
 }
 
@@ -50,20 +150,31 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewShowDescription);
 @interface LSWLinkActionGetFullSizeArtwork : WFWorkflowLink
 @end
 @implementation LSWLinkActionGetFullSizeArtwork
+{
+  JetGuard* theGuard;
+}
 
-SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionGetFullSizeArtwork);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSDataControllerShowDetails, LSViewActionGetFullSizeArtwork);
+
+- (void) update
+{
+  theGuard = [JetGuard guard];
+}
 
 - (void) input
 {
-  [self.data.backendFacade getArtworkByShowInfo:self.data.showForDetails.showInfo thumbnail:NO replyHandler:^(NSData* dataArtwork)
+  if (theGuard.lock)
   {
-    [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
-    [self output];
-  }];
-  // set thumbnail at first
-  if (self.data.showForDetails.artwork)
-  {
-    [self.view setImageArtwork:self.data.showForDetails.artwork];
+    [self.data.backendFacade getArtworkByShowInfo:self.data.show.showInfo thumbnail:NO replyHandler:^(NSData* dataArtwork)
+    {
+      [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
+      [self output];
+    }];
+    // set thumbnail at first
+    if (self.data.show.artwork)
+    {
+      [self.view setImageArtwork:self.data.show.artwork];
+    }
   }
   [self output];
 }
@@ -84,41 +195,32 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionGetFullSizeArtwork);
 @end
 
 @implementation LSWLinkCollectionEpisodes
-{
-  NSArray* theEpisodesSorted;
-}
 
-SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSModelBase)
+SYNTHESIZE_WL_ACCESSORS_NEW(LSDataControllerShowDetails, LSViewCollectionEpisodes)
 
 - (BOOL) isUnwatchedItemAtIndex:(NSIndexPath*)indexPath
 {
   NSInteger numberEpisode = [self itemAtIndex:indexPath].number;
-  if (!self.data.showForDetails.showInfo.episodesUnwatched)
-  {
-    return NO;
-  }
-  return [self.data.showForDetails.showInfo.episodesUnwatched indexOfObjectPassingTest:^BOOL(id object, NSUInteger index, BOOL* stop)
-  {
-    return ((LSEpisodeInfo*)object).number == numberEpisode;
-  }] != NSNotFound;
+  return [self.data isEpisodeUnwatchedWithNumber:numberEpisode];
 }
 
 - (LSEpisodeInfo*) itemAtIndex:(NSIndexPath*)indexPath
 {
-  return theEpisodesSorted[indexPath.row];
+  return self.data.episodesSorted[indexPath.row];
 }
 
 - (NSUInteger) numberOfItems
 {
-  return theEpisodesSorted.count;
+  return self.data.episodesSorted.count;
 }
 
 - (void) input
 {
-  theEpisodesSorted = [self.data.showForDetails.showInfo.episodes sortedArrayUsingComparator:^NSComparisonResult(LSEpisodeInfo* left, LSEpisodeInfo* right)
+  self.data.episodesSorted = [self.data.show.showInfo.episodes sortedArrayUsingComparator:^NSComparisonResult(LSEpisodeInfo* left, LSEpisodeInfo* right)
   {
     return [[NSNumber numberWithInteger:right.number] compare:[NSNumber numberWithInteger:left.number]];
   }];
+  [self.view reloadCollectionEpisodes];
   [self output];
 }
 
@@ -126,60 +228,73 @@ SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSModelBase)
 
 
 //
-// LSWLinkButtonChangeFollowing
+// LSWLinkEventChangeFollowing
 //
 
-@interface LSWLinkButtonChangeFollowing : WFWorkflowLink
-- (void) clicked;
+@interface LSWLinkEventChangeFollowing : WFWorkflowLink
+- (void) pulse;
 @end
+@implementation LSWLinkEventChangeFollowing
 
-@implementation LSWLinkButtonChangeFollowing
-
-SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSDataControllerShowDetails, LSViewEventChangeFollowing);
 
 - (void) input
 {
-  [self update];
+  [self.view setIsFollowing:self.data.isShowFollowedByUser];
 }
 
-- (void) update
+- (void) pulse
 {
-  [self.view setTextButtonChangeFollowing:self.isShowFollowing ? @"Unfollow" : @"Follow"];
+  [self output];
 }
 
-- (void) clicked
+@end
+
+
+//
+// LSWLinkSetupActionChangeFollowing
+//
+
+@interface LSWLinkSetupActionChangeFollowing : WFWorkflowLink
+@end
+@implementation LSWLinkSetupActionChangeFollowing
+
+SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSDataControllerShowDetails)
+
+- (void) input
 {
-  self.data.followingModeFollow = !self.isShowFollowing;
-  [self addShowToListChangeFollowing];
+  self.data.flagUnfollow = !self.data.isShowFollowedByUser;
+  [self.data.showsToChange removeAllObjectes];
+  [self.data.showsToChange addObjectByIndexSource:self.data.indexOfShow];
   //
   [self output];
 }
 
-- (BOOL) isShowFollowing
+@end
+
+
+//
+// LSWLinkEventChangeUnwatchedEpisodes
+//
+
+@interface LSWLinkEventChangeUnwatchedEpisodes : WFWorkflowLink
+- (void) pulse:(NSInteger)indexEpisode;
+@end
+@implementation LSWLinkEventChangeUnwatchedEpisodes
+
+SYNTHESIZE_WL_DATA_ACCESSOR_NEW(LSDataControllerShowDetails);
+
+- (void) input
 {
-  for (LSShowAlbumCellModel* show in self.data.showsFollowing)
-  {
-    if (show.showInfo.showID == self.data.showForDetails.showInfo.showID)
-    {
-      return YES;
-    }
-  }
-  return NO;
 }
 
-- (void) addShowToListChangeFollowing
+- (void) pulse:(NSInteger)indexEpisode;
 {
-  [self.data.modelShowsLists.showsToChangeFollowing removeAllObjectes];
+  LSEpisodeInfo* episode = self.data.episodesSorted[indexEpisode];
   //
-  for (NSInteger i = 0; i < self.data.modelShowsLists.shows.count; ++i)
-  {
-    LSShowAlbumCellModel* show = self.data.modelShowsLists.shows[i];
-    if (show.showInfo.showID == self.data.showForDetails.showInfo.showID)
-    {
-      [self.data.modelShowsLists.showsToChangeFollowing addObjectByIndexSource:i];
-      break;
-    }
-  }
+  self.data.flagRemove = [self.data isEpisodeUnwatchedWithNumber:episode.number];
+  self.data.episodesToChange = [NSArray arrayWithObject:episode];
+  [self output];
 }
 
 @end
@@ -203,14 +318,15 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   WFWorkflow* theWorkflow;
   WFLinkLockerDisposable* theWLinkLockWaitForViewDidLoad;
   LSWLinkCollectionEpisodes* theWLinkCollectionEpisodes;
-  LSWLinkButtonChangeFollowing* theWLinkButtonChangeFollowing;
+  LSWLinkEventChangeFollowing* theWLinkEventChangeFollowing;
+  LSWLinkEventChangeUnwatchedEpisodes* theWLinkEventChangeUnwatchedEpisodes;
   //
   LSMessageMBH* theMessageChangeFollowing;
 }
 
-- (IBAction) clickedButtonChangeFollowing:(id)sender;
+- (IBAction) clickedButtonChangeFollowing:(id)sender
 {
-  [theWLinkButtonChangeFollowing clicked];
+  [theWLinkEventChangeFollowing pulse];
 }
 
 -(void) didSingleTap:(UIGestureRecognizer *)gestureRecognizer
@@ -219,27 +335,23 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   {
     CGPoint tapLocation = [gestureRecognizer locationInView:theTableEpisodes];
     NSIndexPath *indexPathTapped = [theTableEpisodes indexPathForRowAtPoint:tapLocation];
-//    LSTableViewCellEpisodeInfo* cellTapped = (LSTableViewCellEpisodeInfo*)[theTableEpisodes cellForRowAtIndexPath:indexPathTapped];
-//    //
-//    if (cellTapped)
-//    {
-//      cellTapped.theImageMarkWatchingInfo.image = [UIImage imageNamed:@"MarkUnwatched"];
-//    }
+    if (indexPathTapped)
+    {
+      [theWLinkEventChangeUnwatchedEpisodes pulse:indexPathTapped.row];
+    }
   }
 }
+
 - (void) viewDidLoad
 {
   [super viewDidLoad];
   //
-  [theWLinkLockWaitForViewDidLoad use];
+  [self registerGestureSingleTap];
   //
-  UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSingleTap:)];
-  singleTap.numberOfTapsRequired = 1;
-  singleTap.numberOfTouchesRequired = 1;
-  [theTableEpisodes addGestureRecognizer:singleTap];
+  [theWLinkLockWaitForViewDidLoad use];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void) viewWillDisappear:(BOOL)animated
 {
   [super viewWillDisappear:animated];
   //
@@ -248,6 +360,14 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
     [[LSApplication singleInstance].registryControllers removeController:theIdController];
     theIdController = @"";
   }
+}
+
+- (void) registerGestureSingleTap
+{
+  UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSingleTap:)];
+  singleTap.numberOfTapsRequired = 1;
+  singleTap.numberOfTouchesRequired = 1;
+  [theTableEpisodes addGestureRecognizer:singleTap];
 }
 
 - (NSString*) stringFromDate:(NSDate*) date withFormat:(NSString*)format
@@ -290,6 +410,10 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   return [NSString stringWithFormat:@"Episode %ld | %@", info.number, date];
 }
 
+
+#pragma mark -- UITableViewDataSource
+
+
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
   return [theWLinkCollectionEpisodes numberOfItems];
@@ -311,12 +435,20 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   return cell;
 }
 
+
+#pragma mark -- UITableViewDelegate
+
+
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   // fix size from IB
   LSTableViewCellEpisodeInfo* cell = (LSTableViewCellEpisodeInfo*)[tableView dequeueReusableCellWithIdentifier:@"theEpisodeCell"];
   return cell.frame.size.height;
 }
+
+
+#pragma mark -- View's
+
 
 - (void) setImageArtwork:(UIImage*)image
 {
@@ -330,9 +462,14 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   theLabelShowDetails.text = [self formatSeasonDetails:info];
 }
 
-- (void) setTextButtonChangeFollowing:(NSString*)text
+- (void) setIsFollowing:(BOOL)isFollowing
 {
-  theButtonChangeFollowing.title = text;
+  theButtonChangeFollowing.title = isFollowing ? @"Unfollow" : @"Follow";
+}
+
+- (void) reloadCollectionEpisodes
+{
+  [theTableEpisodes reloadData];
 }
 
 - (void) updateActionIndicatorChangeFollowing:(BOOL)flag
@@ -347,8 +484,13 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   }  
 }
 
+- (void) updateActionIndicatorChangeUnwatchedEpisodes:(BOOL)flag
+{
+  [UIApplication sharedApplication].networkActivityIndicatorVisible = flag;
+}
 
-#pragma mark - LSBaseController implementation
+
+#pragma mark -- LSBaseController
 
 
 - (NSString*) idController
@@ -367,26 +509,35 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewButtonChangeFollowing);
   return LSControllerShowDetailsShortID;
 }
 
-- (WFWorkflow*) workflow
+- (WFWorkflow*) workflow:(LSDataControllerShowDetails*)model
 {
   if (theWorkflow)
   {
     return theWorkflow;
   }
   //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
   theWLinkLockWaitForViewDidLoad = [[WFLinkLockerDisposable alloc] init];
-  theWLinkCollectionEpisodes = [[LSWLinkCollectionEpisodes alloc] initWithData:model];
-  theWLinkButtonChangeFollowing = [[LSWLinkButtonChangeFollowing alloc] initWithData:model view:self];
+  theWLinkCollectionEpisodes = [[LSWLinkCollectionEpisodes alloc] initWithData:model view:self];
+  theWLinkEventChangeFollowing = [[LSWLinkEventChangeFollowing alloc] initWithData:model view:self];
+  theWLinkEventChangeUnwatchedEpisodes = [[LSWLinkEventChangeUnwatchedEpisodes alloc] initWithData:model];
   //
   theWorkflow = WFLinkWorkflow(
       theWLinkLockWaitForViewDidLoad
     , [[LSWLinkShowDescription alloc] initWithData:model view:self]
     , [[LSWLinkActionGetFullSizeArtwork alloc] initWithData:model view:self]
     , theWLinkCollectionEpisodes
-    , theWLinkButtonChangeFollowing
-    , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-    , nil);
+    , WFSplitWorkflowWithOutputUsingOr(
+          WFLinkWorkflow(
+              theWLinkEventChangeFollowing
+            , [[LSWLinkSetupActionChangeFollowing alloc] initWithData:model]
+            , [[LSWLinkActionChangeFollowing alloc] initWithData:model view:self]
+            , nil)
+        , WFLinkWorkflow(
+              theWLinkEventChangeUnwatchedEpisodes
+            , [[LSWLinkActionChangeUnwatchedEpisodes alloc] initWithData:model view:self]
+            , nil)
+        , nil)
+   , nil);
   return theWorkflow;
 }
 

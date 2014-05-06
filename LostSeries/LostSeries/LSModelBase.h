@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Remote/LSAsyncBackendFacade.h"
 #import "Jet/JetPartialArray.h"
+//
+#import "LSWLinkActionChangeFollowing.h"
+#import "LSModelShow.h"
 
 
 //
@@ -32,20 +34,10 @@
 
 
 //
-// LSShowAlbumCellModel
-//
-
-@interface LSShowAlbumCellModel : NSObject
-@property LSShowInfo* showInfo;
-@property UIImage* artwork;
-@end
-
-
-//
 // Getter protocols
 //
 
-@protocol LSDataBaseFacadeAsyncBackend
+@protocol LSDataBaseFacadeAsyncBackend <NSObject>
 @property (readonly) LSAsyncBackendFacade* backendFacade;
 @end
 
@@ -66,7 +58,7 @@
 @property (readonly) JetArrayPartial* showsSelected;
 @end
 
-@protocol LSDataBaseShowsFollowing
+@protocol LSDataBaseShowsFollowing <NSObject>
 @property (readonly) JetArrayPartial* showsFollowing;
 @property JetArrayPartial* showsFollowingFiltered;
 @end
@@ -104,9 +96,13 @@
     , LSDataBaseFacadeAsyncBackend
     , LSDataBaseShowsFollowing
     , LSDataBaseModelShowForDatails
+    //
+    , LSDataActionChangeFollowing
     >
 
+// raw
 @property NSArray* episodesUnwatchedRaw;
+
 
 - (id) init;
 - (void) modelDidChange;

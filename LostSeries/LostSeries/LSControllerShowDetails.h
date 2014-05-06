@@ -9,8 +9,32 @@
 #import <UIKit/UIKit.h>
 // LS
 #import "Logic/LSBaseController.h"
-#import "LSAsyncBackendFacade.h"
 #import "LSWLinkActionChangeFollowing.h"
+#import "LSWLinkActionChangeUnwatchedEpisodes.h"
+#import "LSModelBase.h"
+
+
+@interface LSDataControllerShowDetails : NSObject <LSDataActionChangeFollowing, LSDataActionChangeUnwatchedEpisodes>
+
+- initWithModel:(LSModelBase*)model show:(LSShowAlbumCellModel*)show;
+
+// input data
+@property (readonly) LSAsyncBackendFacade* backendFacade;
+@property (readonly) LSShowAlbumCellModel* show;
+@property (readonly) NSArray* shows;
+// local data
+@property NSArray* episodesToChange;
+@property NSArray* episodesSorted;
+@property BOOL flagUnfollow;
+@property BOOL flagRemove;
+// methods
+- (void) modelDidChange;
+- (BOOL) isShowFollowedByUser;
+- (NSInteger) indexOfShow;
+- (BOOL) isEpisodeUnwatchedWithNumber:(NSInteger)number;
+
+@end
+
 
 
 @protocol LSViewActionGetFullSizeArtwork <NSObject>
@@ -21,8 +45,12 @@
 - (void) setShowInfo:(LSShowInfo*)info;
 @end
 
-@protocol LSViewButtonChangeFollowing <NSObject>
-- (void) setTextButtonChangeFollowing:(NSString*)text;
+@protocol LSViewEventChangeFollowing <NSObject>
+- (void) setIsFollowing:(BOOL)isFollowing;
+@end
+
+@protocol LSViewCollectionEpisodes <NSObject>
+- (void) reloadCollectionEpisodes;
 @end
 
 //
@@ -36,8 +64,10 @@
     UITableViewDelegate,
     LSViewActionGetFullSizeArtwork,
     LSViewShowDescription,
-    LSViewButtonChangeFollowing,
-    LSViewActionChangeFollowing
+    LSViewCollectionEpisodes,
+    LSViewEventChangeFollowing,
+    LSViewActionChangeFollowing,
+    LSViewActionChangeUnwatchedEpisodes
   >
 
 @end

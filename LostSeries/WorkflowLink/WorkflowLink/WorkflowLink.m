@@ -15,7 +15,7 @@
 
 @implementation WFWorkflowLink
 {
-  __weak id theData;
+  id theData;
   __weak id theView;
   BOOL theIsBlockedFlag;
   //

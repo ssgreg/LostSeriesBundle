@@ -107,6 +107,25 @@ def HandleGetUnwatchedSeriesRequest(message):
   return {"message": response, "data": None}
 
 
+def HandleSetUnwatchedSeriesRequest(message):
+  print "Handling HandleSetUnwatchedSeriesRequest..."
+  #
+  episodes = []
+  for record in message.episodes:
+    episode = {}
+    episode['idShow'] = record.idShow
+    episode['numberSeason'] = record.numberSeason
+    episode['numberEpisode'] = record.numberEpisode
+    episodes.append(episode)
+  #
+  Subscriptions.SetUnwatchedEpisodes(message.idClient, episodes, message.flagRemove)
+  #
+  response = LostSeriesProtocol_pb2.SetUnwatchedSeriesResponse()
+  response.result = True
+  #
+  return {"message": response, "data": None}
+
+
 def ParseData(data):
   message = LostSeriesProtocol_pb2.Message()
   message.ParseFromString(data)
@@ -131,6 +150,9 @@ def SerializeMessage(message):
   elif type(message) is LostSeriesProtocol_pb2.GetUnwatchedSeriesResponse:
     print "Serializing GetUnwatchedSeriesResponse"
     response.getUnwatchedSeriesResponse.CopyFrom(message)
+  elif type(message) is LostSeriesProtocol_pb2.SetUnwatchedSeriesResponse:
+    print "Serializing SetUnwatchedSeriesResponse"
+    response.setUnwatchedSeriesResponse.CopyFrom(message)
   #
   data = response.SerializeToString()
   return data
@@ -149,6 +171,8 @@ def DispatchMessage(message):
     response = HandleGetSubscriptionRequest(message.getSubscriptionRequest)
   elif message.HasField("getUnwatchedSeriesRequest"):
     response = HandleGetUnwatchedSeriesRequest(message.getUnwatchedSeriesRequest)
+  elif message.HasField("setUnwatchedSeriesRequest"):
+    response = HandleSetUnwatchedSeriesRequest(message.setUnwatchedSeriesRequest)
   else:
     raise Exception("Unknown message!");
   #

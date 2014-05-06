@@ -10,6 +10,7 @@
 // LS
 #import "Logic/LSBaseController.h"
 #import "LSControllerCollectionBase.h"
+#import "LSControllerShowDetails.h"
 #import <WorkflowLink/WorkflowLink.h>
 
 
@@ -22,7 +23,7 @@
 
 
 @protocol LSViewFollowingSwitcherShowDetails <NSObject>
-- (WFWorkflow*) switchToShowDetails;
+- (WFWorkflow*) switchToShowDetails:(LSDataControllerShowDetails*)model;
 @end
 
 

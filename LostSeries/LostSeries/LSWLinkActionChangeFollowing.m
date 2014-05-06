@@ -17,7 +17,7 @@
 
 @implementation LSWLinkActionChangeFollowing
 
-SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionChangeFollowing);
+SYNTHESIZE_WL_ACCESSORS(LSDataActionChangeFollowing, LSViewActionChangeFollowing);
 
 - (void) input
 {
@@ -27,8 +27,8 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionChangeFollowing);
   //
   [self.data.backendFacade
     subscribeByCDID:[LSApplication singleInstance].cdid
-    subscriptionInfo:[self transformToSubscription:self.data.modelShowsLists.showsToChangeFollowing]
-    flagUnsubscribe:!self.data.followingModeFollow
+    subscriptionInfo:[self transformToSubscription:self.data.showsToChange]
+    flagUnsubscribe:!self.data.flagUnfollow
    replyHandler:^(BOOL result)
   {
     [self.view updateActionIndicatorChangeFollowing:NO];
@@ -38,7 +38,6 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionChangeFollowing);
     }
   }];
   //
-  [self.data.modelShowsLists.showsToChangeFollowing removeAllObjectes];
   [self forwardBlock];
 }
 
@@ -57,13 +56,13 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewActionChangeFollowing);
 
 - (void) changeModel
 {
-  if (self.data.followingModeFollow)
+  if (self.data.flagUnfollow)
   {
-    [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.modelShowsLists.showsToChangeFollowing];
+    [self.data.showsFollowing mergeObjectsFromArrayPartial:self.data.showsToChange];
   }
   else
   {
-    [self.data.showsFollowing subtractObjectsFromArrayPartial:self.data.modelShowsLists.showsToChangeFollowing];
+    [self.data.showsFollowing subtractObjectsFromArrayPartial:self.data.showsToChange];
   }
   //
   [self.data modelDidChange];

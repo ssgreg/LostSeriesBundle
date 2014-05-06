@@ -52,15 +52,6 @@
 @end
 
 
-
-//
-// LSShowAlbumCellModel
-//
-
-@implementation LSShowAlbumCellModel
-@end
-
-
 //
 // LSModelBase
 //
@@ -140,12 +131,27 @@
   theShowForDetails = showForDetails;
 }
 
+- (JetArrayPartial*) showsToChange
+{
+  return theModelShowsLists.showsToChangeFollowing;
+}
+
+- (BOOL) flagUnfollow
+{
+  return theFollowingModeFlag;
+}
+
+- (LSAsyncBackendFacade*) backendFacade
+{
+  return theBackendFacade;
+}
+
 @synthesize modelShowsLists = theModelShowsLists;
 @synthesize showsRaw = theShowsRaw;
 @synthesize showsFavoriteRaw = theShowsFavoriteRaw;
 @synthesize selectionModeActivated = theSelectionModeFlag;
 @synthesize followingModeFollow = theFollowingModeFlag;
-@synthesize backendFacade = theBackendFacade;
+//@synthesize backendFacade = theBackendFacade;
 @synthesize episodesUnwatchedRaw;
 
 @end

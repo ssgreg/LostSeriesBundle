@@ -34,6 +34,7 @@
 - (void) subscribeByCDID:(LSCDID*)cdid subscriptionInfo:(NSArray*)subscriptions flagUnsubscribe:(BOOL)flagUnsibscribe replyHandler:(void (^)(BOOL result))handler;
 - (void) getSubscriptionInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler;
 - (void) getUnwatchedEpisodesInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler;
+- (void) setUnwatchedEpisodesByCDID:(LSCDID*)cdid episodesUnwatched:(NSArray*)episodesUnwatched flagRemove:(BOOL)flagRemove replyHandler:(void (^)(BOOL result))handler;
 
 @end
 

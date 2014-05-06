@@ -40,6 +40,9 @@
 		EECD4D00190151E40092ECA7 /* LSWLinkActionChangeFollowing.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFF190151E40092ECA7 /* LSWLinkActionChangeFollowing.m */; };
 		EECD4D031906255E0092ECA7 /* JetPartialArray.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D021906255E0092ECA7 /* JetPartialArray.m */; };
 		EECD4D061908D96E0092ECA7 /* LSBaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D051908D96E0092ECA7 /* LSBaseController.m */; };
+		EECD4D091917C06C0092ECA7 /* LSWLinkActionChangeUnwatchedEpisodes.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D081917C06C0092ECA7 /* LSWLinkActionChangeUnwatchedEpisodes.m */; };
+		EECD4D0C1917C5FE0092ECA7 /* LSModelShow.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D0B1917C5FE0092ECA7 /* LSModelShow.m */; };
+		EECD4D0F191925E40092ECA7 /* JetGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D0E191925E40092ECA7 /* JetGuard.m */; };
 		EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FDD18B0CA0900CF68E3 /* LSMainController.m */; };
 		EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */; };
 		EED97FEA18B0DE3C00CF68E3 /* LSModelBase.m in Sources */ = {isa = PBXBuildFile; fileRef = EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */; };
@@ -152,6 +155,12 @@
 		EECD4D021906255E0092ECA7 /* JetPartialArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetPartialArray.m; path = Jet/JetPartialArray.m; sourceTree = "<group>"; };
 		EECD4D041907EF8B0092ECA7 /* LSBaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSBaseController.h; path = Logic/LSBaseController.h; sourceTree = "<group>"; };
 		EECD4D051908D96E0092ECA7 /* LSBaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSBaseController.m; sourceTree = "<group>"; };
+		EECD4D071917C06C0092ECA7 /* LSWLinkActionChangeUnwatchedEpisodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSWLinkActionChangeUnwatchedEpisodes.h; sourceTree = "<group>"; };
+		EECD4D081917C06C0092ECA7 /* LSWLinkActionChangeUnwatchedEpisodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSWLinkActionChangeUnwatchedEpisodes.m; sourceTree = "<group>"; };
+		EECD4D0A1917C5FE0092ECA7 /* LSModelShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSModelShow.h; path = LostSeries/LSModelShow.h; sourceTree = "<group>"; };
+		EECD4D0B1917C5FE0092ECA7 /* LSModelShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSModelShow.m; path = LostSeries/LSModelShow.m; sourceTree = "<group>"; };
+		EECD4D0D191925E40092ECA7 /* JetGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JetGuard.h; path = Jet/JetGuard.h; sourceTree = "<group>"; };
+		EECD4D0E191925E40092ECA7 /* JetGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetGuard.m; path = Jet/JetGuard.m; sourceTree = "<group>"; };
 		EED97FDC18B0CA0900CF68E3 /* LSMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSMainController.h; path = LostSeries/LSMainController.h; sourceTree = "<group>"; };
 		EED97FDD18B0CA0900CF68E3 /* LSMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSMainController.m; path = LostSeries/LSMainController.m; sourceTree = "<group>"; };
 		EED97FE518B0D4FA00CF68E3 /* LSShowsFollowingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSShowsFollowingController.h; path = LostSeries/LSShowsFollowingController.h; sourceTree = "<group>"; };
@@ -283,6 +292,8 @@
 				EE05CC1318C600A800491188 /* LSControllerCollectionBase.m */,
 				EED97FDC18B0CA0900CF68E3 /* LSMainController.h */,
 				EED97FDD18B0CA0900CF68E3 /* LSMainController.m */,
+				EECD4D0A1917C5FE0092ECA7 /* LSModelShow.h */,
+				EECD4D0B1917C5FE0092ECA7 /* LSModelShow.m */,
 				EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */,
 				EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */,
 				EEB11808187F17D500337023 /* Supporting Files */,
@@ -368,6 +379,8 @@
 				EECD4CF91900EC130092ECA7 /* Controls */,
 				EECD4D011906255E0092ECA7 /* JetPartialArray.h */,
 				EECD4D021906255E0092ECA7 /* JetPartialArray.m */,
+				EECD4D0D191925E40092ECA7 /* JetGuard.h */,
+				EECD4D0E191925E40092ECA7 /* JetGuard.m */,
 			);
 			name = Jet;
 			sourceTree = "<group>";
@@ -386,6 +399,8 @@
 			children = (
 				EECD4CFE190151E40092ECA7 /* LSWLinkActionChangeFollowing.h */,
 				EECD4CFF190151E40092ECA7 /* LSWLinkActionChangeFollowing.m */,
+				EECD4D071917C06C0092ECA7 /* LSWLinkActionChangeUnwatchedEpisodes.h */,
+				EECD4D081917C06C0092ECA7 /* LSWLinkActionChangeUnwatchedEpisodes.m */,
 			);
 			name = WLinks;
 			sourceTree = "<group>";
@@ -557,6 +572,7 @@
 			files = (
 				EE61FA1A18B9C6F10044CB80 /* LSServiceArtworkGetter.m in Sources */,
 				EE1A250B189A8D8000DBA78B /* LSShowInfoCollectionViewController.m in Sources */,
+				EECD4D091917C06C0092ECA7 /* LSWLinkActionChangeUnwatchedEpisodes.m in Sources */,
 				EE6D79B8188E65E9004A0D4B /* ZeroMQ.cpp in Sources */,
 				EECD4D031906255E0092ECA7 /* JetPartialArray.m in Sources */,
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
@@ -569,9 +585,11 @@
 				EED97FDE18B0CA0900CF68E3 /* LSMainController.m in Sources */,
 				EE1AA5A61888F2ED004B6E7D /* LSAsyncBackendFacade.mm in Sources */,
 				EECD4D061908D96E0092ECA7 /* LSBaseController.m in Sources */,
+				EECD4D0C1917C5FE0092ECA7 /* LSModelShow.m in Sources */,
 				EED97FEA18B0DE3C00CF68E3 /* LSModelBase.m in Sources */,
 				EEB11812187F17D500337023 /* LSAppDelegate.m in Sources */,
 				EE6D79BB188EBAB8004A0D4B /* LSLocalCache.mm in Sources */,
+				EECD4D0F191925E40092ECA7 /* JetGuard.m in Sources */,
 				EECD4D00190151E40092ECA7 /* LSWLinkActionChangeFollowing.m in Sources */,
 				EED97FE718B0D4FA00CF68E3 /* LSShowsFollowingController.m in Sources */,
 				EE8A964918EED7AE00C24E06 /* LSRegistryControllers.m in Sources */,

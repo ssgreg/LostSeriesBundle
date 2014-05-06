@@ -20,7 +20,7 @@
 
 @property NSString* idController;
 @property (readonly) NSString* idControllerShort;
-@property (readonly) WFWorkflow* workflow;
+- (WFWorkflow*) workflow:(id)model;
 
 @end
 

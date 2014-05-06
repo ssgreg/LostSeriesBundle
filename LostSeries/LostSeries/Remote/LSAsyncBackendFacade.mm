@@ -212,6 +212,35 @@
   }];
 }
 
+- (void) setUnwatchedEpisodesByCDID:(LSCDID*)cdid episodesUnwatched:(NSArray*)episodesUnwatched flagRemove:(BOOL)flagRemove replyHandler:(void (^)(BOOL result))handler
+{
+  LS::SetUnwatchedSeriesRequest unwatchedSeriesRequest;
+  unwatchedSeriesRequest.set_idclient([cdid toString].UTF8String);
+  unwatchedSeriesRequest.set_flagremove(flagRemove);
+  for (LSEpisodeUnwatchedInfo* episode in episodesUnwatched)
+  {
+    LS::SetUnwatchedSeriesRequest::Episode* record = unwatchedSeriesRequest.add_episodes();
+    record->set_idshow([episode.idShow cStringUsingEncoding:NSASCIIStringEncoding]);
+    record->set_numberseason((int)episode.numberSeason);
+    record->set_numberepisode((int)episode.numberEpisode);
+  }
+  //
+  LSMessagePtr request(new LS::Message);
+  *request->mutable_setunwatchedseriesrequest() = unwatchedSeriesRequest;
+  //
+  [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
+  {
+    NSAssert(reply->has_setunwatchedseriesresponse(), @"Bad response!");
+    //
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      handler(reply->setunwatchedseriesresponse().result());
+    });
+  }];
+  
+}
+
+
 - (NSDate*) serverStringToDate:(std::string const&) str
 {
   NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];

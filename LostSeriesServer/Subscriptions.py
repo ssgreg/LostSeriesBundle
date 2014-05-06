@@ -48,6 +48,21 @@ def GetUnwatchedEpisodes(idClient):
   return record['unwatched']
 
 
+def SetUnwatchedEpisodes(idClient, episodes, flagRemove = False):
+  episodesTransformed = []
+  for episode in episodes:
+    episodeTransformed = \
+    {
+      'ID': episode['idShow'],
+      'SeasonNumber': episode['numberSeason'],
+      'EpisodeNumber': episode['numberEpisode']
+    }
+    episodesTransformed.append(episodeTransformed)
+  print episodesTransformed
+  #
+  ChangeUnwatchedEpisodes(idClient, episodesTransformed, flagRemove)
+
+
 def AddUnwatchedEpisodes(episodes):
   logger().info("Adding unwatched epidodes to all clients...")
   #

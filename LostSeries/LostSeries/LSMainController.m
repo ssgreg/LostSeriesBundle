@@ -441,7 +441,7 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
   self.delegate = self;
   //
   [self listenToControllers];
-  [self.workflow input];
+  [[self workflow:[LSApplication singleInstance].modelBase] input];
 }
 
 - (void) viewDidLoad
@@ -465,12 +465,14 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
 
 - (void) onLSShowInfoCollectionViewControllerDidRegister:(NSNotification*)notification
 {
-  [theWLinkRouterNavigation didRegisterWorkflowShows:((id<LSBaseController>)notification.object).workflow];
+  id model = [LSApplication singleInstance].modelBase;
+  [theWLinkRouterNavigation didRegisterWorkflowShows:[((id<LSBaseController>)notification.object) workflow:model]];
 }
 
 - (void) onLSShowsFollowingController:(NSNotification*)notification
 {
-  [theWLinkRouterNavigation didRegisterWorkflowShowsFollowing:((id<LSBaseController>)notification.object).workflow];
+  id model = [LSApplication singleInstance].modelBase;
+  [theWLinkRouterNavigation didRegisterWorkflowShowsFollowing:[((id<LSBaseController>)notification.object) workflow:model]];
 }
 
 
@@ -512,14 +514,13 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
   return LSMainControllerShortID;
 }
 
-- (WFWorkflow*) workflow
+- (WFWorkflow*) workflow:(id)model
 {
   if (theWorkflow)
   {
     return theWorkflow;
   }
   //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
   theWLinkRouterNavigation = [[LSWLinkRouterNavigation alloc] initWithView:self];
   //
   theWorkflow = WFLinkWorkflow(

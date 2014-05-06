@@ -8,7 +8,6 @@
 
 // LS
 #import "LSShowInfoCollectionViewController.h"
-#import "LSControllerShowDetails.h"
 #import <UIComponents/UIStatusBarView.h>
 #import "LSModelBase.h"
 #import "Logic/LSApplication.h"
@@ -33,9 +32,6 @@
 // LSWLinkProxyController
 //
 
-@protocol LSDataProxyController <LSDataBaseShows, LSDataBaseModelShowForDatails>
-@end
-
 @interface LSWLinkProxyController : WFWorkflowLink
 @end
 
@@ -44,13 +40,12 @@
   __weak WFWorkflow* theWorkflowShowDetails;
 }
 
-SYNTHESIZE_WL_ACCESSORS(LSDataProxyController, LSViewSwitcherShowDetails);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewSwitcherShowDetails);
 
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
 {
-  self.data.showForDetails = self.data.showsFiltered[indexPath.row];
-  //
-  theWorkflowShowDetails = [self.view switchToShowDetails];
+  LSDataControllerShowDetails* model = [[LSDataControllerShowDetails alloc] initWithModel:self.data show:self.data.showsFiltered[indexPath.row]];
+  theWorkflowShowDetails = [self.view switchToShowDetails:model];
   [self input];
 }
 
@@ -569,54 +564,6 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
 }
 
 
-#pragma mark - LSBaseController
-
-
-@synthesize idController;
-
-- (NSString*) idControllerShort
-{
-  return NSStringFromClass([self class]);
-}
-
-- (WFWorkflow*) workflow
-{
-  if (theWorkflow)
-  {
-    return theWorkflow;
-  }
-  //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
-  //
-  theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:model view:self];
-  theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:model view:self];
-  theWLinkShowsSelection = [[LSWLinkShowsSelection alloc] initWithData:model view:self];
-  theWLinkProxyController = [[LSWLinkProxyController alloc] initWithData:model view:self];
-  theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:model view:self];
-  theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:model];
-  //
-  theWorkflow = WFSplitWorkflowWithOutputUsingOr(
-      WFLinkWorkflow(
-          theShowCollectionWL
-        , nil)
-    , WFLinkWorkflow(
-          WFLinkRingWorkflow(
-              theSelectButtonWL
-            , theWLinkShowsSelection
-            , WFSplitWorkflowWithOutputUsingOr(
-                  theWLinkProxyController
-                , WFLinkWorkflow(
-                      [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-                    , theSubscribeButtonWL
-                    , theCancelSelectionModeWL
-                    , nil)
-                , nil)
-            , nil)
-        , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
-        , nil)
-    , nil);
-  return theWorkflow;
-}
 
 
 - (void) selectButtonTurnIntoSelect
@@ -699,14 +646,62 @@ SYNTHESIZE_WL_ACCESSORS(LSDataShowsSelection, LSViewShowsSelection);
   }
 }
 
-- (WFWorkflow*) switchToShowDetails
+- (WFWorkflow*) switchToShowDetails:(LSDataControllerShowDetails*)model
 {
   [self performSegueWithIdentifier:@"ShowDetails" sender:self];
   //
   LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
   NSString* idControllerShowDetails = MakeIdController(self.idController, LSControllerShowDetailsShortID);
   LSControllerShowDetails* controller = [registry findControllerByIdentifier:idControllerShowDetails];
-  return controller.workflow;
+  return [controller workflow:model];
+}
+
+
+#pragma mark -- LSBaseController
+
+
+@synthesize idController;
+
+- (NSString*) idControllerShort
+{
+  return NSStringFromClass([self class]);
+}
+
+- (WFWorkflow*) workflow:(id)model
+{
+  if (theWorkflow)
+  {
+    return theWorkflow;
+  }
+  //
+  theSelectButtonWL = [[LSSelectButtonWL alloc] initWithData:model view:self];
+  theShowCollectionWL = [[LSWLinkShowsCollection alloc] initWithData:model view:self];
+  theWLinkShowsSelection = [[LSWLinkShowsSelection alloc] initWithData:model view:self];
+  theWLinkProxyController = [[LSWLinkProxyController alloc] initWithData:model view:self];
+  theSubscribeButtonWL = [[LSSubscribeButtonWL alloc] initWithData:model view:self];
+  theCancelSelectionModeWL = [[LSCancelSelectionModeWL alloc] initWithData:model];
+  //
+  theWorkflow = WFSplitWorkflowWithOutputUsingOr(
+      WFLinkWorkflow(
+          theShowCollectionWL
+        , nil)
+    , WFLinkWorkflow(
+          WFLinkRingWorkflow(
+              theSelectButtonWL
+            , theWLinkShowsSelection
+            , WFSplitWorkflowWithOutputUsingOr(
+                  theWLinkProxyController
+                , WFLinkWorkflow(
+                      [[LSNavigationBarWL alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+                    , theSubscribeButtonWL
+                    , theCancelSelectionModeWL
+                    , nil)
+                , nil)
+            , nil)
+        , [[LSWLinkActionChangeFollowing alloc] initWithData:[LSApplication singleInstance].modelBase view:self]
+        , nil)
+    , nil);
+  return theWorkflow;
 }
 
 @end

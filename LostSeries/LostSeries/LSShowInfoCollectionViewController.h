@@ -11,6 +11,7 @@
 #import "Logic/LSBaseController.h"
 #import "LSControllerCollectionBase.h"
 #import "LSWLinkActionChangeFollowing.h"
+#import "LSControllerShowDetails.h"
 
 
 @protocol LSSelectButtonView
@@ -46,7 +47,7 @@
 
 
 @protocol LSViewSwitcherShowDetails <NSObject>
-- (WFWorkflow*) switchToShowDetails;
+- (WFWorkflow*) switchToShowDetails:(LSDataControllerShowDetails*)model;
 @end
 
 

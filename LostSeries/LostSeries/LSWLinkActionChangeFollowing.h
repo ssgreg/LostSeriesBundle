@@ -7,9 +7,11 @@
 //
 
 // LS
-#import "LSModelBase.h"
+#import "Remote/LSAsyncBackendFacade.h"
 // WF
 #import <WorkflowLink/WorkflowLink.h>
+// Jet
+#import "Jet/JetPartialArray.h"
 
 
 //
@@ -26,4 +28,20 @@
 
 @protocol LSViewActionChangeFollowing <NSObject>
 - (void) updateActionIndicatorChangeFollowing:(BOOL)flag;
+@end
+
+
+//
+// LSDataActionChangeFollowing
+//
+
+@protocol LSDataActionChangeFollowing <NSObject>
+// input data
+@property (readonly) LSAsyncBackendFacade* backendFacade;
+@property (readonly) JetArrayPartial* showsToChange;
+@property (readonly) BOOL flagUnfollow;
+// input/output data
+@property (readonly) JetArrayPartial* showsFollowing;
+// methods
+- (void) modelDidChange;
 @end

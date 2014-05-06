@@ -7,7 +7,6 @@
 //
 
 #import "LSShowsFollowingController.h"
-#import "LSControllerShowDetails.h"
 #import "LSModelBase.h"
 #import "Logic/LSApplication.h"
 #import "Jet/Controls/JetBadge.h"
@@ -31,9 +30,6 @@
 // LSWLinkShowsFollowingSwitchToDetails
 //
 
-@protocol LSDataShowsFollowingSwitchToDetails <LSDataBaseShowsFollowing, LSDataBaseModelShowForDatails>
-@end
-
 @interface LSWLinkShowsFollowingSwitchToDetails : WFWorkflowLink
 @end
 
@@ -42,13 +38,12 @@
   __weak WFWorkflow* theWorkflowShowDetails;
 }
 
-SYNTHESIZE_WL_ACCESSORS(LSDataShowsFollowingSwitchToDetails, LSViewFollowingSwitcherShowDetails);
+SYNTHESIZE_WL_ACCESSORS_NEW(LSModelBase, LSViewFollowingSwitcherShowDetails);
 
 - (void) didSelectItemAtIndex:(NSIndexPath*)indexPath
 {
-  self.data.showForDetails = self.data.showsFollowingFiltered[indexPath.row];
-  //
-  theWorkflowShowDetails = [self.view switchToShowDetails];
+  LSDataControllerShowDetails* model = [[LSDataControllerShowDetails alloc] initWithModel:self.data show:self.data.showsFollowingFiltered[indexPath.row]];
+  theWorkflowShowDetails = [self.view switchToShowDetails:model];
   [self input];
 }
 
@@ -269,14 +264,12 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   return LSShowsFollowingControllerShortID;
 }
 
-- (WFWorkflow*) workflow
+- (WFWorkflow*) workflow:(id)model
 {
   if (theWorkflow)
   {
     return theWorkflow;
   }  
-  //
-  LSModelBase* model = [LSApplication singleInstance].modelBase;
   //
   theWLinkCollection = [[LSWLinkFollowingShowsCollection alloc] initWithData:model view:self];
   theWLinkSwitchToDetails = [[LSWLinkShowsFollowingSwitchToDetails alloc] initWithData:model view:self];
@@ -317,14 +310,14 @@ SYNTHESIZE_WL_ACCESSORS(LSDataBaseModelShowsLists, LSViewFollowingShowsCollectio
   }
 }
 
-- (WFWorkflow*) switchToShowDetails
+- (WFWorkflow*) switchToShowDetails:(LSDataControllerShowDetails*)model
 {
   [self performSegueWithIdentifier:@"ShowDetails" sender:self];
   //
   LSRegistryControllers* registry = [LSApplication singleInstance].registryControllers;
   NSString* idControllerShowDetails = MakeIdController(self.idController, LSControllerShowDetailsShortID);
   LSControllerShowDetails* controller = [registry findControllerByIdentifier:idControllerShowDetails];
-  return controller.workflow;
+  return [controller workflow:model];
 }
 
 @end
