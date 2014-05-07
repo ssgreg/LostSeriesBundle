@@ -167,8 +167,11 @@ SYNTHESIZE_WL_ACCESSORS_NEW(LSDataControllerShowDetails, LSViewActionGetFullSize
   {
     [self.data.backendFacade getArtworkByShowInfo:self.data.show.showInfo thumbnail:NO replyHandler:^(NSData* dataArtwork)
     {
-      [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
-      [self output];
+      if (dataArtwork.length)
+      {
+        [self.view setImageArtwork: [UIImage imageWithData:dataArtwork]];
+        [self output];
+      }
     }];
     // set thumbnail at first
     if (self.data.show.artwork)
