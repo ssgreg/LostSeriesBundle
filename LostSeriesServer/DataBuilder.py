@@ -297,24 +297,23 @@ def UpdateShowsCancelStatus(db):
   logger().info("Cancel statuses were updated")
 
 
+def UpdateAll():
+  db = Database.instance()
+  #
+  episodesPage1 = LoadInfoLastSeries(1)
+  episodes = UpdateData(episodesPage1)
+  #
+  Subscriptions.AddUnwatchedEpisodes(episodes)
+  #
+  UpdateArtworks(db)
 
-logging.config.fileConfig('logging.ini')
-db = Database.instance()
+
 # db.shows.drop()
 # db.service.drop()
 # db.episodes.drop()
 # db.shows_full.drop()
 # db.episodes_full.drop()
 
-# UpdateFixedCancelStatus("150", True)
-# UpdateFixedCancelStatus("152", True)
-
-episodesPage1 = LoadInfoLastSeries(2)
-episodes = UpdateData(episodesPage1)
-
-Subscriptions.AddUnwatchedEpisodes(episodes)
-
-UpdateArtworks(db)
 
 
 
@@ -330,8 +329,3 @@ UpdateArtworks(db)
 #   print len(episode[Database.DATA_HISTORY]), episode[Database.DATA_ID]
 #   for rec in episode[Database.DATA_HISTORY]:
 #     print rec
-
-
-
-
-

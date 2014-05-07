@@ -6,6 +6,7 @@ import threading
 import random
 import pymongo
 import datetime
+import thread
 import logging
 import logging.config
 #
@@ -15,6 +16,7 @@ import Snapshot
 from Storage import *
 import Database
 import Subscriptions
+import DataBuilder
 
 
 def logger():
@@ -22,7 +24,7 @@ def logger():
 
 
 def HandleSeriesRequest(message):
-  print "Handling SeriesRequest..."
+  logger().info("Handling SeriesRequest...")
   #
   db = Database.instance();
   response = LostSeriesProtocol_pb2.SeriesResponse()
@@ -50,13 +52,12 @@ def HandleSeriesRequest(message):
 
 
 def HandleArtworkRequest(message):
-  print "Handling ArtworkRequest..."
+  logger().info("Handling ArtworkRequest...")
   #
   response = LostSeriesProtocol_pb2.ArtworkResponse()
   record = Database.instance().artworks.find_one({"$and": [{SHOW_ID: message.idShow}, {SHOW_SEASON_NUMBER: message.seasonNumber}]})
   artwork = ""
   if record:
-    print message.thumbnail
     if message.thumbnail:
       artwork = record[SHOW_SEASON_ARTWORK_THUMBNAIL]
     else:
@@ -66,7 +67,7 @@ def HandleArtworkRequest(message):
 
 
 def HandleSetSubscriptionRequest(message):
-  print "Handling SetSubscriptionRequest..."
+  logger().info("Handling SetSubscriptionRequest...")
   #
   subscriptions = []
   for record in message.subscriptions:
@@ -80,7 +81,7 @@ def HandleSetSubscriptionRequest(message):
 
 
 def HandleGetSubscriptionRequest(message):
-  print "Handling HandleGetSubscriptionRequest..."
+  logger().info("Handling HandleGetSubscriptionRequest...")
   #
   subscriptions = Subscriptions.GetSubscription(message.idClient)
   #
@@ -93,7 +94,7 @@ def HandleGetSubscriptionRequest(message):
 
 
 def HandleGetUnwatchedSeriesRequest(message):
-  print "Handling HandleGetUnwatchedSeriesRequest..."
+  logger().info("Handling HandleGetUnwatchedSeriesRequest...")
   #
   episodes = Subscriptions.GetUnwatchedEpisodes(message.idClient)
   #
@@ -108,7 +109,7 @@ def HandleGetUnwatchedSeriesRequest(message):
 
 
 def HandleSetUnwatchedSeriesRequest(message):
-  print "Handling HandleSetUnwatchedSeriesRequest..."
+  logger().info("Handling HandleSetUnwatchedSeriesRequest...")
   #
   episodes = []
   for record in message.episodes:
@@ -136,22 +137,16 @@ def SerializeMessage(message):
   response = LostSeriesProtocol_pb2.Message()
   #
   if type(message) is LostSeriesProtocol_pb2.SeriesResponse:
-    print "Serializing SeriesResponse"
     response.seriesResponse.CopyFrom(message)
   elif type(message) is LostSeriesProtocol_pb2.ArtworkResponse:
-    print "Serializing ArtworkResponse"
     response.artworkResponse.CopyFrom(message)
   elif type(message) is LostSeriesProtocol_pb2.SetSubscriptionResponse:
-    print "Serializing SetSubscriptionResponse"
     response.setSubscriptionResponse.CopyFrom(message)
   elif type(message) is LostSeriesProtocol_pb2.GetSubscriptionResponse:
-    print "Serializing GetSubscriptionResponse"
     response.getSubscriptionResponse.CopyFrom(message)
   elif type(message) is LostSeriesProtocol_pb2.GetUnwatchedSeriesResponse:
-    print "Serializing GetUnwatchedSeriesResponse"
     response.getUnwatchedSeriesResponse.CopyFrom(message)
   elif type(message) is LostSeriesProtocol_pb2.SetUnwatchedSeriesResponse:
-    print "Serializing SetUnwatchedSeriesResponse"
     response.setUnwatchedSeriesResponse.CopyFrom(message)
   #
   data = response.SerializeToString()
@@ -159,7 +154,7 @@ def SerializeMessage(message):
 
 
 def DispatchMessage(message):
-  print "Dispatching a message %s" % (message)
+  logger().info("Dispatching a message %s" % (message))
   #
   if message.HasField("seriesRequest"):
     response = HandleSeriesRequest(message.seriesRequest)
@@ -202,6 +197,12 @@ def MessageLoop(socket):
       return
 
 
+def UpdateLoop():
+  while (True):
+    time.sleep(5 * 60)
+    DataBuilder.UpdateAll()
+
+
 def Main():
   logging.config.fileConfig('logging.ini')
   logger().info("LostSeries Server started")
@@ -209,6 +210,7 @@ def Main():
   context = zmq.Context()
   socket = context.socket(zmq.REP)
   socket.bind("tcp://*:8500")
+  thread.start_new_thread(UpdateLoop, ())
   MessageLoop(socket)
 
 
