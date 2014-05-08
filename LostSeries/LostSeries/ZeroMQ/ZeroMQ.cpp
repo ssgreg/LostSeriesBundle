@@ -9,6 +9,20 @@
 #include "ZeroMQ.h"
 
 
+std::deque<ZmqMessagePtr> ZmqCopyMultipartMessage(std::deque<ZmqMessagePtr> messages)
+{
+  std::deque<ZmqMessagePtr> result;
+  while (!messages.empty())
+  {
+    ZmqMessagePtr part = messages.front();
+    messages.pop_front();
+    ZmqMessagePtr partCopy(new zmq::message_t);
+    partCopy->copy(&*part);
+    result.push_back(partCopy);
+  }
+  return result;
+}
+
 std::deque<ZmqMessagePtr> ZmqRecieveMultipartMessage(ZmqSocketPtr socket)
 {
   std::deque<ZmqMessagePtr> result;
@@ -34,6 +48,14 @@ void ZmqSendMultipartMessage(ZmqSocketPtr socket, std::deque<ZmqMessagePtr> mess
     socket->send(*part, messages.empty() ? 0 : ZMQ_SNDMORE);
   }
 }
+//
+//- (ZmqMessagePtr) copyMultipartRequest:(std::deque<ZmqMessagePtr> const&)multipartRequest
+//{
+//  ZmqMessagePtr result(new zmq::message_t);
+//  result->copy(&*request);
+//  return result;
+//}
+
 
 ZmqMessagePtr ZmqZeroFrame()
 {

@@ -21,7 +21,7 @@
 // LSCachingServer
 //
 
-@interface LSCachingServer ()
+@implementation LSCachingServer
 {
   LSLocalCache* theLocalCache;
   dispatch_queue_t thePollQueue;
@@ -29,17 +29,6 @@
   ZmqSocketPtr theFrontendSocket;
   ZmqSocketPtr theBackendSocket;
 }
-
-- (void) startPollQueue;
-- (int64_t) headerFrameID:(ZmqMessagePtr)headerFrame;
-- (ZmqMessagePtr) copyRequest:(ZmqMessagePtr)request;
-
-//- (ZmqMessagePtr) cachedReplyForRequest:(ZmqMessagePtr)request;
-//- (void) cacheReply:(std::deque<ZmqMessagePtr>)reply forRequest:(ZmqMessagePtr)request;
-
-@end
-
-@implementation LSCachingServer
 
 + (LSCachingServer*) cachingServer
 {
@@ -54,15 +43,8 @@
   }
   //
   theLocalCache = [LSLocalCache localCache];
-  thePollQueue = dispatch_queue_create("caching_server.poll.queue", NULL);
   //
-  static char const* backendAddres = "tcp://localhost:8500"; // server.lostseriesapp.com
-  static char const* frontendAddres = "inproc://caching_server.frontend";
-  theBackendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
-  theBackendSocket->connect(backendAddres);
-  theFrontendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_ROUTER));
-  theFrontendSocket->bind(frontendAddres);
-  //
+  [self setupSockets];
   [self startPollQueue];
   //
   return self;
@@ -70,10 +52,11 @@
 
 - (void) startPollQueue
 {
+  thePollQueue = dispatch_queue_create("caching_server.poll.queue", NULL);
   dispatch_async(thePollQueue,
   ^{
-    std::map<int64_t, ZmqMessagePtr> idToRequestMap;
-    while (TRUE)
+    std::map<int64_t, std::deque<ZmqMessagePtr> > idToRequestMap;
+    while (YES)
     {
       zmq_pollitem_t items [] =
       {
@@ -96,7 +79,7 @@
         std::deque<ZmqMessagePtr> cachedReply = [theLocalCache cachedReplyForRequest:multipartRequest.back()];
         if (cachedReply.empty())
         {
-          idToRequestMap[[self headerFrameID:multipartRequest.front()]] = [self copyRequest:multipartRequest.back()];
+          idToRequestMap[[self idMessage:multipartRequest]] = ZmqCopyMultipartMessage(multipartRequest);
           //
           ZmqSendMultipartMessage(theBackendSocket, multipartRequest);
         }
@@ -116,17 +99,16 @@
           // TODO - warning!
           continue;
         }
-//        ZmqMessagePtr header = multipartReply.front();
-//        multipartReply.pop_front();
-//        auto requestByID = idToRequestMap.find([self headerFrameID:header]);
-//        if (requestByID == idToRequestMap.end())
-//        {
-//          // TODO - warning!
-//          continue;
-//        }
+      
+        auto itRequest = idToRequestMap.find([self idMessage:multipartReply]);
+        if (itRequest == idToRequestMap.end())
+        {
+          // TODO - warning!
+          continue;
+        }
+        idToRequestMap.erase(itRequest);
 //        //
 //        [theLocalCache cacheReply:multipartReply forRequest:requestByID->second];
-//        idToRequestMap.erase(requestByID);
 //        //
 //        multipartReply.push_front(header);
 //            [NSThread sleepForTimeInterval:0.5];
@@ -136,18 +118,23 @@
   });
 }
 
-- (int64_t) headerFrameID:(ZmqMessagePtr)headerFrame
+- (int64_t) idMessage:(std::deque<ZmqMessagePtr> const&)multipartMessage
 {
+  ZmqMessagePtr message = *(++multipartMessage.begin());
   LS::Header header;
-  header.ParseFromArray(headerFrame->data(), (int)headerFrame->size());
+  header.ParseFromArray(message->data(), (int)message->size());
   return header.messageid();
 }
 
-- (ZmqMessagePtr) copyRequest:(ZmqMessagePtr)request
+- (void) setupSockets
 {
-  ZmqMessagePtr result(new zmq::message_t);
-  result->copy(&*request);
-  return result;
+  static char const* backendAddres = "tcp://server.lostseriesapp.com:8500"; // server.lostseriesapp.com
+  static char const* frontendAddres = "inproc://caching_server.frontend";
+  //
+  theBackendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
+  theBackendSocket->connect(backendAddres);
+  theFrontendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_ROUTER));
+  theFrontendSocket->bind(frontendAddres);
 }
 
 @end
