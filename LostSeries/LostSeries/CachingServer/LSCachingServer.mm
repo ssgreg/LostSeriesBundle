@@ -84,10 +84,7 @@
         }
         else
         {
-          // add request header to the cached reply
-          cachedReply.push_front(multipartRequest.front());
-          //
-          ZmqSendMultipartMessage(theFrontendSocket, cachedReply);
+          ZmqSendMultipartMessage(theFrontendSocket, [self makeReplyFromRequest:multipartRequest andCachedReply:cachedReply]);
         }
       }
       else if (items[1].revents & ZMQ_POLLIN)
@@ -145,15 +142,28 @@
   ++it;
   ++it;
   ++it;
-  ZmqMessagePtr replyBody = *it;
-  ++it;
+  ZmqMessagePtr replyBody = *it++;
   ZmqMessagePtr replyData = it == replyMultipart.end() ? ZmqMessagePtr() : *it;
   [theLocalCache cacheReplyBody:replyBody andData:replyData forRequest:request];
 }
 
-//- (std::deque<ZmqMessagePtr>) makeReply:(std::deque<ZmqMessagePtr> const&)requestMultipart
-//{
-//}
+- (std::deque<ZmqMessagePtr>) makeReplyFromRequest:(std::deque<ZmqMessagePtr> const&)requestMultipart andCachedReply:(std::deque<ZmqMessagePtr> const&)replyCachedMultipart
+{
+  std::deque<ZmqMessagePtr> replyMultipart;
+  // copy router header, our header and zero frame
+  auto itRequest = requestMultipart.begin();
+  replyMultipart.push_back(*itRequest++);
+  replyMultipart.push_back(*itRequest++);
+  replyMultipart.push_back(*itRequest++);
+  // copy reply body
+  replyMultipart.push_back(replyCachedMultipart.front());
+  // copy reply data if exists
+  if (replyCachedMultipart.size() > 1)
+  {
+    replyMultipart.push_back(replyCachedMultipart.back());
+  }
+  return replyMultipart;
+}
 
 - (void) setupSockets
 {
