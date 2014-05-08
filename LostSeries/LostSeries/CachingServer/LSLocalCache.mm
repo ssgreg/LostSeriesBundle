@@ -71,36 +71,36 @@
   return result;
 }
 
-- (void) cacheReply:(std::deque<ZmqMessagePtr>)reply forRequest:(ZmqMessagePtr)request
+- (void) cacheReplyBody:(ZmqMessagePtr)replyBody andData:(ZmqMessagePtr)replyData forRequest:(ZmqMessagePtr)request
 {
-  NSString* fileNameWithReplyMessage = [self fileForRequest:request];
-  NSString* fileNameWithReplyData = [fileNameWithReplyMessage stringByAppendingString:@"-data"];
-  // save reply message
-  if (reply.empty())
-  {
-    return;
-  }
-  NSData* replyMessageData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
-  NSError* writeError = nil;
-  [replyMessageData writeToFile:fileNameWithReplyMessage options:NSDataWritingAtomic error:&writeError];
-  if (writeError)
-  {
-    return;
-  }
-  reply.pop_front();
-  // save reply data
-  if (reply.empty())
-  {
-    return;
-  }
-  NSData* replyData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
-  [replyData writeToFile:fileNameWithReplyData options:NSDataWritingAtomic error:&writeError];
-  if (writeError)
-  {
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:fileNameWithReplyData error:&writeError];
-    return;
-  }
+//  NSString* fileNameWithReplyMessage = [self fileForRequest:request];
+//  NSString* fileNameWithReplyData = [fileNameWithReplyMessage stringByAppendingString:@"-data"];
+//  // save reply message
+//  if (reply.empty())
+//  {
+//    return;
+//  }
+//  NSData* replyMessageData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
+//  NSError* writeError = nil;
+//  [replyMessageData writeToFile:fileNameWithReplyMessage options:NSDataWritingAtomic error:&writeError];
+//  if (writeError)
+//  {
+//    return;
+//  }
+//  reply.pop_front();
+//  // save reply data
+//  if (reply.empty())
+//  {
+//    return;
+//  }
+//  NSData* replyData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
+//  [replyData writeToFile:fileNameWithReplyData options:NSDataWritingAtomic error:&writeError];
+//  if (writeError)
+//  {
+//    NSFileManager* fileManager = [NSFileManager defaultManager];
+//    [fileManager removeItemAtPath:fileNameWithReplyData error:&writeError];
+//    return;
+//  }
 }
 
 - (NSString*) fileForRequest:(ZmqMessagePtr)request

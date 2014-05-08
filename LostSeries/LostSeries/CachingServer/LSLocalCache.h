@@ -26,6 +26,6 @@
 
 #pragma mark - Interface
 - (std::deque<ZmqMessagePtr>) cachedReplyForRequest:(ZmqMessagePtr)request;
-- (void) cacheReply:(std::deque<ZmqMessagePtr>)reply forRequest:(ZmqMessagePtr)request;
+- (void) cacheReplyBody:(ZmqMessagePtr)replyBody andData:(ZmqMessagePtr)replyData forRequest:(ZmqMessagePtr)request;
 
 @end

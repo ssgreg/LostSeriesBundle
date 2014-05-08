@@ -55,7 +55,7 @@
   thePollQueue = dispatch_queue_create("caching_server.poll.queue", NULL);
   dispatch_async(thePollQueue,
   ^{
-    std::map<int64_t, std::deque<ZmqMessagePtr> > idToRequestMap;
+    std::map<int64_t, ZmqMessagePtr> idToRequestMap;
     while (YES)
     {
       zmq_pollitem_t items [] =
@@ -79,8 +79,7 @@
         std::deque<ZmqMessagePtr> cachedReply = [theLocalCache cachedReplyForRequest:multipartRequest.back()];
         if (cachedReply.empty())
         {
-          idToRequestMap[[self idMessage:multipartRequest]] = ZmqCopyMultipartMessage(multipartRequest);
-          //
+          idToRequestMap[[self idMessage:multipartRequest]] = [self makeShortRequest:multipartRequest];
           ZmqSendMultipartMessage(theBackendSocket, multipartRequest);
         }
         else
@@ -99,19 +98,17 @@
           // TODO - warning!
           continue;
         }
-      
+        //
         auto itRequest = idToRequestMap.find([self idMessage:multipartReply]);
         if (itRequest == idToRequestMap.end())
         {
           // TODO - warning!
           continue;
         }
+        //
+        [self cacheReply:multipartReply forRequest:itRequest->second];
         idToRequestMap.erase(itRequest);
-//        //
-//        [theLocalCache cacheReply:multipartReply forRequest:requestByID->second];
-//        //
-//        multipartReply.push_front(header);
-//            [NSThread sleepForTimeInterval:0.5];
+        //
         ZmqSendMultipartMessage(theFrontendSocket, multipartReply);
       }
     }
@@ -125,6 +122,38 @@
   header.ParseFromArray(message->data(), (int)message->size());
   return header.messageid();
 }
+
+- (ZmqMessagePtr) makeShortRequest:(std::deque<ZmqMessagePtr> const&)requestMultipart
+{
+  std::deque<ZmqMessagePtr> requestMultipartShort;
+  // skip router header, our header and zero frame
+  auto it = requestMultipart.begin();
+  ++it;
+  ++it;
+  ++it;
+  for (; it != requestMultipart.end(); ++it)
+  {
+    requestMultipartShort.push_back(*it);
+  }
+  return ZmqCopyMultipartMessage(requestMultipartShort).front();
+}
+
+- (void) cacheReply:(std::deque<ZmqMessagePtr> const&)replyMultipart forRequest:(ZmqMessagePtr)request
+{
+  // skip router header, our header and zero frame
+  auto it = replyMultipart.begin();
+  ++it;
+  ++it;
+  ++it;
+  ZmqMessagePtr replyBody = *it;
+  ++it;
+  ZmqMessagePtr replyData = it == replyMultipart.end() ? ZmqMessagePtr() : *it;
+  [theLocalCache cacheReplyBody:replyBody andData:replyData forRequest:request];
+}
+
+//- (std::deque<ZmqMessagePtr>) makeReply:(std::deque<ZmqMessagePtr> const&)requestMultipart
+//{
+//}
 
 - (void) setupSockets
 {
