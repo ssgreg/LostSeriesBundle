@@ -44,63 +44,58 @@
 {
   std::deque<ZmqMessagePtr> result;
   //
-//  NSString* fileNameWithReplyMessage = [self fileForRequest:request];
-//  NSString* fileNameWithReplyData = [fileNameWithReplyMessage stringByAppendingString:@"-data"];
-//  //
-//  NSFileManager* fileManager = [NSFileManager defaultManager];
-//  if ([fileManager fileExistsAtPath:fileNameWithReplyMessage])
-//  {
-//    NSData* replyMessageData = [NSData dataWithContentsOfFile:fileNameWithReplyMessage];
-//    if (replyMessageData && [replyMessageData length] != 0)
-//    {
-//      ZmqMessagePtr replyMessage(new zmq::message_t([replyMessageData length]));
-//      memcpy(replyMessage->data(), [replyMessageData bytes], replyMessage->size());
-//      result.push_back(replyMessage);
-//    }
-//    if (!result.empty())
-//    {
-//      NSData* replyData = [NSData dataWithContentsOfFile:fileNameWithReplyData];
-//      if (replyData && [replyData length] != 0)
-//      {
-//        ZmqMessagePtr replyBinary(new zmq::message_t([replyData length]));
-//        memcpy(replyBinary->data(), [replyData bytes], replyBinary->size());
-//        result.push_back(replyBinary);
-//      }
-//    }
-//  }
+  NSString* fileNameWithReplyBody = [self fileForRequest:request];
+  if (!fileNameWithReplyBody)
+  {
+    return result;
+  }
+  NSString* fileNameWithReplyData = [fileNameWithReplyBody stringByAppendingString:@"-data"];
+  //
+  NSFileManager* fileManager = [NSFileManager defaultManager];
+  if ([fileManager fileExistsAtPath:fileNameWithReplyBody])
+  {
+    NSData* body = [NSData dataWithContentsOfFile:fileNameWithReplyBody];
+    if (body && [body length] != 0)
+    {
+      ZmqMessagePtr bodyMessage(new zmq::message_t([body length]));
+      memcpy(bodyMessage->data(), [body bytes], bodyMessage->size());
+      result.push_back(bodyMessage);
+    }
+    if (!result.empty())
+    {
+      NSData* data = [NSData dataWithContentsOfFile:fileNameWithReplyData];
+      if (data && [data length] != 0)
+      {
+        ZmqMessagePtr dataMessage(new zmq::message_t([data length]));
+        memcpy(dataMessage->data(), [data bytes], dataMessage->size());
+        result.push_back(dataMessage);
+      }
+    }
+  }
   return result;
 }
 
 - (void) cacheReplyBody:(ZmqMessagePtr)replyBody andData:(ZmqMessagePtr)replyData forRequest:(ZmqMessagePtr)request
 {
-//  NSString* fileNameWithReplyMessage = [self fileForRequest:request];
-//  NSString* fileNameWithReplyData = [fileNameWithReplyMessage stringByAppendingString:@"-data"];
-//  // save reply message
-//  if (reply.empty())
-//  {
-//    return;
-//  }
-//  NSData* replyMessageData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
-//  NSError* writeError = nil;
-//  [replyMessageData writeToFile:fileNameWithReplyMessage options:NSDataWritingAtomic error:&writeError];
-//  if (writeError)
-//  {
-//    return;
-//  }
-//  reply.pop_front();
-//  // save reply data
-//  if (reply.empty())
-//  {
-//    return;
-//  }
-//  NSData* replyData = [NSData dataWithBytes:reply.front()->data() length:reply.front()->size()];
-//  [replyData writeToFile:fileNameWithReplyData options:NSDataWritingAtomic error:&writeError];
-//  if (writeError)
-//  {
-//    NSFileManager* fileManager = [NSFileManager defaultManager];
-//    [fileManager removeItemAtPath:fileNameWithReplyData error:&writeError];
-//    return;
-//  }
+  NSString* fileNameWithReplyBody = [self fileForRequest:request];
+  if (!fileNameWithReplyBody)
+  {
+    return;
+  }
+  NSString* fileNameWithReplyData = [fileNameWithReplyBody stringByAppendingString:@"-data"];
+  //
+  NSError* writeError = nil;
+  NSData* body = [NSData dataWithBytes:replyBody->data() length:replyBody->size()];
+  [body writeToFile:fileNameWithReplyBody options:NSDataWritingAtomic error:&writeError];
+  if (!writeError && replyData)
+  {
+    NSData* data = [NSData dataWithBytes:replyData->data() length:replyData->size()];
+    [data writeToFile:fileNameWithReplyData options:NSDataWritingAtomic error:&writeError];
+    if (writeError)
+    {
+      [[NSFileManager defaultManager] removeItemAtPath:fileNameWithReplyData error:&writeError];
+    }
+  }
 }
 
 - (NSString*) fileForRequest:(ZmqMessagePtr)request
@@ -119,6 +114,18 @@
   {
     fileName = [self fileNameFromArtworkRequest:message.artworkrequest()];
   }
+  else if (message.has_getsubscriptionrequest())
+  {
+    fileName = [self fileNameFromGetSubscriptionRequest:message.getsubscriptionrequest()];
+  }
+  else if (message.has_getunwatchedseriesrequest())
+  {
+    fileName = [self fileNameFromGetUnwatchedSeriesRequest:message.getunwatchedseriesrequest()];
+  }
+  else
+  {
+    return nil;
+  }
   //
   return [pathToDocuments stringByAppendingFormat:@"/%@", fileName];
 }
@@ -130,9 +137,19 @@
 
 - (NSString*) fileNameFromArtworkRequest:(LS::ArtworkRequest const&)request
 {
-  NSString* snapshot = [NSString stringWithCString:request.snapshot().c_str() encoding:NSASCIIStringEncoding];
+//  NSString* snapshot = [NSString stringWithCString:request.snapshot().c_str() encoding:NSASCIIStringEncoding];
   NSString* showID = [NSString stringWithCString:request.idshow().c_str() encoding:NSASCIIStringEncoding];
-  return [NSString stringWithFormat:@"%@-%@", snapshot, showID];
+  return [NSString stringWithFormat:@"%@-%d-%d", showID, request.seasonnumber(), request.thumbnail()];
+}
+
+- (NSString*) fileNameFromGetSubscriptionRequest:(LS::GetSubscriptionRequest const&)request
+{
+  return [NSString stringWithFormat:@"getSubscriptionsRequest"];
+}
+
+- (NSString*) fileNameFromGetUnwatchedSeriesRequest:(LS::GetUnwatchedSeriesRequest const&)request
+{
+  return [NSString stringWithFormat:@"getUnwatchedSeriesRequest"];
 }
 
 @end
