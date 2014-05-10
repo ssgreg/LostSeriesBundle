@@ -11,8 +11,8 @@ from apns import *
 
 
 def Do(token_hex, text):
-  cert_path = '/Users/igreg/Documents/Certificates/LostSeriesCert.pem'
-  key_path = '/Users/igreg/Documents/Certificates/pkey.pem'
+  cert_path = 'LostSeriesCert.pem'
+  key_path = 'pkey.pem'
   apns = APNs(use_sandbox=True, cert_file=cert_path, key_file=key_path)
   #
   payload = Payload(alert=text, sound="default", badge=1)
@@ -20,4 +20,4 @@ def Do(token_hex, text):
 
 
 # test
-#Do('99c2a09abce108cdea3a09c309323926a24b68dfbc78b790b28c520e93ff61fd', 'Greg')
+Do('99c2a09abce108cdea3a09c309323926a24b68dfbc78b790b28c520e93ff61fd', 'Greg')

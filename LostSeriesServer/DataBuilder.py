@@ -116,7 +116,10 @@ def UpdateArtworks(db):
           {
             SHOW_SEASON_ARTWORK: Binary(imageData),
             SHOW_SEASON_ARTWORK_THUMBNAIL: Binary(MakeThumbnail(imageData)),
-            SHOW_SEASON_ARTWORK_SNAPSHOT: Tools.MakeSnapshotID(),
+          },
+          "$inc":
+          {
+            SHOW_SEASON_ARTWORK_SNAPSHOT: 1,
           }
         }
         collArtworks.update(artworkBase, record, False, False)
@@ -130,7 +133,7 @@ def UpdateArtworks(db):
         SHOW_SEASON_NUMBER: artwork[STORAGE_ARTWORK_SEASON],
         SHOW_SEASON_ARTWORK: Binary(imageData),
         SHOW_SEASON_ARTWORK_THUMBNAIL: Binary(MakeThumbnail(imageData)),
-        SHOW_SEASON_ARTWORK_SNAPSHOT: Tools.MakeSnapshotID(),
+        SHOW_SEASON_ARTWORK_SNAPSHOT: 0,
       }
       logger().info("Adding artwork with: {0}".format(artwork[STORAGE_ARTWORK_PATH]))
       collArtworks.insert(record)
@@ -308,13 +311,32 @@ def UpdateAll():
   UpdateArtworks(db)
 
 
+def ResetArtworkVersions():
+  db = Database.instance()
+  for artwork in db.artworks.find():
+    record = \
+    {
+      "$set":
+      {
+        SHOW_SEASON_ARTWORK_SNAPSHOT: 0,
+      }
+    }
+    db.artworks.update(artwork, record, False, False)
+    print "{0} - {1}".format(artwork[SHOW_ID], artwork[SHOW_SEASON_ARTWORK_SNAPSHOT])
+
+
+
 # db.shows.drop()
 # db.service.drop()
 # db.episodes.drop()
 # db.shows_full.drop()
 # db.episodes_full.drop()
 
+# logging.config.fileConfig('logging.ini')
+# UpdateArtworks(Database.instance())
+# ResetArtworkVersions()
 
+# UpdateAll()
 
 
 # for show in list(db.shows_full.find()):
