@@ -16,6 +16,7 @@ message Message
   optional GetSubscriptionRequest getSubscriptionRequest = 1003;
   optional GetUnwatchedSeriesRequest getUnwatchedSeriesRequest = 1004;
   optional SetUnwatchedSeriesRequest setUnwatchedSeriesRequest = 1005;
+  optional GetSnapshotsRequest getSnapshotsRequest = 1006;
 
   // responses
   optional SeriesResponse seriesResponse = 2000;
@@ -24,6 +25,7 @@ message Message
   optional GetSubscriptionResponse getSubscriptionResponse = 2003;
   optional GetUnwatchedSeriesResponse getUnwatchedSeriesResponse = 2004;
   optional SetUnwatchedSeriesResponse setUnwatchedSeriesResponse = 2005;
+  optional GetSnapshotsResponse getSnapshotsResponse = 2006;
 }
 
 
@@ -141,3 +143,22 @@ message SetUnwatchedSeriesResponse
 {
   required bool result = 1;
 }
+
+
+message GetSnapshotsRequest
+{
+}
+
+
+message GetSnapshotsResponse
+{
+  message SnapshotArtwork
+  {
+    required string idShow = 1;
+    required int32 numberSeason = 2;
+    required string snapshot = 3;
+  }
+  required string snapshotSeries = 1;
+  repeated SnapshotArtwork snapshotsArtwork = 2;
+}
+

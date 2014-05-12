@@ -17,8 +17,10 @@ import StringIO
 import Tools
 import logging
 import logging.config
+import traceback
 import Database
 import Subscriptions
+import PushNotifications
 
 
 def logger():
@@ -98,8 +100,9 @@ def MakeThumbnail(imageData):
   return fileObjectOutput.getvalue()
 
 
-def UpdateArtworks(db):
+def UpdateArtworks():
   logger().info("Updating artworks from the storage...")
+  db = Database.instance()
   collArtworks = db.artworks
   storageArtworks = StorageArtworksDropbox()
   #
@@ -300,15 +303,32 @@ def UpdateShowsCancelStatus(db):
   logger().info("Cancel statuses were updated")
 
 
-def UpdateAll():
-  db = Database.instance()
-  #
+def UpdateSeries():
   episodesPage1 = LoadInfoLastSeries(1)
-  episodes = UpdateData(episodesPage1)
+  if not episodesPage1:
+    episodes = UpdateData(episodesPage1)
+    #
+    Subscriptions.AddUnwatchedEpisodes(episodes)
+  else:
+    logger().info("Nothing has changed")
+
+
+
+def UpdateAll():
+  logger().info("Let's try to update database.")
+  try:
+    UpdateSeries()
+  except Exception as e:
+    print e
+    logger().info("UpdateSeries has failed. Exception: {0}. Trace {1}".format(e, traceback.format_exc()))
+    PushNotifications.AlertMe("UpdateSeries fail: {0}".format(e))
   #
-  Subscriptions.AddUnwatchedEpisodes(episodes)
-  #
-  UpdateArtworks(db)
+  try:
+    UpdateArtworks()
+  except Exception as e:
+    print e
+    logger().info("UpdateArtworks has failed. Exception: {0}. Trace {1}".format(e, traceback.format_exc()))
+    PushNotifications.AlertMe("UpdateArtworks fail: {0}".format(e))
 
 
 def ResetArtworkVersions():
@@ -332,18 +352,13 @@ def ResetArtworkVersions():
 # db.shows_full.drop()
 # db.episodes_full.drop()
 
-# logging.config.fileConfig('logging.ini')
+#logging.config.fileConfig('logging.ini')
 # UpdateArtworks(Database.instance())
 # ResetArtworkVersions()
 
-# UpdateAll()
+#UpdateAll()
+#print Database.getSnapshotID()
 
-
-# for show in list(db.shows_full.find()):
-#   print len(show[Database.DATA_HISTORY]), show[Database.DATA_ID]
-#   if len(show[Database.DATA_HISTORY]) > 1:
-#     for rec in show[Database.DATA_HISTORY]:
-#       print rec
 
 
 

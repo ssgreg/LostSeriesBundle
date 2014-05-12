@@ -28,20 +28,33 @@ def HandleSeriesRequest(message):
   #
   db = Database.instance();
   response = LostSeriesProtocol_pb2.SeriesResponse()
-  for showData in list(db.shows.find({"$or": [{ "value." + SHOW_IS_CANCELED: False }, { "value." + SHOW_IS_CANCELED_FIXED: False }]})):
+  # {"$or": [{ "value." + SHOW_IS_CANCELED: False }, { "value." + SHOW_IS_CANCELED_FIXED: False }]}
+  print list(db.shows.find()).count
+  for showData in list(db.shows.find()):
     show = showData['value'];
-    if not SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED]:
+    # if not SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED]:
+    #   continue
+    # if SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED_FIXED]:
+    #   continue
+    episodesToSend = list(db.episodes.find({"$and": [{"value." + SHOW_ID: show[SHOW_ID]}, {"value." + SHOW_SEASON_NUMBER: show[SHOW_LAST_SEASON_NUMBER]}]}))
+    year = 0
+    for episodeData in episodesToSend:
+      episode = episodeData['value'];
+      if episode[SHOW_SEASON_SPISODE_TRANSLATE_TIME].year > year:
+        year = episode[SHOW_SEASON_SPISODE_TRANSLATE_TIME].year
+
+    if year < 2012:
       continue
-    if SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED_FIXED]:
-      continue
+
     showInfo = response.shows.add()
     showInfo.title = show[SHOW_TITLE]
     showInfo.originalTitle = show[SHOW_ORIGINAL_TITLE]
     showInfo.seasonNumber = show[SHOW_LAST_SEASON_NUMBER]
     showInfo.episodeNumber = show[SHOW_LAST_EPISODE_NUMBER]
     showInfo.id = show[SHOW_ID]
-    showInfo.snapshot = Snapshot.GetLatestSnapshot()
-    for episodeData in list(db.episodes.find({"$and": [{"value." + SHOW_ID: show[SHOW_ID]}, {"value." + SHOW_SEASON_NUMBER: show[SHOW_LAST_SEASON_NUMBER]}]})):
+    showInfo.snapshot = str(Database.makeSnapshotID())
+
+    for episodeData in episodesToSend:
       episode = episodeData['value'];
       episodeInfo = showInfo.episodes.add()
       episodeInfo.name = episode[SHOW_SEASON_EPISODE_NAME]
@@ -127,6 +140,22 @@ def HandleSetUnwatchedSeriesRequest(message):
   return {"message": response, "data": None}
 
 
+def HandleGetSnapshotsRequest(message):
+  logger().info("Handling HandleGetSnapshotsRequest...")
+  #
+  response = LostSeriesProtocol_pb2.GetSnapshotsResponse()
+  #
+  response.snapshotSeries = str(Database.makeSnapshotID())
+  #
+  for artwork in list(Database.instance().artworks.find()):
+    record  = response.snapshotsArtwork.add()
+    record.idShow = artwork[STORAGE_ARTWORK_ID]
+    record.numberSeason = artwork[STORAGE_ARTWORK_SEASON]
+    record.snapshot = artwork[SHOW_SEASON_ARTWORK_SNAPSHOT]
+  #
+  return {"message": response, "data": None}
+
+
 def ParseData(data):
   message = LostSeriesProtocol_pb2.Message()
   message.ParseFromString(data)
@@ -148,6 +177,8 @@ def SerializeMessage(message):
     response.getUnwatchedSeriesResponse.CopyFrom(message)
   elif type(message) is LostSeriesProtocol_pb2.SetUnwatchedSeriesResponse:
     response.setUnwatchedSeriesResponse.CopyFrom(message)
+  elif type(message) is LostSeriesProtocol_pb2.GetSnapshotsResponse:
+    response.getSnapshotsResponse.CopyFrom(message)
   #
   data = response.SerializeToString()
   return data
@@ -168,6 +199,8 @@ def DispatchMessage(message):
     response = HandleGetUnwatchedSeriesRequest(message.getUnwatchedSeriesRequest)
   elif message.HasField("setUnwatchedSeriesRequest"):
     response = HandleSetUnwatchedSeriesRequest(message.setUnwatchedSeriesRequest)
+  elif message.HasField("getSnapshotsRequest"):
+    response = HandleGetSnapshotsRequest(message.getSnapshotsRequest)
   else:
     raise Exception("Unknown message!");
   #

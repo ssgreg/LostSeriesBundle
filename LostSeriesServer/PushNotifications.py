@@ -20,4 +20,5 @@ def Do(token_hex, text):
 
 
 # test
-Do('99c2a09abce108cdea3a09c309323926a24b68dfbc78b790b28c520e93ff61fd', 'Greg')
+def AlertMe(text):
+  Do('99c2a09abce108cdea3a09c309323926a24b68dfbc78b790b28c520e93ff61fd', text)
