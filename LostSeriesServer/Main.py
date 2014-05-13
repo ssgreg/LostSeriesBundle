@@ -24,12 +24,11 @@ def logger():
 
 
 def HandleSeriesRequest(message):
-  logger().info("Handling SeriesRequest...")
+  logger().debug("Handling SeriesRequest...")
   #
   db = Database.instance();
   response = LostSeriesProtocol_pb2.SeriesResponse()
   # {"$or": [{ "value." + SHOW_IS_CANCELED: False }, { "value." + SHOW_IS_CANCELED_FIXED: False }]}
-  print list(db.shows.find()).count
   for showData in list(db.shows.find()):
     show = showData['value'];
     # if not SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED]:
@@ -65,7 +64,7 @@ def HandleSeriesRequest(message):
 
 
 def HandleArtworkRequest(message):
-  logger().info("Handling ArtworkRequest...")
+  logger().debug("Handling ArtworkRequest...")
   #
   response = LostSeriesProtocol_pb2.ArtworkResponse()
   record = Database.instance().artworks.find_one({"$and": [{SHOW_ID: message.idShow}, {SHOW_SEASON_NUMBER: message.seasonNumber}]})
@@ -80,7 +79,7 @@ def HandleArtworkRequest(message):
 
 
 def HandleSetSubscriptionRequest(message):
-  logger().info("Handling SetSubscriptionRequest...")
+  logger().debug("Handling SetSubscriptionRequest...")
   #
   subscriptions = []
   for record in message.subscriptions:
@@ -94,7 +93,7 @@ def HandleSetSubscriptionRequest(message):
 
 
 def HandleGetSubscriptionRequest(message):
-  logger().info("Handling HandleGetSubscriptionRequest...")
+  logger().debug("Handling HandleGetSubscriptionRequest...")
   #
   subscriptions = Subscriptions.GetSubscription(message.idClient)
   #
@@ -107,7 +106,7 @@ def HandleGetSubscriptionRequest(message):
 
 
 def HandleGetUnwatchedSeriesRequest(message):
-  logger().info("Handling HandleGetUnwatchedSeriesRequest...")
+  logger().debug("Handling HandleGetUnwatchedSeriesRequest...")
   #
   episodes = Subscriptions.GetUnwatchedEpisodes(message.idClient)
   #
@@ -122,7 +121,7 @@ def HandleGetUnwatchedSeriesRequest(message):
 
 
 def HandleSetUnwatchedSeriesRequest(message):
-  logger().info("Handling HandleSetUnwatchedSeriesRequest...")
+  logger().debug("Handling HandleSetUnwatchedSeriesRequest...")
   #
   episodes = []
   for record in message.episodes:
@@ -141,7 +140,7 @@ def HandleSetUnwatchedSeriesRequest(message):
 
 
 def HandleGetSnapshotsRequest(message):
-  logger().info("Handling HandleGetSnapshotsRequest...")
+  logger().deubug("Handling HandleGetSnapshotsRequest...")
   #
   response = LostSeriesProtocol_pb2.GetSnapshotsResponse()
   #
@@ -185,7 +184,7 @@ def SerializeMessage(message):
 
 
 def DispatchMessage(message):
-  logger().info("Dispatching a message %s" % (message))
+  logger().debug("Dispatching a message %s" % (message))
   #
   if message.HasField("seriesRequest"):
     response = HandleSeriesRequest(message.seriesRequest)

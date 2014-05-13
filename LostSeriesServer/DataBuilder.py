@@ -199,20 +199,20 @@ def isEpisodeNew(episode, show):
 
 
 def UpdateData(records, checkCancel = True):
-  logger().info("Updating series from LostFile.TV...")
-  showsAll = LoadInfoAllShows()
-  showsIDToShowInfo = dict((i[SE_SHOW_ID], (i[SE_SHOW_ORIGINAL_TITLE], i[SE_SHOW_TITLE])) for i in showsAll)
+  logger().debug("Updating series from LostFile.TV...")
   #
   db = Database.instance()
   episodesNew = []
-  #
-  snapshotIDNew = Database.makeSnapshotID()
-  logger().info("This snapshot will be: {0}".format(snapshotIDNew))
+  snapshotIDNew = None
   #
   for record in records:
     idEpisodeData = makeEpisodeDataID(record[SE_SHOW_ID], record[SE_SHOW_SEASON_NUMBER], record[SE_EPISODE_NUMBER])
     episodeData = db.episodes_full.find_one({Database.DATA_ID: idEpisodeData})
     if not episodeData:
+      if not snapshotIDNew:
+        snapshotIDNew = Database.makeSnapshotID()
+        logger().info("This snapshot will be: {0}".format(snapshotIDNew))
+      #
       episodeNew = \
       {
         Database.DATA_ID: idEpisodeData,
@@ -227,6 +227,13 @@ def UpdateData(records, checkCancel = True):
       logger().info("Adding episode: {0}-'{1}'-{2}-{3}".format(record[SE_SHOW_ID], record[SE_EPISODE_ORIGINAL_NAME].encode('utf-8'), record[SE_SHOW_SEASON_NUMBER], record[SE_EPISODE_NUMBER]))
       Database.insertDataToSnapshot(db.episodes_full, episodeNew)
       episodesNew.append(episodeNew)
+  #
+  if not snapshotIDNew:
+    logger().info("Nothing has changed")
+    return []
+  #
+  showsAll = LoadInfoAllShows()
+  showsIDToShowInfo = dict((i[SE_SHOW_ID], (i[SE_SHOW_ORIGINAL_TITLE], i[SE_SHOW_TITLE])) for i in showsAll)
   #
   episodesByShow = dict()
   for episode in episodesNew:
@@ -279,7 +286,7 @@ def UpdateData(records, checkCancel = True):
     needToUpdate = (not showData) or isCancelStatusChangedFlag or isEpisodeNewFlag
     #
     if needToUpdate:
-      logger().info("Reasons to update: New Show-{0}, Cancel Changed-{1}, isEpisodeNew-{2}".format(not showData, isCancelStatusChangedFlag, isEpisodeNewFlag))
+      logger().debug("Reasons to update: New Show-{0}, Cancel Changed-{1}, isEpisodeNew-{2}".format(not showData, isCancelStatusChangedFlag, isEpisodeNewFlag))
       logger().info("Updating show: {0}-'{1}'".format(showNew[SHOW_ID], showNew[SHOW_ORIGINAL_TITLE].encode('utf-8')))
       Database.insertDataToSnapshot(db.shows_full, showNew)
   #
@@ -293,25 +300,21 @@ def UpdateData(records, checkCancel = True):
 
 
 def UpdateShowsCancelStatus(db):
-  logger().info("Updating series cancel status...")
+  logger().debug("Updating series cancel status...")
   for show in db.shows.find():
     if SHOW_IS_CANCELED in show and show[SHOW_IS_CANCELED]:
       continue
     #
     UpdateCancelStatus(show)
   #
-  logger().info("Cancel statuses were updated")
+  logger().debug("Cancel statuses were updated")
 
 
 def UpdateSeries():
   episodesPage1 = LoadInfoLastSeries(1)
-  if not episodesPage1:
-    episodes = UpdateData(episodesPage1)
-    #
+  episodes = UpdateData(episodesPage1)
+  if episodes:
     Subscriptions.AddUnwatchedEpisodes(episodes)
-  else:
-    logger().info("Nothing has changed")
-
 
 
 def UpdateAll():
@@ -320,14 +323,14 @@ def UpdateAll():
     UpdateSeries()
   except Exception as e:
     print e
-    logger().info("UpdateSeries has failed. Exception: {0}. Trace {1}".format(e, traceback.format_exc()))
+    logger().error("UpdateSeries has failed. Exception: {0}. Trace {1}".format(e, traceback.format_exc()))
     PushNotifications.AlertMe("UpdateSeries fail: {0}".format(e))
   #
   try:
     UpdateArtworks()
   except Exception as e:
     print e
-    logger().info("UpdateArtworks has failed. Exception: {0}. Trace {1}".format(e, traceback.format_exc()))
+    logger().error("UpdateArtworks has failed. Exception: {0}. Trace {1}".format(e, traceback.format_exc()))
     PushNotifications.AlertMe("UpdateArtworks fail: {0}".format(e))
 
 

@@ -64,7 +64,7 @@ def SetUnwatchedEpisodes(idClient, episodes, flagRemove = False):
 
 
 def AddUnwatchedEpisodes(episodes):
-  logger().info("Adding unwatched epidodes to all clients...")
+  logger().debug("Adding unwatched episodes to all clients...")
   #
   for record in list(Database.instance().subscriptions.find()):
     ChangeUnwatchedEpisodes(record['cdid'], episodes)
@@ -74,11 +74,11 @@ def AddUnwatchedEpisodes(episodes):
 
 
 def PushNotification(idClient, episodes):
-  logger().info('Pushing notifications for client {}...'.format(idClient))
+  logger().debug('Pushing notifications for client {}...'.format(idClient))
   #
   record = FindSubscriptionsRecord(idClient)
   if not record:
-    return
+    return 
   #
   for episode in episodes:
     # skip episode not in client subscription
@@ -91,12 +91,12 @@ def PushNotification(idClient, episodes):
     if episodeInfo and showInfo:
       textToPush = u'{} - {}: {}'.format(showInfo['value']['Title'], episodeInfo['value']['EpisodeNumber'], episodeInfo['value']['EpisodeName'])
       for token in record['tokens']:
-        logger().info('Pushing notification: {}'.format(textToPush.encode('utf-8')))
+        logger().debug('Pushing notification: {}'.format(textToPush.encode('utf-8')))
         PushNotifications.Do(token, textToPush)
 
 
 def ChangeUnwatchedEpisodes(idClient, episodes, remove = False):
-  logger().info('Changing unwatched episodes for client {} with flag={}...'.format(idClient, remove))
+  logger().debug('Changing unwatched episodes for client {} with flag={}...'.format(idClient, remove))
   #
   record = FindSubscriptionsRecord(idClient)
   if not record:
@@ -122,12 +122,12 @@ def ChangeUnwatchedEpisodes(idClient, episodes, remove = False):
     }
     if remove:
       if unwatched in unwatcheds:
-        logger().info('Removed unwatched episode {}'.format(unwatched))
+        logger().debug('Removed unwatched episode {}'.format(unwatched))
         unwatcheds.remove(unwatched)
     else:
       # add only new episodes
       if not unwatched in unwatcheds:
-        logger().info('New unwatched episode {}'.format(unwatched))
+        logger().debug('New unwatched episode {}'.format(unwatched))
         unwatcheds.append(unwatched)
     #
     record['unwatched'] = unwatcheds
@@ -137,7 +137,7 @@ def ChangeUnwatchedEpisodes(idClient, episodes, remove = False):
 
 
 def ChangeSubscription(idClient, tokenDevice, subscriptions, unsubcribe = False):
-  logger().info('Changing subscription {} flag={}...'.format(subscriptions, unsubcribe))
+  logger().debug('Changing subscription {} flag={}...'.format(subscriptions, unsubcribe))
   #
   record = FindSubscriptionsRecord(idClient)
   if not record:
@@ -153,7 +153,7 @@ def ChangeSubscription(idClient, tokenDevice, subscriptions, unsubcribe = False)
       'ids_show': subscriptions,
       'unwatched': []
     }
-    logger().info('New client: {}'.format(record))
+    logger().debug('New client: {}'.format(record))
     Database.instance().subscriptions.insert(record)
   else:
     #
@@ -182,30 +182,30 @@ def ChangeSubscription(idClient, tokenDevice, subscriptions, unsubcribe = False)
       'unwatched': record['unwatched']
     }
     #
-    logger().info('Update client: {}'.format(recordNew))
+    logger().debug('Update client: {}'.format(recordNew))
     Database.instance().subscriptions.remove({'_id': record['_id']})
     Database.instance().subscriptions.insert(recordNew)
 
 
 def GetSubscription(idClient):
-  logger().info('Getting subscription for client {}...'.format(idClient))
+  logger().debug('Getting subscription for client {}...'.format(idClient))
   #
   record = FindSubscriptionsRecord(idClient)
   if record:
-    logger().info('Subscription found: {}'.format(record))
+    logger().debug('Subscription found: {}'.format(record))
     return record['ids_show']
   else:
-    logger().info('There is no subscription with id')
+    logger().warning('There is no subscription with id')
     return []
 
 
 def LogCurrentSubscriptions():
-  logger().info("Logging current subscriptions...")
+  logger().debug("Logging current subscriptions...")
   #
   for record in list(Database.instance().subscriptions.find()):
     logger().info("{}".format(record))
     #
-  logger().info("Loggind finished")
+  logger().debug("Loggind finished")
 
 # test
 #logging.config.fileConfig('logging.ini')
