@@ -144,7 +144,7 @@ def HandleGetSnapshotsRequest(message):
   #
   response = LostSeriesProtocol_pb2.GetSnapshotsResponse()
   #
-  response.snapshotSeries = str(Database.makeSnapshotID())
+  response.snapshotSeries = str(Database.getSnapshotID())
   #
   for artwork in list(Database.instance().artworks.find()):
     record  = response.snapshotsArtwork.add()
