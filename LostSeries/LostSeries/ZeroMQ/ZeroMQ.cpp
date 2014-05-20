@@ -9,6 +9,13 @@
 #include "ZeroMQ.h"
 
 
+ZmqMessagePtr ZmqCopyFrame(ZmqMessagePtr frame)
+{
+  ZmqMessagePtr frameCopy(new zmq::message_t);
+  frameCopy->copy(&*frame);
+  return frameCopy;
+}
+
 std::deque<ZmqMessagePtr> ZmqCopyMultipartMessage(std::deque<ZmqMessagePtr> messages)
 {
   std::deque<ZmqMessagePtr> result;
@@ -16,9 +23,7 @@ std::deque<ZmqMessagePtr> ZmqCopyMultipartMessage(std::deque<ZmqMessagePtr> mess
   {
     ZmqMessagePtr part = messages.front();
     messages.pop_front();
-    ZmqMessagePtr partCopy(new zmq::message_t);
-    partCopy->copy(&*part);
-    result.push_back(partCopy);
+    result.push_back(ZmqCopyFrame(part));
   }
   return result;
 }
@@ -66,4 +71,35 @@ zmq::context_t& ZmqGlobalContext()
 {
   static zmq::context_t theOnlyOneContext;
   return theOnlyOneContext;
+}
+
+ZmqMessagePtr ZmqMakeMessage(LSMessagePtr request)
+{
+  ZmqMessagePtr requestBody = ZmqMessagePtr(new zmq::message_t(request->ByteSize()));
+  request->SerializeToArray(requestBody->data(), (int)requestBody->size());
+  return requestBody;
+}
+
+LSMessagePtr ZmqParseMessage(ZmqMessagePtr replyFrame)
+{
+  LSMessagePtr reply(new LS::Message);
+  reply->ParseFromArray(replyFrame->data(), (int)replyFrame->size());
+  return reply;  
+}
+
+ZmqMessagePtr ZmqMakeHeaderMessage(int64_t messageID)
+{
+  LS::Header header;
+  header.set_messageid(messageID);
+  //
+  ZmqMessagePtr zmqHeader = ZmqMessagePtr(new zmq::message_t(header.ByteSize()));
+  header.SerializeToArray(zmqHeader->data(), (int)zmqHeader->size());
+  return zmqHeader;
+}
+
+int64_t ZmqParseHeaderMessage(ZmqMessagePtr headerFrame)
+{
+  LS::Header header;
+  header.ParseFromArray(headerFrame->data(), (int)headerFrame->size());
+  return header.messageid();
 }

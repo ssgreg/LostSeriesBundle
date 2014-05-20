@@ -16,28 +16,14 @@
 // LSAsyncRequestReplyConnection
 //
 
-@interface LSAsyncRequestReplyConnection ()
+@implementation LSAsyncRequestReplyConnection
 {
-@private
   void (^theRecvHandler)(NSInteger, LSMessagePtr, NSData*);
   NSInteger theMessageID;
-  dispatch_queue_t thePollQueue;
   ZmqSocketPtr theServerSocket;
   ZmqSocketPtr theClientRecvSocket;
   ZmqSocketPtr theClientSendSocket;
 }
-
-- (void) startPollQueue:(NSString*)address;
-- (void) dispatchReply:(std::deque<ZmqMessagePtr>)multipartReply;
-- (ZmqMessagePtr) makeRequestFrame:(LSMessagePtr)request;
-- (ZmqMessagePtr) makeHeaderFrameWithMessageID:(NSInteger)messageID;
-- (NSInteger) messageIDFromHeaderFrame:(ZmqMessagePtr)headerFrame;
-- (LSMessagePtr) makeReplyWithReplyFrame:(ZmqMessagePtr)replyFrame;
-- (NSData*) makeDataWithDataFrame:(ZmqMessagePtr)dataFrame;
-
-@end
-
-@implementation LSAsyncRequestReplyConnection
 
 + (LSAsyncRequestReplyConnection*) connectionWithAddress:(NSString*)address replyHandler:(void (^)(NSInteger, LSMessagePtr, NSData*))handler
 {
@@ -50,19 +36,11 @@
   {
     return nil;
   }
-  NSString* pushAddress = [NSString stringWithFormat:@"inproc://%@", [[NSUUID UUID] UUIDString]];
   //
   theRecvHandler = handler;
   theMessageID = 0;
-  thePollQueue = dispatch_queue_create("async_connection.poll.queue", NULL);
   //
-  theServerSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
-  theServerSocket->connect([address UTF8String]);
-  theClientRecvSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PULL));
-  theClientRecvSocket->bind([pushAddress UTF8String]);
-  theClientSendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PUSH));
-  theClientSendSocket->connect([pushAddress UTF8String]);
-  //
+  [self setupSockets:address];
   [self startPollQueue:address];
   //
   return self;
@@ -70,7 +48,7 @@
 
 - (void) startPollQueue:(NSString*)address
 {
-  dispatch_async(thePollQueue,
+  dispatch_async(dispatch_queue_create("async_connection.poll.queue", NULL),
   ^{
     while (TRUE)
     {
@@ -104,7 +82,7 @@
   {
     return;
   }
-  NSInteger replyID = [self messageIDFromHeaderFrame:multipartReply.front()];
+  NSInteger replyID = ZmqParseHeaderMessage(multipartReply.front());
   multipartReply.pop_front();
   // check for zero frame
   if (multipartReply.front()->size() != 0)
@@ -117,7 +95,7 @@
   {
     return;
   }
-  LSMessagePtr reply = [self makeReplyWithReplyFrame:multipartReply.front()];
+  LSMessagePtr reply = ZmqParseMessage(multipartReply.front());
   multipartReply.pop_front();
   // check for optional data frame
   NSData* data = nil;
@@ -137,48 +115,29 @@
 - (NSInteger) sendRequest:(LSMessagePtr)request
 {
   std::deque<ZmqMessagePtr> multipartRequest;
-  multipartRequest.push_back([self makeHeaderFrameWithMessageID:theMessageID]);
+  multipartRequest.push_back(ZmqMakeHeaderMessage(theMessageID));
   multipartRequest.push_back(ZmqZeroFrame());
-  multipartRequest.push_back([self makeRequestFrame:request]);
+  multipartRequest.push_back(ZmqMakeMessage(request));
   ZmqSendMultipartMessage(theClientSendSocket, multipartRequest);
   //
   return theMessageID++;
 }
 
-- (ZmqMessagePtr) makeRequestFrame:(LSMessagePtr)request
-{
-  ZmqMessagePtr requestBody = ZmqMessagePtr(new zmq::message_t(request->ByteSize()));
-  request->SerializeToArray(requestBody->data(), (int)requestBody->size());
-  return requestBody;
-}
-
-- (ZmqMessagePtr) makeHeaderFrameWithMessageID:(NSInteger)messageID
-{
-  LS::Header header;
-  header.set_messageid(messageID);
-  //
-  ZmqMessagePtr zmqHeader = ZmqMessagePtr(new zmq::message_t(header.ByteSize()));
-  header.SerializeToArray(zmqHeader->data(), (int)zmqHeader->size());
-  return zmqHeader;
-}
-
-- (NSInteger) messageIDFromHeaderFrame:(ZmqMessagePtr)headerFrame
-{
-  LS::Header header;
-  header.ParseFromArray(headerFrame->data(), (int)headerFrame->size());
-  return header.messageid();
-}
-
-- (LSMessagePtr) makeReplyWithReplyFrame:(ZmqMessagePtr)replyFrame
-{
-  LSMessagePtr reply(new LS::Message);
-  reply->ParseFromArray(replyFrame->data(), (int)replyFrame->size());
-  return reply;
-}
-
 - (NSData*) makeDataWithDataFrame:(ZmqMessagePtr)dataFrame
 {
   return [NSData dataWithBytes:dataFrame->data() length:dataFrame->size()];
+}
+
+- (void) setupSockets:(NSString*)address
+{
+  NSString* pushAddress = [NSString stringWithFormat:@"inproc://%@", [[NSUUID UUID] UUIDString]];
+  //
+  theServerSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
+  theServerSocket->connect([address UTF8String]);
+  theClientRecvSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PULL));
+  theClientRecvSocket->bind([pushAddress UTF8String]);
+  theClientSendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_PUSH));
+  theClientSendSocket->connect([pushAddress UTF8String]);
 }
 
 @end
