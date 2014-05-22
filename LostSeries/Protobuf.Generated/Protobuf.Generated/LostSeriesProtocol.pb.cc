@@ -169,8 +169,9 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesRequest));
   SeriesResponse_descriptor_ = file->message_type(4);
-  static const int SeriesResponse_offsets_[1] = {
+  static const int SeriesResponse_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse, shows_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse, snapshot_),
   };
   SeriesResponse_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -202,13 +203,12 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesResponse_Episode));
   SeriesResponse_TVShow_descriptor_ = SeriesResponse_descriptor_->nested_type(1);
-  static const int SeriesResponse_TVShow_offsets_[7] = {
+  static const int SeriesResponse_TVShow_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, title_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, originaltitle_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, seasonnumber_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, episodenumber_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, snapshot_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SeriesResponse_TVShow, episodes_),
   };
   SeriesResponse_TVShow_reflection_ =
@@ -223,11 +223,10 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       ::google_public::protobuf::MessageFactory::generated_factory(),
       sizeof(SeriesResponse_TVShow));
   ArtworkRequest_descriptor_ = file->message_type(5);
-  static const int ArtworkRequest_offsets_[4] = {
+  static const int ArtworkRequest_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, idshow_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, seasonnumber_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, thumbnail_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkRequest, snapshot_),
   };
   ArtworkRequest_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -242,6 +241,7 @@ void protobuf_AssignDesc_LostSeriesProtocol_2eproto() {
       sizeof(ArtworkRequest));
   ArtworkResponse_descriptor_ = file->message_type(6);
   static const int ArtworkResponse_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArtworkResponse, snapshot_),
   };
   ArtworkResponse_reflection_ =
     new ::google_public::protobuf::internal::GeneratedMessageReflection(
@@ -598,17 +598,17 @@ void protobuf_AddDesc_LostSeriesProtocol_2eproto() {
     "tsResponse\030\326\017 \001(\0132\030.LS.GetSnapshotsRespo"
     "nse\" \n\022SubscriptionRecord\022\n\n\002id\030\001 \002(\t\"\017\n"
     "\rSeriesRequest\"\272\002\n\016SeriesResponse\022(\n\005sho"
-    "ws\030\001 \003(\0132\031.LS.SeriesResponse.TVShow\032T\n\007E"
-    "pisode\022\014\n\004name\030\001 \002(\t\022\024\n\014originalName\030\002 \002"
-    "(\t\022\016\n\006number\030\003 \002(\005\022\025\n\rdateTranslate\030\004 \002("
-    "\t\032\247\001\n\006TVShow\022\r\n\005title\030\001 \002(\t\022\025\n\roriginalT"
-    "itle\030\002 \002(\t\022\024\n\014seasonNumber\030\003 \002(\005\022\025\n\repis"
-    "odeNumber\030\004 \002(\005\022\n\n\002id\030c \002(\t\022\020\n\010snapshot\030"
-    "d \002(\t\022,\n\010episodes\030e \003(\0132\032.LS.SeriesRespo"
-    "nse.Episode\"[\n\016ArtworkRequest\022\016\n\006idShow\030"
+    "ws\030\001 \003(\0132\031.LS.SeriesResponse.TVShow\022\020\n\010s"
+    "napshot\030d \002(\t\032T\n\007Episode\022\014\n\004name\030\001 \002(\t\022\024"
+    "\n\014originalName\030\002 \002(\t\022\016\n\006number\030\003 \002(\005\022\025\n\r"
+    "dateTranslate\030\004 \002(\t\032\225\001\n\006TVShow\022\r\n\005title\030"
+    "\001 \002(\t\022\025\n\roriginalTitle\030\002 \002(\t\022\024\n\014seasonNu"
+    "mber\030\003 \002(\005\022\025\n\repisodeNumber\030\004 \002(\005\022\n\n\002id\030"
+    "c \002(\t\022,\n\010episodes\030e \003(\0132\032.LS.SeriesRespo"
+    "nse.Episode\"I\n\016ArtworkRequest\022\016\n\006idShow\030"
     "\001 \002(\t\022\024\n\014seasonNumber\030\002 \002(\005\022\021\n\tthumbnail"
-    "\030\003 \002(\010\022\020\n\010snapshot\030d \002(\t\"\021\n\017ArtworkRespo"
-    "nse\"\201\001\n\026SetSubscriptionRequest\022\020\n\010idClie"
+    "\030\003 \002(\010\"#\n\017ArtworkResponse\022\020\n\010snapshot\030\001 "
+    "\002(\t\"\201\001\n\026SetSubscriptionRequest\022\020\n\010idClie"
     "nt\030\001 \002(\t\022\r\n\005token\030\002 \002(\t\022-\n\rsubscriptions"
     "\030\003 \003(\0132\026.LS.SubscriptionRecord\022\027\n\017flagUn"
     "subscribe\030\004 \002(\010\")\n\027SetSubscriptionRespon"
@@ -1686,6 +1686,9 @@ bool Message::IsInitialized() const {
   if (has_seriesresponse()) {
     if (!this->seriesresponse().IsInitialized()) return false;
   }
+  if (has_artworkresponse()) {
+    if (!this->artworkresponse().IsInitialized()) return false;
+  }
   if (has_setsubscriptionresponse()) {
     if (!this->setsubscriptionresponse().IsInitialized()) return false;
   }
@@ -2505,7 +2508,6 @@ const int SeriesResponse_TVShow::kOriginalTitleFieldNumber;
 const int SeriesResponse_TVShow::kSeasonNumberFieldNumber;
 const int SeriesResponse_TVShow::kEpisodeNumberFieldNumber;
 const int SeriesResponse_TVShow::kIdFieldNumber;
-const int SeriesResponse_TVShow::kSnapshotFieldNumber;
 const int SeriesResponse_TVShow::kEpisodesFieldNumber;
 #endif  // !_MSC_VER
 
@@ -2530,7 +2532,6 @@ void SeriesResponse_TVShow::SharedCtor() {
   seasonnumber_ = 0;
   episodenumber_ = 0;
   id_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2547,9 +2548,6 @@ void SeriesResponse_TVShow::SharedDtor() {
   }
   if (id_ != &::google_public::protobuf::internal::kEmptyString) {
     delete id_;
-  }
-  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete snapshot_;
   }
   if (this != default_instance_) {
   }
@@ -2593,11 +2591,6 @@ void SeriesResponse_TVShow::Clear() {
     if (has_id()) {
       if (id_ != &::google_public::protobuf::internal::kEmptyString) {
         id_->clear();
-      }
-    }
-    if (has_snapshot()) {
-      if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-        snapshot_->clear();
       }
     }
   }
@@ -2690,23 +2683,6 @@ bool SeriesResponse_TVShow::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(802)) goto parse_snapshot;
-        break;
-      }
-
-      // required string snapshot = 100;
-      case 100: {
-        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_snapshot:
-          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_snapshot()));
-          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->snapshot().data(), this->snapshot().length(),
-            ::google_public::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
         if (input->ExpectTag(810)) goto parse_episodes;
         break;
       }
@@ -2781,15 +2757,6 @@ void SeriesResponse_TVShow::SerializeWithCachedSizes(
       99, this->id(), output);
   }
 
-  // required string snapshot = 100;
-  if (has_snapshot()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->snapshot().data(), this->snapshot().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      100, this->snapshot(), output);
-  }
-
   // repeated .LS.SeriesResponse.Episode episodes = 101;
   for (int i = 0; i < this->episodes_size(); i++) {
     ::google_public::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -2842,16 +2809,6 @@ void SeriesResponse_TVShow::SerializeWithCachedSizes(
     target =
       ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
         99, this->id(), target);
-  }
-
-  // required string snapshot = 100;
-  if (has_snapshot()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->snapshot().data(), this->snapshot().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        100, this->snapshot(), target);
   }
 
   // repeated .LS.SeriesResponse.Episode episodes = 101;
@@ -2907,13 +2864,6 @@ int SeriesResponse_TVShow::ByteSize() const {
           this->id());
     }
 
-    // required string snapshot = 100;
-    if (has_snapshot()) {
-      total_size += 2 +
-        ::google_public::protobuf::internal::WireFormatLite::StringSize(
-          this->snapshot());
-    }
-
   }
   // repeated .LS.SeriesResponse.Episode episodes = 101;
   total_size += 2 * this->episodes_size();
@@ -2965,9 +2915,6 @@ void SeriesResponse_TVShow::MergeFrom(const SeriesResponse_TVShow& from) {
     if (from.has_id()) {
       set_id(from.id());
     }
-    if (from.has_snapshot()) {
-      set_snapshot(from.snapshot());
-    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2985,7 +2932,7 @@ void SeriesResponse_TVShow::CopyFrom(const SeriesResponse_TVShow& from) {
 }
 
 bool SeriesResponse_TVShow::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
 
   for (int i = 0; i < episodes_size(); i++) {
     if (!this->episodes(i).IsInitialized()) return false;
@@ -3000,7 +2947,6 @@ void SeriesResponse_TVShow::Swap(SeriesResponse_TVShow* other) {
     std::swap(seasonnumber_, other->seasonnumber_);
     std::swap(episodenumber_, other->episodenumber_);
     std::swap(id_, other->id_);
-    std::swap(snapshot_, other->snapshot_);
     episodes_.Swap(&other->episodes_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3021,6 +2967,7 @@ void SeriesResponse_TVShow::Swap(SeriesResponse_TVShow* other) {
 
 #ifndef _MSC_VER
 const int SeriesResponse::kShowsFieldNumber;
+const int SeriesResponse::kSnapshotFieldNumber;
 #endif  // !_MSC_VER
 
 SeriesResponse::SeriesResponse()
@@ -3039,6 +2986,7 @@ SeriesResponse::SeriesResponse(const SeriesResponse& from)
 
 void SeriesResponse::SharedCtor() {
   _cached_size_ = 0;
+  snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3047,6 +2995,9 @@ SeriesResponse::~SeriesResponse() {
 }
 
 void SeriesResponse::SharedDtor() {
+  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete snapshot_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -3073,6 +3024,13 @@ SeriesResponse* SeriesResponse::New() const {
 }
 
 void SeriesResponse::Clear() {
+  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    if (has_snapshot()) {
+      if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
+        snapshot_->clear();
+      }
+    }
+  }
   shows_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -3095,6 +3053,23 @@ bool SeriesResponse::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(10)) goto parse_shows;
+        if (input->ExpectTag(802)) goto parse_snapshot;
+        break;
+      }
+
+      // required string snapshot = 100;
+      case 100: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_snapshot:
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_snapshot()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->snapshot().data(), this->snapshot().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3123,6 +3098,15 @@ void SeriesResponse::SerializeWithCachedSizes(
       1, this->shows(i), output);
   }
 
+  // required string snapshot = 100;
+  if (has_snapshot()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->snapshot().data(), this->snapshot().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      100, this->snapshot(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3138,6 +3122,16 @@ void SeriesResponse::SerializeWithCachedSizes(
         1, this->shows(i), target);
   }
 
+  // required string snapshot = 100;
+  if (has_snapshot()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->snapshot().data(), this->snapshot().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        100, this->snapshot(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -3148,6 +3142,15 @@ void SeriesResponse::SerializeWithCachedSizes(
 int SeriesResponse::ByteSize() const {
   int total_size = 0;
 
+  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    // required string snapshot = 100;
+    if (has_snapshot()) {
+      total_size += 2 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->snapshot());
+    }
+
+  }
   // repeated .LS.SeriesResponse.TVShow shows = 1;
   total_size += 1 * this->shows_size();
   for (int i = 0; i < this->shows_size(); i++) {
@@ -3182,6 +3185,11 @@ void SeriesResponse::MergeFrom(const ::google_public::protobuf::Message& from) {
 void SeriesResponse::MergeFrom(const SeriesResponse& from) {
   GOOGLE_CHECK_NE(&from, this);
   shows_.MergeFrom(from.shows_);
+  if (from._has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    if (from.has_snapshot()) {
+      set_snapshot(from.snapshot());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -3198,6 +3206,7 @@ void SeriesResponse::CopyFrom(const SeriesResponse& from) {
 }
 
 bool SeriesResponse::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000002) != 0x00000002) return false;
 
   for (int i = 0; i < shows_size(); i++) {
     if (!this->shows(i).IsInitialized()) return false;
@@ -3208,6 +3217,7 @@ bool SeriesResponse::IsInitialized() const {
 void SeriesResponse::Swap(SeriesResponse* other) {
   if (other != this) {
     shows_.Swap(&other->shows_);
+    std::swap(snapshot_, other->snapshot_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3229,7 +3239,6 @@ void SeriesResponse::Swap(SeriesResponse* other) {
 const int ArtworkRequest::kIdShowFieldNumber;
 const int ArtworkRequest::kSeasonNumberFieldNumber;
 const int ArtworkRequest::kThumbnailFieldNumber;
-const int ArtworkRequest::kSnapshotFieldNumber;
 #endif  // !_MSC_VER
 
 ArtworkRequest::ArtworkRequest()
@@ -3251,7 +3260,6 @@ void ArtworkRequest::SharedCtor() {
   idshow_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   seasonnumber_ = 0;
   thumbnail_ = false;
-  snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3262,9 +3270,6 @@ ArtworkRequest::~ArtworkRequest() {
 void ArtworkRequest::SharedDtor() {
   if (idshow_ != &::google_public::protobuf::internal::kEmptyString) {
     delete idshow_;
-  }
-  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete snapshot_;
   }
   if (this != default_instance_) {
   }
@@ -3300,11 +3305,6 @@ void ArtworkRequest::Clear() {
     }
     seasonnumber_ = 0;
     thumbnail_ = false;
-    if (has_snapshot()) {
-      if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-        snapshot_->clear();
-      }
-    }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -3360,23 +3360,6 @@ bool ArtworkRequest::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(802)) goto parse_snapshot;
-        break;
-      }
-
-      // required string snapshot = 100;
-      case 100: {
-        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_snapshot:
-          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_snapshot()));
-          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->snapshot().data(), this->snapshot().length(),
-            ::google_public::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3418,15 +3401,6 @@ void ArtworkRequest::SerializeWithCachedSizes(
     ::google_public::protobuf::internal::WireFormatLite::WriteBool(3, this->thumbnail(), output);
   }
 
-  // required string snapshot = 100;
-  if (has_snapshot()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->snapshot().data(), this->snapshot().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    ::google_public::protobuf::internal::WireFormatLite::WriteString(
-      100, this->snapshot(), output);
-  }
-
   if (!unknown_fields().empty()) {
     ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3453,16 +3427,6 @@ void ArtworkRequest::SerializeWithCachedSizes(
   // required bool thumbnail = 3;
   if (has_thumbnail()) {
     target = ::google_public::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->thumbnail(), target);
-  }
-
-  // required string snapshot = 100;
-  if (has_snapshot()) {
-    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->snapshot().data(), this->snapshot().length(),
-      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
-        100, this->snapshot(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -3493,13 +3457,6 @@ int ArtworkRequest::ByteSize() const {
     // required bool thumbnail = 3;
     if (has_thumbnail()) {
       total_size += 1 + 1;
-    }
-
-    // required string snapshot = 100;
-    if (has_snapshot()) {
-      total_size += 2 +
-        ::google_public::protobuf::internal::WireFormatLite::StringSize(
-          this->snapshot());
     }
 
   }
@@ -3538,9 +3495,6 @@ void ArtworkRequest::MergeFrom(const ArtworkRequest& from) {
     if (from.has_thumbnail()) {
       set_thumbnail(from.thumbnail());
     }
-    if (from.has_snapshot()) {
-      set_snapshot(from.snapshot());
-    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -3558,7 +3512,7 @@ void ArtworkRequest::CopyFrom(const ArtworkRequest& from) {
 }
 
 bool ArtworkRequest::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
 
   return true;
 }
@@ -3568,7 +3522,6 @@ void ArtworkRequest::Swap(ArtworkRequest* other) {
     std::swap(idshow_, other->idshow_);
     std::swap(seasonnumber_, other->seasonnumber_);
     std::swap(thumbnail_, other->thumbnail_);
-    std::swap(snapshot_, other->snapshot_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3587,6 +3540,7 @@ void ArtworkRequest::Swap(ArtworkRequest* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int ArtworkResponse::kSnapshotFieldNumber;
 #endif  // !_MSC_VER
 
 ArtworkResponse::ArtworkResponse()
@@ -3605,6 +3559,7 @@ ArtworkResponse::ArtworkResponse(const ArtworkResponse& from)
 
 void ArtworkResponse::SharedCtor() {
   _cached_size_ = 0;
+  snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3613,6 +3568,9 @@ ArtworkResponse::~ArtworkResponse() {
 }
 
 void ArtworkResponse::SharedDtor() {
+  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete snapshot_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -3639,6 +3597,13 @@ ArtworkResponse* ArtworkResponse::New() const {
 }
 
 void ArtworkResponse::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_snapshot()) {
+      if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
+        snapshot_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -3648,12 +3613,34 @@ bool ArtworkResponse::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google_public::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google_public::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string snapshot = 1;
+      case 1: {
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google_public::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_snapshot()));
+          ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->snapshot().data(), this->snapshot().length(),
+            ::google_public::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google_public::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google_public::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google_public::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google_public::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -3661,6 +3648,15 @@ bool ArtworkResponse::MergePartialFromCodedStream(
 
 void ArtworkResponse::SerializeWithCachedSizes(
     ::google_public::protobuf::io::CodedOutputStream* output) const {
+  // required string snapshot = 1;
+  if (has_snapshot()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->snapshot().data(), this->snapshot().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    ::google_public::protobuf::internal::WireFormatLite::WriteString(
+      1, this->snapshot(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google_public::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3669,6 +3665,16 @@ void ArtworkResponse::SerializeWithCachedSizes(
 
 ::google_public::protobuf::uint8* ArtworkResponse::SerializeWithCachedSizesToArray(
     ::google_public::protobuf::uint8* target) const {
+  // required string snapshot = 1;
+  if (has_snapshot()) {
+    ::google_public::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->snapshot().data(), this->snapshot().length(),
+      ::google_public::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google_public::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->snapshot(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google_public::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -3679,6 +3685,15 @@ void ArtworkResponse::SerializeWithCachedSizes(
 int ArtworkResponse::ByteSize() const {
   int total_size = 0;
 
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string snapshot = 1;
+    if (has_snapshot()) {
+      total_size += 1 +
+        ::google_public::protobuf::internal::WireFormatLite::StringSize(
+          this->snapshot());
+    }
+
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google_public::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -3704,6 +3719,11 @@ void ArtworkResponse::MergeFrom(const ::google_public::protobuf::Message& from) 
 
 void ArtworkResponse::MergeFrom(const ArtworkResponse& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_snapshot()) {
+      set_snapshot(from.snapshot());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -3720,12 +3740,15 @@ void ArtworkResponse::CopyFrom(const ArtworkResponse& from) {
 }
 
 bool ArtworkResponse::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
 
   return true;
 }
 
 void ArtworkResponse::Swap(ArtworkResponse* other) {
   if (other != this) {
+    std::swap(snapshot_, other->snapshot_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }

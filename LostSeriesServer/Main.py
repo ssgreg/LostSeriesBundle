@@ -1,18 +1,21 @@
+# [SublimeLinter @python:2]
+# -*- coding: utf-8 -*-
+#
+# Main.py
+# LostSeriesServer
+#
+#  Created by Grigory Zubankov.
+#  Copyright (c) 2014 Grigory Zubankov. All rights reserved.
+#
+
 import zmq
-import sys, traceback
-import unicodedata
+import traceback
 import time
-import threading
-import random
-import pymongo
-import datetime
 import thread
 import logging
 import logging.config
 #
-from Cache import DataCache
 import LostSeriesProtocol_pb2
-import Snapshot
 from Storage import *
 import Database
 import Subscriptions
@@ -26,11 +29,11 @@ def logger():
 def HandleSeriesRequest(message):
   logger().debug("Handling SeriesRequest...")
   #
-  db = Database.instance();
+  db = Database.instance()
   response = LostSeriesProtocol_pb2.SeriesResponse()
   # {"$or": [{ "value." + SHOW_IS_CANCELED: False }, { "value." + SHOW_IS_CANCELED_FIXED: False }]}
   for showData in list(db.shows.find()):
-    show = showData['value'];
+    show = showData['value']
     # if not SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED]:
     #   continue
     # if SHOW_IS_CANCELED_FIXED in show and show[SHOW_IS_CANCELED_FIXED]:
@@ -38,20 +41,20 @@ def HandleSeriesRequest(message):
     episodesToSend = list(db.episodes.find({"$and": [{"value." + SHOW_ID: show[SHOW_ID]}, {"value." + SHOW_SEASON_NUMBER: show[SHOW_LAST_SEASON_NUMBER]}]}))
     year = 0
     for episodeData in episodesToSend:
-      episode = episodeData['value'];
+      episode = episodeData['value']
       if episode[SHOW_SEASON_SPISODE_TRANSLATE_TIME].year > year:
         year = episode[SHOW_SEASON_SPISODE_TRANSLATE_TIME].year
 
     if year < 2012:
       continue
 
+    response.snapshot = str(Database.getSnapshotID())
     showInfo = response.shows.add()
     showInfo.title = show[SHOW_TITLE]
     showInfo.originalTitle = show[SHOW_ORIGINAL_TITLE]
     showInfo.seasonNumber = show[SHOW_LAST_SEASON_NUMBER]
     showInfo.episodeNumber = show[SHOW_LAST_EPISODE_NUMBER]
     showInfo.id = show[SHOW_ID]
-    showInfo.snapshot = str(Database.makeSnapshotID())
 
     for episodeData in episodesToSend:
       episode = episodeData['value'];
@@ -64,12 +67,14 @@ def HandleSeriesRequest(message):
 
 
 def HandleArtworkRequest(message):
-  logger().debug("Handling ArtworkRequest...")
+#  logger().debug("Handling ArtworkRequest...")
   #
-  response = LostSeriesProtocol_pb2.ArtworkResponse()
   record = Database.instance().artworks.find_one({"$and": [{SHOW_ID: message.idShow}, {SHOW_SEASON_NUMBER: message.seasonNumber}]})
+  response = LostSeriesProtocol_pb2.ArtworkResponse()
+  response.snapshot = ""
   artwork = ""
   if record:
+    response.snapshot = str(record[SHOW_SEASON_ARTWORK_SNAPSHOT])
     if message.thumbnail:
       artwork = record[SHOW_SEASON_ARTWORK_THUMBNAIL]
     else:
@@ -140,7 +145,7 @@ def HandleSetUnwatchedSeriesRequest(message):
 
 
 def HandleGetSnapshotsRequest(message):
-  logger().deubug("Handling HandleGetSnapshotsRequest...")
+  logger().debug("Handling HandleGetSnapshotsRequest...")
   #
   response = LostSeriesProtocol_pb2.GetSnapshotsResponse()
   #
@@ -148,9 +153,9 @@ def HandleGetSnapshotsRequest(message):
   #
   for artwork in list(Database.instance().artworks.find()):
     record  = response.snapshotsArtwork.add()
-    record.idShow = artwork[STORAGE_ARTWORK_ID]
-    record.numberSeason = artwork[STORAGE_ARTWORK_SEASON]
-    record.snapshot = artwork[SHOW_SEASON_ARTWORK_SNAPSHOT]
+    record.idShow = artwork[SHOW_ID]
+    record.numberSeason = artwork[SHOW_SEASON_NUMBER]
+    record.snapshot = str(artwork[SHOW_SEASON_ARTWORK_SNAPSHOT])
   #
   return {"message": response, "data": None}
 
@@ -184,7 +189,7 @@ def SerializeMessage(message):
 
 
 def DispatchMessage(message):
-  logger().debug("Dispatching a message %s" % (message))
+#  logger().debug("Dispatching a message %s" % (message))
   #
   if message.HasField("seriesRequest"):
     response = HandleSeriesRequest(message.seriesRequest)

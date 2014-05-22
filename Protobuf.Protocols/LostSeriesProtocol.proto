@@ -57,11 +57,11 @@ message SeriesResponse
     required int32 seasonNumber = 3;
     required int32 episodeNumber = 4;
     required string id = 99;
-    required string snapshot = 100;
     repeated Episode episodes = 101;
   }
 
   repeated TVShow shows = 1;
+  required string snapshot = 100;
 }
 
 
@@ -70,13 +70,13 @@ message ArtworkRequest
   required string idShow = 1;
   required int32 seasonNumber = 2;
   required bool thumbnail = 3;
-  required string snapshot = 100;
 }
 
 
 // with a following banaries
 message ArtworkResponse
 {
+  required string snapshot = 1;
 }
 
 

@@ -82,6 +82,10 @@ ZmqMessagePtr ZmqMakeMessage(LSMessagePtr request)
 
 LSMessagePtr ZmqParseMessage(ZmqMessagePtr replyFrame)
 {
+  if (!replyFrame)
+  {
+    return LSMessagePtr();
+  }
   LSMessagePtr reply(new LS::Message);
   reply->ParseFromArray(replyFrame->data(), (int)replyFrame->size());
   return reply;  

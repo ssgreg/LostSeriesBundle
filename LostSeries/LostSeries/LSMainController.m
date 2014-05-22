@@ -28,24 +28,16 @@
 
 SYNTHESIZE_WL_DATA_ACCESSOR(LSDataBaseRefresher);
 
-- (void) doSomething:(NSTimer*)timer
-{
-//  [self output];
-}
-
 - (void) input
 {
-  [self setTimer];
-  [self output];
-}
-
-- (void) setTimer
-{
-  [NSTimer scheduledTimerWithTimeInterval:10
-    target:self
-    selector:@selector(doSomething:)
-    userInfo:nil
-    repeats:YES];
+  [self.data.backendFacade getSnapshotsRequest:^(LSSnapshotInfo* snapshotInfo)
+  {
+    if (!self.isBlocked)
+    {
+      [self output];
+    }
+  }];
+  [self forwardBlock];
 }
 
 @end

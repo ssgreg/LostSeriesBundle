@@ -14,6 +14,7 @@
 // forwards
 @class LSShowInfo;
 @class LSSubscriptionInfo;
+@class LSSnapshotInfo;
 
 
 //
@@ -35,6 +36,7 @@
 - (void) getSubscriptionInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler;
 - (void) getUnwatchedEpisodesInfoArrayByCDID:(LSCDID*)cdid replyHandler:(void (^)(NSArray*))handler;
 - (void) setUnwatchedEpisodesByCDID:(LSCDID*)cdid episodesUnwatched:(NSArray*)episodesUnwatched flagRemove:(BOOL)flagRemove replyHandler:(void (^)(BOOL result))handler;
+- (void) getSnapshotsRequest:(void (^)(LSSnapshotInfo*))handler;
 
 @end
 
@@ -86,4 +88,12 @@
 @property NSString* idShow;
 @property NSInteger numberSeason;
 @property NSInteger numberEpisode;
+@end
+
+
+//
+// LSSnapshotInfo
+//
+
+@interface LSSnapshotInfo : NSObject
 @end

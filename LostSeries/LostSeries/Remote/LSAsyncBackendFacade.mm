@@ -66,7 +66,6 @@
       showInfo.originalTitle = [NSString stringWithUTF8String:show.originaltitle().c_str()];
       showInfo.seasonNumber = show.seasonnumber();
       showInfo.showID = [NSString stringWithCString:show.id().c_str() encoding:NSASCIIStringEncoding];
-      showInfo.snapshot = [NSString stringWithCString:show.snapshot().c_str() encoding:NSASCIIStringEncoding];
       NSMutableArray* episodes = [NSMutableArray array];
       // episodes
       int episodesSize = show.episodes_size();
@@ -240,6 +239,25 @@
   
 }
 
+- (void) getSnapshotsRequest:(void (^)(LSSnapshotInfo*))handler
+{
+  LS::GetSnapshotsRequest snapshotRequest;
+  //
+  LSMessagePtr request(new LS::Message);
+  *request->mutable_getsnapshotsrequest() = snapshotRequest;
+  //
+  [theConnection sendRequest:request replyHandler: ^(LSMessagePtr reply, NSData* data)
+  {
+    NSAssert(reply->has_getsnapshotsresponse(), @"Bad response!");
+    //
+    LSSnapshotInfo* snapshotInfo = [[LSSnapshotInfo alloc] init];
+    dispatch_async(dispatch_get_main_queue(),
+    ^{
+      handler(snapshotInfo);
+    });
+  }];
+}
+
 
 - (NSDate*) serverStringToDate:(std::string const&) str
 {
@@ -298,4 +316,13 @@
 @synthesize idShow;
 @synthesize numberSeason;
 @synthesize numberEpisode;
+@end
+
+
+//
+// LSSnapshotInfo
+//
+
+@implementation LSSnapshotInfo
+
 @end

@@ -770,18 +770,6 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   inline ::std::string* release_id();
   inline void set_allocated_id(::std::string* id);
 
-  // required string snapshot = 100;
-  inline bool has_snapshot() const;
-  inline void clear_snapshot();
-  static const int kSnapshotFieldNumber = 100;
-  inline const ::std::string& snapshot() const;
-  inline void set_snapshot(const ::std::string& value);
-  inline void set_snapshot(const char* value);
-  inline void set_snapshot(const char* value, size_t size);
-  inline ::std::string* mutable_snapshot();
-  inline ::std::string* release_snapshot();
-  inline void set_allocated_snapshot(::std::string* snapshot);
-
   // repeated .LS.SeriesResponse.Episode episodes = 101;
   inline int episodes_size() const;
   inline void clear_episodes();
@@ -806,8 +794,6 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   inline void clear_has_episodenumber();
   inline void set_has_id();
   inline void clear_has_id();
-  inline void set_has_snapshot();
-  inline void clear_has_snapshot();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -816,11 +802,10 @@ class SeriesResponse_TVShow : public ::google_public::protobuf::Message {
   ::google_public::protobuf::int32 seasonnumber_;
   ::google_public::protobuf::int32 episodenumber_;
   ::std::string* id_;
-  ::std::string* snapshot_;
   ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_Episode > episodes_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(6 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -900,15 +885,30 @@ class SeriesResponse : public ::google_public::protobuf::Message {
   inline ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_TVShow >*
       mutable_shows();
 
+  // required string snapshot = 100;
+  inline bool has_snapshot() const;
+  inline void clear_snapshot();
+  static const int kSnapshotFieldNumber = 100;
+  inline const ::std::string& snapshot() const;
+  inline void set_snapshot(const ::std::string& value);
+  inline void set_snapshot(const char* value);
+  inline void set_snapshot(const char* value, size_t size);
+  inline ::std::string* mutable_snapshot();
+  inline ::std::string* release_snapshot();
+  inline void set_allocated_snapshot(::std::string* snapshot);
+
   // @@protoc_insertion_point(class_scope:LS.SeriesResponse)
  private:
+  inline void set_has_snapshot();
+  inline void clear_has_snapshot();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_TVShow > shows_;
+  ::std::string* snapshot_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(2 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -999,18 +999,6 @@ class ArtworkRequest : public ::google_public::protobuf::Message {
   inline bool thumbnail() const;
   inline void set_thumbnail(bool value);
 
-  // required string snapshot = 100;
-  inline bool has_snapshot() const;
-  inline void clear_snapshot();
-  static const int kSnapshotFieldNumber = 100;
-  inline const ::std::string& snapshot() const;
-  inline void set_snapshot(const ::std::string& value);
-  inline void set_snapshot(const char* value);
-  inline void set_snapshot(const char* value, size_t size);
-  inline ::std::string* mutable_snapshot();
-  inline ::std::string* release_snapshot();
-  inline void set_allocated_snapshot(::std::string* snapshot);
-
   // @@protoc_insertion_point(class_scope:LS.ArtworkRequest)
  private:
   inline void set_has_idshow();
@@ -1019,18 +1007,15 @@ class ArtworkRequest : public ::google_public::protobuf::Message {
   inline void clear_has_seasonnumber();
   inline void set_has_thumbnail();
   inline void clear_has_thumbnail();
-  inline void set_has_snapshot();
-  inline void clear_has_snapshot();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* idshow_;
   ::google_public::protobuf::int32 seasonnumber_;
   bool thumbnail_;
-  ::std::string* snapshot_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google_public::protobuf::uint32 _has_bits_[(3 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -1095,14 +1080,29 @@ class ArtworkResponse : public ::google_public::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
+  // required string snapshot = 1;
+  inline bool has_snapshot() const;
+  inline void clear_snapshot();
+  static const int kSnapshotFieldNumber = 1;
+  inline const ::std::string& snapshot() const;
+  inline void set_snapshot(const ::std::string& value);
+  inline void set_snapshot(const char* value);
+  inline void set_snapshot(const char* value, size_t size);
+  inline ::std::string* mutable_snapshot();
+  inline ::std::string* release_snapshot();
+  inline void set_allocated_snapshot(::std::string* snapshot);
+
   // @@protoc_insertion_point(class_scope:LS.ArtworkResponse)
  private:
+  inline void set_has_snapshot();
+  inline void clear_has_snapshot();
 
   ::google_public::protobuf::UnknownFieldSet _unknown_fields_;
 
+  ::std::string* snapshot_;
 
   mutable int _cached_size_;
-  ::google_public::protobuf::uint32 _has_bits_[1];
+  ::google_public::protobuf::uint32 _has_bits_[(1 + 31) / 32];
 
   friend void  protobuf_AddDesc_LostSeriesProtocol_2eproto();
   friend void protobuf_AssignDesc_LostSeriesProtocol_2eproto();
@@ -3495,76 +3495,6 @@ inline void SeriesResponse_TVShow::set_allocated_id(::std::string* id) {
   }
 }
 
-// required string snapshot = 100;
-inline bool SeriesResponse_TVShow::has_snapshot() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void SeriesResponse_TVShow::set_has_snapshot() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void SeriesResponse_TVShow::clear_has_snapshot() {
-  _has_bits_[0] &= ~0x00000020u;
-}
-inline void SeriesResponse_TVShow::clear_snapshot() {
-  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_->clear();
-  }
-  clear_has_snapshot();
-}
-inline const ::std::string& SeriesResponse_TVShow::snapshot() const {
-  return *snapshot_;
-}
-inline void SeriesResponse_TVShow::set_snapshot(const ::std::string& value) {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  snapshot_->assign(value);
-}
-inline void SeriesResponse_TVShow::set_snapshot(const char* value) {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  snapshot_->assign(value);
-}
-inline void SeriesResponse_TVShow::set_snapshot(const char* value, size_t size) {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  snapshot_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* SeriesResponse_TVShow::mutable_snapshot() {
-  set_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    snapshot_ = new ::std::string;
-  }
-  return snapshot_;
-}
-inline ::std::string* SeriesResponse_TVShow::release_snapshot() {
-  clear_has_snapshot();
-  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = snapshot_;
-    snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void SeriesResponse_TVShow::set_allocated_snapshot(::std::string* snapshot) {
-  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
-    delete snapshot_;
-  }
-  if (snapshot) {
-    set_has_snapshot();
-    snapshot_ = snapshot;
-  } else {
-    clear_has_snapshot();
-    snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
-  }
-}
-
 // repeated .LS.SeriesResponse.Episode episodes = 101;
 inline int SeriesResponse_TVShow::episodes_size() const {
   return episodes_.size();
@@ -3617,6 +3547,76 @@ SeriesResponse::shows() const {
 inline ::google_public::protobuf::RepeatedPtrField< ::LS::SeriesResponse_TVShow >*
 SeriesResponse::mutable_shows() {
   return &shows_;
+}
+
+// required string snapshot = 100;
+inline bool SeriesResponse::has_snapshot() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SeriesResponse::set_has_snapshot() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SeriesResponse::clear_has_snapshot() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SeriesResponse::clear_snapshot() {
+  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
+    snapshot_->clear();
+  }
+  clear_has_snapshot();
+}
+inline const ::std::string& SeriesResponse::snapshot() const {
+  return *snapshot_;
+}
+inline void SeriesResponse::set_snapshot(const ::std::string& value) {
+  set_has_snapshot();
+  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
+    snapshot_ = new ::std::string;
+  }
+  snapshot_->assign(value);
+}
+inline void SeriesResponse::set_snapshot(const char* value) {
+  set_has_snapshot();
+  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
+    snapshot_ = new ::std::string;
+  }
+  snapshot_->assign(value);
+}
+inline void SeriesResponse::set_snapshot(const char* value, size_t size) {
+  set_has_snapshot();
+  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
+    snapshot_ = new ::std::string;
+  }
+  snapshot_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SeriesResponse::mutable_snapshot() {
+  set_has_snapshot();
+  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
+    snapshot_ = new ::std::string;
+  }
+  return snapshot_;
+}
+inline ::std::string* SeriesResponse::release_snapshot() {
+  clear_has_snapshot();
+  if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = snapshot_;
+    snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void SeriesResponse::set_allocated_snapshot(::std::string* snapshot) {
+  if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
+    delete snapshot_;
+  }
+  if (snapshot) {
+    set_has_snapshot();
+    snapshot_ = snapshot;
+  } else {
+    clear_has_snapshot();
+    snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
+  }
 }
 
 // -------------------------------------------------------------------
@@ -3737,54 +3737,58 @@ inline void ArtworkRequest::set_thumbnail(bool value) {
   thumbnail_ = value;
 }
 
-// required string snapshot = 100;
-inline bool ArtworkRequest::has_snapshot() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+// -------------------------------------------------------------------
+
+// ArtworkResponse
+
+// required string snapshot = 1;
+inline bool ArtworkResponse::has_snapshot() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ArtworkRequest::set_has_snapshot() {
-  _has_bits_[0] |= 0x00000008u;
+inline void ArtworkResponse::set_has_snapshot() {
+  _has_bits_[0] |= 0x00000001u;
 }
-inline void ArtworkRequest::clear_has_snapshot() {
-  _has_bits_[0] &= ~0x00000008u;
+inline void ArtworkResponse::clear_has_snapshot() {
+  _has_bits_[0] &= ~0x00000001u;
 }
-inline void ArtworkRequest::clear_snapshot() {
+inline void ArtworkResponse::clear_snapshot() {
   if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
     snapshot_->clear();
   }
   clear_has_snapshot();
 }
-inline const ::std::string& ArtworkRequest::snapshot() const {
+inline const ::std::string& ArtworkResponse::snapshot() const {
   return *snapshot_;
 }
-inline void ArtworkRequest::set_snapshot(const ::std::string& value) {
+inline void ArtworkResponse::set_snapshot(const ::std::string& value) {
   set_has_snapshot();
   if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
     snapshot_ = new ::std::string;
   }
   snapshot_->assign(value);
 }
-inline void ArtworkRequest::set_snapshot(const char* value) {
+inline void ArtworkResponse::set_snapshot(const char* value) {
   set_has_snapshot();
   if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
     snapshot_ = new ::std::string;
   }
   snapshot_->assign(value);
 }
-inline void ArtworkRequest::set_snapshot(const char* value, size_t size) {
+inline void ArtworkResponse::set_snapshot(const char* value, size_t size) {
   set_has_snapshot();
   if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
     snapshot_ = new ::std::string;
   }
   snapshot_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* ArtworkRequest::mutable_snapshot() {
+inline ::std::string* ArtworkResponse::mutable_snapshot() {
   set_has_snapshot();
   if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
     snapshot_ = new ::std::string;
   }
   return snapshot_;
 }
-inline ::std::string* ArtworkRequest::release_snapshot() {
+inline ::std::string* ArtworkResponse::release_snapshot() {
   clear_has_snapshot();
   if (snapshot_ == &::google_public::protobuf::internal::kEmptyString) {
     return NULL;
@@ -3794,7 +3798,7 @@ inline ::std::string* ArtworkRequest::release_snapshot() {
     return temp;
   }
 }
-inline void ArtworkRequest::set_allocated_snapshot(::std::string* snapshot) {
+inline void ArtworkResponse::set_allocated_snapshot(::std::string* snapshot) {
   if (snapshot_ != &::google_public::protobuf::internal::kEmptyString) {
     delete snapshot_;
   }
@@ -3806,10 +3810,6 @@ inline void ArtworkRequest::set_allocated_snapshot(::std::string* snapshot) {
     snapshot_ = const_cast< ::std::string*>(&::google_public::protobuf::internal::kEmptyString);
   }
 }
-
-// -------------------------------------------------------------------
-
-// ArtworkResponse
 
 // -------------------------------------------------------------------
 

@@ -16,14 +16,6 @@
 // LSLocalCache
 //
 
-@interface LSLocalCache ()
-
-- (NSString*) fileForRequest:(ZmqMessagePtr)request;
-- (NSString*) fileNameFromSeriesRequest:(LS::SeriesRequest const&)request;
-- (NSString*) fileNameFromArtworkRequest:(LS::ArtworkRequest const&)request;
-
-@end
-
 @implementation LSLocalCache
 
 + (LSLocalCache*) localCache
@@ -44,32 +36,20 @@
 {
   std::deque<ZmqMessagePtr> result;
   //
-  NSString* fileNameWithReplyBody = [self fileForRequest:request];
-  if (!fileNameWithReplyBody)
+  NSString* fileForReplyBody = nil;
+  NSString* fileForReplyData = nil;
+  if (![self filesFromRequestMessage:ZmqParseMessage(request) fileForReplyBody:&fileForReplyBody fileForReplyData:&fileForReplyData])
   {
     return result;
   }
-  NSString* fileNameWithReplyData = [fileNameWithReplyBody stringByAppendingString:@"-data"];
-  //
-  NSFileManager* fileManager = [NSFileManager defaultManager];
-  if ([fileManager fileExistsAtPath:fileNameWithReplyBody])
+  // try to load body
+  if (ZmqMessagePtr body = [self readMessageFromFile:fileForReplyBody])
   {
-    NSData* body = [NSData dataWithContentsOfFile:fileNameWithReplyBody];
-    if (body && [body length] != 0)
+    result.push_back(body);
+    // try to load data
+    if (ZmqMessagePtr data = [self readMessageFromFile:fileForReplyData])
     {
-      ZmqMessagePtr bodyMessage(new zmq::message_t([body length]));
-      memcpy(bodyMessage->data(), [body bytes], bodyMessage->size());
-      result.push_back(bodyMessage);
-    }
-    if (!result.empty())
-    {
-      NSData* data = [NSData dataWithContentsOfFile:fileNameWithReplyData];
-      if (data && [data length] != 0)
-      {
-        ZmqMessagePtr dataMessage(new zmq::message_t([data length]));
-        memcpy(dataMessage->data(), [data bytes], dataMessage->size());
-        result.push_back(dataMessage);
-      }
+      result.push_back(data);
     }
   }
   return result;
@@ -77,79 +57,163 @@
 
 - (void) cacheReplyBody:(ZmqMessagePtr)replyBody andData:(ZmqMessagePtr)replyData forRequest:(ZmqMessagePtr)request
 {
-  NSString* fileNameWithReplyBody = [self fileForRequest:request];
-  if (!fileNameWithReplyBody)
+  LSMessagePtr requestMessage = ZmqParseMessage(request);
+  if (requestMessage->has_getsnapshotsrequest())
+  {
+    [self removeOutdatedFiles:replyBody];
+  }
+  else
+  {
+    [self writeReplyBody:replyBody andData:replyData forRequestMessage:requestMessage];
+  }
+}
+
+- (void) removeOutdatedFiles:(ZmqMessagePtr)replyBody
+{
+  LS::GetSnapshotsResponse responseSnapshots = ZmqParseMessage(replyBody)->getsnapshotsresponse();
+  // series
+  LSMessagePtr responseSeries = [self cachedResponse:[self fileSeriesResponse]];
+  if (responseSeries && responseSnapshots.snapshotseries() != responseSeries->seriesresponse().snapshot())
+  {
+    [self removeFromCache:[self fileSeriesResponse]];
+  }
+  // artworks
+  int artworksCount = responseSnapshots.snapshotsartwork_size();
+  for (int artworkIndex = 0; artworkIndex < artworksCount; ++artworkIndex)
+  {
+    LS::GetSnapshotsResponse_SnapshotArtwork snapshotArtwork = responseSnapshots.snapshotsartwork(artworkIndex);
+    // thumbnail
+    NSString* fileArtworkResponseThumbnail = [self fileArtworkRequest:snapshotArtwork.idshow() seasonNumber:snapshotArtwork.numberseason() thumbnail:YES];
+    LSMessagePtr responseArtworkThumbnail = [self cachedResponse:fileArtworkResponseThumbnail];
+    if (responseArtworkThumbnail && snapshotArtwork.snapshot() != responseArtworkThumbnail->artworkresponse().snapshot())
+    {
+      [self removeFromCache:fileArtworkResponseThumbnail];
+    }
+    // full-size
+    NSString* fileArtworkResponse = [self fileArtworkRequest:snapshotArtwork.idshow() seasonNumber:snapshotArtwork.numberseason() thumbnail:NO];
+    LSMessagePtr responseArtwork = [self cachedResponse:fileArtworkResponse];
+    if (responseArtwork && snapshotArtwork.snapshot() != responseArtwork->artworkresponse().snapshot())
+    {
+      [self removeFromCache:fileArtworkResponse];
+    }
+  }
+  // change requests
+  [self removeFromCache:[self fileGetSubscriptionRequest]];
+  [self removeFromCache:[self fileGetUnwatchedSeriesRequest]];
+}
+
+- (void) writeReplyBody:(ZmqMessagePtr)replyBody andData:(ZmqMessagePtr)replyData forRequestMessage:(LSMessagePtr)request
+{
+  NSString* fileForReplyBody = nil;
+  NSString* fileForReplyData = nil;
+  if (![self filesFromRequestMessage:request fileForReplyBody:&fileForReplyBody fileForReplyData:&fileForReplyData])
   {
     return;
   }
-  NSString* fileNameWithReplyData = [fileNameWithReplyBody stringByAppendingString:@"-data"];
   //
-  NSError* writeError = nil;
-  NSData* body = [NSData dataWithBytes:replyBody->data() length:replyBody->size()];
-  [body writeToFile:fileNameWithReplyBody options:NSDataWritingAtomic error:&writeError];
-  if (!writeError && replyData)
+  if ([self writeMessage:replyBody toFile:fileForReplyBody])
   {
-    NSData* data = [NSData dataWithBytes:replyData->data() length:replyData->size()];
-    [data writeToFile:fileNameWithReplyData options:NSDataWritingAtomic error:&writeError];
-    if (writeError)
+    if (replyData && ![self writeMessage:replyData toFile:fileForReplyData])
     {
-      [[NSFileManager defaultManager] removeItemAtPath:fileNameWithReplyData error:&writeError];
+      [[NSFileManager defaultManager] removeItemAtPath:fileForReplyData error:nil];
     }
   }
 }
 
-- (NSString*) fileForRequest:(ZmqMessagePtr)request
+- (BOOL) filesFromRequestMessage:(LSMessagePtr)message fileForReplyBody:(NSString**)fileForReplyBody fileForReplyData:(NSString**)fileForReplyData
 {
-  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString* pathToDocuments = [paths objectAtIndex:0];
-  NSString* fileName = nil;
-  //
-  LS::Message message;
-  message.ParseFromArray(request->data(), (int)request->size());
-  if (message.has_seriesrequest())
+  if (message->has_seriesrequest())
   {
-    fileName = [self fileNameFromSeriesRequest:message.seriesrequest()];
+    *fileForReplyBody = [self fileSeriesResponse];
   }
-  else if (message.has_artworkrequest())
+  else if (message->has_artworkrequest())
   {
-    fileName = [self fileNameFromArtworkRequest:message.artworkrequest()];
+    LS::ArtworkRequest artworkRequest = message->artworkrequest();
+    *fileForReplyBody = [self fileArtworkRequest:artworkRequest.idshow() seasonNumber:artworkRequest.seasonnumber() thumbnail:artworkRequest.thumbnail()];
   }
-  else if (message.has_getsubscriptionrequest())
+  else if (message->has_getsubscriptionrequest())
   {
-    fileName = [self fileNameFromGetSubscriptionRequest:message.getsubscriptionrequest()];
+    *fileForReplyBody = [self fileGetSubscriptionRequest];
   }
-  else if (message.has_getunwatchedseriesrequest())
+  else if (message->has_getunwatchedseriesrequest())
   {
-    fileName = [self fileNameFromGetUnwatchedSeriesRequest:message.getunwatchedseriesrequest()];
+    *fileForReplyBody = [self fileGetUnwatchedSeriesRequest];
   }
   else
   {
-    return nil;
+    return NO;
   }
-  //
-  return [pathToDocuments stringByAppendingFormat:@"/%@", fileName];
+  *fileForReplyData = [*fileForReplyBody stringByAppendingString:@"-data"];
+  return YES;
 }
 
-- (NSString*) fileNameFromSeriesRequest:(LS::SeriesRequest const&)request
+- (NSString*) fileSeriesResponse
 {
-  return [NSString stringWithFormat:@"seriesRequest"];
+  NSString* file = [NSString stringWithFormat:@"seriesRequest"];
+  return [self.dirPath stringByAppendingPathComponent:file];
 }
 
-- (NSString*) fileNameFromArtworkRequest:(LS::ArtworkRequest const&)request
+- (NSString*) fileArtworkRequest:(std::string const&)idShow seasonNumber:(int)seasonNumber thumbnail:(BOOL)thumbnail
 {
-//  NSString* snapshot = [NSString stringWithCString:request.snapshot().c_str() encoding:NSASCIIStringEncoding];
-  NSString* showID = [NSString stringWithCString:request.idshow().c_str() encoding:NSASCIIStringEncoding];
-  return [NSString stringWithFormat:@"%@-%d-%d", showID, request.seasonnumber(), request.thumbnail()];
+  NSString* showID = [NSString stringWithCString:idShow.c_str() encoding:NSASCIIStringEncoding];
+  NSString* file = [NSString stringWithFormat:@"%@-%d-%d", showID, seasonNumber, thumbnail];
+  return [self.dirPath stringByAppendingPathComponent:file];
 }
 
-- (NSString*) fileNameFromGetSubscriptionRequest:(LS::GetSubscriptionRequest const&)request
+- (NSString*) fileGetSubscriptionRequest
 {
-  return [NSString stringWithFormat:@"getSubscriptionsRequest"];
+  NSString* file = [NSString stringWithFormat:@"getSubscriptionsRequest"];
+  return [self.dirPath stringByAppendingPathComponent:file];
 }
 
-- (NSString*) fileNameFromGetUnwatchedSeriesRequest:(LS::GetUnwatchedSeriesRequest const&)request
+- (NSString*) fileGetUnwatchedSeriesRequest
 {
-  return [NSString stringWithFormat:@"getUnwatchedSeriesRequest"];
+  NSString* file = [NSString stringWithFormat:@"getUnwatchedSeriesRequest"];
+  return [self.dirPath stringByAppendingPathComponent:file];
+}
+
+- (NSString*) dirPath
+{
+  return NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+}
+
+- (BOOL) writeMessage:(ZmqMessagePtr)message toFile:(NSString*)file
+{
+  NSError* error = nil;
+  [[self dataFromMessage:message] writeToFile:file options:NSDataWritingAtomic error:&error];
+  return !error;
+}
+
+- (ZmqMessagePtr) readMessageFromFile:(NSString*)file
+{
+  NSData* data = [NSData dataWithContentsOfFile:file];
+  return [self messageFromData:data];
+}
+
+- (NSData*) dataFromMessage:(ZmqMessagePtr)message
+{
+  return [NSData dataWithBytes:message->data() length:message->size()];
+}
+
+- (ZmqMessagePtr) messageFromData:(NSData*)data
+{
+  if (!data || !data.length)
+  {
+    return ZmqMessagePtr();
+  }
+  ZmqMessagePtr message(new zmq::message_t([data length]));
+  memcpy(message->data(), [data bytes], message->size());
+  return message;
+}
+
+- (void) removeFromCache:(NSString*)file
+{
+  [[NSFileManager defaultManager] removeItemAtPath:file error:nil];
+}
+
+- (LSMessagePtr) cachedResponse:(NSString*)file
+{
+  return ZmqParseMessage([self readMessageFromFile:file]);
 }
 
 @end
