@@ -516,8 +516,8 @@ SYNTHESIZE_WL_VIEW_ACCESSOR(LSViewRouterNavigation);
   theWLinkRouterNavigation = [[LSWLinkRouterNavigation alloc] initWithView:self];
   //
   theWorkflow = WFLinkWorkflow(
-      [[LSWLinkBaseRefresher alloc] initWithData:model]
-    , WFSplitWorkflowWithOutputUsingAnd(
+//      [[LSWLinkBaseRefresher alloc] initWithData:model]
+      WFSplitWorkflowWithOutputUsingAnd(
           WFLinkWorkflow(
               [[LSWLinkBaseWaitForDeviceToken alloc] init]
             , [[LSWLinkBaseGetterShowsFavorite alloc] initWithData:model]

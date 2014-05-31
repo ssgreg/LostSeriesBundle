@@ -8,6 +8,7 @@
 
 #import "LSModelBase.h"
 #import "CachingServer/LSCachingServer.h"
+#import "Jet/JetNetworkReachibility.h"
 
 
 
@@ -71,6 +72,8 @@
   //
   LSShowAlbumCellModel* theShowForDetails;
   BOOL theFlagIsShowForDetailsFollowing;
+  //
+  JetNetworkReachibility* theNetworkReachibility;
 }
 
 - (id) init
@@ -80,6 +83,7 @@
     return nil;
   }
   //
+  theNetworkReachibility = [JetNetworkReachibility start];
   theCachingServer = [[LSCachingServer alloc] init];
   theBackendFacade = [LSAsyncBackendFacade backendFacade];
   theQueueNotification = dispatch_queue_create("modelbase.notification.queue", NULL);

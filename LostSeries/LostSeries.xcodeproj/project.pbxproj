@@ -36,6 +36,7 @@
 		EEB1182D187F17D500337023 /* LostSeriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB1182C187F17D500337023 /* LostSeriesTests.m */; };
 		EEB11837187F183700337023 /* libzmq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11836187F183700337023 /* libzmq.a */; };
 		EEB11839187F1ABC00337023 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEB11838187F1ABC00337023 /* libprotobuf.a */; };
+		EEC743421933742A003CEA56 /* JetNetworkReachibility.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC743411933742A003CEA56 /* JetNetworkReachibility.m */; };
 		EECD4CFC1900EC200092ECA7 /* JetBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFB1900EC200092ECA7 /* JetBadge.m */; };
 		EECD4D00190151E40092ECA7 /* LSWLinkActionChangeFollowing.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4CFF190151E40092ECA7 /* LSWLinkActionChangeFollowing.m */; };
 		EECD4D031906255E0092ECA7 /* JetPartialArray.m in Sources */ = {isa = PBXBuildFile; fileRef = EECD4D021906255E0092ECA7 /* JetPartialArray.m */; };
@@ -147,6 +148,8 @@
 		EEB1182C187F17D500337023 /* LostSeriesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LostSeriesTests.m; sourceTree = "<group>"; };
 		EEB11836187F183700337023 /* libzmq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzmq.a; path = "../../Frameworks/zeromq-4.0.3/build/lib/libzmq.a"; sourceTree = "<group>"; };
 		EEB11838187F1ABC00337023 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = "../../Frameworks/protobuf-2.5.0/protobuf/lib/libprotobuf.a"; sourceTree = "<group>"; };
+		EEC743401933742A003CEA56 /* JetNetworkReachibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JetNetworkReachibility.h; path = Jet/JetNetworkReachibility.h; sourceTree = "<group>"; };
+		EEC743411933742A003CEA56 /* JetNetworkReachibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetNetworkReachibility.m; path = Jet/JetNetworkReachibility.m; sourceTree = "<group>"; };
 		EECD4CFA1900EC200092ECA7 /* JetBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JetBadge.h; path = Jet/Controls/JetBadge.h; sourceTree = "<group>"; };
 		EECD4CFB1900EC200092ECA7 /* JetBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JetBadge.m; path = Jet/Controls/JetBadge.m; sourceTree = "<group>"; };
 		EECD4CFE190151E40092ECA7 /* LSWLinkActionChangeFollowing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSWLinkActionChangeFollowing.h; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 		EED97FE618B0D4FA00CF68E3 /* LSShowsFollowingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSShowsFollowingController.m; path = LostSeries/LSShowsFollowingController.m; sourceTree = "<group>"; };
 		EED97FE818B0DE3C00CF68E3 /* LSModelBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSModelBase.h; path = LostSeries/LSModelBase.h; sourceTree = "<group>"; };
 		EED97FE918B0DE3C00CF68E3 /* LSModelBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSModelBase.m; path = LostSeries/LSModelBase.m; sourceTree = "<group>"; };
+		EEEED635192F785D00B96841 /* libsystem_configuration.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsystem_configuration.dylib; path = usr/lib/system/libsystem_configuration.dylib; sourceTree = SDKROOT; };
 		EEF8749918A95D2900F74CB6 /* LSApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LSApplication.h; path = Logic/LSApplication.h; sourceTree = "<group>"; };
 		EEF8749A18A95D2900F74CB6 /* LSApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LSApplication.m; path = Logic/LSApplication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -315,6 +319,7 @@
 		EEB11800187F17D500337023 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EEEED635192F785D00B96841 /* libsystem_configuration.dylib */,
 				EEB11838187F1ABC00337023 /* libprotobuf.a */,
 				EEB11836187F183700337023 /* libzmq.a */,
 				EEB11803187F17D500337023 /* CoreGraphics.framework */,
@@ -376,6 +381,8 @@
 		EECD4CF81900EAFA0092ECA7 /* Jet */ = {
 			isa = PBXGroup;
 			children = (
+				EEC743401933742A003CEA56 /* JetNetworkReachibility.h */,
+				EEC743411933742A003CEA56 /* JetNetworkReachibility.m */,
 				EECD4CF91900EC130092ECA7 /* Controls */,
 				EECD4D011906255E0092ECA7 /* JetPartialArray.h */,
 				EECD4D021906255E0092ECA7 /* JetPartialArray.m */,
@@ -578,6 +585,7 @@
 				EE6D79B4188E3E29004A0D4B /* LSCachingServer.mm in Sources */,
 				EEB0166A18E18C1400B25965 /* LSControllerShowDetails.m in Sources */,
 				EE1AA5A01888F28E004B6E7D /* LSConnection.mm in Sources */,
+				EEC743421933742A003CEA56 /* JetNetworkReachibility.m in Sources */,
 				EE8A964518EED5D500C24E06 /* LSCDID.m in Sources */,
 				EE05CC1418C600A800491188 /* LSControllerCollectionBase.m in Sources */,
 				EEB1180E187F17D500337023 /* main.m in Sources */,
@@ -739,6 +747,7 @@
 					"$(inherited)",
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/lib",
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/lib",
+					"$(SDKROOT)/usr/lib/system",
 				);
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -772,6 +781,7 @@
 					"$(inherited)",
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/zeromq-4.0.3/build/lib",
 					"/Users/igreg/Documents/Sandbox/Home/Frameworks/protobuf-2.5.0/protobuf/lib",
+					"$(SDKROOT)/usr/lib/system",
 				);
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";

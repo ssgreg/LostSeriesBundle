@@ -9,14 +9,79 @@
 // LS
 #import "LSCachingServer.h"
 #import "LSLocalCache.h"
+#import "JetNetworkReachibility.h"
 // Protobuf
 #include <Protobuf.Generated/LostSeriesProtocol.h>
 // ZeroMQ
 #include <ZeroMQ/ZeroMQ.h>
 
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+
+
 
 namespace Cache
 {
+  
+  //
+  // ContinuousCounter
+  //
+  class ContinuousCounter
+  {
+  public:
+    ContinuousCounter(NSString* name);
+    
+  // interface
+  public:
+    NSInteger Next();
+    NSInteger Get();
+    
+  private:
+    NSInteger TryToReadCounter() const;
+    NSString* FilePath() const;
+    
+  public:
+    NSString* TheName;
+    NSInteger TheCachedID;
+  };
+  
+  
+  ContinuousCounter::ContinuousCounter(NSString* name)
+    : TheName(name)
+    , TheCachedID(TryToReadCounter())
+  {
+  }
+  
+  NSInteger ContinuousCounter::Next()
+  {
+    ++TheCachedID;
+    NSData* data = [NSKeyedArchiver archivedDataWithRootObject:[NSNumber numberWithInteger:TheCachedID]];
+    NSError* error = nil;
+    [data writeToFile:FilePath() options:NSDataWritingAtomic error:&error];
+    return TheCachedID;
+  }
+  
+  NSInteger ContinuousCounter::Get()
+  {
+    return TheCachedID;
+  }
+  
+  NSInteger ContinuousCounter::TryToReadCounter() const
+  {
+    NSData* data = [NSData dataWithContentsOfFile:FilePath()];
+    return data
+      ? [[NSKeyedUnarchiver unarchiveObjectWithData:data] integerValue]
+      : NSInteger();
+  }
+
+  NSString* ContinuousCounter::FilePath() const
+  {
+    NSString* path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    return [path stringByAppendingPathComponent:TheName];
+  }
+
+  typedef std::shared_ptr<ContinuousCounter> ContinuousCounterPtr;
+  
   
   //
   // RequestInfo
@@ -25,31 +90,38 @@ namespace Cache
   class RequestInfo
   {
   public:
-    RequestInfo(ZmqMessagePtr requestBody, int64_t requestID);
+    RequestInfo(ZmqMultipartMessage request);
     
   // interface
   public:
+    ZmqMultipartMessage Request() const;
     ZmqMessagePtr RequestBody() const;
-    int64_t RequestID() const;
+    NSInteger RequestID() const;
     
   private:
-    ZmqMessagePtr TheRequestBody;
-    int64_t TheRequestID;
+    ZmqMultipartMessage TheRequest;
   };
   
-  
-  RequestInfo::RequestInfo(ZmqMessagePtr requestBody, int64_t requestID)
-    : TheRequestBody(requestBody), TheRequestID(requestID)
+
+  ZmqMultipartMessage RequestInfo::Request() const
+  {
+    return TheRequest;
+  }
+
+  RequestInfo::RequestInfo(ZmqMultipartMessage request)
+    : TheRequest(ZmqCopyMultipartMessage(request))
   {}
 
   ZmqMessagePtr RequestInfo::RequestBody() const
   {
-    return TheRequestBody;
+    return TheRequest.empty()
+      ? ZmqMessagePtr()
+      : TheRequest.back();
   }
-  
-  int64_t RequestInfo::RequestID() const
+
+  NSInteger RequestInfo::RequestID() const
   {
-    return TheRequestID;
+    return ZmqParseHeaderMessage(TheRequest.front());
   }
   
   typedef std::list<RequestInfo> RequestInfoList;
@@ -62,7 +134,8 @@ namespace Cache
   struct RequestInfoStorage
   {
     virtual void Put(RequestInfo const& requestInfo) = 0;
-    virtual void Remove(int64_t requestID) = 0;
+    virtual void Remove(NSInteger requestID) = 0;
+    virtual RequestInfoList GetAll() = 0;
   };
   
   typedef std::shared_ptr<RequestInfoStorage> RequestInfoStoragePtr;
@@ -80,16 +153,13 @@ namespace Cache
   // RequestInfoStorage interface
   public:
     virtual void Put(RequestInfo const& requestInfo);
-    virtual void Remove(int64_t requestID);
-    
-  // interface
-  public:
-    RequestInfoList Clear();
+    virtual void Remove(NSInteger requestID);
+    virtual RequestInfoList GetAll();
    
   private:
     NSString* FileNamePrefix() const;
     NSString* DirPath() const;
-    NSString* FilePath(int64_t requestID) const;
+    NSString* FilePath(NSInteger requestID) const;
   };
 
   
@@ -103,13 +173,13 @@ namespace Cache
     [data writeToFile:FilePath(requestInfo.RequestID()) options:NSDataWritingAtomic error:&error];
   }
 
-  void RequestInfoLocalStorage::Remove(int64_t requestID)
+  void RequestInfoLocalStorage::Remove(NSInteger requestID)
   {
     NSError* error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:FilePath(requestID) error:&error];
   }
 
-  RequestInfoList RequestInfoLocalStorage::Clear()
+  RequestInfoList RequestInfoLocalStorage::GetAll()
   {
     NSPredicate* filter = [NSPredicate predicateWithFormat:@"self BEGINSWITH %@", FileNamePrefix()];
     NSArray* filesAll = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DirPath() error:nil];
@@ -127,8 +197,12 @@ namespace Cache
       ZmqMessagePtr requestBody(new zmq::message_t([dataRequestBody length]));
       memcpy(requestBody->data(), [dataRequestBody bytes], requestBody->size());
       //
-      result.push_back(RequestInfo(requestBody, requestID));
-      Remove(requestID);
+      ZmqMultipartMessage request;
+      request.push_back(ZmqMakeHeaderMessage(requestID));
+      request.push_back(ZmqZeroFrame());
+      request.push_back(requestBody);
+      //
+      result.push_back(RequestInfo(request));
     }
     return result;
   }
@@ -143,9 +217,9 @@ namespace Cache
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
   }
   
-  NSString* RequestInfoLocalStorage::FilePath(int64_t requestID) const
+  NSString* RequestInfoLocalStorage::FilePath(NSInteger requestID) const
   {
-    NSString* fileName = [NSString stringWithFormat:@"%@%lld", FileNamePrefix(), requestID];
+    NSString* fileName = [NSString stringWithFormat:@"%@%ld", FileNamePrefix(), requestID];
     return [DirPath() stringByAppendingPathComponent:fileName];
   }
   
@@ -159,152 +233,46 @@ namespace Cache
   class RequestQueue
   {
   public:
-    RequestQueue(RequestInfoStoragePtr storage);
+    RequestQueue();
     
   // interface
   public:
-    void Push(ZmqMultipartMessage const& request);
-    ZmqMessagePtr TryToPop(ZmqMultipartMessage const& reply);
+    RequestInfo Push(ZmqMultipartMessage const& request);
+    RequestInfo TryToPop(ZmqMultipartMessage const& reply);
+    RequestInfoList GetAll() const;
     
   private:
-    RequestInfoStoragePtr TheStorage;
     RequestInfoList TheRequests;
   };
 
   
-  RequestQueue::RequestQueue(RequestInfoStoragePtr storage)
-    : TheStorage(storage)
+  RequestQueue::RequestQueue()
   {}
 
-  void RequestQueue::Push(ZmqMultipartMessage const& request)
+  RequestInfo RequestQueue::Push(ZmqMultipartMessage const& request)
   {
-    TheRequests.push_back(RequestInfo(ZmqCopyFrame(request.back()), ZmqParseHeaderMessage(request.front())));
-    TheStorage->Put(TheRequests.back());
+    RequestInfo requestInfo = RequestInfo(request);
+    TheRequests.push_back(requestInfo);
+    return requestInfo;
   }
   
-  ZmqMessagePtr RequestQueue::TryToPop(ZmqMultipartMessage const& reply)
+  RequestInfo RequestQueue::TryToPop(ZmqMultipartMessage const& reply)
   {
     RequestInfo requestTop = TheRequests.front();
     if (requestTop.RequestID() == ZmqParseHeaderMessage(reply.front()))
     {
       TheRequests.pop_front();
-      TheStorage->Remove(requestTop.RequestID());
-      return requestTop.RequestBody();
+      return requestTop;
     }
-    return ZmqMessagePtr();
+    return RequestInfo(ZmqMultipartMessage());
+  }
+
+  RequestInfoList RequestQueue::GetAll() const
+  {
+    return TheRequests;
   }
   
   typedef std::shared_ptr<RequestQueue> RequestQueuePtr;
-
-  
-  //
-  // RequestManager
-  //
-  
-  class RequestManager
-  {
-  public:
-    RequestManager(RequestInfoStoragePtr storage);
-
-  // interface
-  public:
-    ZmqMultipartMessage ReplyForRequest(ZmqMultipartMessage const& request);
-    ZmqMultipartMessage ProcessRequest(ZmqMultipartMessage const& request);
-    ZmqMultipartMessage ProcessReply(ZmqMultipartMessage const& reply);
-  
-  private:
-    ZmqMultipartMessage MakeReply(ZmqMultipartMessage const& request, ZmqMultipartMessage const& replyCached);
-    ZmqMultipartMessage WrapRequest(ZmqMultipartMessage request);
-    ZmqMultipartMessage UnwrapReply(ZmqMultipartMessage const& replyWrapped);
-    std::pair<ZmqMessagePtr, ZmqMessagePtr> GetBodyAndData(ZmqMultipartMessage const& reply);
-    
-  private:
-    Cache::RequestQueuePtr TheRequestQueue;
-    NSInteger TheMessageID;
-    LSLocalCache* TheLocalCache;
-  };
-
-  RequestManager::RequestManager(RequestInfoStoragePtr storage)
-    : TheRequestQueue(new Cache::RequestQueue(storage))
-    , TheMessageID(0)
-  {
-    TheLocalCache = [LSLocalCache localCache];
-  }
-  
-  ZmqMultipartMessage RequestManager::ReplyForRequest(ZmqMultipartMessage const& request)
-  {
-    ZmqMultipartMessage replyCached = [TheLocalCache cachedReplyForRequest:GetBodyAndData(request).first];
-    return !replyCached.empty()
-      ? MakeReply(request, replyCached)
-      : ZmqMultipartMessage();
-  }
-  
-  ZmqMultipartMessage RequestManager::ProcessRequest(ZmqMultipartMessage const& request)
-  {
-    ZmqMultipartMessage requestWrapped = WrapRequest(request);
-    TheRequestQueue->Push(requestWrapped);
-    return requestWrapped;
-  }
-  
-  ZmqMultipartMessage RequestManager::ProcessReply(ZmqMultipartMessage const& replyWrapped)
-  {
-    ZmqMessagePtr requestBodyCached = TheRequestQueue->TryToPop(replyWrapped);
-    if (!requestBodyCached)
-    {
-      // unexpected reply, drop it
-      return ZmqMultipartMessage();
-    }
-    std::pair<ZmqMessagePtr, ZmqMessagePtr> bodyAndData = GetBodyAndData(replyWrapped);
-    [TheLocalCache cacheReplyBody:bodyAndData.first andData:bodyAndData.second forRequest:requestBodyCached];
-    //
-    return UnwrapReply(replyWrapped);
-  }
- 
-  ZmqMultipartMessage RequestManager::MakeReply(ZmqMultipartMessage const& request, ZmqMultipartMessage const& replyCached)
-  {
-    ZmqMultipartMessage reply;
-    // use router header, our header and zero frame of request
-    reply.insert(reply.end(), request.begin(), --request.end());
-    // use reply body and data if exists
-    reply.insert(reply.end(), replyCached.begin(), replyCached.end());
-    return reply;
-  }
-
-  std::pair<ZmqMessagePtr, ZmqMessagePtr> RequestManager::GetBodyAndData(ZmqMultipartMessage const& reply)
-  {
-    std::pair<ZmqMessagePtr, ZmqMessagePtr> result;
-    for (auto it = reply.begin(); it != reply.end(); ++it)
-    {
-      if (!(*it)->size())
-      {
-        if (++it != reply.end())
-        {
-          result.first = *it;
-        }
-        if (++it != reply.end())
-        {
-          result.second = *it;
-        }
-        break;
-      }
-    }
-    return result;
-  }
-
-  ZmqMultipartMessage RequestManager::WrapRequest(ZmqMultipartMessage request)
-  {
-    // add wrap id
-    request.push_front(ZmqMakeHeaderMessage(++TheMessageID));
-    return request;
-  }
-
-  ZmqMultipartMessage RequestManager::UnwrapReply(ZmqMultipartMessage const& replyWrapped)
-  {
-    // skip wrap id
-    return std::deque<ZmqMessagePtr>(++replyWrapped.begin(), replyWrapped.end());
-  }
-  
-  typedef std::shared_ptr<RequestManager> RequestManagerPtr;
   
 }
 
@@ -315,11 +283,16 @@ namespace Cache
 
 @implementation LSCachingServer
 {
-  Cache::RequestInfoLocalStoragePtr theRequestInfoStorage;
-  Cache::RequestManagerPtr theRequestManager;
+  Cache::ContinuousCounterPtr theMessageCounter;
+  Cache::RequestInfoStoragePtr theRequestInfoStorage;
+  Cache::RequestQueuePtr theRequestQueue;
+  LSLocalCache* theLocalCache;
   //
   ZmqSocketPtr theFrontendSocket;
   ZmqSocketPtr theBackendSocket;
+  //
+  ZmqSocketPtr theFrontendSocket1;
+  ZmqSocketPtr theBackendSocket1;
 }
 
 + (LSCachingServer*) cachingServer
@@ -334,26 +307,86 @@ namespace Cache
     return nil;
   }
   //
-  theRequestInfoStorage.reset(new Cache::RequestInfoLocalStorage);
-  theRequestManager.reset(new Cache::RequestManager(theRequestInfoStorage));
-  //
   [self setupSockets];
-  [self resendUnconfirmedRequests];
   [self startPollQueue];
   //
+  [[NSNotificationCenter defaultCenter]
+    addObserverForName:JetNetworkReachibilityDidChange
+    object:nil
+    queue:[NSOperationQueue mainQueue]
+    usingBlock:^(NSNotification* notification)
+  {
+    theBackendSocket1->send("Test", 4);
+  }];
+
   return self;
+}
+
+- (BOOL) string:(char const*)str hasPrefix:(char const*)prefix
+{
+  while (*str && *prefix)
+  {
+    if (*str++ != *prefix++)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+- (NSString *)getIPAddress
+{
+  char const* ipCellular = nil;
+  char const* ipWiFi = nil;
+  char const* ipLocal = "127.0.0.1";
+  
+  ifaddrs* interfaces = nil;
+  if (getifaddrs(&interfaces) == 0)
+  {
+    ifaddrs* cursor = interfaces;
+    while(cursor)
+    {
+      ipLocal = inet_ntoa(((struct sockaddr_in *)cursor->ifa_addr)->sin_addr);
+      if(cursor->ifa_addr->sa_family == AF_INET)
+      {
+        if ([self string:cursor->ifa_name hasPrefix:"lo"])
+        {
+          ipLocal = inet_ntoa(((struct sockaddr_in *)cursor->ifa_addr)->sin_addr);
+        }
+        else if ([self string:cursor->ifa_name hasPrefix:"en"])
+        {
+          ipWiFi = inet_ntoa(((struct sockaddr_in *)cursor->ifa_addr)->sin_addr);
+        }
+        else if ([self string:cursor->ifa_name hasPrefix:"pdp_ip"])
+        {
+          ipCellular = inet_ntoa(((struct sockaddr_in *)cursor->ifa_addr)->sin_addr);
+        }
+      }
+      cursor = cursor->ifa_next;
+    }
+  }
+  freeifaddrs(interfaces);
+  return [NSString stringWithUTF8String:ipWiFi ? ipWiFi : (ipCellular ? ipCellular : ipLocal)];
 }
 
 - (void) startPollQueue
 {
   dispatch_async(dispatch_queue_create("caching_server.poll.queue", NULL),
   ^{
+    theLocalCache = [LSLocalCache localCache];
+    theMessageCounter.reset(new Cache::ContinuousCounter(@"caching_server.message.counter"));
+    theRequestInfoStorage.reset(new Cache::RequestInfoLocalStorage);
+    theRequestQueue.reset(new Cache::RequestQueue);
+    [self resendUnconfirmedRequestsFromLastSession];
+    //
     while (YES)
     {
       zmq_pollitem_t items [] =
       {
         { *theFrontendSocket, 0, ZMQ_POLLIN, 0 },
         { *theBackendSocket, 0, ZMQ_POLLIN, 0 },
+        { *theFrontendSocket1, 0, ZMQ_POLLIN, 0 },
       };
       if (zmq::poll(items, sizeof(items) / sizeof(zmq_pollitem_t)) <= 0)
       {
@@ -362,54 +395,166 @@ namespace Cache
       if (items[0].revents & ZMQ_POLLIN)
       {
         ZmqMultipartMessage request = ZmqRecieveMultipartMessage(theFrontendSocket);
-        ZmqMultipartMessage reply = theRequestManager->ReplyForRequest(request);
+        ZmqMultipartMessage reply = [self replyForRequest:request];
         // use cached reply or ask server for it
         !reply.empty()
           ? ZmqSendMultipartMessage(theFrontendSocket, reply)
-          : ZmqSendMultipartMessage(theBackendSocket, theRequestManager->ProcessRequest(request));
+          : ZmqSendMultipartMessage(theBackendSocket, [self processRequest:request]);
       }
       else if (items[1].revents & ZMQ_POLLIN)
       {
         ZmqMultipartMessage replyRaw = ZmqRecieveMultipartMessage(theBackendSocket);
-        ZmqMultipartMessage reply = theRequestManager->ProcessReply(replyRaw);
+        ZmqMultipartMessage reply = [self processReply:replyRaw];
         // drop reply that we dont wait
         if (reply.empty())
         {
           continue;
         }
-        // drop reply w/o message id (usually resended requests)
+        // drop reply w/o client id (usually resended requests)
         if (!reply.front()->size())
         {
           continue;
         }
         ZmqSendMultipartMessage(theFrontendSocket, reply);
       }
+      else if (items[2].revents & ZMQ_POLLIN)
+      {
+        ZmqMultipartMessage request = ZmqRecieveMultipartMessage(theFrontendSocket1);
+        static char const* backendAddres = "tcp://188.226.138.15:8500"; // server.lostseriesapp.com
+        //
+        theBackendSocket->disconnect(backendAddres);
+        theBackendSocket->connect(backendAddres);
+        [self resendUnconfirmedRequestsFromQueue];
+      }
     }
   });
 }
 
-- (void) resendUnconfirmedRequests
+- (void) resendUnconfirmedRequestsFromLastSession
 {
-  Cache::RequestInfoList requests = theRequestInfoStorage->Clear();
+  Cache::RequestInfoList requests = theRequestInfoStorage->GetAll();
   for (Cache::RequestInfo const& requestInfo : requests)
   {
-    ZmqMultipartMessage request;
-    request.push_back(ZmqZeroFrame());
-    request.push_back(requestInfo.RequestBody());
-    //
-    ZmqSendMultipartMessage(theBackendSocket, theRequestManager->ProcessRequest(request));
+    ZmqMultipartMessage request = [self unwrapReply:requestInfo.Request()];
+    // resend request
+    ZmqMultipartMessage requestWrapped = [self processRequest:request];
+    ZmqSendMultipartMessage(theBackendSocket, requestWrapped);
+    // safe place to remove unconfirmed request
+    theRequestInfoStorage->Remove(requestInfo.RequestID());
   }
+}
+
+- (void) resendUnconfirmedRequestsFromQueue
+{
+  // get all in-memory requests
+  Cache::RequestInfoList requests = theRequestQueue->GetAll();
+  // recreate queue (no need to wait for old requests)
+  theRequestQueue.reset(new Cache::RequestQueue);
+  for (Cache::RequestInfo const& requestInfo : requests)
+  {
+    ZmqMultipartMessage request = [self unwrapReply:requestInfo.Request()];
+    // resend request
+    ZmqMultipartMessage requestWrapped = [self processRequest:request];
+    ZmqSendMultipartMessage(theBackendSocket, requestWrapped);
+    // safe place to remove unconfirmed request
+    theRequestInfoStorage->Remove(requestInfo.RequestID());
+  }
+}
+
+- (ZmqMultipartMessage) processRequest:(ZmqMultipartMessage const&)request
+{
+  // add out message id
+  ZmqMultipartMessage requestWrapped = [self wrapRequest:request];
+  // store request in memory and in file
+  Cache::RequestInfo requestInfo = theRequestQueue->Push(requestWrapped);
+  theRequestInfoStorage->Put(requestInfo);
+  //
+  return requestWrapped;
+}
+
+- (ZmqMultipartMessage) processReply:(ZmqMultipartMessage const&)replyWrapped
+{
+  Cache::RequestInfo requestInfo = theRequestQueue->TryToPop(replyWrapped);
+  if (!requestInfo.RequestBody())
+  {
+    // unexpected reply, drop it
+    return ZmqMultipartMessage();
+  }
+  std::pair<ZmqMessagePtr, ZmqMessagePtr> bodyAndData = [self getBodyAndData:replyWrapped];
+  [theLocalCache cacheReplyBody:bodyAndData.first andData:bodyAndData.second forRequest:requestInfo.RequestBody()];
+  // safe place to remove unconfirmed request
+  theRequestInfoStorage->Remove(requestInfo.RequestID());
+  //
+  return [self unwrapReply:replyWrapped];
+}
+
+- (ZmqMultipartMessage) replyForRequest:(ZmqMultipartMessage const&)request
+{
+  ZmqMultipartMessage replyCached = [theLocalCache cachedReplyForRequest:[self getBodyAndData:request].first];
+  return !replyCached.empty()
+    ? [self makeReplyFromRequest:request cachedReply:replyCached]
+    : ZmqMultipartMessage();
+}
+
+- (ZmqMultipartMessage) wrapRequest:(ZmqMultipartMessage)request
+{
+  request.push_front(ZmqMakeHeaderMessage(theMessageCounter->Next()));
+  return request;
+}
+
+- (ZmqMultipartMessage) unwrapReply:(ZmqMultipartMessage const&)replyWrapped
+{
+  return std::deque<ZmqMessagePtr>(++replyWrapped.begin(), replyWrapped.end());
+}
+
+- (ZmqMultipartMessage) makeReplyFromRequest:(ZmqMultipartMessage const&)request cachedReply:(ZmqMultipartMessage const&)replyCached
+{
+  ZmqMultipartMessage reply;
+  // use router header, our header and zero frame of request
+  reply.insert(reply.end(), request.begin(), --request.end());
+  // use reply body and data if exists
+  reply.insert(reply.end(), replyCached.begin(), replyCached.end());
+  return reply;
+}
+
+- (std::pair<ZmqMessagePtr, ZmqMessagePtr>) getBodyAndData:(ZmqMultipartMessage const&)reply
+{
+  std::pair<ZmqMessagePtr, ZmqMessagePtr> result;
+  for (auto it = reply.begin(); it != reply.end(); ++it)
+  {
+    if (!(*it)->size())
+    {
+      if (++it != reply.end())
+      {
+        result.first = *it;
+      }
+      if (++it != reply.end())
+      {
+        result.second = *it;
+      }
+      break;
+    }
+  }
+  return result;
 }
 
 - (void) setupSockets
 {
-  static char const* backendAddres = "tcp://localhost:8500"; // server.lostseriesapp.com
+  
+  static char const* backendAddres = "tcp://188.226.138.15:8500"; // server.lostseriesapp.com
   static char const* frontendAddres = "inproc://caching_server.frontend";
   //
   theBackendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
   theBackendSocket->connect(backendAddres);
   theFrontendSocket = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_ROUTER));
   theFrontendSocket->bind(frontendAddres);
+
+  static char const* configAddres = "inproc://caching_server.config";
+
+  theBackendSocket1 = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_DEALER));
+  theBackendSocket1->connect(configAddres);
+  theFrontendSocket1 = ZmqSocketPtr(new zmq::socket_t(ZmqGlobalContext(), ZMQ_ROUTER));
+  theFrontendSocket1->bind(configAddres);
 }
 
 @end
